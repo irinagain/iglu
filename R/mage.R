@@ -6,10 +6,12 @@
 #' @examples
 #' mage(mydata)
 #' mage(mydata, 'Subject 1', 2)
-mage <- function(data, id = unique(data$id), sd = 1){
-  gl_by_id = as.double(data[data$id %in% id,]$gl)
+#'
+
+mage <- function(data_, id_ = unique(data_$id), sd_ = 1){
+  gl_by_id = as.double(data_[data_$id %in% id_,]$gl)
   abs_diff_mean = abs(gl_by_id - mean(gl_by_id, na.rm = T))
-  mage_out = mean(abs_diff_mean[abs_diff_mean > sd*sd(gl_by_id, na.rm = T)])
+  mage_out = mean(abs_diff_mean[abs_diff_mean > sd_ * sd(gl_by_id, na.rm = T)])
   return(mage_out)
 }
 

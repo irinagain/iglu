@@ -4,7 +4,7 @@
 \alias{mage}
 \title{Calculate MAGE (Mean amplitude of glucose excursion)}
 \usage{
-mage(data, id = unique(data$id), sd = 1)
+mage(data_, id_ = unique(data_$id), sd_ = 1)
 }
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl").}
@@ -19,4 +19,5 @@ Calculate MAGE (Mean amplitude of glucose excursion)
 \examples{
 mage(mydata)
 mage(mydata, 'Subject 1', 2)
+
 }
