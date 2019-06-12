@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Add a Custom Editor Theme</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for addTheme {rstudioapi}"><tr><td>addTheme {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Add a Custom Editor Theme</h2>
+
+<h3>Description</h3>
+
+<p>Adds a custom editor theme to RStudio and returns the name of the newly added theme.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+addTheme(themePath, apply = FALSE, force = FALSE, globally = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>themePath</code></td>
+<td>
+<p>A full or relative path or URL to an <code>rstheme</code> or <code>tmtheme</code> to be
+added.</p>
+</td></tr>
+<tr valign="top"><td><code>apply</code></td>
+<td>
+<p>Whether to immediately apply the newly added theme. Setting this to
+<code>TRUE</code> has the same impact as running
+<code>{ rstudioapi::addTheme(&lt;themePath&gt;); rstudioapi::applyTheme(&lt;themeName&gt;) }</code>.<br />
+Default: <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>force</code></td>
+<td>
+<p>Whether to force the operation and overwrite an existing file with the same
+name.<br />
+Default: <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>globally</code></td>
+<td>
+<p>Whether to install this theme for the current user or all users. If set to
+<code>TRUE</code> this will attempt to install the theme for all users, which may
+require administrator privileges.<br />
+Default: <code>FALSE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>The <code>addTheme</code> function was introduced in RStudio 1.2.879.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

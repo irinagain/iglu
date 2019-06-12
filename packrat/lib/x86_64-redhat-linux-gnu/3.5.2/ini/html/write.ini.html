@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Write list to .ini file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for write.ini {ini}"><tr><td>write.ini {ini}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Write list to .ini file</h2>
+
+<h3>Description</h3>
+
+<p>Write list to .ini file
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+write.ini(x, filepath, encoding = getOption("encoding"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>List with structure to be write at .ini file.</p>
+</td></tr>
+<tr valign="top"><td><code>filepath</code></td>
+<td>
+<p>file to write</p>
+</td></tr>
+<tr valign="top"><td><code>encoding</code></td>
+<td>
+<p>Encoding of filepath parameter, will default to system
+encoding if not specifield</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="read.ini.html">read.ini</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Create a new temp ini for writing
+iniFile &lt;- tempfile(fileext = '.ini')
+
+## Create a new list holding our INI
+newini &lt;- list()
+newini[[ "Hello World" ]] &lt;- list(Foo = 'Bar')
+
+## Write structure to file
+write.ini(newini, iniFile)
+
+## Check file content
+## Not run: 
+file.show(iniFile)
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>ini</em> version 0.3.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

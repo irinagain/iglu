@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Capture conditions, including messeages, warnings,...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for capture_condition {testthat}"><tr><td>capture_condition {testthat}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Capture conditions, including messeages, warnings, expectations, and errors.</h2>
+
+<h3>Description</h3>
+
+<p>These functions allow you to capture the side-effects of a function call
+including printed output, messages and warnings. They are used to evaluate
+code for <code><a href="output-expectations.html">expect_output()</a></code>, <code><a href="output-expectations.html">expect_message()</a></code>,
+<code><a href="output-expectations.html">expect_warning()</a></code>, and <code><a href="output-expectations.html">expect_silent()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+capture_condition(code)
+
+capture_error(code)
+
+capture_expectation(code)
+
+capture_message(code)
+
+capture_warning(code)
+
+capture_messages(code)
+
+capture_warnings(code)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>code</code></td>
+<td>
+<p>Code to evaluate</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Singular functions (<code>capture_condition</code>, <code>capture_expectation</code> etc)
+return a condition object. <code>capture_messages()</code> and <code>capture_warnings</code>
+return a character vector of message text.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+f &lt;- function() {
+  message("First")
+  warning("Second")
+  message("Third")
+}
+
+capture_message(f())
+capture_messages(f())
+
+capture_warning(f())
+capture_warnings(f())
+
+# Condition will capture anything
+capture_condition(f())
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>testthat</em> version 2.1.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

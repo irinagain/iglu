@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a Range</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for document_range {rstudioapi}"><tr><td>document_range {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a Range</h2>
+
+<h3>Description</h3>
+
+<p>A <code>document_range</code> is a pair of <code><a href="document_position.html">document_position</a></code> objects,
+with each position indicating the <code>start</code> and <code>end</code> of the range,
+respectively.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+document_range(start, end = NULL)
+
+is.document_range(x)
+
+as.document_range(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>start</code></td>
+<td>
+<p>A <code><a href="document_position.html">document_position</a></code> indicating the start of the
+range.</p>
+</td></tr>
+<tr valign="top"><td><code>end</code></td>
+<td>
+<p>A <code><a href="document_position.html">document_position</a></code> indicating the end of the range.</p>
+</td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>An object coercable to <code>document_range</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> <code>list</code> with class <code>document_range</code> and fields:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+<code>start:</code></td><td style="text-align: left;"> The start position.</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code>end:</code></td><td style="text-align: left;"> The end position.</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

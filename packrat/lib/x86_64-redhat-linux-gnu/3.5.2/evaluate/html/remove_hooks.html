@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Remove hooks.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for remove_hooks {evaluate}"><tr><td>remove_hooks {evaluate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Remove hooks.</h2>
+
+<h3>Description</h3>
+
+<p>This provides a way to remove previously set hook values.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+remove_hooks(hooks)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>hooks</code></td>
+<td>
+<p>a named list of hooks - each hook can either be a function or
+a list of functions.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+new1 &lt;- list(before.plot.new = function() print("Plotted!"))
+new2 &lt;- list(before.plot.new = function() print("Plotted Again!"))
+set_hooks(new1)
+set_hooks(new2)
+plot(1)
+remove_hooks(new1)
+plot(1)
+remove_hooks(new2)
+plot(1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>evaluate</em> version 0.14 <a href="00Index.html">Index</a>]</div>
+</body></html>

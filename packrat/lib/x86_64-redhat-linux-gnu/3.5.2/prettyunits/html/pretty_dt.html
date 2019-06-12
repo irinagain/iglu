@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Pretty formatting of time intervals (difftime objects)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pretty_dt {prettyunits}"><tr><td>pretty_dt {prettyunits}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pretty formatting of time intervals (difftime objects)</h2>
+
+<h3>Description</h3>
+
+<p>Pretty formatting of time intervals (difftime objects)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+pretty_dt(dt, compact = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dt</code></td>
+<td>
+<p>A <code>difftime</code> object, a vector of time
+differences.</p>
+</td></tr>
+<tr valign="top"><td><code>compact</code></td>
+<td>
+<p>If true, then only the first non-zero
+unit is used. See examples below.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Character vector of formatted time intervals.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other time: <code><a href="pretty_ms.html">pretty_ms</a></code>;
+<code><a href="pretty_sec.html">pretty_sec</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+pretty_dt(as.difftime(1000, units = "secs"))
+pretty_dt(as.difftime(0, units = "secs"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>prettyunits</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

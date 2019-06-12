@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Poll for process I/O or termination</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for poll {processx}"><tr><td>poll {processx}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Poll for process I/O or termination</h2>
+
+<h3>Description</h3>
+
+<p>Wait until one of the specified connections or processes produce
+standard output or error, terminates, or a timeout occurs.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+poll(processes, ms)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>processes</code></td>
+<td>
+<p>A list of connection objects or<code>process</code> objects to
+wait on. (They can be mixed as well.) If this is a named list, then
+the returned list will have the same names. This simplifies the
+identification of the processes.</p>
+</td></tr>
+<tr valign="top"><td><code>ms</code></td>
+<td>
+<p>Integer scalar, a timeout for the polling, in milliseconds.
+Supply -1 for an infitite timeout, and 0 for not waiting at all.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A list of character vectors of length one or three.
+There is one list element for each connection/process, in the same
+order as in the input list. For connections the result is a single
+string scalar. For processes the character vectors' elements are named
+<code>output</code>, <code>error</code> and <code>process</code>. Possible values for each individual
+result are: <code>nopipe</code>, <code>ready</code>, <code>timeout</code>, <code>closed</code>, <code>silent</code>.
+See details about these below. <code>process</code> refers to the poll connection,
+see the <code>poll_connection</code> argument of the <code>process</code> initializer.
+</p>
+
+
+<h3>Explanation of the return values</h3>
+
+
+<ul>
+<li> <p><code>nopipe</code> means that the stdout or stderr from this process was not
+captured.
+</p>
+</li>
+<li> <p><code>ready</code> means that the connection or the stdout or stderr from this
+process are ready to read from. Note that end-of-file on these
+outputs also triggers <code>ready</code>.
+</p>
+</li>
+<li><p> timeout': the connections or processes are not ready to read from
+and a timeout happened.
+</p>
+</li>
+<li> <p><code>closed</code>: the connection was already closed, before the polling
+started.
+</p>
+</li>
+<li> <p><code>silent</code>: the connection is not ready to read from, but another
+connection was.
+</p>
+</li></ul>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+## Different commands to run for windows and unix
+## Not run: 
+cmd1 &lt;- switch(
+  .Platform$OS.type,
+  "unix" = c("sh", "-c", "sleep 1; ls"),
+  c("cmd", "/c", "ping -n 2 127.0.0.1 &amp;&amp; dir /b")
+)
+cmd2 &lt;- switch(
+  .Platform$OS.type,
+  "unix" = c("sh", "-c", "sleep 2; ls 1&gt;&amp;2"),
+  c("cmd", "/c", "ping -n 2 127.0.0.1 &amp;&amp; dir /b 1&gt;&amp;2")
+)
+
+## Run them. p1 writes to stdout, p2 to stderr, after some sleep
+p1 &lt;- process$new(cmd1[1], cmd1[-1], stdout = "|")
+p2 &lt;- process$new(cmd2[1], cmd2[-1], stderr = "|")
+
+## Nothing to read initially
+poll(list(p1 = p1, p2 = p2), 0)
+
+## Wait until p1 finishes. Now p1 has some output
+p1$wait()
+poll(list(p1 = p1, p2 = p2), -1)
+
+## Close p1's connection, p2 will have output on stderr, eventually
+close(p1$get_output_connection())
+poll(list(p1 = p1, p2 = p2), -1)
+
+## Close p2's connection as well, no nothing to poll
+close(p2$get_error_connection())
+poll(list(p1 = p1, p2 = p2), 0)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>processx</em> version 3.3.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

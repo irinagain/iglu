@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Add a Job</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for jobAdd {rstudioapi}"><tr><td>jobAdd {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Add a Job</h2>
+
+<h3>Description</h3>
+
+<p>Inform RStudio's Jobs pane that a job has been added.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+jobAdd(name, status = "", progressUnits = 0L, actions = NULL,
+  running = FALSE, autoRemove = TRUE, show = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>The job's name.</p>
+</td></tr>
+<tr valign="top"><td><code>status</code></td>
+<td>
+<p>The initial status text for the job; optional.</p>
+</td></tr>
+<tr valign="top"><td><code>progressUnits</code></td>
+<td>
+<p>The integer number of units of work in the job; for example, <code>100L</code>
+if the job's progress is expressed in percentages. Use <code>0L</code> if the number of units of
+work is unknown.</p>
+</td></tr>
+<tr valign="top"><td><code>actions</code></td>
+<td>
+<p>A list of actions that can be performed on the job (see Actions).</p>
+</td></tr>
+<tr valign="top"><td><code>running</code></td>
+<td>
+<p>Whether the job is currently running.</p>
+</td></tr>
+<tr valign="top"><td><code>autoRemove</code></td>
+<td>
+<p>Whether to remove the job from the Jobs pane when it's complete.</p>
+</td></tr>
+<tr valign="top"><td><code>show</code></td>
+<td>
+<p>Whether to show the job in the Jobs pane.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An ID representing the newly added job, used as a handle to provide
+further updates of the job's status.
+</p>
+
+
+<h3>Actions</h3>
+
+<p>The <code>actions</code> parameter is a named list of functions that the user can invoke on the job;
+for example: <code>actions = list(stop = function(id) { ... })</code>. The function will be passed a
+parameter named <code>id</code> with the job ID that invoked it.
+</p>
+<p>There are two special action names:
+</p>
+
+<dl>
+<dt>stop</dt><dd><p>If there is an action named <code>stop</code>, then the job will
+have a Stop button in in the Jobs pane, and pressing that button will invoke
+the <code>stop</code> action.</p>
+</dd>
+<dt>info</dt><dd><p>If there is an action named <code>info</code>, then the job will
+have an informational link in the Jobs pane rather than an output
+display, and clicking the link will invoke the <code>info</code> action.</p>
+</dd>
+</dl>
+
+
+
+<h3>See Also</h3>
+
+<p>Other jobs: <code><a href="jobAddOutput.html">jobAddOutput</a></code>,
+<code><a href="jobAddProgress.html">jobAddProgress</a></code>, <code><a href="jobRemove.html">jobRemove</a></code>,
+<code><a href="jobRunScript.html">jobRunScript</a></code>, <code><a href="jobSetProgress.html">jobSetProgress</a></code>,
+<code><a href="jobSetState.html">jobSetState</a></code>, <code><a href="jobSetStatus.html">jobSetStatus</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

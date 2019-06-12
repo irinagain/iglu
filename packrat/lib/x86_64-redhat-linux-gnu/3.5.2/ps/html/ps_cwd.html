@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Process current working directory as an absolute path.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ps_cwd {ps}"><tr><td>ps_cwd {ps}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Process current working directory as an absolute path.</h2>
+
+<h3>Description</h3>
+
+<p>For a zombie process it throws a <code>zombie_process</code> error.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ps_cwd(p)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>p</code></td>
+<td>
+<p>Process handle.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>String scalar.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+p &lt;- ps_handle()
+p
+ps_cwd(p)
+</pre>
+
+
+<h3>See Also</h3>
+
+<p>Other process handle functions: <code><a href="ps_children.html">ps_children</a></code>,
+<code><a href="ps_cmdline.html">ps_cmdline</a></code>, <code><a href="ps_connections.html">ps_connections</a></code>,
+<code><a href="ps_cpu_times.html">ps_cpu_times</a></code>, <code><a href="ps_create_time.html">ps_create_time</a></code>,
+<code><a href="ps_environ.html">ps_environ</a></code>, <code><a href="ps_exe.html">ps_exe</a></code>,
+<code><a href="ps_handle.html">ps_handle</a></code>, <code><a href="ps_interrupt.html">ps_interrupt</a></code>,
+<code><a href="ps_is_running.html">ps_is_running</a></code>, <code><a href="ps_kill.html">ps_kill</a></code>,
+<code><a href="ps_memory_info.html">ps_memory_info</a></code>, <code><a href="ps_name.html">ps_name</a></code>,
+<code><a href="ps_num_fds.html">ps_num_fds</a></code>, <code><a href="ps_num_threads.html">ps_num_threads</a></code>,
+<code><a href="ps_open_files.html">ps_open_files</a></code>, <code><a href="ps_pid.html">ps_pid</a></code>,
+<code><a href="ps_ppid.html">ps_ppid</a></code>, <code><a href="ps_resume.html">ps_resume</a></code>,
+<code><a href="ps_send_signal.html">ps_send_signal</a></code>, <code><a href="ps_status.html">ps_status</a></code>,
+<code><a href="ps_suspend.html">ps_suspend</a></code>, <code><a href="ps_terminal.html">ps_terminal</a></code>,
+<code><a href="ps_terminate.html">ps_terminate</a></code>, <code><a href="ps_uids.html">ps_uids</a></code>,
+<code><a href="ps_username.html">ps_username</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>ps</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

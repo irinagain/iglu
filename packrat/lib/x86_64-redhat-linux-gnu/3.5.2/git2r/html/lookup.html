@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Lookup</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for lookup {git2r}"><tr><td>lookup {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Lookup</h2>
+
+<h3>Description</h3>
+
+<p>Lookup one object in a repository.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+lookup(repo = ".", sha = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>repo</code></td>
+<td>
+<p>a path to a repository or a <code>git_repository</code>
+object. Default is '.'</p>
+</td></tr>
+<tr valign="top"><td><code>sha</code></td>
+<td>
+<p>The identity of the object to lookup. Must be 4 to 40
+characters long.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a <code>git_blob</code> or <code>git_commit</code> or <code>git_tag</code>
+or <code>git_tree</code> object
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Initialize a temporary repository
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+repo &lt;- init(path)
+
+## Create a user and commit a file
+config(repo, user.name="Alice", user.email="alice@example.org")
+writeLines("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+           file.path(path, "example.txt"))
+add(repo, "example.txt")
+commit_1 &lt;- commit(repo, "First commit message")
+
+## Create tag
+tag(repo, "Tagname", "Tag message")
+
+## First, get SHAs to lookup in the repository
+sha_commit &lt;- commit_1@sha
+sha_tree &lt;- tree(commit_1)@sha
+sha_blob &lt;- tree(commit_1)["example.txt"]$sha
+sha_tag &lt;- tags(repo)[[1]]@sha
+
+## SHAs
+sha_commit
+sha_tree
+sha_blob
+sha_tag
+
+## Lookup objects
+lookup(repo, sha_commit)
+lookup(repo, sha_tree)
+lookup(repo, sha_blob)
+lookup(repo, sha_tag)
+
+## Lookup objects, using only the first seven characters
+lookup(repo, substr(sha_commit, 1, 7))
+lookup(repo, substr(sha_tree, 1, 7))
+lookup(repo, substr(sha_blob, 1, 7))
+lookup(repo, substr(sha_tag, 1, 7))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

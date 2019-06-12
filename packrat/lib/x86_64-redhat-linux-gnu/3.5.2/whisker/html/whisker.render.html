@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Logicless templating</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for whisker.render {whisker}"><tr><td>whisker.render {whisker}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Logicless templating</h2>
+
+<h3>Description</h3>
+
+<p>Logicless templating
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  whisker.render(template, data = parent.frame(),
+    partials = list(), debug = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>template</code></td>
+<td>
+<p><code>character</code> with template text</p>
+</td></tr>
+<tr valign="top"><td><code>data</code></td>
+<td>
+<p>named <code>list</code> or <code>environment</code> with
+variables that will be used during rendering</p>
+</td></tr>
+<tr valign="top"><td><code>partials</code></td>
+<td>
+<p>named <code>list</code> with partial templates,
+will be used during template construction</p>
+</td></tr>
+<tr valign="top"><td><code>debug</code></td>
+<td>
+<p>Used for debugging purposes, likely to
+disappear</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>character</code> with rendered template
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+template &lt;- "Hello {{place}}!"
+place &lt;- "World"
+
+whisker.render(template)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>whisker</em> version 0.3-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

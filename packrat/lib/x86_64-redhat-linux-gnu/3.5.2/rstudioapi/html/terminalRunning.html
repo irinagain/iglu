@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Is Terminal Running</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for terminalRunning {rstudioapi}"><tr><td>terminalRunning {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Is Terminal Running</h2>
+
+<h3>Description</h3>
+
+<p>Does a terminal have a process associated with it? If the R session is
+restarted after a terminal has been created, the terminal will not
+restart its shell until it is displayed either via the user
+interface, or via <code><a href="terminalActivate.html">terminalActivate</a>()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+terminalRunning(id)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>The terminal id. The <code>id</code> is obtained from
+<code><a href="terminalList.html">terminalList</a>()</code>, <code><a href="terminalVisible.html">terminalVisible</a>()</code>,
+<code><a href="terminalCreate.html">terminalCreate</a>()</code>, or <code><a href="terminalExecute.html">terminalExecute</a>()</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>a boolean
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code>terminalRunning</code> function was added in version 1.1.350 of RStudio.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# termId has a handle to a previously created terminal
+# make sure it is still running before we send it a command
+if (!rstudioapi::terminalRunning(termId)) {
+   rstudioapi::terminalActivate(termId))
+
+   # wait for it to start
+   while (!rstudioapi::terminalRunning(termId)) {
+      Sys.sleep(0.1)
+   }
+
+   terminalSend(termId, "echo Hello\n")
+}
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

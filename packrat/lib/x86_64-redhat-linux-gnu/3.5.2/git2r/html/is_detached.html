@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Check if HEAD of repository is detached</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for is_detached {git2r}"><tr><td>is_detached {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Check if HEAD of repository is detached</h2>
+
+<h3>Description</h3>
+
+<p>Check if HEAD of repository is detached
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+is_detached(repo = ".")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>repo</code></td>
+<td>
+<p>a path to a repository or a <code>git_repository</code>
+object. Default is '.'</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>TRUE</code> if repository HEAD is detached, else
+<code>FALSE</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Create and initialize a repository in a temporary directory
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+repo &lt;- init(path)
+config(repo, user.name="Alice", user.email="alice@example.org")
+
+## Create a file, add and commit
+writeLines("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+           file.path(path, "example.txt"))
+add(repo, "example.txt")
+commit_1 &lt;- commit(repo, "Commit message 1")
+
+## Change file, add and commit
+writeLines(c("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+             "eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+             file.path(path, "example.txt"))
+add(repo, "example.txt")
+commit(repo, "Commit message 2")
+
+## HEAD of repository is not detached
+is_detached(repo)
+
+## Checkout first commit
+checkout(commit_1)
+
+## HEAD of repository is detached
+is_detached(repo)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Human readable format of a time interval</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for vague_dt {prettyunits}"><tr><td>vague_dt {prettyunits}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Human readable format of a time interval</h2>
+
+<h3>Description</h3>
+
+<p>Human readable format of a time interval
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+vague_dt(dt, format = c("default", "short", "terse"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>dt</code></td>
+<td>
+<p>A <code>difftime</code> object, the time interval(s).</p>
+</td></tr>
+<tr valign="top"><td><code>format</code></td>
+<td>
+<p>Format, currently available formats are:
+&lsquo;default&rsquo;, &lsquo;short&rsquo;, &lsquo;terse&rsquo;. See examples below.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Character vector of the formatted time intervals.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+vague_dt(as.difftime(30, units = "secs"))
+vague_dt(as.difftime(14, units = "mins"))
+vague_dt(as.difftime(5, units = "hours"))
+vague_dt(as.difftime(25, units = "hours"))
+vague_dt(as.difftime(5, units = "days"))
+vague_dt(as.difftime(30, units = "days"))
+vague_dt(as.difftime(365, units = "days"))
+vague_dt(as.difftime(365 * 10, units = "days"))
+
+## Short format
+vague_dt(format = "short", as.difftime(30, units = "secs"))
+vague_dt(format = "short", as.difftime(14, units = "mins"))
+vague_dt(format = "short", as.difftime(5, units = "hours"))
+vague_dt(format = "short", as.difftime(25, units = "hours"))
+vague_dt(format = "short", as.difftime(5, units = "days"))
+vague_dt(format = "short", as.difftime(30, units = "days"))
+vague_dt(format = "short", as.difftime(365, units = "days"))
+vague_dt(format = "short", as.difftime(365 * 10, units = "days"))
+
+## Even shorter, terse format, (almost always) exactly 3 characters wide
+vague_dt(format = "terse", as.difftime(30, units = "secs"))
+vague_dt(format = "terse", as.difftime(14, units = "mins"))
+vague_dt(format = "terse", as.difftime(5, units = "hours"))
+vague_dt(format = "terse", as.difftime(25, units = "hours"))
+vague_dt(format = "terse", as.difftime(5, units = "days"))
+vague_dt(format = "terse", as.difftime(30, units = "days"))
+vague_dt(format = "terse", as.difftime(365, units = "days"))
+vague_dt(format = "terse", as.difftime(365 * 10, units = "days"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>prettyunits</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

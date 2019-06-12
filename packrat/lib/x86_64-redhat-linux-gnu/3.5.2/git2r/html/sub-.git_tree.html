@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Extract object from tree</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for [.git_tree {git2r}"><tr><td>[.git_tree {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Extract object from tree</h2>
+
+<h3>Description</h3>
+
+<p>Lookup a tree entry by its position in the tree
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'git_tree'
+x[i]
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>The tree <code>object</code></p>
+</td></tr>
+<tr valign="top"><td><code>i</code></td>
+<td>
+<p>The index (integer or logical) of the tree object to
+extract. If negative values, all elements except those indicated
+are selected. A character vector to match against the names of
+objects to extract.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Git object
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+##' Initialize a temporary repository
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+dir.create(file.path(path, "subfolder"))
+repo &lt;- init(path)
+
+##' Create a user
+config(repo, user.name="Alice", user.email="alice@example.org")
+
+##' Create three files and commit
+writeLines("First file",  file.path(path, "example-1.txt"))
+writeLines("Second file", file.path(path, "subfolder/example-2.txt"))
+writeLines("Third file",  file.path(path, "example-3.txt"))
+add(repo, c("example-1.txt", "subfolder/example-2.txt", "example-3.txt"))
+new_commit &lt;- commit(repo, "Commit message")
+
+##' Pick a tree in the repository
+tree_object &lt;- tree(new_commit)
+
+##' Display tree
+tree_object
+
+##' Select item by name
+tree_object["example-1.txt"]
+
+##' Select first item in tree
+tree_object[1]
+
+##' Select first three items in tree
+tree_object[1:3]
+
+##' Select all blobs in tree
+tree_object[vapply(as(tree_object, 'list'), is_blob, logical(1))]
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Open a repository</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for repository {git2r}"><tr><td>repository {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Open a repository</h2>
+
+<h3>Description</h3>
+
+<p>Open a repository
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+repository(path = ".", discover = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>A path to an existing local git repository.</p>
+</td></tr>
+<tr valign="top"><td><code>discover</code></td>
+<td>
+<p>Discover repository from path. Default is TRUE.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A <code>git_repository</code> object with entries:
+</p>
+
+<dl>
+<dt>path</dt><dd>
+<p>Path to a git repository
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Initialize a temporary repository
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+repo &lt;- init(path)
+
+# Configure a user
+config(repo, user.name="Alice", user.email="alice@example.org")
+
+## Create a file, add and commit
+writeLines("Hello world!", file.path(path, "test-1.txt"))
+add(repo, 'test-1.txt')
+commit_1 &lt;- commit(repo, "Commit message")
+
+## Make one more commit
+writeLines(c("Hello world!", "HELLO WORLD!"), file.path(path, "test-1.txt"))
+add(repo, 'test-1.txt')
+commit(repo, "Next commit message")
+
+## Create one more file
+writeLines("Hello world!", file.path(path, "test-2.txt"))
+
+## Brief summary of repository
+repo
+
+## Summary of repository
+summary(repo)
+
+## Workdir of repository
+workdir(repo)
+
+## Check if repository is bare
+is_bare(repo)
+
+## Check if repository is empty
+is_empty(repo)
+
+## Check if repository is a shallow clone
+is_shallow(repo)
+
+## List all references in repository
+references(repo)
+
+## List all branches in repository
+branches(repo)
+
+## Get HEAD of repository
+repository_head(repo)
+
+## Check if HEAD is head
+is_head(repository_head(repo))
+
+## Check if HEAD is local
+is_local(repository_head(repo))
+
+## List all tags in repository
+tags(repo)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

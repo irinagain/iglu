@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Bundle bare repo of package</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for bundle_r_package {git2r}"><tr><td>bundle_r_package {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Bundle bare repo of package</h2>
+
+<h3>Description</h3>
+
+<p>Clone the package git repository as a bare repository to
+<code>pkg/inst/pkg.git</code>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+bundle_r_package(repo = ".")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>repo</code></td>
+<td>
+<p>a path to a repository or a <code>git_repository</code>
+object. Default is '.'</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Invisible bundled <code>git_repository</code> object
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Initialize repository
+path &lt;- tempfile()
+dir.create(path)
+path &lt;- file.path(path, "git2r")
+repo &lt;- clone("https://github.com/ropensci/git2r.git", path)
+
+## Bundle bare repository in package
+bundle_r_package(repo)
+
+## Build and install bundled package
+wd &lt;- setwd(dirname(path))
+system(sprintf("R CMD build %s", path))
+pkg &lt;- list.files(".", pattern = "[.]tar[.]gz$")
+system(sprintf("R CMD INSTALL %s", pkg))
+setwd(wd)
+
+## Reload package
+detach("package:git2r", unload = TRUE)
+library(git2r)
+
+## Summarize last five commits of bundled repo
+repo &lt;- repository(system.file("git2r.git", package = "git2r"))
+invisible(lapply(commits(repo, n = 5), summary))
+
+## Plot content of bundled repo
+plot(repo)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

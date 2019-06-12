@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Remove the note for an object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for note_remove {git2r}"><tr><td>note_remove {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Remove the note for an object</h2>
+
+<h3>Description</h3>
+
+<p>Remove the note for an object
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+note_remove(note = NULL, author = NULL, committer = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>note</code></td>
+<td>
+<p>The note to remove</p>
+</td></tr>
+<tr valign="top"><td><code>author</code></td>
+<td>
+<p>Signature of the notes commit author.</p>
+</td></tr>
+<tr valign="top"><td><code>committer</code></td>
+<td>
+<p>Signature of the notes commit committer.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>invisible NULL
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Create and initialize a repository in a temporary directory
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+repo &lt;- init(path)
+config(repo, user.name="Alice", user.email="alice@example.org")
+
+## Create a file, add and commit
+writeLines("Hello world!", file.path(path, "example.txt"))
+add(repo, "example.txt")
+commit_1 &lt;- commit(repo, "Commit message 1")
+
+
+## Create note in default namespace
+note_1 &lt;- note_create(commit_1, "Note-1")
+
+## Create note in named (review) namespace
+note_2 &lt;- note_create(commit_1, "Note-2", ref="refs/notes/review")
+
+## List notes in default namespace
+notes(repo)
+
+## List notes in 'review' namespace
+notes(repo, "review")
+
+## Remove notes
+note_remove(note_1)
+note_remove(note_2)
+
+## List notes in default namespace
+notes(repo)
+
+## List notes in 'review' namespace
+notes(repo, "review")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

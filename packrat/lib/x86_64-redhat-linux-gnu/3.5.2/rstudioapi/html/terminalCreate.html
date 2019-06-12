@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a Terminal</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for terminalCreate {rstudioapi}"><tr><td>terminalCreate {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a Terminal</h2>
+
+<h3>Description</h3>
+
+<p>Create a new Terminal.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+terminalCreate(caption = NULL, show = TRUE, shellType = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>caption</code></td>
+<td>
+<p>The desired terminal caption. When <code>NULL</code> or blank,
+the terminal caption will be chosen by the system.</p>
+</td></tr>
+<tr valign="top"><td><code>show</code></td>
+<td>
+<p>If <code>FALSE</code>, terminal won't be brought to front.</p>
+</td></tr>
+<tr valign="top"><td><code>shellType</code></td>
+<td>
+<p>Shell type for the terminal: NULL or &quot;default&quot; to use the
+shell selected in Global Options. For Microsoft Windows, alternatives
+are &quot;win-cmd&quot; for 64-bit Command Prompt, &quot;win-ps&quot; for 64-bit PowerShell,
+&quot;win-git-bash&quot; for Git Bash, or &quot;win-wsl-bash&quot; for Bash on Windows Subsystem
+for Linux. On Linux, Mac, and RStudio Server &quot;custom&quot; will use the custom
+terminal defined in Global Options. If the requested shell type is not
+available, the default shell will be used, instead.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The terminal identifier as a character vector (<code>NULL</code> if
+unable to create the terminal or the given terminal caption is already
+in use).
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code>terminalCreate</code> function was added in version 1.1.350 of RStudio
+and the ability to specify shellType was added in version 1.2.696.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+termId &lt;- rstudioapi::terminalCreate('My Terminal')
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

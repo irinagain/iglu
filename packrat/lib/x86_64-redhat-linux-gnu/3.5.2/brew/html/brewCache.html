@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Caching Brew Templates</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for brewCache {brew}"><tr><td>brewCache {brew}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Caching Brew Templates</h2>
+
+<h3>Description</h3>
+
+<p>These functions provide a cache system for brew templates.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+brewCache(envir=NULL)
+
+brewCacheOn()
+brewCacheOff()
+
+setBufLen(len=0)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>envir</code></td>
+<td>
+<p>the <code><a href="../../base/html/environment.html">environment</a></code> to store text and R expressions for
+each brewed template.</p>
+</td></tr>
+<tr valign="top"><td><code>len</code></td>
+<td>
+<p>length of internal buffers for parsing the templates.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>brew can cache parsed templates for potential speedup but only when brew
+calls are passed filenames, not connections, and when tplParser
+is NULL.
+</p>
+<p>brew caching is implemented by storing file names, modification
+times, and the associated text and R expressions in an internal
+environment. Calling <code>brewCache()</code> with an appropriate
+environment sets the internal cache. Calling without arguments
+returns the internal cache. The cache is exposed this way mainly
+for testing, debugging, performance improvement, etc. and this
+may be off-limits in future releases.
+</p>
+<p>Simple enough, <code>brewCacheOn()</code> turns on
+caching of brew templates and is equivalent to calling
+<code>brewCache(envir=new.env(hash=TRUE,parent=globalenv()))</code>.
+<code>brewCache()</code> without arguments returns the internal
+environment. Calling <code>brewCacheOff()</code> turns off caching by
+setting the internal environment to <code>NULL</code>.
+</p>
+<p>One thing to note: filenames act as keys in the internal cache
+environment, and brew does nothing to expand them to their full
+paths. Thus, '/home/user/brew.html' and '~usr/brew.html' will
+act as separate keys, although on-disk they may actually point
+to the same file.
+</p>
+<p><code>setBufLen()</code> initializes internal parsing vectors to length <code>len</code>. Default is 0.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>brewCache()</code> without arguments returns the internal cache. All others invisibly return <code>NULL</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Jeffrey Horner &lt;jeff.horner@vanderbilt.edu&gt; </p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../utils/html/Sweave.html">Sweave</a></code> for the original report generator. </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## Turn on caching
+brewCacheOn()
+
+## Brew a template
+brew(system.file("featurefull.brew",package="brew"),envir=new.env())
+
+## Get the internal cache
+cache &lt;- brewCache()
+
+## Inspect
+as.list(cache)
+
+## Inspect first file cached in list
+as.list(cache)[[1]]
+
+## Inspect environment that contains text and parsed code
+as.list(as.list(cache)[[1]]$env)
+
+## Turn off brew caching
+brewCacheOff()
+rm(cache)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>brew</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

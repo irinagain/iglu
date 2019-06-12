@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Merge a branch into HEAD</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for merge.git_branch {git2r}"><tr><td>merge.git_branch {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Merge a branch into HEAD</h2>
+
+<h3>Description</h3>
+
+<p>Merge a branch into HEAD
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+## S3 method for class 'git_branch'
+merge(x, y = NULL, commit_on_success = TRUE,
+  merger = NULL, fail = FALSE, ...)
+
+## S3 method for class 'git_repository'
+merge(x, y = NULL, commit_on_success = TRUE,
+  merger = NULL, fail = FALSE, ...)
+
+## S3 method for class 'character'
+merge(x = ".", y = NULL,
+  commit_on_success = TRUE, merger = NULL, fail = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>A path (default '.') to a repository, or a
+<code>git_repository</code> object, or a <code>git_branch</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>y</code></td>
+<td>
+<p>If <code>x</code> is a <code>git_repository</code>, the name of the
+branch to merge into HEAD. Not used if <code>x</code> is a
+<code>git_branch</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>commit_on_success</code></td>
+<td>
+<p>If there are no conflicts written to the
+index, the merge commit will be committed. Default is TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>merger</code></td>
+<td>
+<p>Who made the merge. The default (<code>NULL</code>) is to
+use <code>default_signature</code> for the repository.</p>
+</td></tr>
+<tr valign="top"><td><code>fail</code></td>
+<td>
+<p>If a conflict occurs, exit immediately instead of
+attempting to continue resolving conflicts. Default is
+<code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments (unused).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A list of class <code>git_merge_result</code> with entries:
+</p>
+
+<dl>
+<dt>up_to_date</dt><dd>
+<p>TRUE if the merge is already up-to-date, else FALSE.
+</p>
+</dd>
+<dt>fast_forward</dt><dd>
+<p>TRUE if a fast-forward merge, else FALSE.
+</p>
+</dd>
+<dt>conflicts</dt><dd>
+<p>TRUE if the index contain entries representing file conflicts,
+else FALSE.
+</p>
+</dd>
+<dt>sha</dt><dd>
+<p>If the merge created a merge commit, the sha of the merge
+commit. NA if no merge commit created.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Create a temporary repository
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+repo &lt;- init(path)
+config(repo, user.name="Alice", user.email = "alice@example.org")
+
+## Create a file, add and commit
+writeLines("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+           con = file.path(path, "test.txt"))
+add(repo, "test.txt")
+commit_1 &lt;- commit(repo, "Commit message 1")
+
+## Create first branch, checkout, add file and commit
+checkout(repo, "branch1", create = TRUE)
+writeLines("Branch 1", file.path(path, "branch-1.txt"))
+add(repo, "branch-1.txt")
+commit(repo, "Commit message branch 1")
+
+## Create second branch, checkout, add file and commit
+b_2 &lt;- branch_create(commit_1, "branch2")
+checkout(b_2)
+writeLines("Branch 2", file.path(path, "branch-2.txt"))
+add(repo, "branch-2.txt")
+commit(repo, "Commit message branch 2")
+
+## Make a change to 'test.txt'
+writeLines(c("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+             "eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+           con = file.path(path, "test.txt"))
+add(repo, "test.txt")
+commit(repo, "Second commit message branch 2")
+
+## Checkout master
+checkout(repo, "master", force = TRUE)
+
+## Merge branch 1
+merge(repo, "branch1")
+
+## Merge branch 2
+merge(repo, "branch2")
+
+## Create third branch, checkout, change file and commit
+checkout(repo, "branch3", create=TRUE)
+writeLines(c("Lorem ipsum dolor amet sit, consectetur adipisicing elit, sed do",
+             "eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+           con = file.path(path, "test.txt"))
+add(repo, "test.txt")
+commit(repo, "Commit message branch 3")
+
+## Checkout master and create a change that creates a merge conflict
+checkout(repo, "master", force=TRUE)
+writeLines(c("Lorem ipsum dolor sit amet, adipisicing consectetur elit, sed do",
+             "eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+           con = file.path(path, "test.txt"))
+add(repo, "test.txt")
+commit(repo, "Some commit message branch 1")
+
+## Merge branch 3
+merge(repo, "branch3")
+
+## Check status; Expect to have one unstaged unmerged conflict.
+status(repo)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

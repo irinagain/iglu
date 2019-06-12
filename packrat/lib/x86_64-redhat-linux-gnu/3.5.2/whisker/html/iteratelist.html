@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create an iteration list from a R object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for iteratelist {whisker}"><tr><td>iteratelist {whisker}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create an iteration list from a R object</h2>
+
+<h3>Description</h3>
+
+<p>In some case it is useful to iterate over a named
+<code>list</code> or <code>vector</code> <code>iteratelist</code> will
+create a new unnamed <code>list</code> with name value members:
+each item will be a list where 'name' is the
+corresponding name and 'value' is the original value in
+list <code>x</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+  iteratelist(x, name = "name", value = "value")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p><code>list</code> or other object that will be coerced
+to <code>list</code></p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p><code>character</code> name for resulting name
+member.</p>
+</td></tr>
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p><code>character</code> name for resulting value
+member.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>unnamed <code>list</code> with name value lists
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# create an iteration list from a named vector
+x &lt;- c(a=1, b=2)
+iteratelist(x)
+
+# iterate over the members of a list
+x &lt;- list(name="John", age="30", gender="male")
+iteratelist(x, name="variable") 
+
+# iterate over an unnamed vector
+values &lt;- c(1,2,3,4)
+
+template &lt;- 
+'{{#values}}
+* Value: {{.}}
+{{/values}}'
+
+whisker.render(template)
+
+#or 
+
+values &lt;- iteratelist(values, value="count")
+
+template &lt;- 
+'{{#values}}
+* Value: {{count}}
+{{/values}}'
+
+whisker.render(template)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>whisker</em> version 0.3-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

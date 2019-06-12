@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Display Source Markers</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sourceMarkers {rstudioapi}"><tr><td>sourceMarkers {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Display Source Markers
+</h2>
+
+<h3>Description</h3>
+
+<p>Display user navigable source markers in a pane within RStudio
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sourceMarkers(name, markers, basePath = NULL,
+              autoSelect = c("none", "first", "error")) 
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>Name of marker set (will replace any markers of the same name previously shown)</p>
+</td></tr>
+<tr valign="top"><td><code>markers</code></td>
+<td>
+<p>List or data frame containing source markers (see below for details on how to specify markers)</p>
+</td></tr>
+<tr valign="top"><td><code>basePath</code></td>
+<td>
+<p>Optional. If all source files are within a base path then specifying that path here will result in file names being displayed as relative paths. Note that in this case markers still need to specify source file names as full paths.</p>
+</td></tr>
+<tr valign="top"><td><code>autoSelect</code></td>
+<td>
+<p>Optional. Automatically select and drive focus to either the first marker or the first marker that is an error.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>markers</code> argument can contains either a list of marker lists or a data frame with the appropriate marker columns. The fields in a marker are as follows (all are required):
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+   <code>type</code> </td><td style="text-align: left;"> Marker type ("error", "warning", "info", "style", or "usage")</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>file</code> </td><td style="text-align: left;"> Path to source file</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>line</code> </td><td style="text-align: left;"> Line number witin source file </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>column</code> </td><td style="text-align: left;"> Column number within line</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>message</code> </td><td style="text-align: left;"> Short descriptive message</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+<p>Note that if the <code>message</code> field is of class &quot;html&quot; (i.e. <code>inherits(message, "html") == TRUE</code>) then it's contents will be treated as HTML.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code>sourceMarkers</code> function was added in version 0.99.225 of RStudio.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

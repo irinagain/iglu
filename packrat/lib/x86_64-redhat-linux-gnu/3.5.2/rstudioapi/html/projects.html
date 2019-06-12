@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Open a Project in RStudio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for projects {rstudioapi}"><tr><td>projects {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Open a Project in RStudio</h2>
+
+<h3>Description</h3>
+
+<p>Initialize and open RStudio projects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+openProject(path = NULL, newSession = FALSE)
+
+initializeProject(path = getwd())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>Either the path to an existing <code>.Rproj</code> file, or a path
+to a directory in which a new project should be initialized and opened.</p>
+</td></tr>
+<tr valign="top"><td><code>newSession</code></td>
+<td>
+<p>Boolean; should the project be opened in a new session,
+or should the current RStudio session switch to that project? Note that
+<code>TRUE</code> values are only supported with RStudio Desktop and RStudio
+Server Pro.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Calling <code>openProject()</code> without arguments effectively re-opens the
+currently open project in RStudio. When switching projects, users will
+be prompted to save any unsaved files; alternatively, you can explicitly
+save any open documents using <code><a href="rstudio-documents.html">documentSaveAll</a>()</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code>openProject</code> and <code>initializeProject</code> functions were
+added in version 1.1.287 of RStudio.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

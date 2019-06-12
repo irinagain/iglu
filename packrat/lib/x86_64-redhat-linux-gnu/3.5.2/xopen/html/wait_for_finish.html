@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Wait for a process to finish</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for wait_for_finish {xopen}"><tr><td>wait_for_finish {xopen}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Wait for a process to finish</h2>
+
+<h3>Description</h3>
+
+<p>With timeout(s), and interaction, if the session is interactive.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+wait_for_finish(process, target, timeout1 = 2000, timeout2 = 5000)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>process</code></td>
+<td>
+<p>The process. It should not have <code>stdout</code> or <code>stderr</code>
+pipes, because that can make it freeze.</p>
+</td></tr>
+<tr valign="top"><td><code>timeout1</code></td>
+<td>
+<p>Timeout before message.</p>
+</td></tr>
+<tr valign="top"><td><code>timeout2</code></td>
+<td>
+<p>Timeout after message.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>First we wait for 2s. If the process is still alive, then we give
+it another 5s, but first let the user know that they can interrupt
+the process.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>xopen</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

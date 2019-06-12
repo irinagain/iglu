@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Trim Characters from the Left and/or Right Side of a String</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stri_trim_both {stringi}"><tr><td>stri_trim_both {stringi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Trim Characters from the Left and/or Right Side of a String</h2>
+
+<h3>Description</h3>
+
+<p>These functions may be used, e.g., to remove unnecessary
+white-spaces from strings. Trimming ends at the first or
+starts at the last <code>pattern</code> match.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stri_trim_both(str, pattern = "\\P{Wspace}")
+
+stri_trim_left(str, pattern = "\\P{Wspace}")
+
+stri_trim_right(str, pattern = "\\P{Wspace}")
+
+stri_trim(str, side = c("both", "left", "right"),
+  pattern = "\\P{Wspace}")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>str</code></td>
+<td>
+<p>a character vector of strings to be trimmed</p>
+</td></tr>
+<tr valign="top"><td><code>pattern</code></td>
+<td>
+<p>a single pattern, specifying character
+classes that should be preserved (see <a href="stringi-search-charclass.html">stringi-search-charclass</a>).
+Defaults to '<code>\P{Wspace}</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>side</code></td>
+<td>
+<p>character [<code>stri_trim</code> only]; defaults to <code>"both"</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Vectorized over <code>str</code> and <code>pattern</code>.
+</p>
+<p><code>stri_trim</code> is a convenience wrapper over <code>stri_trim_left</code>
+and <code>stri_trim_right</code>.
+</p>
+<p>Contrary to many other string processing libraries,
+our trimming functions are universal. A character class,
+given by <code>pattern</code>, may be adjusted to suit your needs
+(yet, most often you stick to the default value).
+</p>
+<p>For replacing pattern matches with
+arbitrary replacement string, see <code><a href="stri_replace.html">stri_replace</a></code>.
+</p>
+<p>Trimming can also be used where you would normally rely on
+regular expressions. For instance, you may get
+<code>"23.5"</code> out of <code>"total of 23.5 bitcoins"</code>.
+</p>
+<p>For trimming white-spaces, please note the difference
+between Unicode binary property '<code>\p{Wspace}</code>' (more universal)
+and general character category '<code>\p{Z}</code>',
+see <a href="stringi-search-charclass.html">stringi-search-charclass</a>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>All these functions return a character vector.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other search_replace: <code><a href="stri_replace.html">stri_replace_all</a></code>,
+<code><a href="stringi-search.html">stringi-search</a></code>
+</p>
+<p>Other search_charclass: <code><a href="stringi-search-charclass.html">stringi-search-charclass</a></code>,
+<code><a href="stringi-search.html">stringi-search</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+stri_trim_left("               aaa")
+stri_trim_right("rexamine.com/", "\\p{P}")
+stri_trim_both(" Total of 23.5 bitcoins. ", "\\p{N}")
+stri_trim_both(" Total of 23.5 bitcoins. ", "\\p{L}")
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringi</em> version 1.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

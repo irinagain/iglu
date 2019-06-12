@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Makevars variables</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for with_makevars {withr}"><tr><td>with_makevars {withr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Makevars variables</h2>
+
+<h3>Description</h3>
+
+<p>Temporarily change contents of an existing <code>Makevars</code> file.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+with_makevars(new, code, path = file.path("~", ".R", "Makevars"),
+  assignment = c("=", ":=", "?=", "+="))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>new</code></td>
+<td>
+<p><code>[named character]</code><br /> New variables and their values</p>
+</td></tr>
+<tr valign="top"><td><code>code</code></td>
+<td>
+<p><code>[any]</code><br /> Code to execute in the temporary environment</p>
+</td></tr>
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p><code>[character(1)]</code><br /> location of existing <code>Makevars</code> file to modify.</p>
+</td></tr>
+<tr valign="top"><td><code>assignment</code></td>
+<td>
+<p><code>[character(1)]</code><br /> assignment type to use.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If no <code>Makevars</code> file exists or the fields in <code>new</code> do
+not exist in the existing <code>Makevars</code> file then the fields are added to
+the new file.  Existing fields which are not included in <code>new</code> are
+appended unchanged.  Fields which exist in <code>Makevars</code> and in <code>new</code>
+are modified to use the value in <code>new</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>[any]</code><br /> The results of the evaluation of the <code>code</code>
+argument.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="withr.html">withr</a></code> for examples
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>withr</em> version 2.1.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

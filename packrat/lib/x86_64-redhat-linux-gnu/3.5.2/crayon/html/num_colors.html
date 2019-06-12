@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Number of colors the terminal supports</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for num_colors {crayon}"><tr><td>num_colors {crayon}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Number of colors the terminal supports</h2>
+
+<h3>Description</h3>
+
+<p>Number of colors the terminal supports
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+num_colors(forget = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>forget</code></td>
+<td>
+<p>Whether to forget the cached result of the color check.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If the <code>crayon.colors</code> option is set, then we
+just use that. It should be an integer number. You can use this
+option as a workaround if crayon does not detect the number of
+colors accurately.
+</p>
+<p>In Emacs, we report eight colors.
+</p>
+<p>Otherwise, we use the <code>tput</code> shell command to detect the
+number of colors. If <code>tput</code> is not available,
+but we think that the terminal supports colors, then
+eigth colors are assumed.
+</p>
+<p>If tput returns 8, but TERM is xterm, we return 256, as most xterm
+compatible terminals in fact do support 256 colors.
+There is some discussion about this here:
+<a href="https://github.com/r-lib/crayon/issues/17">https://github.com/r-lib/crayon/issues/17</a>
+</p>
+<p>For efficiency, <code>num_colors()</code> caches its result. To
+re-check the number of colors, set the <code>forget</code> argument to
+<code>TRUE</code>. The cached value is only used if no sinks are active,
+see also <code><a href="has_color.html">has_color()</a></code> for more information about sinks.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Numeric scalar, the number of colors the terminal supports.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+num_colors()
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>crayon</em> version 1.3.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

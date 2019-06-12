@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Activate Terminal</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for terminalActivate {rstudioapi}"><tr><td>terminalActivate {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Activate Terminal</h2>
+
+<h3>Description</h3>
+
+<p>Ensure terminal is running and optionally bring to front in RStudio.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+terminalActivate(id = NULL, show = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>The terminal id. The <code>id</code> is obtained from
+<code><a href="terminalList.html">terminalList</a>()</code>, <code><a href="terminalVisible.html">terminalVisible</a>()</code>,
+<code><a href="terminalCreate.html">terminalCreate</a>()</code>, or <code><a href="terminalExecute.html">terminalExecute</a>()</code>.
+If NULL, the terminal tab will be selected but no specific terminal
+will be chosen.</p>
+</td></tr>
+<tr valign="top"><td><code>show</code></td>
+<td>
+<p>If TRUE, bring the terminal to front in RStudio.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>The <code>terminalActivate</code> function was added in version 1.1.350 of RStudio.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# create a hidden terminal and run a lengthy command
+termId = rstudioapi::terminalCreate(show = FALSE)
+rstudioapi::terminalSend(termId, "sleep 5\n")
+
+# wait until a busy terminal is finished
+while (rstudioapi::terminalBusy(termId)) {
+  Sys.sleep(0.1)
+}
+print("Terminal available")#'
+
+rstudioapi::terminalActivate(termId)
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

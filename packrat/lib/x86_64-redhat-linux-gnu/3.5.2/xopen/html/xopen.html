@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Open a file, directory or URL</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for xopen {xopen}"><tr><td>xopen {xopen}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Open a file, directory or URL</h2>
+
+<h3>Description</h3>
+
+<p>Open a file, directory or URL, using the local platforms conventions,
+i.e. associated applications, default programs, etc. This is usually
+equivalent to double-clicking on the file in the GUI.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+xopen(target = NULL, app = NULL, quiet = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>target</code></td>
+<td>
+<p>String, the path or URL to open.</p>
+</td></tr>
+<tr valign="top"><td><code>app</code></td>
+<td>
+<p>Specify the app to open <code>target</code> with, and its arguments,
+in a character vector. Note that app names are platform dependent.</p>
+</td></tr>
+<tr valign="top"><td><code>quiet</code></td>
+<td>
+<p>Whether to echo the command to the screen, before
+running it.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments, not used currently.</p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>xopen("test.R")
+xopen("https://ps.r-lib.org")
+xopen(tempdir())
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>xopen</em> version 1.0.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

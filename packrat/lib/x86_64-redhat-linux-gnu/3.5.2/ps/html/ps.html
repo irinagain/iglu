@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Process table</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ps {ps}"><tr><td>ps {ps}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Process table</h2>
+
+<h3>Description</h3>
+
+<p>Process table
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ps(user = NULL, after = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>user</code></td>
+<td>
+<p>Username, to filter the results to matching processes.</p>
+</td></tr>
+<tr valign="top"><td><code>after</code></td>
+<td>
+<p>Start time (<code>POSIXt</code>), to filter the results to processes
+that started after this.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Data frame (tibble), see columns below.
+</p>
+<p>Columns:
+</p>
+
+<ul>
+<li> <p><code>pid</code>: Process ID.
+</p>
+</li>
+<li> <p><code>ppid</code>: Process ID of parent process.
+</p>
+</li>
+<li> <p><code>name</code>: Process name.
+</p>
+</li>
+<li> <p><code>username</code>: Name of the user (real uid on POSIX).
+</p>
+</li>
+<li> <p><code>status</code>: I.e. <em>running</em>, <em>sleeping</em>, etc.
+</p>
+</li>
+<li> <p><code>user</code>: User CPU time.
+</p>
+</li>
+<li> <p><code>system</code>: System CPU time.
+</p>
+</li>
+<li> <p><code>rss</code>: Resident set size, the amount of memory the process currently
+uses. Does not include memory that is swapped out. It does include
+shared libraries.
+</p>
+</li>
+<li> <p><code>vms</code>: Virtual memory size. All memory the process has access to.
+</p>
+</li>
+<li> <p><code>created</code>: Time stamp when the process was created.
+</p>
+</li>
+<li> <p><code>ps_handle</code>: <code>ps_handle</code> objects, in a list column.
+</p>
+</li></ul>
+
+
+<hr /><div style="text-align: center;">[Package <em>ps</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

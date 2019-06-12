@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: File paths relative to the root of a directory hierarchy</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for find_root_file {rprojroot}"><tr><td>find_root_file {rprojroot}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>File paths relative to the root of a directory hierarchy</h2>
+
+<h3>Description</h3>
+
+<p>Append an arbitrary number of path components to the root using
+<code><a href="../../base/html/file.path.html">base::file.path()</a></code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+find_root_file(..., criterion, path = ".")
+
+find_rstudio_root_file(..., path = ".")
+
+find_package_root_file(..., path = ".")
+
+find_remake_root_file(..., path = ".")
+
+find_testthat_root_file(..., path = ".")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Further path components passed to <code><a href="../../base/html/file.path.html">file.path()</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>criterion</code></td>
+<td>
+<p>A criterion, will be coerced using
+<code><a href="root_criterion.html">as.root_criterion()</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>The start directory</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>find_root_file()</code> function is a simple wrapper around
+<code><a href="find_root.html">find_root()</a></code> that
+appends an arbitrary number of path components to the root using
+<code><a href="../../base/html/file.path.html">base::file.path()</a></code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The normalized path of the root as specified by the search criteria,
+with the additional path components appended.
+Throws an error if no root is found
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="find_root.html">find_root()</a></code> <code><a href="../../utils/html/glob2rx.html">utils::glob2rx()</a></code> <code><a href="../../base/html/file.path.html">base::file.path()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+find_package_root_file("tests", "testthat.R")
+has_file("DESCRIPTION", "^Package: ")$find_file
+has_file("DESCRIPTION", "^Package: ")$make_fix_file(".")
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rprojroot</em> version 1.3-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

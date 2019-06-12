@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Human readable format of the time interval since a time point</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for time_ago {prettyunits}"><tr><td>time_ago {prettyunits}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Human readable format of the time interval since a time point</h2>
+
+<h3>Description</h3>
+
+<p>It calls <code><a href="vague_dt.html">vague_dt</a></code> to do the actual formatting.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+time_ago(date, format = c("default", "short", "terse"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>date</code></td>
+<td>
+<p>Date(s), <code>as.POSIXct</code> will be called on them.</p>
+</td></tr>
+<tr valign="top"><td><code>format</code></td>
+<td>
+<p>Format, currently available formats are:
+&lsquo;default&rsquo;, &lsquo;short&rsquo;, &lsquo;terse&rsquo;. See examples below.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Character vector of the formatted time intervals.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+now &lt;- Sys.time()
+
+time_ago(now)
+time_ago(now - as.difftime(30, units = "secs"))
+time_ago(now - as.difftime(14, units = "mins"))
+time_ago(now - as.difftime(5, units = "hours"))
+time_ago(now - as.difftime(25, units = "hours"))
+time_ago(now - as.difftime(5, units = "days"))
+time_ago(now - as.difftime(30, units = "days"))
+time_ago(now - as.difftime(365, units = "days"))
+time_ago(now - as.difftime(365 * 10, units = "days"))
+
+## Short format
+time_ago(format = "short", now)
+time_ago(format = "short", now - as.difftime(30, units = "secs"))
+time_ago(format = "short", now - as.difftime(14, units = "mins"))
+time_ago(format = "short", now - as.difftime(5, units = "hours"))
+time_ago(format = "short", now - as.difftime(25, units = "hours"))
+time_ago(format = "short", now - as.difftime(5, units = "days"))
+time_ago(format = "short", now - as.difftime(30, units = "days"))
+time_ago(format = "short", now - as.difftime(365, units = "days"))
+time_ago(format = "short", now - as.difftime(365 * 10, units = "days"))
+
+## Even shorter, terse format, (almost always) exactly 3 characters wide
+time_ago(format = "terse", now)
+time_ago(format = "terse", now - as.difftime(30, units = "secs"))
+time_ago(format = "terse", now - as.difftime(14, units = "mins"))
+time_ago(format = "terse", now - as.difftime(5, units = "hours"))
+time_ago(format = "terse", now - as.difftime(25, units = "hours"))
+time_ago(format = "terse", now - as.difftime(5, units = "days"))
+time_ago(format = "terse", now - as.difftime(30, units = "days"))
+time_ago(format = "terse", now - as.difftime(365, units = "days"))
+time_ago(format = "terse", now - as.difftime(365 * 10, units = "days"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>prettyunits</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

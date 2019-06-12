@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set Job State</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for jobSetState {rstudioapi}"><tr><td>jobSetState {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set Job State</h2>
+
+<h3>Description</h3>
+
+<p>Changes the state of a job.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+jobSetState(job, state = c("idle", "running", "succeeded", "cancelled",
+  "failed"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>job</code></td>
+<td>
+<p>The ID of the job on which to change state.</p>
+</td></tr>
+<tr valign="top"><td><code>state</code></td>
+<td>
+<p>The new job state.</p>
+</td></tr>
+</table>
+
+
+<h3>States</h3>
+
+<p>The following states are supported:
+</p>
+
+<dl>
+<dt>idle</dt><dd><p>The job is waiting to run.</p>
+</dd>
+<dt>running</dt><dd><p>The job is actively running.</p>
+</dd>
+<dt>succeeded</dt><dd><p>The job has finished successfully.</p>
+</dd>
+<dt>cancelled</dt><dd><p>The job was cancelled.</p>
+</dd>
+<dt>failed</dt><dd><p>The job finished but did not succeed.</p>
+</dd>
+</dl>
+
+
+
+<h3>See Also</h3>
+
+<p>Other jobs: <code><a href="jobAddOutput.html">jobAddOutput</a></code>,
+<code><a href="jobAddProgress.html">jobAddProgress</a></code>, <code><a href="jobAdd.html">jobAdd</a></code>,
+<code><a href="jobRemove.html">jobRemove</a></code>, <code><a href="jobRunScript.html">jobRunScript</a></code>,
+<code><a href="jobSetProgress.html">jobSetProgress</a></code>, <code><a href="jobSetStatus.html">jobSetStatus</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

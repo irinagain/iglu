@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Info on current GitHub user and token</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for gh_whoami {gh}"><tr><td>gh_whoami {gh}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Info on current GitHub user and token</h2>
+
+<h3>Description</h3>
+
+<p>Reports wallet name, GitHub login, and GitHub URL for the current
+authenticated user, the first bit of the token, and the associated scopes.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+gh_whoami(.token = NULL, .api_url = NULL, .send_headers = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.token</code></td>
+<td>
+<p>Authentication token.</p>
+</td></tr>
+<tr valign="top"><td><code>.api_url</code></td>
+<td>
+<p>Github API url (default: <a href="https://api.github.com">https://api.github.com</a>).
+Used if <code>endpoint</code> just contains a path.</p>
+</td></tr>
+<tr valign="top"><td><code>.send_headers</code></td>
+<td>
+<p>Named character vector of header field values
+(excepting <code>Authorization</code>, which is handled via
+<code>.token</code>). This can be used to override or augment the
+defaults, which are as follows: the <code>Accept</code> field defaults
+to <code>"application/vnd.github.v3+json"</code> and the
+<code>User-Agent</code> field defaults to
+<code>"https://github.com/r-lib/gh"</code>. This can be used
+to, e.g., provide a custom media type, in order to access a
+preview feature of the API.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Get a personal access token for the GitHub API from
+<a href="https://github.com/settings/tokens">https://github.com/settings/tokens</a> and select the scopes necessary for
+your planned tasks. The <code>repo</code> scope, for example, is one many are
+likely to need. The token itself is a string of 40 letters and digits. You
+can store it any way you like and provide explicitly via the <code>.token</code>
+argument to <code><a href="gh.html">gh</a>()</code>.
+</p>
+<p>However, many prefer to define an environment variable <code>GITHUB_PAT</code> (or
+<code>GITHUB_TOKEN</code>) with this value in their <code>.Renviron</code> file. Add a
+line that looks like this, substituting your PAT:
+</p>
+<pre>
+GITHUB_PAT=8c70fd8419398999c9ac5bacf3192882193cadf2
+</pre>
+<p>Put a line break at the end! If you’re using an editor that shows line
+numbers, there should be (at least) two lines, where the second one is empty.
+Restart R for this to take effect. Call <code>gh_whoami()</code> to confirm
+success.
+</p>
+<p>To get complete information on the authenticated user, call
+<code>gh("/user")</code>.
+</p>
+<p>For token management via API (versus the browser), use the
+<a href="https://developer.github.com/v3/oauth_authorizations/">OAuth
+Authorizations API</a>. This API requires Basic Authentication using your
+username and password, not tokens, and is outside the scope of the <code>gh</code>
+package.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <code>gh_response</code> object, which is also a <code>list</code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+gh_whoami()
+
+## explicit token + use with GitHub Enterprise
+gh_whoami(.token = "8c70fd8419398999c9ac5bacf3192882193cadf2",
+          .api_url = "https://github.foobar.edu/api/v3")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>gh</em> version 1.0.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

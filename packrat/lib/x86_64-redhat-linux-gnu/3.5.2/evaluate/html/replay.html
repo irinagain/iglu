@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Replay a list of evaluated results.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for replay {evaluate}"><tr><td>replay {evaluate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Replay a list of evaluated results.</h2>
+
+<h3>Description</h3>
+
+<p>Replay a list of evaluated results, as if you'd run them in an R
+terminal.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+replay(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>result from <code><a href="evaluate.html">evaluate()</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+samples &lt;- system.file("tests", "testthat", package = "evaluate")
+if (file_test("-d", samples)) {
+    replay(evaluate(file(file.path(samples, "order.r"))))
+    replay(evaluate(file(file.path(samples, "plot.r"))))
+    replay(evaluate(file(file.path(samples, "data.r"))))
+}
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>evaluate</em> version 0.14 <a href="00Index.html">Index</a>]</div>
+</body></html>

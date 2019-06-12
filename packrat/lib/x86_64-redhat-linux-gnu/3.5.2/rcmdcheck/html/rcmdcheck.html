@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Run R CMD check from R and Capture Results</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rcmdcheck {rcmdcheck}"><tr><td>rcmdcheck {rcmdcheck}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Run R CMD check from R and Capture Results</h2>
+
+<h3>Description</h3>
+
+<p>Run R CMD check form R programatically, and capture the results of the
+individual checks.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rcmdcheck(path = ".", quiet = FALSE, args = character(),
+  build_args = character(), check_dir = NULL, libpath = .libPaths(),
+  repos = getOption("repos"), timeout = Inf, error_on = c("never",
+  "error", "warning", "note"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>Path to a package tarball or a directory.</p>
+</td></tr>
+<tr valign="top"><td><code>quiet</code></td>
+<td>
+<p>Whether to print check output during checking.</p>
+</td></tr>
+<tr valign="top"><td><code>args</code></td>
+<td>
+<p>Character vector of arguments to pass to
+<code>R CMD check</code>. (Note that instead of the <code>--output</code> option you
+should use the <code>check_dir</code> argument, because  <code>--output</code> cannot
+deal with spaces and other special characters on Windows.</p>
+</td></tr>
+<tr valign="top"><td><code>build_args</code></td>
+<td>
+<p>Character vector of arguments to pass to
+<code>R CMD build</code></p>
+</td></tr>
+<tr valign="top"><td><code>check_dir</code></td>
+<td>
+<p>Path to a directory where the check is performed.
+If this is not <code>NULL</code>, then the a temporary directory is used, that
+is cleaned up when the returned object is garbage collected.</p>
+</td></tr>
+<tr valign="top"><td><code>libpath</code></td>
+<td>
+<p>The library path to set for the check.
+The default uses the current library path.</p>
+</td></tr>
+<tr valign="top"><td><code>repos</code></td>
+<td>
+<p>The <code>repos</code> option to set for the check.
+This is needed for cyclic dependency checks if you use the
+<code>--as-cran</code> argument. The default uses the current value.</p>
+</td></tr>
+<tr valign="top"><td><code>timeout</code></td>
+<td>
+<p>Timeout for the check, in seconds, or as a
+<a href="../../base/html/difftime.html">base::difftime</a> object. If it is not finished before this, it will be
+killed. <code>Inf</code> means no timeout. If the check is timed out,
+that is added as an extra error to the result object.</p>
+</td></tr>
+<tr valign="top"><td><code>error_on</code></td>
+<td>
+<p>Whether to throw an error on <code>R CMD check</code> failures.
+Note that the check is always completed (unless a timeout happens),
+and the error is only thrown after completion. If <code>"never"</code>, then
+no errors are thrown. If <code>"error"</code>, then only <code>ERROR</code> failures
+generate errors. If <code>"warning"</code>, then <code>WARNING</code> failures generate
+errors as well. If <code>"note"</code>, then any check failure generated an
+error.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An S3 object (list) with fields <code>errors</code>,
+<code>warnings</code> and <code>notes</code>. These are all character
+vectors containing the output for the failed check.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rcmdcheck</em> version 1.3.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

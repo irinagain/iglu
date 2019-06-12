@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Read and parse .ini file to list</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for read.ini {ini}"><tr><td>read.ini {ini}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Read and parse .ini file to list</h2>
+
+<h3>Description</h3>
+
+<p>Read and parse .ini file to list
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+read.ini(filepath, encoding = getOption("encoding"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>filepath</code></td>
+<td>
+<p>file to parse</p>
+</td></tr>
+<tr valign="top"><td><code>encoding</code></td>
+<td>
+<p>Encoding of filepath parameter, will default to system
+encoding if not specifield</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Lines starting with '#' or ';' are comments and will not be parsed
+</p>
+
+
+<h3>Value</h3>
+
+<p>List with length equivalent to number of [sections], each section is
+a new list
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="write.ini.html">write.ini</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Create a new temp ini for reading
+iniFile &lt;- tempfile(fileext = '.ini')
+
+sink(iniFile)
+cat("; This line is a comment\n")
+cat("# This one too!\n")
+cat("[    Hello World]\n")
+cat("Foo = Bar          \n")
+cat("Foo1 = Bar=345 \n")
+sink()
+
+## Read ini
+checkini &lt;- read.ini(iniFile)
+
+## Check structure
+checkini
+checkini$`Hello World`$Foo
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>ini</em> version 0.3.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

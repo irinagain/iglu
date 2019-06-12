@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Mustache for R</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for whisker-package {whisker}"><tr><td>whisker-package {whisker}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Mustache for R</h2>
+
+<h3>Description</h3>
+
+<p>Whisker is a templating engine for R conforming to the
+Mustache specification. Mustache is a logicless
+templating language, meaning that no programming source
+code can be used in your templates. This may seem very
+limited, but Mustache is nonetheless powerful and has the
+advantage of being able to be used unaltered in many
+programming languages. For example it make it very easy
+to write a web application in R using Mustache templates
+and where the browser can template using javascript's
+&quot;Mustache.js&quot;
+</p>
+
+
+<h3>Details</h3>
+
+<p>Mustache (and therefore <code>whisker</code>) takes a simple
+but different approach to templating compared to most
+templating engines. Most templating libraries for example
+<code>Sweave</code> and <code>brew</code> allow the user to mix
+programming code and text throughout the template. This
+is powerful, but ties a template directly to a
+programming language. Furthermore that approach makes it
+difficult to seperate programming code from templating
+code.
+</p>
+<p>Whisker on the other hand, takes a Mustache template and
+uses the variables of the current environment (or the
+supplied <code>list</code>) to fill in the variables.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+template &lt;- 
+'Hello {{name}}
+You have just won ${{value}}!
+{{#in_ca}}
+Well, ${{taxed_value}}, after taxes.
+{{/in_ca}}'
+
+data &lt;- list( name = "Chris"
+            , value = 10000
+            , taxed_value = 10000 - (10000 * 0.4)
+            , in_ca = TRUE
+            )
+
+whisker.render(template, data)
+
+
+
+
+base &lt;-
+'&lt;h2&gt;Names&lt;/h2&gt;
+{{#names}}
+  {{&gt; user}}
+{{/names}}'
+
+user &lt;- '&lt;strong&gt;{{name}}&lt;/strong&gt;'
+
+names &lt;- list(list(name="Alice"), list(name="Bob"))
+
+whisker.render(base, partials=list(user=user))
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>whisker</em> version 0.3-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

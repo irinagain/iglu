@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Modify a vector</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for modify {rlang}"><tr><td>modify {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Modify a vector</h2>
+
+<h3>Description</h3>
+
+<a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a>
+<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>
+<p>This function merges a list of arguments into a vector. It always
+returns a list.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+modify(.x, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.x</code></td>
+<td>
+<p>A vector to modify.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>List of elements to merge into <code>.x</code>. Named elements
+already existing in <code>.x</code> are used as replacements. Elements that
+have new or no names are inserted at the end. These dots support
+<a href="tidy-dots.html">tidy dots</a> features.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A modified vector upcasted to a list.
+</p>
+
+
+<h3>Life cycle</h3>
+
+<p><code>modify()</code> is in the qestioning stage. We are still figuring out
+what vector tools belong in rlang.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+modify(c(1, b = 2, 3), 4, b = "foo")
+
+x &lt;- list(a = 1, b = 2)
+y &lt;- list(b = 3, c = 4)
+modify(x, splice(y))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.3.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

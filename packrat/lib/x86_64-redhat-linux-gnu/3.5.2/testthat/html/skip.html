@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Skip a test.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for skip {testthat}"><tr><td>skip {testthat}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Skip a test.</h2>
+
+<h3>Description</h3>
+
+<p>This function allows you to skip a test if it's not currently available.
+This will produce an informative message, but will not cause the test
+suite to fail.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+skip(message)
+
+skip_if_not(condition, message = deparse(substitute(condition)))
+
+skip_if(condition, message = deparse(substitute(condition)))
+
+skip_if_not_installed(pkg, minimum_version = NULL)
+
+skip_if_offline(host = "r-project.org")
+
+skip_on_cran()
+
+skip_on_os(os)
+
+skip_on_travis()
+
+skip_on_appveyor()
+
+skip_on_ci()
+
+skip_on_bioc()
+
+skip_if_translated()
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>message</code></td>
+<td>
+<p>A message describing why the test was skipped.</p>
+</td></tr>
+<tr valign="top"><td><code>condition</code></td>
+<td>
+<p>Boolean condition to check. <code>skip_if_not()</code> will skip if
+<code>FALSE</code>, <code>skip_if()</code> will skip if <code>TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>pkg</code></td>
+<td>
+<p>Name of package to check for</p>
+</td></tr>
+<tr valign="top"><td><code>minimum_version</code></td>
+<td>
+<p>Minimum required version for the package</p>
+</td></tr>
+<tr valign="top"><td><code>host</code></td>
+<td>
+<p>A string with a hostname to lookup</p>
+</td></tr>
+<tr valign="top"><td><code>os</code></td>
+<td>
+<p>Character vector of system names. Supported values are
+<code>"windows"</code>, <code>"mac"</code>, <code>"linux"</code> and <code>"solaris"</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>skip*</code> functions are intended for use within <code><a href="test_that.html">test_that()</a></code>
+blocks.  All expectations following the <code>skip*</code> statement within the
+same <code>test_that</code> block will be skipped.  Test summaries that report skip
+counts are reporting how many <code>test_that</code> blocks triggered a <code>skip*</code>
+statement, not how many expectations were skipped.
+</p>
+
+
+<h3>Helpers</h3>
+
+<p><code>skip_if_not()</code> works like <code><a href="../../base/html/stopifnot.html">stopifnot()</a></code>, generating
+a message automatically based on the first argument.
+</p>
+<p><code>skip_if_offline()</code> skips tests if an internet connection is not available
+using <code><a href="../../curl/html/nslookup.html">curl::nslookup()</a></code>.
+</p>
+<p><code>skip_on_cran()</code> skips tests on CRAN, using the <code>NOT_CRAN</code>
+environment variable set by devtools.
+</p>
+<p><code>skip_on_travis()</code> skips tests on travis by inspecting the
+<code>TRAVIS</code> environment variable.
+</p>
+<p><code>skip_on_appveyor()</code> skips tests on appveyor by inspecting the
+<code>APPVEYOR</code> environment variable.
+</p>
+<p>#' <code>skip_on_ci()</code> skips tests on continuous integration systems by inspecting
+the <code>CI</code> environment variable.
+</p>
+<p><code>skip_on_bioc()</code> skips tests on Bioconductor by inspecting the
+<code>BBS_HOME</code> environment variable.
+</p>
+<p><code>skip_if_not_installed()</code> skips a tests if a package is not installed
+or cannot be loaded (useful for suggested packages).  It loads the package as
+a side effect, because the package is likely to be used anyway.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+if (FALSE) skip("No internet connection")
+
+## The following are only meaningful when put in test files and
+## run with `test_file`, `test_dir`, `test_check`, etc.
+
+test_that("skip example", {
+  expect_equal(1, 1L)    # this expectation runs
+  skip('skip')
+  expect_equal(1, 2)     # this one skipped
+  expect_equal(1, 3)     # this one is also skipped
+})
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>testthat</em> version 2.1.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

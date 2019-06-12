@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Apply stash</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stash_apply {git2r}"><tr><td>stash_apply {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Apply stash</h2>
+
+<h3>Description</h3>
+
+<p>Apply a single stashed state from the stash list.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stash_apply(object = ".", index = 1)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>path to a repository, or a <code>git_repository</code>
+object, or the stash <code>object</code> to pop. Default is a
+<code>path = '.'</code> to a reposiory.</p>
+</td></tr>
+<tr valign="top"><td><code>index</code></td>
+<td>
+<p>The index to the stash to apply. Only used when
+<code>object</code> is a path to a repository or a
+<code>git_repository</code> object. Default is <code>index = 1</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If local changes in the working directory conflict with changes in
+the stash then an error will be raised. In this case, the index
+will always remain unmodified and all files in the working
+directory will remain unmodified. However, if you are restoring
+untracked files or ignored files and there is a conflict when
+applying the modified files, then those files will remain in the
+working directory.
+</p>
+
+
+<h3>Value</h3>
+
+<p>invisible NULL
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Initialize a temporary repository
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+repo &lt;- init(path)
+
+# Configure a user
+config(repo, user.name="Alice", user.email="alice@example.org")
+
+# Create a file, add and commit
+writeLines("Hello world!", file.path(path, "test.txt"))
+add(repo, 'test.txt')
+commit(repo, "Commit message")
+
+# Change file
+writeLines(c("Hello world!", "HELLO WORLD!"), file.path(path, "test.txt"))
+
+# Create stash in repository
+stash(repo)
+
+# Change file
+writeLines(c("Hello world!", "HeLlO wOrLd!"), file.path(path, "test.txt"))
+
+# Create stash in repository
+stash(repo)
+
+# View stashes
+stash_list(repo)
+
+# Read file
+readLines(file.path(path, "test.txt"))
+
+# Apply latest git_stash object in repository
+stash_apply(stash_list(repo)[[1]])
+
+# Read file
+readLines(file.path(path, "test.txt"))
+
+# View stashes
+stash_list(repo)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Exists/get for RStudio functions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for hasFun {rstudioapi}"><tr><td>hasFun {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Exists/get for RStudio functions</h2>
+
+<h3>Description</h3>
+
+<p>These are specialized versions of <code><a href="../../base/html/get.html">get</a></code> and
+<code><a href="../../base/html/exists.html">exists</a></code> that look in the rstudio package namespace.
+If RStudio is not running,  <code>hasFun</code> will return <code>FALSE</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+hasFun(name, version_needed = NULL, ...)
+
+findFun(name, version_needed = NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>name of object to look for</p>
+</td></tr>
+<tr valign="top"><td><code>version_needed</code></td>
+<td>
+<p>An optional version specification. If supplied,
+ensures that RStudio is at least that version. This is useful if
+function behavior has changed over time.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other arguments passed on to <code><a href="../../base/html/exists.html">exists</a></code> and
+<code><a href="../../base/html/get.html">get</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+rstudioapi::hasFun("viewer")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

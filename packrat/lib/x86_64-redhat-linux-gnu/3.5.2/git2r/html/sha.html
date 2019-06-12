@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get the SHA-1 of a git object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for sha {git2r}"><tr><td>sha {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get the SHA-1 of a git object</h2>
+
+<h3>Description</h3>
+
+<p>Get the 40 character hexadecimal string of the SHA-1.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+sha(object)
+
+## S3 method for class 'git_blob'
+sha(object)
+
+## S3 method for class 'git_branch'
+sha(object)
+
+## S3 method for class 'git_commit'
+sha(object)
+
+## S3 method for class 'git_note'
+sha(object)
+
+## S3 method for class 'git_reference'
+sha(object)
+
+## S3 method for class 'git_reflog_entry'
+sha(object)
+
+## S3 method for class 'git_tag'
+sha(object)
+
+## S3 method for class 'git_tree'
+sha(object)
+
+## S3 method for class 'git_fetch_head'
+sha(object)
+
+## S3 method for class 'git_merge_result'
+sha(object)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>a git object to get the SHA-1 from.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>The 40 character hexadecimal string of the SHA-1.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Create a directory in tempdir
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+
+## Initialize a repository
+repo &lt;- init(path)
+config(repo, user.name="Alice", user.email="alice@example.org")
+
+## Create a file, add and commit
+writeLines("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+           con = file.path(path, "test.txt"))
+add(repo, "test.txt")
+commit(repo, "Commit message 1")
+
+## Get the SHA-1 of the last commit
+sha(last_commit(repo))
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

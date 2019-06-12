@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Submit a Launcher Job</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for launcherSubmitJob {rstudioapi}"><tr><td>launcherSubmitJob {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Submit a Launcher Job</h2>
+
+<h3>Description</h3>
+
+<p>Submit a launcher job. See https://docs.rstudio.com/job-launcher/latest/index.html
+for more information.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+launcherSubmitJob(name, cluster = "Local", tags = NULL,
+  command = NULL, exe = NULL, args = NULL, environment = NULL,
+  stdin = NULL, stdoutFile = NULL, stderrFile = NULL,
+  workingDirectory = NULL, host = NULL, container = NULL,
+  exposedPorts = NULL, mounts = NULL, placementConstraints = NULL,
+  resourceLimits = NULL, queues = NULL, config = NULL,
+  user = Sys.getenv("USER"), applyConfigSettings = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>A descriptive name to assign to the job.</p>
+</td></tr>
+<tr valign="top"><td><code>cluster</code></td>
+<td>
+<p>The name of the cluster this job should be submitted to.</p>
+</td></tr>
+<tr valign="top"><td><code>tags</code></td>
+<td>
+<p>A set of user-defined tags, used for searching and querying
+jobs.</p>
+</td></tr>
+<tr valign="top"><td><code>command</code></td>
+<td>
+<p>The command to run within the job. This is executed via the
+system shell. Only one of command or exe should be specified.</p>
+</td></tr>
+<tr valign="top"><td><code>exe</code></td>
+<td>
+<p>The (fully pathed) executable to run within the job. Only one of
+<code>command</code> or <code>exe</code> should be specified.</p>
+</td></tr>
+<tr valign="top"><td><code>args</code></td>
+<td>
+<p>An array of arguments to pass to the command / executable.</p>
+</td></tr>
+<tr valign="top"><td><code>environment</code></td>
+<td>
+<p>A list of environment variables to be set for processes
+launched with this job.</p>
+</td></tr>
+<tr valign="top"><td><code>stdin</code></td>
+<td>
+<p>Data to be written to stdin when the job process is launched.</p>
+</td></tr>
+<tr valign="top"><td><code>stdoutFile</code></td>
+<td>
+<p>The file used for the job's generated standard output. Not
+all launcher plugins support this parameter.</p>
+</td></tr>
+<tr valign="top"><td><code>stderrFile</code></td>
+<td>
+<p>The file used for the job's generated standard error. Not
+all launcher plugins support this parameter.</p>
+</td></tr>
+<tr valign="top"><td><code>workingDirectory</code></td>
+<td>
+<p>The working directory to be used by the command /
+executable associated with this job.</p>
+</td></tr>
+<tr valign="top"><td><code>host</code></td>
+<td>
+<p>The host that the job is running on, or the desired host during
+job submission.</p>
+</td></tr>
+<tr valign="top"><td><code>container</code></td>
+<td>
+<p>The container to be used for launched jobs.</p>
+</td></tr>
+<tr valign="top"><td><code>exposedPorts</code></td>
+<td>
+<p>The ports that are exposed by services running on a
+container. Only applicable to systems that support containers.</p>
+</td></tr>
+<tr valign="top"><td><code>mounts</code></td>
+<td>
+<p>A list of mount points. See <code><a href="launcherHostMount.html">launcherHostMount()</a></code> and
+<code><a href="launcherNfsMount.html">launcherNfsMount()</a></code> for more information.</p>
+</td></tr>
+<tr valign="top"><td><code>placementConstraints</code></td>
+<td>
+<p>A list of placement constraints. See
+<code><a href="launcherPlacementConstraint.html">launcherPlacementConstraint()</a></code> for more information.</p>
+</td></tr>
+<tr valign="top"><td><code>resourceLimits</code></td>
+<td>
+<p>A list of resource limits. See <code><a href="launcherResourceLimit.html">launcherResourceLimit()</a></code>
+for more information.</p>
+</td></tr>
+<tr valign="top"><td><code>queues</code></td>
+<td>
+<p>A list of available submission queues for the cluster. Only
+applicable to batch systems like LSF.</p>
+</td></tr>
+<tr valign="top"><td><code>config</code></td>
+<td>
+<p>A list of cluster-specific configuration options. See
+<code><a href="launcherConfig.html">launcherConfig()</a></code> for more information.</p>
+</td></tr>
+<tr valign="top"><td><code>user</code></td>
+<td>
+<p>The user-name of the job owner.</p>
+</td></tr>
+<tr valign="top"><td><code>applyConfigSettings</code></td>
+<td>
+<p>Apply server-configured mounts, exposedPorts, and
+environment, in addition to any specified in this call.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p>Other job submission: <code><a href="launcherConfig.html">launcherConfig</a></code>,
+<code><a href="launcherContainer.html">launcherContainer</a></code>,
+<code><a href="launcherHostMount.html">launcherHostMount</a></code>,
+<code><a href="launcherNfsMount.html">launcherNfsMount</a></code>,
+<code><a href="launcherPlacementConstraint.html">launcherPlacementConstraint</a></code>,
+<code><a href="launcherResourceLimit.html">launcherResourceLimit</a></code>,
+<code><a href="launcherSubmitR.html">launcherSubmitR</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

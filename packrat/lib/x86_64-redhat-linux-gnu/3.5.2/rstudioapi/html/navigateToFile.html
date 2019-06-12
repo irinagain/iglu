@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Navigate to File</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for navigateToFile {rstudioapi}"><tr><td>navigateToFile {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Navigate to File
+</h2>
+
+<h3>Description</h3>
+
+<p>Open a file in RStudio, optionally at a specified location.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+navigateToFile(file, line = -1L, column = -1L)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>Path to the file to open)</p>
+</td></tr>
+<tr valign="top"><td><code>line</code></td>
+<td>
+<p>Optional; integer specifying the line number on which to place the cursor</p>
+</td></tr>
+<tr valign="top"><td><code>column</code></td>
+<td>
+<p>Optional; integer specifying the column number on which to place the cursor</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The <code>navigateToFile</code> opens a file in RStudio. If the file is already open, its tab or window is activated.
+</p>
+<p>Once the file is open, the cursor is moved to the specified location.  If the <code>line</code>
+and <code>column</code> arguments are both equal to <code>-1L</code> (the default), then
+the cursor position in the document that is opened will be preserved.
+</p>
+<p>Note that if your intent is to navigate to a particular function within a file, you can also cause RStudio to navigate there by invoking <code><a href="../../utils/html/View.html">View</a></code> on the function, which has the advantage of falling back on deparsing if the file is not available.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code>navigateToFile</code> function was added in version 0.99.719 of RStudio.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

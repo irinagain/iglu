@@ -1,0 +1,6 @@
+gh                      GitHub API
+gh_next                 Get the next, previous, first or last page of
+                        results
+gh_tree_remote          Find the GitHub remote associated with a path
+gh_whoami               Info on current GitHub user and token
+print.gh_response       Print the result of a GitHub API call

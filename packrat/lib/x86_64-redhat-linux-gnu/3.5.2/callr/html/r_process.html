@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: External R Process</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for r_process {callr}"><tr><td>r_process {callr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>External R Process</h2>
+
+<h3>Description</h3>
+
+<p>An R process that runs in the background. This is an R6 class that
+extends the <a href="../../processx/html/process.html">processx::process</a> class. The process starts in the
+background, evaluates an R function call, and then quits.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>rp &lt;- r_process$new(options)
+rp$get_result()
+</pre>
+<p>See <a href="reexports.html">process</a> for the inherited methods.
+</p>
+
+
+<h3>Arguments</h3>
+
+
+<ul>
+<li> <p><code>options</code> A list of options created via <code><a href="r_process_options.html">r_process_options()</a></code>.
+</p>
+</li></ul>
+
+
+
+<h3>Details</h3>
+
+<p><code>r_process$new</code> creates a new instance. Its <code>options</code> argument is best
+created by the <code><a href="r_process_options.html">r_process_options()</a></code> function.
+</p>
+<p><code>rp$get_result()</code> returns the result, an R object, from a finished
+background R process. If the process has not finished yet, it throws an
+error. (You can use <code>rp$wait()</code> to wait for the process to finish,
+optionally with a timeout.)
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## List all options and their default values:
+r_process_options()
+
+## Start an R process in the background, wait for it, get result
+opts &lt;- r_process_options(func = function() 1 + 1)
+rp &lt;- r_process$new(opts)
+rp$wait()
+rp$get_result()
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>callr</em> version 3.2.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

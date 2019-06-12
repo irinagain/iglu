@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Translate Local URL</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for translateLocalUrl {rstudioapi}"><tr><td>translateLocalUrl {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Translate Local URL</h2>
+
+<h3>Description</h3>
+
+<p>Translates a local URL into an externally accessible URL on RStudio Server.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+translateLocalUrl(url, absolute = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>url</code></td>
+<td>
+<p>The fully qualified URL to translate; for example,
+<code>http://localhost:1234/service/page.html</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>absolute</code></td>
+<td>
+<p>Whether to return a relative path URL (the default) or an
+absolute URL.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>On RStudio Server, URLs which refer to the local host network address (such
+as <code>http://localhost:1234/</code> and <code>http://127.0.0.1:5678/</code>) must be
+translated in order to be externally accessible from a browser. This method
+performs the required translation, and returns the translated URL, which
+RStudio Server uses to proxy HTTP requests.
+</p>
+<p>Returns an unmodified URL on RStudio Desktop, and when the URL does not refer
+to a local address.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The translated URL.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

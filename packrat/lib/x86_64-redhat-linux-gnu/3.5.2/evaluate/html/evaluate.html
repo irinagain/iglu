@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Evaluate input and return all details of evaluation.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for evaluate {evaluate}"><tr><td>evaluate {evaluate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Evaluate input and return all details of evaluation.</h2>
+
+<h3>Description</h3>
+
+<p>Compare to <code><a href="../../base/html/eval.html">eval()</a></code>, <code>evaluate</code> captures all of the
+information necessary to recreate the output as if you had copied and pasted
+the code into a R terminal. It captures messages, warnings, errors and
+output, all correctly interleaved in the order in which they occured. It
+stores the final result, whether or not it should be visible, and the
+contents of the current graphics device.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+evaluate(input, envir = parent.frame(), enclos = NULL, debug = FALSE, 
+    stop_on_error = 0L, keep_warning = TRUE, keep_message = TRUE, new_device = TRUE, 
+    output_handler = default_output_handler, filename = NULL, include_timing = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>input</code></td>
+<td>
+<p>input object to be parsed and evaluated.  May be a string, file
+connection or function.  Passed on to <code><a href="parse_all.html">parse_all()</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>envir</code></td>
+<td>
+<p>environment in which to evaluate expressions.</p>
+</td></tr>
+<tr valign="top"><td><code>enclos</code></td>
+<td>
+<p>when <code>envir</code> is a list or data frame, this is treated as
+the parent environment to <code>envir</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>debug</code></td>
+<td>
+<p>if <code>TRUE</code>, displays information useful for debugging,
+including all output that evaluate captures.</p>
+</td></tr>
+<tr valign="top"><td><code>stop_on_error</code></td>
+<td>
+<p>if <code>2</code>, evaluation will halt on first error and you
+will get no results back. If <code>1</code>, evaluation will stop on first error
+without signaling the error, and you will get back all results up to that
+point. If <code>0</code> will continue running all code, just as if you'd pasted
+the code into the command line.</p>
+</td></tr>
+<tr valign="top"><td><code>keep_warning, keep_message</code></td>
+<td>
+<p>whether to record warnings and messages.</p>
+</td></tr>
+<tr valign="top"><td><code>new_device</code></td>
+<td>
+<p>if <code>TRUE</code>, will open a new graphics device and
+automatically close it after completion. This prevents evaluation from
+interfering with your existing graphics environment.</p>
+</td></tr>
+<tr valign="top"><td><code>output_handler</code></td>
+<td>
+<p>an instance of <code><a href="new_output_handler.html">output_handler()</a></code> that
+processes the output from the evaluation. The default simply prints the
+visible return values.</p>
+</td></tr>
+<tr valign="top"><td><code>filename</code></td>
+<td>
+<p>string overrriding the <code><a href="../../base/html/srcfile.html">base::srcfile()</a></code> filename.</p>
+</td></tr>
+<tr valign="top"><td><code>include_timing</code></td>
+<td>
+<p>if <code>TRUE</code>, evaluate will wrap each input
+expression in <code>system.time()</code>, which will be accessed by following
+<code>replay()</code> call to produce timing information for each evaluated
+command.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>evaluate</em> version 0.14 <a href="00Index.html">Index</a>]</div>
+</body></html>

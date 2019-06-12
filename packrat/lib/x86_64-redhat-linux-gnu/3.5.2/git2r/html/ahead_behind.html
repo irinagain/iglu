@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Ahead Behind</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ahead_behind {git2r}"><tr><td>ahead_behind {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Ahead Behind</h2>
+
+<h3>Description</h3>
+
+<p>Count the number of unique commits between two commit objects.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ahead_behind(local = NULL, upstream = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>local</code></td>
+<td>
+<p>a git_commit object. Can also be a tag or a branch,
+and in that case the commit will be the target of the tag or
+branch.</p>
+</td></tr>
+<tr valign="top"><td><code>upstream</code></td>
+<td>
+<p>a git_commit object. Can also be a tag or a
+branch, and in that case the commit will be the target of the
+tag or branch.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An integer vector of length 2 with number of commits that
+the upstream commit is ahead and behind the local commit
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Create a directory in tempdir
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+
+## Initialize a repository
+repo &lt;- init(path)
+config(repo, user.name="Alice", user.email="alice@example.org")
+
+## Create a file, add and commit
+writeLines("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+           con = file.path(path, "test.txt"))
+add(repo, "test.txt")
+commit_1 &lt;- commit(repo, "Commit message 1")
+tag_1 &lt;- tag(repo, "Tagname1", "Tag message 1")
+
+# Change file and commit
+writeLines(c("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+             "eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+             con = file.path(path, "test.txt"))
+add(repo, "test.txt")
+commit_2 &lt;- commit(repo, "Commit message 2")
+tag_2 &lt;- tag(repo, "Tagname2", "Tag message 2")
+
+ahead_behind(commit_1, commit_2)
+ahead_behind(tag_1, tag_2)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

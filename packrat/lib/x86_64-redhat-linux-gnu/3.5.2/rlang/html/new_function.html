@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for new_function {rlang}"><tr><td>new_function {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a function</h2>
+
+<h3>Description</h3>
+
+<a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a>
+<p>This constructs a new function given its three components:
+list of arguments, body code and parent environment.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+new_function(args, body, env = caller_env())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>args</code></td>
+<td>
+<p>A named list of default arguments. Note that if you
+want arguments that don't have defaults, you'll need to use the
+special function <a href="../../base/html/list.html">alist</a>, e.g. <code>alist(a = , b = 1)</code></p>
+</td></tr>
+<tr valign="top"><td><code>body</code></td>
+<td>
+<p>A language object representing the code inside the
+function. Usually this will be most easily generated with
+<code><a href="../../base/html/quote.html">base::quote()</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>env</code></td>
+<td>
+<p>The parent environment of the function, defaults to the
+calling environment of <code>new_function()</code></p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+f &lt;- function(x) x + 3
+g &lt;- new_function(alist(x = ), quote(x + 3))
+
+# The components of the functions are identical
+identical(formals(f), formals(g))
+identical(body(f), body(g))
+identical(environment(f), environment(g))
+
+# But the functions are not identical because f has src code reference
+identical(f, g)
+
+attr(f, "srcref") &lt;- NULL
+# Now they are:
+stopifnot(identical(f, g))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.3.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

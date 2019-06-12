@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: testthat reporter that checks if child processes are cleaned...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for CleanupReporter {ps}"><tr><td>CleanupReporter {ps}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>testthat reporter that checks if child processes are cleaned up in tests</h2>
+
+<h3>Description</h3>
+
+<p><code>CleanupReporter</code> takes an existing testthat <code>Reporter</code> object, and
+wraps it, so it checks for leftover child processes, at the specified
+place, see the <code>proc_unit</code> argument below.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+CleanupReporter(reporter = testthat::ProgressReporter)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>reporter</code></td>
+<td>
+<p>A testthat reporter to wrap into a new <code>CleanupReporter</code>
+class.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Child processes can be reported via a failed expectation, cleaned up
+silently, or cleaned up and reported (the default).
+</p>
+<p>The constructor of the <code>CleanupReporter</code> class has options:
+</p>
+
+<ul>
+<li> <p><code>file</code>: the output file, if any, this is passed to <code>reporter</code>.
+</p>
+</li>
+<li> <p><code>proc_unit</code>: when to perform the child process check and cleanup.
+Possible values:
+</p>
+
+<ul>
+<li> <p><code>"test"</code>: at the end of each <code><a href="../../testthat/html/test_that.html">testthat::test_that()</a></code> block
+(the default),
+</p>
+</li>
+<li> <p><code>"testsuite"</code>: at the end of the test suite.
+</p>
+</li></ul>
+
+</li>
+<li> <p><code>proc_cleanup</code>: Logical scalar, whether to kill the leftover
+processes, <code>TRUE</code> by default.
+</p>
+</li>
+<li> <p><code>proc_fail</code>: Whether to create an expectation, that fails if there
+are any processes alive, <code>TRUE</code> by default.
+</p>
+</li>
+<li> <p><code>proc_timeout</code>: How long to wait for the processes to quit. This is
+sometimes needed, because even if some kill signals were sent to
+child processes, it might take a short time for these to take effect.
+It defaults to one second.
+</p>
+</li>
+<li> <p><code>rconn_unit</code>: When to perform the R connection cleanup. Possible values
+are <code>"test"</code> and <code>"testsuite"</code>, like for <code>proc_unit</code>.
+</p>
+</li>
+<li> <p><code>rconn_cleanup</code>: Logical scalar, whether to clean up leftover R
+connections. <code>TRUE</code> by default.
+</p>
+</li>
+<li> <p><code>rconn_fail</code>: Whether to fail for leftover R connections. <code>TRUE</code> by
+default.
+</p>
+</li>
+<li> <p><code>file_unit</code>: When to check for open files. Possible values are
+<code>"test"</code> and <code>"testsuite"</code>, like for <code>proc_unit</code>.
+</p>
+</li>
+<li> <p><code>file_fail</code>: Whether to fail for leftover open files. <code>TRUE</code> by
+default.
+</p>
+</li>
+<li> <p><code>conn_unit</code>: When to check for open network connections.
+Possible values are <code>"test"</code> and <code>"testsuite"</code>, like for <code>proc_unit</code>.
+</p>
+</li>
+<li> <p><code>conn_fail</code>: Whether to fail for leftover network connections.
+<code>TRUE</code> by default.
+</p>
+</li></ul>
+
+
+
+<h3>Value</h3>
+
+<p>New reporter class  that behaves exactly like <code>reporter</code>,
+but it checks for, and optionally cleans up child processes, at the
+specified granularity.
+</p>
+
+
+<h3>Examples</h3>
+
+<p>This is how to use this reporter in <code>testthat.R</code>:</p>
+<pre>library(testthat)
+library(mypackage)
+
+if  (ps::ps_is_supported()) {
+  reporter &lt;- ps::CleanupReporter(testthat::ProgressReporter)$new(
+    proc_unit = "test", proc_cleanup = TRUE)
+} else {
+  ## ps does not support this platform
+  reporter &lt;- "progress"
+}
+
+test_check("mypackage", reporter = reporter)
+</pre>
+
+
+<h3>Note</h3>
+
+<p>Some IDEs, like RStudio, start child processes frequently, and
+sometimes crash when these are killed, only use this reporter in a
+terminal session. In particular, you can always use it in the
+idiomatic <code>testthat.R</code> file, that calls <code>test_check()</code> during
+<code>R CMD check</code>.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>ps</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Add note for a object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for note_create {git2r}"><tr><td>note_create {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Add note for a object</h2>
+
+<h3>Description</h3>
+
+<p>Add note for a object
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+note_create(object = NULL, message = NULL, ref = NULL,
+  author = NULL, committer = NULL, force = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>The object to annotate (git_blob, git_commit or
+git_tree).</p>
+</td></tr>
+<tr valign="top"><td><code>message</code></td>
+<td>
+<p>Content of the note to add</p>
+</td></tr>
+<tr valign="top"><td><code>ref</code></td>
+<td>
+<p>Canonical name of the reference to use. Default is
+<code>note_default_ref</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>author</code></td>
+<td>
+<p>Signature of the notes note author</p>
+</td></tr>
+<tr valign="top"><td><code>committer</code></td>
+<td>
+<p>Signature of the notes note committer</p>
+</td></tr>
+<tr valign="top"><td><code>force</code></td>
+<td>
+<p>Overwrite existing note. Default is FALSE</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>git_note
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Create and initialize a repository in a temporary directory
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+repo &lt;- init(path)
+config(repo, user.name="Alice", user.email="alice@example.org")
+
+## Create a file, add and commit
+writeLines("Hello world!", file.path(path, "example.txt"))
+add(repo, "example.txt")
+commit_1 &lt;- commit(repo, "Commit message 1")
+
+## Create another commit
+writeLines(c("Hello world!",
+             "HELLO WORLD!"),
+           file.path(path, "example.txt"))
+add(repo, "example.txt")
+commit_2 &lt;- commit(repo, "Commit message 2")
+
+## Check that notes is an empty list
+notes(repo)
+
+## Create note in default namespace
+note_create(commit_1, "Note-1")
+
+## Create note in named (review) namespace
+note_create(commit_1, "Note-2", ref="refs/notes/review")
+note_create(commit_2, "Note-3", ref="review")
+
+## Create note on blob and tree
+note_create(tree(commit_1), "Note-4")
+note_create(tree(commit_1)["example.txt"], "Note-5")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

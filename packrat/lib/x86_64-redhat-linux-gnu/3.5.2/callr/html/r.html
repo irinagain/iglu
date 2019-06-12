@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Evaluate an expression in another R session</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for r {callr}"><tr><td>r {callr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Evaluate an expression in another R session</h2>
+
+<h3>Description</h3>
+
+<p>From <code>callr</code> version 2.0.0, <code>r()</code> is equivalent to <code>r_safe()</code>, and
+tries to set up a less error prone execution environment. In particular:
+</p>
+
+<ul>
+<li><p> It makes sure that at least one reasonable CRAN mirror is set up.
+</p>
+</li>
+<li><p> Adds some command line arguments are added to avoid saving
+<code>.RData</code> files, etc.
+</p>
+</li>
+<li><p> Ignores the system and user profiles.
+</p>
+</li>
+<li><p> Various environment variables are set: <code>CYGWIN</code> to avoid
+warnings about DOS-style paths, <code>R_TESTS</code> to avoid issues
+when <code>callr</code> is invoked from unit tests, <code>R_BROWSER</code>
+and <code>R_PDFVIEWER</code> to avoid starting a browser or a PDF viewer.
+See <code><a href="rcmd_safe.html">rcmd_safe_env()</a></code>.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+r(func, args = list(), libpath = .libPaths(),
+  repos = default_repos(), stdout = NULL, stderr = NULL,
+  poll_connection = TRUE, error = getOption("callr.error", "error"),
+  cmdargs = c("--slave", "--no-save", "--no-restore"), show = FALSE,
+  callback = NULL, block_callback = NULL, spinner = show &amp;&amp;
+  interactive(), system_profile = FALSE, user_profile = FALSE,
+  env = rcmd_safe_env(), timeout = Inf, ...)
+
+r_safe(func, args = list(), libpath = .libPaths(),
+  repos = default_repos(), stdout = NULL, stderr = NULL,
+  poll_connection = TRUE, error = getOption("callr.error", "error"),
+  cmdargs = c("--slave", "--no-save", "--no-restore"), show = FALSE,
+  callback = NULL, block_callback = NULL, spinner = show &amp;&amp;
+  interactive(), system_profile = FALSE, user_profile = FALSE,
+  env = rcmd_safe_env(), timeout = Inf, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>func</code></td>
+<td>
+<p>Function object to call in the new R process.
+The function should be self-contained and only refer to
+other functions and use variables explicitly from other packages
+using the <code>::</code> notation. The environment of the function
+is set to <code>.GlobalEnv</code> before passing it to the child process.
+Because of this, it is good practice to create an anonymous
+function and pass that to <code>callr</code>, instead of passing
+a function object from a (base or other) package. In particular</p>
+<pre>r(.libPaths)
+</pre>
+<p>does not work, because <code>.libPaths</code> is defined in a special
+environment, but</p>
+<pre>r(function() .libPaths())
+</pre>
+<p>works just fine.</p>
+</td></tr>
+<tr valign="top"><td><code>args</code></td>
+<td>
+<p>Arguments to pass to the function. Must be a list.</p>
+</td></tr>
+<tr valign="top"><td><code>libpath</code></td>
+<td>
+<p>The library path.</p>
+</td></tr>
+<tr valign="top"><td><code>repos</code></td>
+<td>
+<p>The <em>repos</em> option. If <code>NULL</code>, then no
+<em>repos</em> option is set. This options is only used if
+<code>user_profile</code> or <code>system_profile</code> is set <code>FALSE</code>,
+as it is set using the system or the user profile.</p>
+</td></tr>
+<tr valign="top"><td><code>stdout</code></td>
+<td>
+<p>The name of the file the standard output of
+the child R process will be written to.
+If the child process runs with the <code>--slave</code> option (the default),
+then the commands are not echoed and will not be shown
+in the standard output. Also note that you need to call <code>print()</code>
+explicitly to show the output of the command(s).</p>
+</td></tr>
+<tr valign="top"><td><code>stderr</code></td>
+<td>
+<p>The name of the file the standard error of
+the child R process will be written to.
+In particular <code>message()</code> sends output to the standard
+error. If nothing was sent to the standard error, then this file
+will be empty. This argument can be the same file as <code>stdout</code>,
+in which case they will be correctly interleaved. If this is the
+string <code>"2&gt;&amp;1"</code>, then standard error is redictd to standard output.</p>
+</td></tr>
+<tr valign="top"><td><code>poll_connection</code></td>
+<td>
+<p>Whether to have a control connection to
+the process. This is used to transmit messages from the subprocess
+to the parent.</p>
+</td></tr>
+<tr valign="top"><td><code>error</code></td>
+<td>
+<p>What to do if the remote process throws an error.
+See details below.</p>
+</td></tr>
+<tr valign="top"><td><code>cmdargs</code></td>
+<td>
+<p>Command line arguments to pass to the R process.
+Note that <code>c("-f", rscript)</code> is appended to this, <code>rscript</code>
+is the name of the script file to run. This contains a call to the
+supplied function and some error handling code.</p>
+</td></tr>
+<tr valign="top"><td><code>show</code></td>
+<td>
+<p>Logical, whether to show the standard output on the screen
+while the child process is running. Note that this is independent
+of the <code>stdout</code> and <code>stderr</code> arguments. The standard
+error is not shown currently.</p>
+</td></tr>
+<tr valign="top"><td><code>callback</code></td>
+<td>
+<p>A function to call for each line of the standard
+output and standard error from the child process. It works together
+with the <code>show</code> option; i.e. if <code>show = TRUE</code>, and a
+callback is provided, then the output is shown of the screen, and the
+callback is also called.</p>
+</td></tr>
+<tr valign="top"><td><code>block_callback</code></td>
+<td>
+<p>A function to call for each block of the standard
+output and standard error. This callback is not line oriented, i.e.
+multiple lines or half a line can be passed to the callback.</p>
+</td></tr>
+<tr valign="top"><td><code>spinner</code></td>
+<td>
+<p>Whether to show a calming spinner on the screen while
+the child R session is running. By default it is shown if
+<code>show = TRUE</code> and the R session is interactive.</p>
+</td></tr>
+<tr valign="top"><td><code>system_profile</code></td>
+<td>
+<p>Whether to use the system profile file.</p>
+</td></tr>
+<tr valign="top"><td><code>user_profile</code></td>
+<td>
+<p>Whether to use the user's profile file.</p>
+</td></tr>
+<tr valign="top"><td><code>env</code></td>
+<td>
+<p>Environment variables to set for the child process.</p>
+</td></tr>
+<tr valign="top"><td><code>timeout</code></td>
+<td>
+<p>Timeout for the function call to finish. It can be a
+<a href="../../base/html/difftime.html">base::difftime</a> object, or a real number, meaning seconds.
+If the process does not finish before the timeout period expires,
+then a <code>system_command_timeout_error</code> error is thrown. <code>Inf</code>
+means no timeout.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Extra arguments are passed to <code><a href="../../processx/html/run.html">processx::run()</a></code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The pre-2.0.0 <code>r()</code> function is called <code><a href="r_copycat.html">r_copycat()</a></code> now.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Value of the evaluated expression.
+</p>
+
+
+<h3>Error handling</h3>
+
+<p><code>callr</code> handles errors properly. If the child process throws an
+error, then <code>callr</code> throws an error with the same error message
+in the parent process.
+</p>
+<p>The <code>error</code> expert argument may be used to specify a different
+behavior on error. The following values are possible:
+</p>
+
+<ul>
+<li> <p><code>error</code> is the default behavior: throw an error in the parent, with
+the same error message. In fact the same error object is thrown again.
+</p>
+</li>
+<li> <p><code>stack</code> also throws an error in the parent, but the error
+is of a special kind, class <code>callr_error</code>, and it contains
+both the original error object, and the call stack of the child,
+as written out by <code><a href="../../utils/html/dump.frames.html">utils::dump.frames()</a></code>.
+</p>
+</li>
+<li> <p><code>debugger</code> is similar to <code>stack</code>, but in addition
+to returning the complete call stack, it also start up a debugger
+in the child call stack, via <code><a href="../../utils/html/debugger.html">utils::debugger()</a></code>.
+</p>
+</li></ul>
+
+<p>The default error behavior can be also set using the <code>callr.error</code>
+option. This is useful to debug code that uses <code>callr</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other callr functions: <code><a href="r_copycat.html">r_copycat</a></code>,
+<code><a href="r_vanilla.html">r_vanilla</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# Workspace is empty
+r(function() ls())
+
+# library path is the same by default
+r(function() .libPaths())
+.libPaths()
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>callr</em> version 3.2.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

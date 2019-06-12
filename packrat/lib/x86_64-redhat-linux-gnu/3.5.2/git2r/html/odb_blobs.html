@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Blobs in the object database</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for odb_blobs {git2r}"><tr><td>odb_blobs {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Blobs in the object database</h2>
+
+<h3>Description</h3>
+
+<p>List all blobs reachable from the commits in the object
+database. For each commit, list blob's in the commit tree and
+sub-trees.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+odb_blobs(repo = ".")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>repo</code></td>
+<td>
+<p>a path to a repository or a <code>git_repository</code>
+object. Default is '.'</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A data.frame with the following columns:
+</p>
+
+<dl>
+<dt>sha</dt><dd><p>The sha of the blob</p>
+</dd>
+<dt>path</dt><dd><p>The path to the blob from the tree and sub-trees</p>
+</dd>
+<dt>name</dt><dd><p>The name of the blob from the tree that contains the blob</p>
+</dd>
+<dt>len</dt><dd><p>The length of the blob</p>
+</dd>
+<dt>commit</dt><dd><p>The sha of the commit</p>
+</dd>
+<dt>author</dt><dd><p>The author of the commit</p>
+</dd>
+<dt>when</dt><dd><p>The timestamp of the author signature in the commit</p>
+</dd>
+</dl>
+
+
+
+<h3>Note</h3>
+
+<p>A blob sha can have several entries
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Create a directory in tempdir
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+
+## Initialize a repository
+repo &lt;- init(path)
+config(repo, user.name="Alice", user.email="alice@example.org")
+
+## Create a file, add and commit
+writeLines("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+           con = file.path(path, "test.txt"))
+add(repo, "test.txt")
+commit(repo, "Commit message 1")
+
+## Change file and commit
+writeLines(c("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+             "eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+             con = file.path(path, "test.txt"))
+add(repo, "test.txt")
+commit(repo, "Commit message 2")
+
+## Commit same content under different name in a sub-directory
+dir.create(file.path(path, "sub-directory"))
+file.copy(file.path(path, "test.txt"), file.path(path, "sub-directory", "copy.txt"))
+add(repo, "sub-directory/copy.txt")
+commit(repo, "Commit message 3")
+
+## List blobs
+odb_blobs(repo)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

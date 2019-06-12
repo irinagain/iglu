@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: List users connected to the system</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ps_users {ps}"><tr><td>ps_users {ps}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>List users connected to the system</h2>
+
+<h3>Description</h3>
+
+<p>List users connected to the system
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ps_users()
+</pre>
+
+
+<h3>Value</h3>
+
+<p>A data frame (tibble) with columns
+<code>username</code>, <code>tty</code>, <code>hostname</code>, <code>start_time</code>, <code>pid</code>. <code>tty</code> and <code>pid</code>
+are <code>NA</code> on Windows. <code>pid</code> is the process id of the login process.
+For local users the <code>hostname</code> column is the empty string.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>ps</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

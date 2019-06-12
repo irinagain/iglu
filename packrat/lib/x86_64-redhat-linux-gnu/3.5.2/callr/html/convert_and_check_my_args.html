@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert and check function arguments</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for convert_and_check_my_args {callr}"><tr><td>convert_and_check_my_args {callr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert and check function arguments</h2>
+
+<h3>Description</h3>
+
+<p>This function is used for all variants of <code>r</code> and <code>rcmd</code>. An argument
+name is only used to refer to one kind of object, to make this possible.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+convert_and_check_my_args(options)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>options</code></td>
+<td>
+<p>List of options.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The benefit of having a single <code>options</code> object is to avoid passing
+around a lot of arguments all the time.
+</p>
+<p>The benefit of making this object internal (i.e. that the <code>r</code>, etc.
+functions have multiple arguments instead of a single <code>options</code> list),
+is that documentation and usage is more user friendly (e.g. command-
+completion works in the editor.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>callr</em> version 3.2.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

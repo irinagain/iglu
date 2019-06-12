@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create tag targeting HEAD commit in repository</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for tag {git2r}"><tr><td>tag {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create tag targeting HEAD commit in repository</h2>
+
+<h3>Description</h3>
+
+<p>Create tag targeting HEAD commit in repository
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+tag(object = ".", name = NULL, message = NULL, session = FALSE,
+  tagger = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+<p>The repository <code>object</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>Name for the tag.</p>
+</td></tr>
+<tr valign="top"><td><code>message</code></td>
+<td>
+<p>The tag message.</p>
+</td></tr>
+<tr valign="top"><td><code>session</code></td>
+<td>
+<p>Add sessionInfo to tag message. Default is FALSE.</p>
+</td></tr>
+<tr valign="top"><td><code>tagger</code></td>
+<td>
+<p>The tagger (author) of the tag</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>invisible(<code>git_tag</code>) object
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Initialize a temporary repository
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+repo &lt;- init(path)
+
+## Create a user
+config(repo, user.name="Alice", user.email="alice@example.org")
+
+## Commit a text file
+writeLines("Hello world!", file.path(path, "example.txt"))
+add(repo, "example.txt")
+commit(repo, "First commit message")
+
+## Create tag
+tag(repo, "Tagname", "Tag message")
+
+## List tags
+tags(repo)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

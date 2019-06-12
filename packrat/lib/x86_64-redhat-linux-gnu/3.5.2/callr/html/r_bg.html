@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Evaluate an expression in another R session, in the...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for r_bg {callr}"><tr><td>r_bg {callr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Evaluate an expression in another R session, in the background</h2>
+
+<h3>Description</h3>
+
+<p>Starts evaluating an R function call in a background R process, and
+returns immediately.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+r_bg(func, args = list(), libpath = .libPaths(),
+  repos = default_repos(), stdout = "|", stderr = "|",
+  poll_connection = TRUE, error = getOption("callr.error", "error"),
+  cmdargs = c("--slave", "--no-save", "--no-restore"),
+  system_profile = FALSE, user_profile = FALSE,
+  env = rcmd_safe_env(), supervise = FALSE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>func</code></td>
+<td>
+<p>Function object to call in the new R process.
+The function should be self-contained and only refer to
+other functions and use variables explicitly from other packages
+using the <code>::</code> notation. The environment of the function
+is set to <code>.GlobalEnv</code> before passing it to the child process.
+Because of this, it is good practice to create an anonymous
+function and pass that to <code>callr</code>, instead of passing
+a function object from a (base or other) package. In particular</p>
+<pre>r(.libPaths)
+</pre>
+<p>does not work, because <code>.libPaths</code> is defined in a special
+environment, but</p>
+<pre>r(function() .libPaths())
+</pre>
+<p>works just fine.</p>
+</td></tr>
+<tr valign="top"><td><code>args</code></td>
+<td>
+<p>Arguments to pass to the function. Must be a list.</p>
+</td></tr>
+<tr valign="top"><td><code>libpath</code></td>
+<td>
+<p>The library path.</p>
+</td></tr>
+<tr valign="top"><td><code>repos</code></td>
+<td>
+<p>The <em>repos</em> option. If <code>NULL</code>, then no
+<em>repos</em> option is set. This options is only used if
+<code>user_profile</code> or <code>system_profile</code> is set <code>FALSE</code>,
+as it is set using the system or the user profile.</p>
+</td></tr>
+<tr valign="top"><td><code>stdout</code></td>
+<td>
+<p>The name of the file the standard output of
+the child R process will be written to.
+If the child process runs with the <code>--slave</code> option (the default),
+then the commands are not echoed and will not be shown
+in the standard output. Also note that you need to call <code>print()</code>
+explicitly to show the output of the command(s).</p>
+</td></tr>
+<tr valign="top"><td><code>stderr</code></td>
+<td>
+<p>The name of the file the standard error of
+the child R process will be written to.
+In particular <code>message()</code> sends output to the standard
+error. If nothing was sent to the standard error, then this file
+will be empty. This argument can be the same file as <code>stdout</code>,
+in which case they will be correctly interleaved. If this is the
+string <code>"2&gt;&amp;1"</code>, then standard error is redictd to standard output.</p>
+</td></tr>
+<tr valign="top"><td><code>poll_connection</code></td>
+<td>
+<p>Whether to have a control connection to
+the process. This is used to transmit messages from the subprocess
+to the parent.</p>
+</td></tr>
+<tr valign="top"><td><code>error</code></td>
+<td>
+<p>What to do if the remote process throws an error.
+See details below.</p>
+</td></tr>
+<tr valign="top"><td><code>cmdargs</code></td>
+<td>
+<p>Command line arguments to pass to the R process.
+Note that <code>c("-f", rscript)</code> is appended to this, <code>rscript</code>
+is the name of the script file to run. This contains a call to the
+supplied function and some error handling code.</p>
+</td></tr>
+<tr valign="top"><td><code>system_profile</code></td>
+<td>
+<p>Whether to use the system profile file.</p>
+</td></tr>
+<tr valign="top"><td><code>user_profile</code></td>
+<td>
+<p>Whether to use the user's profile file.</p>
+</td></tr>
+<tr valign="top"><td><code>env</code></td>
+<td>
+<p>Environment variables to set for the child process.</p>
+</td></tr>
+<tr valign="top"><td><code>supervise</code></td>
+<td>
+<p>Whether to register the process with a supervisor. If <code>TRUE</code>,
+the supervisor will ensure that the process is killed when the R process
+exits.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Extra arguments are passed to the <a href="../../processx/html/process.html">processx::process</a>
+constructor.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>An <code>r_process</code> object, which inherits from <a href="reexports.html">process</a>,
+so all <code>process</code> methods can be called on it, and in addition it also
+has a <code>get_result()</code> method to collect the result.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+rx &lt;- r_bg(function() 1 + 2)
+
+# wait until it is done
+rx$wait()
+rx$is_alive()
+rx$get_result()
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>callr</em> version 3.2.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

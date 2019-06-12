@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Mark a process and its (future) child tree</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for ps_mark_tree {ps}"><tr><td>ps_mark_tree {ps}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Mark a process and its (future) child tree</h2>
+
+<h3>Description</h3>
+
+<p><code>ps_mark_tree()</code> generates a random environment variable name and sets
+it in the  current R process. This environment variable will be (by
+default) inherited by all child (and grandchild, etc.) processes, and
+will help finding these processes, even if and when they are (no longer)
+related to the current R process. (I.e. they are not connected in the
+process tree.)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+ps_mark_tree()
+
+with_process_cleanup(expr)
+
+ps_find_tree(marker)
+
+ps_kill_tree(marker, sig = signals()$SIGKILL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>R expression to evaluate in the new context.</p>
+</td></tr>
+<tr valign="top"><td><code>marker</code></td>
+<td>
+<p>String scalar, the name of the environment variable to
+use to find the marked processes.</p>
+</td></tr>
+<tr valign="top"><td><code>sig</code></td>
+<td>
+<p>The signal to send to the marked processes on Unix. On
+Windows this argument is ignored currently.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>ps_find_tree()</code> finds the processes that set the supplied environment
+variable and returns them in a list.
+</p>
+<p><code>ps_kill_tree()</code> finds the processes that set the supplied environment
+variable, and kills them (or sends them the specified signal on Unix).
+</p>
+<p><code>with_process_cleanup()</code> evaluates an R expression, and cleans up all
+external processes that were started by the R process while evaluating
+the expression. This includes child processes of child processes, etc.,
+recursively. It returns a list with entries: <code>result</code> is the result of
+the expression, <code>visible</code> is TRUE if the expression should be printed
+to the screen, and <code>process_cleanup</code> is a named integer vector of the
+cleaned pids, names are the process names.
+</p>
+<p>If <code>expr</code> throws an error, then so does <code>with_process_cleanup()</code>, the
+same error. Nevertheless processes are still cleaned up.
+</p>
+
+
+<h3>Value</h3>
+
+<p><code>ps_mark_tree()</code> returns the name of the environment variable,
+which can be used as the <code>marker</code> in <code>ps_kill_tree()</code>.
+</p>
+<p><code>ps_find_tree()</code> returns a list of <code>ps_handle</code> objects.
+</p>
+<p><code>ps_kill_tree()</code> returns the pids of the killed processes, in a named
+integer vector. The names are the file names of the executables, when
+available.
+</p>
+<p><code>with_process_cleanup()</code> returns the value of the evaluated expression.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>ps</em> version 1.3.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

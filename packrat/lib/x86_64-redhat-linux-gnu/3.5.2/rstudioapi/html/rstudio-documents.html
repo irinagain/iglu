@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Interact with Documents open in RStudio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rstudio-documents {rstudioapi}"><tr><td>rstudio-documents {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Interact with Documents open in RStudio</h2>
+
+<h3>Description</h3>
+
+<p>Use these functions to interact with documents open in RStudio.
+</p>
+<p>Creates a new document in RStudio
+</p>
+<p>Closes a document currently open in RStudio.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+insertText(location, text, id = NULL)
+
+modifyRange(location, text, id = NULL)
+
+setDocumentContents(text, id = NULL)
+
+setCursorPosition(position, id = NULL)
+
+setSelectionRanges(ranges, id = NULL)
+
+documentSave(id = NULL)
+
+documentSaveAll()
+
+documentNew(text, type = c("r", "rmarkdown", "sql"),
+  position = document_position(0, 0), execute = FALSE)
+
+documentClose(id = NULL, save = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>location</code></td>
+<td>
+<p>An object specifying the positions, or ranges, wherein
+text should be inserted. See <b>Details</b> for more information.</p>
+</td></tr>
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p>A character vector, indicating what text should be
+inserted at each aforementioned range. This should either
+be length one (in which case, this text is applied to each
+range specified); otherwise, it should be the same length
+as the <code>ranges</code> list.</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>The document id. When <code>NULL</code> or blank,
+the mutation will apply to the currently open, or last
+focused, RStudio document. Use the <code>id</code> returned
+from <code><a href="rstudio-editors.html">getActiveDocumentContext</a>()</code> to ensure
+that the operation is applied on the intended document.</p>
+</td></tr>
+<tr valign="top"><td><code>position</code></td>
+<td>
+<p>The cursor position, typically created through
+<code><a href="document_position.html">document_position</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>ranges</code></td>
+<td>
+<p>A list of one or more ranges, typically created
+through <code><a href="document_range.html">document_range</a>()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>type</code></td>
+<td>
+<p>The type of document to be created.</p>
+</td></tr>
+<tr valign="top"><td><code>execute</code></td>
+<td>
+<p>Should the code be executed after the document
+is created?</p>
+</td></tr>
+<tr valign="top"><td><code>save</code></td>
+<td>
+<p>Whether to commit unsaved changes to the document before closing it.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>location</code> should be a (list of) <code><a href="document_position.html">document_position</a></code> or
+<code><a href="document_range.html">document_range</a></code> object(s), or numeric vectors coercable to
+such objects.
+</p>
+<p>To operate on the current selection in a document, call <code>insertText()</code>
+with only a text argument, e.g.
+</p>
+<pre>
+    insertText("# Hello\n")
+    insertText(text = "# Hello\n")
+</pre>
+<p>Otherwise, specify a (list of) positions or ranges, as in:
+</p>
+<pre>
+    # insert text at the start of the document
+    insertText(c(1, 1), "# Hello\n")
+
+    # insert text at the end of the document
+    insertText(Inf, "# Hello\n")
+
+    # comment out the first 5 rows
+    pos &lt;- Map(c, 1:5, 1)
+    insertText(pos, "# ")
+
+    # uncomment the first 5 rows, undoing the previous action
+    rng &lt;- Map(c, Map(c, 1:5, 1), Map(c, 1:5, 3))
+    modifyRange(rng, "")
+</pre>
+<p><code>modifyRange</code> is a synonym for <code>insertText</code>, but makes its intent
+clearer when working with ranges, as performing text insertion with a range
+will replace the text previously existing in that range with new text. For
+clarity, prefer using <code>insertText</code> when working with
+<code><a href="document_position.html">document_position</a></code>s, and <code>modifyRange</code> when working with
+<code><a href="document_range.html">document_range</a></code>s.
+</p>
+<p><code>documentClose</code> accepts an ID of an open document rather than a path.
+You can get the ID of an open document from the
+<code>getSourceEditorContext</code> function, among others.
+</p>
+<p>Closing is always done non-interactively; that is, no prompts are given to
+the user. If the user has made changes to the document but not saved them,
+then the <code>save</code> parameter governs the behavior: when <code>TRUE</code>,
+unsaved changes are committed, and when <code>FALSE</code> they are discarded.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code>insertText</code>, <code>modifyRange</code> and <code>setDocumentContents</code>
+functions were added with version 0.99.796 of RStudio.
+</p>
+<p>The <code>setCursorPosition</code> and <code>setSelectionRanges</code> functions were
+added with version 0.99.1111 of RStudio.
+</p>
+<p>The <code>documentSave</code> and <code>documentSaveAll</code> functions were added
+with version 1.1.287 of RStudio.
+</p>
+<p>The <code>documentNew</code> function was introduced in RStudio 1.2.640
+</p>
+<p>The <code>documentClose</code> function was introduced in RStudio 1.2.1255
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

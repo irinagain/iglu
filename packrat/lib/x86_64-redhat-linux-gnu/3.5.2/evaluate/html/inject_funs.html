@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Inject functions into the environment of 'evaluate()'</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for inject_funs {evaluate}"><tr><td>inject_funs {evaluate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Inject functions into the environment of <code>evaluate()</code></h2>
+
+<h3>Description</h3>
+
+<p>Create functions in the environment specified in the <code>envir</code> argument of
+<code><a href="evaluate.html">evaluate()</a></code>. This can be helpful if you want to substitute certain
+functions when evaluating the code. To make sure it does not wipe out
+existing functions in the environment, only functions that do not exist in
+the environment are injected.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+inject_funs(...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Named arguments of functions. If empty, previously injected
+functions will be emptied.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>For expert use only. Do not use it unless you clearly understand it.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(evaluate)
+# normally you cannot capture the output of system
+evaluate("system('R --version')")
+
+# replace the system() function
+inject_funs(system = function(...) cat(base::system(..., intern = TRUE), sep = "\n"))
+
+evaluate("system('R --version')")
+
+inject_funs()  # empty previously injected functions
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>evaluate</em> version 0.14 <a href="00Index.html">Index</a>]</div>
+</body></html>

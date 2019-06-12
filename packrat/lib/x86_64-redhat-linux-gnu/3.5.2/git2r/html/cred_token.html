@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a new personal access token credential object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cred_token {git2r}"><tr><td>cred_token {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a new personal access token credential object</h2>
+
+<h3>Description</h3>
+
+<p>The personal access token is stored in an envrionmental variable.
+Environmental variables can be written to the file
+<code>.Renviron</code>. This file is read by <em>R</em> during startup,
+see <code><a href="../../base/html/Startup.html">Startup</a></code>. On GitHub, personal access tokens
+function like ordinary OAuth access tokens. They can be used
+instead of a password for Git over HTTPS, see
+<a href="https://help.github.com/articles/creating-an-access-token-for-command-line-use/">https://help.github.com/articles/creating-an-access-token-for-command-line-use/</a>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cred_token(token = "GITHUB_PAT")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>token</code></td>
+<td>
+<p>The name of the environmental variable that holds the
+personal access token for the authentication. Default is
+<code>GITHUB_PAT</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A list of class <code>cred_token</code> with entry:
+</p>
+
+<dl>
+<dt>token</dt><dd>
+<p>The name of the environmental variable that holds
+the personal access token for the authentication.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>See Also</h3>
+
+<p>Other git credential functions: <code><a href="cred_env.html">cred_env</a></code>,
+<code><a href="cred_ssh_key.html">cred_ssh_key</a></code>, <code><a href="cred_user_pass.html">cred_user_pass</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Create a personal access token credential object.
+## This example assumes that the token is stored in
+## the 'GITHUB_PAT' environmental variable.
+repo &lt;- repository("git2r")
+cred &lt;- cred_token()
+push(repo, credentials = cred)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

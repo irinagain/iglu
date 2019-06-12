@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Download course materials</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for use_course {usethis}"><tr><td>use_course {usethis}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Download course materials</h2>
+
+<h3>Description</h3>
+
+<p>Special-purpose function to download a folder of course materials. The only
+demand on the user is to confirm or specify where the new folder should be
+stored. Workflow:
+</p>
+
+<ul>
+<li><p> User executes something like: <code>use_course("bit.ly/xxx-yyy-zzz")</code>.
+</p>
+</li>
+<li><p> User is asked to notice and confirm the location of the new folder. Specify
+<code>destdir</code> to skip this.
+</p>
+</li>
+<li><p> User is asked if they'd like to delete the ZIP file.
+</p>
+</li>
+<li><p> If new folder contains an <code>.Rproj</code> file, it is opened. Otherwise, the
+folder is opened in the file manager, e.g. Finder or File Explorer.
+</p>
+</li></ul>
+
+
+
+<h3>Usage</h3>
+
+<pre>
+use_course(url, destdir = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>url</code></td>
+<td>
+<p>Link to a ZIP file containing the materials, possibly behind a
+shortlink. Links of the form <code>"repo/user"</code> are expanded to the appropriate
+url for a repo on GitHub. Function developed with DropBox and GitHub in
+mind, but should work for ZIP files generally. If no &quot;http&quot; prefix is
+found, &quot;https://&quot; is prepended. See <a href="use_course_details.html">use_course_details</a> for more.</p>
+</td></tr>
+<tr valign="top"><td><code>destdir</code></td>
+<td>
+<p>The new folder is stored here. Defaults to user's Desktop.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>url</code> has no &quot;http&quot; prefix, &quot;https://&quot; is prepended, allowing for even
+less typing by the user. A <code>url</code> of the form <code>"repo/user"</code>, is assumed to
+refer to a GitHub repository and is expanded appropriately, unless <code>url</code>
+matches a URL shortener service, currently only <code>"bit.ly"</code> or <code>"rstd.io"</code>.
+Most URL shorteners give HTTPS links and, anecdotally, we note this appears
+to work with <a href="https://bitly.com/">bit.ly</a> links, even though they are
+nominally HTTP.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Path to the new directory holding the course materials, invisibly.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other download functions: <code><a href="use_course_details.html">use_course_details</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## bit.ly shortlink example
+## should work with and without http prefix
+use_course("bit.ly/usethis-shortlink-example")
+use_course("http://bit.ly/usethis-shortlink-example")
+
+## demo with a small CRAN package available in various places
+
+## from CRAN
+use_course("https://cran.r-project.org/bin/windows/contrib/3.4/rematch2_2.0.1.zip")
+
+## from GitHub, 3 ways
+use_course("r-lib/rematch2")
+use_course("https://github.com/r-lib/rematch2/archive/master.zip")
+use_course("https://api.github.com/repos/r-lib/rematch2/zipball/master")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>usethis</em> version 1.5.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Determines the path of the currently running script</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for thisfile {rprojroot}"><tr><td>thisfile {rprojroot}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Determines the path of the currently running script</h2>
+
+<h3>Description</h3>
+
+<p><span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> does not store nor export the path of the currently running
+script.  This is an attempt to circumvent this limitation by applying
+heuristics (such as call stack and argument inspection) that work in many
+cases.
+<strong>CAVEAT</strong>: Use this function only if your workflow does not permit other
+solution: if a script needs to know its location, it should be set outside
+the context of the script if possible.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+thisfile()
+
+thisfile_source()
+
+thisfile_r()
+
+thisfile_rscript()
+
+thisfile_knit()
+</pre>
+
+
+<h3>Details</h3>
+
+<p>This functions currently work only if the script was <code>source</code>d,
+processed with <code>knitr</code>,
+or run with <code>Rscript</code> or using the <code>--file</code> parameter to the
+<code>R</code> executable.  For code run with <code>Rscript</code>, the exact value
+of the parameter passed to <code>Rscript</code> is returned.
+</p>
+
+
+<h3>Value</h3>
+
+<p>The path of the currently running script, NULL if it cannot be
+determined.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Kirill Müller, Hadley Wickham, Michael R. Head
+</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://stackoverflow.com/q/1815606/946850">http://stackoverflow.com/q/1815606/946850</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../base/html/source.html">base::source()</a></code>, <code><a href="../../utils/html/Rscript.html">utils::Rscript()</a></code>, <code><a href="../../base/html/getwd.html">base::getwd()</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: thisfile()
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rprojroot</em> version 1.3-2 <a href="00Index.html">Index</a>]</div>
+</body></html>

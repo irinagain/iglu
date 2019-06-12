@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Retrieve Themes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for getThemeInfo {rstudioapi}"><tr><td>getThemeInfo {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Retrieve Themes</h2>
+
+<h3>Description</h3>
+
+<p>Retrieves a list with information about the current color theme used by RStudio.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getThemeInfo()
+</pre>
+
+
+<h3>Details</h3>
+
+<p>A list is returned with the following elements:
+</p>
+
+<dl>
+<dt>editor</dt><dd><p>The name of the current editor theme, such as <code>Textmate</code>.</p>
+</dd>
+<dt>global</dt><dd><p>The name of the current global theme. One of <code>Modern</code>, <code>Classic</code>, or
+<code>Sky</code>.</p>
+</dd>
+<dt>dark</dt><dd><p><code>TRUE</code> if the editor theme is dark, <code>FALSE</code> otherwise.</p>
+</dd>
+<dt>foreground</dt><dd><p>The current editor theme's default text foreground color, formatted as a
+CSS-compatible color string, such as <code>rgb(1, 22, 39)</code>. Supported since RStudio 1.2.1214.</p>
+</dd>
+<dt>background</dt><dd><p>The current editor theme's default text background color, formatted as a
+CSS-compatible color string. Supported since RStudio 1.2.1214.</p>
+</dd>
+</dl>
+
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

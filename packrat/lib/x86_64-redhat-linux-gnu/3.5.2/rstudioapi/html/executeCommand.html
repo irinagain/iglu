@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Execute Command</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for executeCommand {rstudioapi}"><tr><td>executeCommand {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Execute Command</h2>
+
+<h3>Description</h3>
+
+<p>Executes an arbitrary RStudio command.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+executeCommand(commandId, quiet = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>commandId</code></td>
+<td>
+<p>The ID of the command to execute.</p>
+</td></tr>
+<tr valign="top"><td><code>quiet</code></td>
+<td>
+<p>Whether to show an error if the command does not exist.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Most menu commands and many buttons in RStudio can be invoked from the API
+using this method.
+</p>
+<p>The <code>quiet</code> command governs the behavior of the function when the
+command does not exist. By default, an error is shown if you attempt to
+invoke a non-existent command. You should set this to <code>FALSE</code> when invoking
+a command that may not be available if you don't want your users to see an
+error.
+</p>
+<p>The command is run asynchronously, so no status is returned.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code>executeCommand</code> function was introduced in RStudio 1.2.1261.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

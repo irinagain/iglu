@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a new plain-text username and password credential...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cred_user_pass {git2r}"><tr><td>cred_user_pass {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a new plain-text username and password credential object</h2>
+
+<h3>Description</h3>
+
+<p>Create a new plain-text username and password credential object
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cred_user_pass(username = NULL, password = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>username</code></td>
+<td>
+<p>The username of the credential</p>
+</td></tr>
+<tr valign="top"><td><code>password</code></td>
+<td>
+<p>The password of the credential. If getPass is installed
+and the only input is username, <code>getPass::getPass()</code> will be
+called to allow for interactive and obfuscated interactive
+input of the password.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A list of class <code>cred_user_pass</code> with entries:
+</p>
+
+<dl>
+<dt>username</dt><dd>
+<p>The username of the credential
+</p>
+</dd>
+<dt>password</dt><dd>
+<p>The password of the credential
+</p>
+</dd>
+</dl>
+
+
+
+<h3>See Also</h3>
+
+<p>Other git credential functions: <code><a href="cred_env.html">cred_env</a></code>,
+<code><a href="cred_ssh_key.html">cred_ssh_key</a></code>, <code><a href="cred_token.html">cred_token</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Create a plain-text username and password credential object
+cred_user_pass("Random Developer", "SecretPassword")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

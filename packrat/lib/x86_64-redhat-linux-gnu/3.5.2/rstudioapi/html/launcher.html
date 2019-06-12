@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Retrieve Launcher Information</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for launcher {rstudioapi}"><tr><td>launcher {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Retrieve Launcher Information</h2>
+
+<h3>Description</h3>
+
+<p>Retrieve information about the launcher, as well as the different clusters
+that the launcher has been configured to use.
+</p>
+<p>Check if the RStudio launcher is available and configured to support
+'ad-hoc' jobs; that is, jobs normally launched by the user through
+the RStudio IDE's user interface.
+</p>
+<p>Retrieve information on launcher jobs.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+launcherGetInfo()
+
+launcherAvailable()
+
+launcherGetJobs(statuses = NULL, fields = NULL, tags = NULL,
+  includeSessions = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>statuses</code></td>
+<td>
+<p>Return only jobs whose status matches one of <code>statuses</code>.
+Valid statuses are: Pending, Running, Suspended, Failed, Finished, Killed,
+Canceled. When <code>NULL</code>, all jobs are returned.</p>
+</td></tr>
+<tr valign="top"><td><code>fields</code></td>
+<td>
+<p>Return a subset of fields associated with each job object.
+When <code>NULL</code>, all fields associated with a particular job are returned.</p>
+</td></tr>
+<tr valign="top"><td><code>tags</code></td>
+<td>
+<p>An optional set of tags. Only jobs that have been assigned one
+of these requested tags will be returned.</p>
+</td></tr>
+<tr valign="top"><td><code>includeSessions</code></td>
+<td>
+<p>Boolean; include jobs which are also operating
+as RStudio R sessions?</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

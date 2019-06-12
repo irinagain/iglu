@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create a new passphrase-protected ssh key credential object</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for cred_ssh_key {git2r}"><tr><td>cred_ssh_key {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create a new passphrase-protected ssh key credential object</h2>
+
+<h3>Description</h3>
+
+<p>Create a new passphrase-protected ssh key credential object
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+cred_ssh_key(publickey = ssh_path("id_rsa.pub"),
+  privatekey = ssh_path("id_rsa"), passphrase = character(0))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>publickey</code></td>
+<td>
+<p>The path to the public key of the
+credential. Default is <code>ssh_path("id_rsa.pub")</code></p>
+</td></tr>
+<tr valign="top"><td><code>privatekey</code></td>
+<td>
+<p>The path to the private key of the
+credential. Default is <code>ssh_path("id_rsa")</code></p>
+</td></tr>
+<tr valign="top"><td><code>passphrase</code></td>
+<td>
+<p>The passphrase of the credential. Default is
+<code>character(0)</code>. If getPass is installed and private key
+is passphrase protected <code>getPass::getPass()</code> will be
+called to allow for interactive and obfuscated interactive
+input of the passphrase.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A list of class <code>cred_ssh_key</code> with entries:
+</p>
+
+<dl>
+<dt>publickey</dt><dd>
+<p>The path to the public key of the credential
+</p>
+</dd>
+<dt>privatekey</dt><dd>
+<p>The path to the private key of the credential
+</p>
+</dd>
+<dt>passphrase</dt><dd>
+<p>The passphrase of the credential
+</p>
+</dd>
+</dl>
+
+
+
+<h3>See Also</h3>
+
+<p>Other git credential functions: <code><a href="cred_env.html">cred_env</a></code>,
+<code><a href="cred_token.html">cred_token</a></code>, <code><a href="cred_user_pass.html">cred_user_pass</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Create a ssh key credential object. It can optionally be
+## passphrase-protected
+cred &lt;- cred_ssh_key(ssh_path("id_rsa.pub"), ssh_path("id_rsa"))
+repo &lt;- repository("git2r")
+push(repo, credentials = cred)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

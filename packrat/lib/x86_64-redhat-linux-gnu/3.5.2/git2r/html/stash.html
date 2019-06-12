@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Stash</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stash {git2r}"><tr><td>stash {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Stash</h2>
+
+<h3>Description</h3>
+
+<p>Stash
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stash(repo = ".", message = as.character(Sys.time()), index = FALSE,
+  untracked = FALSE, ignored = FALSE, stasher = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>repo</code></td>
+<td>
+<p>a path to a repository or a <code>git_repository</code>
+object. Default is '.'</p>
+</td></tr>
+<tr valign="top"><td><code>message</code></td>
+<td>
+<p>Optional description. Defaults to current time.</p>
+</td></tr>
+<tr valign="top"><td><code>index</code></td>
+<td>
+<p>All changes already added to the index are left
+intact in the working directory. Default is FALSE</p>
+</td></tr>
+<tr valign="top"><td><code>untracked</code></td>
+<td>
+<p>All untracked files are also stashed and then
+cleaned up from the working directory. Default is FALSE</p>
+</td></tr>
+<tr valign="top"><td><code>ignored</code></td>
+<td>
+<p>All ignored files are also stashed and then cleaned
+up from the working directory. Default is FALSE</p>
+</td></tr>
+<tr valign="top"><td><code>stasher</code></td>
+<td>
+<p>Signature with stasher and time of stash</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>invisible <code>git_stash</code> object if anything to stash
+else NULL
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Initialize a temporary repository
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+repo &lt;- init(path)
+
+# Configure a user
+config(repo, user.name="Alice", user.email="alice@example.org")
+
+# Create a file, add and commit
+writeLines("Hello world!", file.path(path, "test.txt"))
+add(repo, 'test.txt')
+commit(repo, "Commit message")
+
+# Change file
+writeLines(c("Hello world!", "HELLO WORLD!"), file.path(path, "test.txt"))
+
+# Check status of repository
+status(repo)
+
+# Create stash in repository
+stash(repo)
+
+# Check status of repository
+status(repo)
+
+# View stash
+stash_list(repo)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

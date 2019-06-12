@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Clone a remote repository</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for clone {git2r}"><tr><td>clone {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Clone a remote repository</h2>
+
+<h3>Description</h3>
+
+<p>Clone a remote repository
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+clone(url = NULL, local_path = NULL, bare = FALSE, branch = NULL,
+  checkout = TRUE, credentials = NULL, progress = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>url</code></td>
+<td>
+<p>The remote repository to clone</p>
+</td></tr>
+<tr valign="top"><td><code>local_path</code></td>
+<td>
+<p>Local directory to clone to.</p>
+</td></tr>
+<tr valign="top"><td><code>bare</code></td>
+<td>
+<p>Create a bare repository. Default is FALSE.</p>
+</td></tr>
+<tr valign="top"><td><code>branch</code></td>
+<td>
+<p>The name of the branch to checkout. Default is NULL
+which means to use the remote's default branch.</p>
+</td></tr>
+<tr valign="top"><td><code>checkout</code></td>
+<td>
+<p>Checkout HEAD after the clone is complete. Default
+is TRUE.</p>
+</td></tr>
+<tr valign="top"><td><code>credentials</code></td>
+<td>
+<p>The credentials for remote repository
+access. Default is NULL. To use and query an ssh-agent for the
+ssh key credentials, let this parameter be NULL (the default).</p>
+</td></tr>
+<tr valign="top"><td><code>progress</code></td>
+<td>
+<p>Show progress. Default is TRUE.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A <code>git_repository</code> object.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><a href="repository.html">repository</a>, <code><a href="cred_user_pass.html">cred_user_pass</a></code>,
+<code><a href="cred_ssh_key.html">cred_ssh_key</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Initialize repository
+path_repo_1 &lt;- tempfile(pattern="git2r-")
+path_repo_2 &lt;- tempfile(pattern="git2r-")
+dir.create(path_repo_1)
+dir.create(path_repo_2)
+repo_1 &lt;- init(path_repo_1)
+
+## Config user and commit a file
+config(repo_1, user.name="Alice", user.email="alice@example.org")
+
+## Write to a file and commit
+writeLines("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+           file.path(path_repo_1, "example.txt"))
+add(repo_1, "example.txt")
+commit(repo_1, "First commit message")
+
+## Change file and commit
+writeLines(c("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+             "eiusmod tempor incididunt ut labore et dolore magna aliqua."),
+           file.path(path_repo_1, "example.txt"))
+add(repo_1, "example.txt")
+commit(repo_1, "Second commit message")
+
+## Change file again and commit.
+writeLines(c("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do",
+             "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad",
+             "minim veniam, quis nostrud exercitation ullamco laboris nisi ut"),
+           file.path(path_repo_1, "example.txt"))
+add(repo_1, "example.txt")
+commit(repo_1, "Third commit message")
+
+## Clone to second repository
+repo_2 &lt;- clone(path_repo_1, path_repo_2)
+
+## List commits in repositories
+commits(repo_1)
+commits(repo_2)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

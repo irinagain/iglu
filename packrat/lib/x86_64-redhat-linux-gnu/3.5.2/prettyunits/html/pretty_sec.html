@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Pretty formatting of seconds</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for pretty_sec {prettyunits}"><tr><td>pretty_sec {prettyunits}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Pretty formatting of seconds</h2>
+
+<h3>Description</h3>
+
+<p>Pretty formatting of seconds
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+pretty_sec(sec, compact = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>sec</code></td>
+<td>
+<p>Numeric vector of seconds.</p>
+</td></tr>
+<tr valign="top"><td><code>compact</code></td>
+<td>
+<p>If true, then only the first non-zero
+unit is used. See examples below.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Character vector of formatted time intervals.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other time: <code><a href="pretty_dt.html">pretty_dt</a></code>;
+<code><a href="pretty_ms.html">pretty_ms</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+pretty_sec(c(1337, 13370, 133700, 1337000, 13370000))
+
+pretty_sec(c(1337, 13370, 133700, 1337000, 13370000),
+           compact = TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>prettyunits</em> version 1.0.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

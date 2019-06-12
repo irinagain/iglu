@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Data pronoun for tidy evaluation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for tidyeval-data {rlang}"><tr><td>tidyeval-data {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Data pronoun for tidy evaluation</h2>
+
+<h3>Description</h3>
+
+<p>This pronoun allows you to be explicit when you refer to an object
+inside the data. Referring to the <code>.data</code> pronoun rather than to
+the original data frame has several advantages:
+</p>
+
+<ul>
+<li><p> It makes it easy to refer to column names stored as strings. If
+<code>var</code> contains the column <code>"height"</code>, the pronoun will subset that
+column:</p>
+<pre>var &lt;- "height"
+dplyr::summarise(df, mean(.data[[var]]))
+</pre>
+<p>The index variable <code>var</code> is <a href="quasiquotation.html">unquoted</a>, which
+ensures a column named <code>var</code> in the data frame cannot mask it.
+This makes the pronoun safe to use in functions and packages.
+</p>
+</li>
+<li><p> Sometimes a computation is not about the whole data but about a
+subset. For example if you supply a grouped data frame to a dplyr
+verb, the <code>.data</code> pronoun contains the group subset.
+</p>
+</li>
+<li><p> It lets dplyr know that you're referring to a column from the
+data which is helpful to generate correct queries when the source
+is a database.
+</p>
+</li></ul>
+
+<p>The <code>.data</code> object exported here is useful to import in your
+package namespace to avoid a <code>R CMD check</code> note when referring to
+objects from the data mask.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+.data
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.3.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

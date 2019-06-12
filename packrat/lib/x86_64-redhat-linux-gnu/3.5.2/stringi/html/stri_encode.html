@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert Strings Between Given Encodings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stri_encode {stringi}"><tr><td>stri_encode {stringi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert Strings Between Given Encodings</h2>
+
+<h3>Description</h3>
+
+<p>These functions convert strings between encodings.
+They aim to replace <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span>'s <code><a href="../../base/html/iconv.html">iconv</a></code>.
+They are not only faster, but also much more portable - they
+work in the same manner on all platforms.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stri_encode(str, from = NULL, to = NULL, to_raw = FALSE)
+
+stri_conv(str, from = NULL, to = NULL, to_raw = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>str</code></td>
+<td>
+<p>a character vector, a raw vector, or
+a list of <code>raw</code> vectors to be converted</p>
+</td></tr>
+<tr valign="top"><td><code>from</code></td>
+<td>
+<p>input encoding:
+<code>NULL</code> or <code>""</code> for the default encoding
+or internal encoding marks' usage (see Details);
+otherwise, a single string with encoding name,
+see <code><a href="stri_enc_list.html">stri_enc_list</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>to</code></td>
+<td>
+<p>target encoding:
+<code>NULL</code> or <code>""</code> for default encoding
+(see <code><a href="stri_enc_set.html">stri_enc_get</a></code>),
+or a single string with encoding name</p>
+</td></tr>
+<tr valign="top"><td><code>to_raw</code></td>
+<td>
+<p>a single logical value; indicates whether a list of raw vectors
+rather than a character vector should be returned</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code>stri_conv</code> is an alias for <code>stri_encode</code>.
+</p>
+<p>Please refer to <code><a href="stri_enc_list.html">stri_enc_list</a></code> for the list
+of supported encodings and <a href="stringi-encoding.html">stringi-encoding</a>
+for a general discussion.
+</p>
+<p>If <code>str</code> is a character vector
+and <code>from</code> is either missing, <code>""</code>, or <code>NULL</code>,
+then the declared encodings are used
+(see <code><a href="stri_enc_mark.html">stri_enc_mark</a></code>) &ndash; in such a case <code>bytes</code>-declared
+strings are disallowed.
+Otherwise, the internal encoding declarations are ignored and
+a converter selected via <code>from</code> is used.
+</p>
+<p>If <code>str</code> is a <code>raw</code>-type vector
+or a list of raw vectors,
+we assume that the input encoding is the current default encoding
+as given by <code><a href="stri_enc_set.html">stri_enc_get</a></code>.
+</p>
+<p>For <code>to_raw=FALSE</code>, the output
+strings have always marked encodings according to the target converter
+used (as specified by <code>to</code>) and the current default Encoding
+(<code>ASCII</code>, <code>latin1</code>, <code>UTF-8</code>, <code>native</code>,
+or <code>bytes</code> in all other cases).
+</p>
+<p>Note that some issues might occur if <code>to</code> indicates, e.g,
+UTF-16 or UTF-32, as the output strings may have embedded NULs.
+In such cases, please use <code>to_raw=TRUE</code> and consider
+specifying a byte order marker (BOM) for portability reasons
+(e.g., set <code>UTF-16</code> or <code>UTF-32</code> which automatically
+adds the BOMs).
+</p>
+<p>Note that <code>stri_encode(as.raw(data), "encodingname")</code>
+is a clever substitute for <code><a href="../../base/html/rawConversion.html">rawToChar</a></code>.
+</p>
+<p>In the current version of <span class="pkg">stringi</span>, if an incorrect code point is found
+on input, it is replaced by the default (for that target encoding)
+substitute character. Also, in such a case a warning is generated.
+</p>
+
+
+<h3>Value</h3>
+
+<p>If <code>to_raw</code> is <code>FALSE</code>,
+then a character vector with encoded strings (and appropriate
+encoding marks) is returned.
+Otherwise, a list of raw vectors is produced.
+</p>
+
+
+<h3>References</h3>
+
+<p><em>Conversion</em> &ndash; ICU User Guide, <a href="http://userguide.icu-project.org/conversion">http://userguide.icu-project.org/conversion</a>
+</p>
+<p><em>Converters</em> &ndash; ICU User Guide,
+<a href="http://userguide.icu-project.org/conversion/converters">http://userguide.icu-project.org/conversion/converters</a>  (technical details)
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other encoding_conversion: <code><a href="stri_enc_fromutf32.html">stri_enc_fromutf32</a></code>,
+<code><a href="stri_enc_toascii.html">stri_enc_toascii</a></code>,
+<code><a href="stri_enc_tonative.html">stri_enc_tonative</a></code>,
+<code><a href="stri_enc_toutf32.html">stri_enc_toutf32</a></code>,
+<code><a href="stri_enc_toutf8.html">stri_enc_toutf8</a></code>,
+<code><a href="stringi-encoding.html">stringi-encoding</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>stringi</em> version 1.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

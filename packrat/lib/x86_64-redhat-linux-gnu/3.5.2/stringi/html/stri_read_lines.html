@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: [DRAFT API] Read Text Lines from a Text File</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stri_read_lines {stringi}"><tr><td>stri_read_lines {stringi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>[DRAFT API] Read Text Lines from a Text File</h2>
+
+<h3>Description</h3>
+
+<p>Reads a text file, re-encodes it, and splits it into text lines.
+</p>
+<p><b>[THIS IS AN EXPERIMENTAL FUNCTION]</b>
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stri_read_lines(fname, encoding = "auto", locale = NA,
+  fallback_encoding = stri_enc_get())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>fname</code></td>
+<td>
+<p>single string with file name</p>
+</td></tr>
+<tr valign="top"><td><code>encoding</code></td>
+<td>
+<p>single string; input encoding, <code>"auto"</code> for automatic
+detection with <code><a href="stri_enc_detect2.html">stri_enc_detect2</a></code>,
+and <code>NULL</code> or <code>""</code> for the current default encoding.</p>
+</td></tr>
+<tr valign="top"><td><code>locale</code></td>
+<td>
+<p>single string passed to <code><a href="stri_enc_detect2.html">stri_enc_detect2</a></code>;
+<code>NULL</code> or <code>""</code> for default locale,
+<code>NA</code> for checking just UTF-* family</p>
+</td></tr>
+<tr valign="top"><td><code>fallback_encoding</code></td>
+<td>
+<p>single string; encoding to be used if encoding detection fails;
+defaults to the current default encoding, see <code><a href="stri_enc_set.html">stri_enc_get</a></code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>This aims to be a substitute for the <code><a href="../../base/html/readLines.html">readLines</a></code> function,
+with the ability to auto-detect input encodings (or to specify
+one manually), re-encode input without any strange function calls
+or sys options change,
+and split the text into lines with <code><a href="stri_split_lines.html">stri_split_lines1</a></code>
+(which conforms with the Unicode guidelines for newline markers).
+</p>
+<p>If <code>locale</code> is <code>NA</code> and auto-detection of UTF-32/16/8 fails,
+then <code>fallback_encoding</code> is used.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns a character vector, each text line is a separate string.
+The output is always in UTF-8.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other files: <code><a href="stri_read_raw.html">stri_read_raw</a></code>,
+<code><a href="stri_write_lines.html">stri_write_lines</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>stringi</em> version 1.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

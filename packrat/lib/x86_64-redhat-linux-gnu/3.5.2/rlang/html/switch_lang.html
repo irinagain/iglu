@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Dispatch on call type</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for switch_lang {rlang}"><tr><td>switch_lang {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Dispatch on call type</h2>
+
+<h3>Description</h3>
+
+<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>
+<a href='https://www.tidyverse.org/lifecycle/#questioning'><img src='figures/lifecycle-questioning.svg' alt='Questioning lifecycle'></a>
+<p><code>switch_lang()</code> dispatches clauses based on the subtype of call, as
+determined by <code>lang_type_of()</code>. The subtypes are based on the type
+of call head (see details).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+switch_lang(.x, ...)
+
+coerce_lang(.x, .to, ...)
+
+lang_type_of(x)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.x, x</code></td>
+<td>
+<p>A language object (a call). If a formula quote, the RHS
+is extracted first.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Named clauses. The names should be types as returned by
+<code>lang_type_of()</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>.to</code></td>
+<td>
+<p>This is useful when you switchpatch within a coercing
+function. If supplied, this should be a string indicating the
+target type. A catch-all clause is then added to signal an error
+stating the conversion failure. This type is prettified unless
+<code>.to</code> inherits from the S3 class <code>"AsIs"</code> (see <code><a href="../../base/html/I.html">base::I()</a></code>).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Calls (objects of type <code>language</code>) do not necessarily call a named
+function. They can also call an anonymous function or the result of
+some other expression. The language subtypes are organised around
+the kind of object being called:
+</p>
+
+<ul>
+<li><p> For regular calls to named function, <code>switch_lang()</code> returns
+&quot;named&quot;.
+</p>
+</li>
+<li><p> Sometimes the function being called is the result of another
+function call, e.g. <code>foo()()</code>, or the result of another
+subsetting call, e.g. <code>foo$bar()</code> or <code>foo@bar()</code>. In this case,
+the call head is not a symbol, it is another call (e.g. to the
+infix functions <code>$</code> or <code>@</code>). The call subtype is said to be
+&quot;recursive&quot;.
+</p>
+</li>
+<li><p> A special subset of recursive calls are namespaced calls like
+<code>foo::bar()</code>. <code>switch_lang()</code> returns &quot;namespaced&quot; for these
+calls. It is generally a good idea if your function treats
+<code>bar()</code> and <code>foo::bar()</code> similarly.
+</p>
+</li>
+<li><p> Finally, it is possible to have a literal (see <code><a href="is_expression.html">is_expression()</a></code> for a
+definition of literals) as call head. In most cases, this will be
+a function inlined in the call (this is sometimes an expedient
+way of dealing with scoping issues). For calls with a literal
+node head, <code>switch_lang()</code> returns &quot;inlined&quot;. Note that if a call
+head contains a literal that is not function, something went
+wrong and using that object will probably make R crash.
+<code>switch_lang()</code> issues an error in this case.
+</p>
+</li></ul>
+
+<p>The reason we use the term <em>node head</em> is because calls are
+structured as tree objects. This makes sense because the best
+representation for language code is a tree whose hierarchy is
+determined by the order of operations. See <a href="vector-old-ctors.html">node</a> for more on this.
+</p>
+
+
+<h3>Life cycle</h3>
+
+<p>All these functions are in the questioning stage and likely to be
+removed from the package.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Named calls:
+lang_type_of(~foo())
+
+# Recursive calls:
+lang_type_of(~foo$bar())
+lang_type_of(~foo()())
+
+# Namespaced calls:
+lang_type_of(~base::list())
+
+# For an inlined call, let's inline a function in the head node:
+call &lt;- quote(foo(letters))
+call[[1]] &lt;- base::toupper
+
+call
+lang_type_of(call)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.3.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

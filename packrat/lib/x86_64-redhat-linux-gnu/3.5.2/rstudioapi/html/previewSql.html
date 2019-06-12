@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Preview SQL statement</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for previewSql {rstudioapi}"><tr><td>previewSql {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Preview SQL statement</h2>
+
+<h3>Description</h3>
+
+<p>Makes use of 'DBI' and <code>dbGetQuery()</code> to preview a SQL statement
+for a given 'DBI' connection.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+previewSql(conn, statement, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>conn</code></td>
+<td>
+<p>The 'DBI' connection to be used to execute this statement.</p>
+</td></tr>
+<tr valign="top"><td><code>statement</code></td>
+<td>
+<p>The SQL statement to execute. Either a path to a
+file containing a SQL statement or the SQL statement itself.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional arguments to be used in <code>dbGetQuery()</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>The <code>previewSql</code> function was introduced in RStudio 1.2.600
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

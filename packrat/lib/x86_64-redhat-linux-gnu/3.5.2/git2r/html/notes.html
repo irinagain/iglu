@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: List notes</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for notes {git2r}"><tr><td>notes {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>List notes</h2>
+
+<h3>Description</h3>
+
+<p>List all the notes within a specified namespace.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+notes(repo = ".", ref = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>repo</code></td>
+<td>
+<p>a path to a repository or a <code>git_repository</code>
+object. Default is '.'</p>
+</td></tr>
+<tr valign="top"><td><code>ref</code></td>
+<td>
+<p>Reference to read from. Default (ref = NULL) is to call
+<code>note_default_ref</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>list with git_note objects
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Create and initialize a repository in a temporary directory
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+repo &lt;- init(path)
+config(repo, user.name="Alice", user.email="alice@example.org")
+
+## Create a file, add and commit
+writeLines("Hello world!", file.path(path, "example.txt"))
+add(repo, "example.txt")
+commit_1 &lt;- commit(repo, "Commit message 1")
+
+## Create another commit
+writeLines(c("Hello world!",
+             "HELLO WORLD!"),
+           file.path(path, "example.txt"))
+add(repo, "example.txt")
+commit_2 &lt;- commit(repo, "Commit message 2")
+
+## Create note in default namespace
+note_create(commit_1, "Note-1")
+note_create(commit_1, "Note-2", force = TRUE)
+
+## Create note in named (review) namespace
+note_create(commit_1, "Note-3", ref="refs/notes/review")
+note_create(commit_2, "Note-4", ref="review")
+
+## Create note on blob and tree
+note_create(tree(commit_1), "Note-5")
+note_create(tree(commit_1)["example.txt"], "Note-6")
+
+## List notes in default namespace
+notes(repo)
+
+## List notes in 'review' namespace
+notes(repo, "review")
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: List stashes in repository</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stash_list {git2r}"><tr><td>stash_list {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>List stashes in repository</h2>
+
+<h3>Description</h3>
+
+<p>List stashes in repository
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stash_list(repo = ".")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>repo</code></td>
+<td>
+<p>a path to a repository or a <code>git_repository</code>
+object. Default is '.'</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>list of stashes in repository
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Initialize a temporary repository
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+repo &lt;- init(path)
+
+# Configure a user
+config(repo, user.name="Alice", user.email="alice@example.org")
+
+# Create a file, add and commit
+writeLines("Hello world!", file.path(path, "test-1.txt"))
+add(repo, 'test-1.txt')
+commit(repo, "Commit message")
+
+# Make one more commit
+writeLines(c("Hello world!", "HELLO WORLD!"), file.path(path, "test-1.txt"))
+add(repo, 'test-1.txt')
+commit(repo, "Next commit message")
+
+# Create one more file
+writeLines("Hello world!", file.path(path, "test-2.txt"))
+
+# Check that there are no stashes
+stash_list(repo)
+
+# Stash
+stash(repo)
+
+# Only untracked changes, therefore no stashes
+stash_list(repo)
+
+# Stash and include untracked changes
+stash(repo, "Stash message", untracked=TRUE)
+
+# View stash
+stash_list(repo)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

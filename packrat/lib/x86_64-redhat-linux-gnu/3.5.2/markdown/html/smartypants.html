@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: smartypants: ASCII punctuation to HTML entities</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for smartypants {markdown}"><tr><td>smartypants {markdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>smartypants: ASCII punctuation to HTML entities</h2>
+
+<h3>Description</h3>
+
+<p><code>smartypants</code> transforms plain ASCII punctuation characters into
+<em>smart</em> typographic punctuation HTML entities.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+smartypants(file, output, text)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>a character string giving the pathname of the file to read from.
+If it is omitted from the argument list, then it is presumed that the
+<code>text</code> argument will be used instead.</p>
+</td></tr>
+<tr valign="top"><td><code>output</code></td>
+<td>
+<p>a character string giving the pathname of the file to write to.
+If it is omitted, then it is presumed that the user expects the results
+returned as a character string.</p>
+</td></tr>
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p>a character vector containing the <em>markdown</em> text to
+transform.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p><code>smartypants</code> returns NULL invisibly when output is to a file,
+and a character string otherwise.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="markdownExtensions.html">markdownExtensions</a></code>, <code><a href="markdownHTMLOptions.html">markdownHTMLOptions</a></code>,
+<code><a href="markdownToHTML.html">markdownToHTML</a></code>.
+</p>
+<p>For a description of the original <em>markdown</em> version:
+</p>
+<p><a href="http://daringfireball.net/projects/markdown/">http://daringfireball.net/projects/markdown/</a>
+</p>
+<p>The original Sundown library on github:
+</p>
+<p><a href="https://github.com/vmg/sundown">https://github.com/vmg/sundown</a>
+</p>
+<p>C stubs for writing new renders are in inst/include/markdown_rstubs.[ch].
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+cat(smartypants(text = "1/2 (c)\n"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>markdown</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

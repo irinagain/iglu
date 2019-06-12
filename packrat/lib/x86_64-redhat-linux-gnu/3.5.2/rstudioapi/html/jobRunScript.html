@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Run R Script As Job</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for jobRunScript {rstudioapi}"><tr><td>jobRunScript {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Run R Script As Job</h2>
+
+<h3>Description</h3>
+
+<p>Starts an R script as a background job.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+jobRunScript(path, name = NULL, encoding = "unknown",
+  workingDir = NULL, importEnv = FALSE, exportEnv = "")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>The path to the R script to be run.</p>
+</td></tr>
+<tr valign="top"><td><code>name</code></td>
+<td>
+<p>A name for the background job. When <code>NULL</code> (the default), the filename of the
+script is used as the job name.</p>
+</td></tr>
+<tr valign="top"><td><code>encoding</code></td>
+<td>
+<p>The text encoding of the script, if known.</p>
+</td></tr>
+<tr valign="top"><td><code>workingDir</code></td>
+<td>
+<p>The working directory in which to run the job. When <code>NULL</code> (the default),
+the parent directory of the R script is used.</p>
+</td></tr>
+<tr valign="top"><td><code>importEnv</code></td>
+<td>
+<p>Whether to import the global environment into the job.</p>
+</td></tr>
+<tr valign="top"><td><code>exportEnv</code></td>
+<td>
+<p>The name of the environment in which to export the R objects created by the
+job. Use <code>""</code> (the default) to skip export, <code>"R_GlobalEnv"</code>' to export to the
+global environment, or the name of an environment object to create an object with that name.</p>
+</td></tr>
+</table>
+
+
+<h3>See Also</h3>
+
+<p>Other jobs: <code><a href="jobAddOutput.html">jobAddOutput</a></code>,
+<code><a href="jobAddProgress.html">jobAddProgress</a></code>, <code><a href="jobAdd.html">jobAdd</a></code>,
+<code><a href="jobRemove.html">jobRemove</a></code>, <code><a href="jobSetProgress.html">jobSetProgress</a></code>,
+<code><a href="jobSetState.html">jobSetState</a></code>, <code><a href="jobSetStatus.html">jobSetStatus</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

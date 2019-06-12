@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Tidy evaluation in a custom environment</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for eval_tidy_ {rlang}"><tr><td>eval_tidy_ {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Tidy evaluation in a custom environment</h2>
+
+<h3>Description</h3>
+
+<p><img src="../help/figures/lifecycle-defunct.svg" alt='Defunct lifecycle' />
+</p>
+<p>This function is defunct as of rlang 0.3.0.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+eval_tidy_(expr, bottom, top = NULL, env = caller_env())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>An expression or quosure to evaluate.</p>
+</td></tr>
+<tr valign="top"><td><code>bottom</code></td>
+<td>
+<p>The environment containing masking objects if the
+data mask is one environment deep. The bottom environment if the
+data mask comprises multiple environment.</p>
+</td></tr>
+<tr valign="top"><td><code>top</code></td>
+<td>
+<p>The last environment of the data mask. If the data mask
+is only one environment deep, <code>top</code> should be the same as
+<code>bottom</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>env</code></td>
+<td>
+<p>The environment in which to evaluate <code>expr</code>. This
+environment is not applicable for quosures because they have
+their own environments.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.3.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

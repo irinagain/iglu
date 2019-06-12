@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Duplicate Strings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for stri_dup {stringi}"><tr><td>stri_dup {stringi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Duplicate Strings</h2>
+
+<h3>Description</h3>
+
+<p>Duplicates each string <code>times</code> times
+and concatenates the results.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+stri_dup(str, times)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>str</code></td>
+<td>
+<p>a character vector of strings to be duplicated</p>
+</td></tr>
+<tr valign="top"><td><code>times</code></td>
+<td>
+<p>an integer vector with the numbers of times to duplicate each string</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Vectorized over <code>str</code> and <code>times</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Returns a character vector of the same length as <code>str</code>.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>Other join: <code><a href="oper_plus.html">%s+%</a></code>,
+<code><a href="stri_flatten.html">stri_flatten</a></code>, <code><a href="stri_join_list.html">stri_join_list</a></code>,
+<code><a href="stri_join.html">stri_join</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+stri_dup("a", 1:5)
+stri_dup(c("a", NA, "ba"), 4)
+stri_dup(c("abc", "pqrst"), c(4, 2))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>stringi</em> version 1.4.3 <a href="00Index.html">Index</a>]</div>
+</body></html>

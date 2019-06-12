@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: View local web content within RStudio</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for viewer {rstudioapi}"><tr><td>viewer {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+View local web content within RStudio
+</h2>
+
+<h3>Description</h3>
+
+<p>View local web content within RStudio. Content can be served from static files in the R session temporary directory or can be a <a href="../../shiny/html/shiny-package.html">Shiny</a>, <a href="../../Rook/html/Rook-package.html">Rook</a>, <a href="../../opencpu/html/opencpu.html">OpenCPU</a>, or any other type of localhost web application.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+viewer(url, height = NULL)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>url</code></td>
+<td>
+<p>Application URL. This can be either a localhost URL or a path to a file within the R session temporary directory (i.e. a path returned by <code><a href="../../base/html/tempfile.html">tempfile</a></code>).
+</p>
+</td></tr>
+<tr valign="top"><td><code>height</code></td>
+<td>
+<p>Desired height. Specifies a desired height for the Viewer pane (the default is <code>NULL</code> which makes no change to the height of the pane). This value can be numeric or the string <code>"maximize"</code> in which case the Viewer will expand to fill all vertical space. See details below for a discussion of constraints imposed on the height.
+</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>RStudio also sets the global <code>viewer</code> option to the <code>rstudioapi::viewer</code> function so that it can be invoked in a front-end independent manner.
+</p>
+<p>Applications are displayed within the Viewer pane. The application URL must either be served from localhost or be a path to a file within the R session temporary directory. If the URL doesn't conform to these requirements it is displayed within a standard browser window.
+</p>
+<p>The <code>height</code> parameter specifies a desired height, however it's possible the Viewer pane will end up smaller if the request can't be fulfilled (RStudio ensures that the pane paired with the Viewer maintains a minimum height). A height of 400 pixels or lower is likely to succeed in a large proportion of configurations. 
+</p>
+<p>A very large height (e.g. 2000 pixels) will allocate the maximum allowable space for the Viewer (while still preserving some view of the pane above or below it). The value <code>"maximize"</code> will force the Viewer to full height. Note that this value should only be specified in cases where maximum vertical space is essential, as it will result in one of the user's other panes being hidden.
+</p>
+
+
+<h3>Viewer Detection</h3>
+
+<p>When a page is displayed within the Viewer it's possible that the user will choose to pop it out into a standalone browser window. When rendering inside a standard browser you may want to make different choices about how content is laid out or scaled. Web pages can detect that they are running inside the Viewer pane by looking for the <code>viewer_pane</code> query parameter, which is automatically injected into URLs when they are shown in the Viewer. For example, the following URL:
+</p>
+<pre>
+http://localhost:8100
+</pre>
+<p>When rendered in the Viewer pane is transformed to:
+</p>
+<pre>
+http://localhost:8100?viewer_pane=1
+</pre>
+<p>To provide a good user experience it's strongly recommended that callers take advantage of this to automatically scale their content to the current size of the Viewer pane. For example, re-rendering a JavaScript plot with new dimensions when the size of the pane changes.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code>viewer</code> function was added in version 0.98.423 of RStudio. The ability to specify <code>maximize</code> for the <code>height</code> parameter was introduced in version 0.99.1001 of RStudio.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+
+# run an application inside the IDE
+rstudioapi::viewer("http://localhost:8100")
+
+# run an application and request a height of 500 pixels
+rstudioapi::viewer("http://localhost:8100", height = 500)
+
+# probe for viewer option then fall back to browseURL
+viewer &lt;- getOption("viewer")
+if (!is.null(viewer))
+   viewer("http://localhost:8100")
+else
+   utils::browseURL("http://localhost:8100")
+
+# generate a temporary html file and display it
+dir &lt;- tempfile()
+dir.create(dir)
+htmlFile &lt;- file.path(dir, "index.html")
+# (code to write some content to the file)
+rstudioapi::viewer(htmlFile)
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

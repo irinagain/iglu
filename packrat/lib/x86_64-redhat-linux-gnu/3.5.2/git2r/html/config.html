@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Config</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for config {git2r}"><tr><td>config {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Config</h2>
+
+<h3>Description</h3>
+
+<p>Config file management. To display the configuration variables,
+call method <code>config</code> without the <code>user.name</code>,
+<code>user.email</code> or <code>...</code> options.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+config(repo = NULL, global = FALSE, user.name, user.email, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>repo</code></td>
+<td>
+<p>The <code>repository</code>. Default is NULL.</p>
+</td></tr>
+<tr valign="top"><td><code>global</code></td>
+<td>
+<p>Write option(s) to global configuration
+file. Default is FALSE.</p>
+</td></tr>
+<tr valign="top"><td><code>user.name</code></td>
+<td>
+<p>The user name. Use NULL to delete the entry</p>
+</td></tr>
+<tr valign="top"><td><code>user.email</code></td>
+<td>
+<p>The e-mail address. Use NULL to delete the entry</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Additional options to write or delete from the
+configuration.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>There are two ways git2r can find the local repository when
+writing local options (1) Use the <code>repo</code> argument. (2) If the
+<code>repo</code> argument is <code>NULL</code> but the current working
+directory is inside the local repository, then <code>git2r</code> uses
+that repository.
+</p>
+
+
+<h3>Value</h3>
+
+<p>S3 class <code>git_config</code>. When writing options, the
+configuration is returned invisible.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Initialize a temporary repository
+path &lt;- tempfile(pattern = "git2r-")
+dir.create(path)
+repo &lt;- init(path)
+
+## Set user name and email.
+config(repo, user.name = "Alice", user.email = "alice@example.org")
+
+## Display configuration
+config(repo)
+
+## Delete user email.
+config(repo, user.email = NULL)
+
+## Display configuration
+config(repo)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

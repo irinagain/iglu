@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set hooks.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for set_hooks {evaluate}"><tr><td>set_hooks {evaluate}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set hooks.</h2>
+
+<h3>Description</h3>
+
+<p>This wraps the base <code><a href="../../base/html/userhooks.html">setHook()</a></code> function to provide a return
+value that makes it easy to undo.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+set_hooks(hooks, action = "append")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>hooks</code></td>
+<td>
+<p>a named list of hooks - each hook can either be a function or
+a list of functions.</p>
+</td></tr>
+<tr valign="top"><td><code>action</code></td>
+<td>
+<p><code>"replace"</code>, <code>"append"</code> or <code>"prepend"</code></p>
+</td></tr>
+</table>
+
+
+<h3>Examples</h3>
+
+<pre>
+new &lt;- list(before.plot.new = function() print("Plotted!"))
+hooks &lt;- set_hooks(new)
+plot(1)
+set_hooks(hooks, "replace")
+plot(1)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>evaluate</em> version 0.14 <a href="00Index.html">Index</a>]</div>
+</body></html>

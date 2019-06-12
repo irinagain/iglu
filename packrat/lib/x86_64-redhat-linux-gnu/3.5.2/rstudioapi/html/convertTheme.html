@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert a tmTheme to an RStudio Theme</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for convertTheme {rstudioapi}"><tr><td>convertTheme {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert a tmTheme to an RStudio Theme</h2>
+
+<h3>Description</h3>
+
+<p>Converts a <code>tmTheme</code> to an <code>rstheme</code> and optionally adds and applies it to RStudio and returns the
+name of the theme.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+convertTheme(themePath, add = TRUE, outputLocation = NULL,
+  apply = FALSE, force = FALSE, globally = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>themePath</code></td>
+<td>
+<p>A full or relative path to the <code>tmTheme</code> file to be converted.</p>
+</td></tr>
+<tr valign="top"><td><code>add</code></td>
+<td>
+<p>Whether to add the newly converted theme to RStudio. Setting this to true
+will have the same impact as running <code>{ rstudioapi::convertTheme(&lt;themePath&gt;, outputLocation = &lt;convertedThemePath&gt;); rstudioapi::addTheme(&lt;convertedThemePath&gt;) }</code>.<br />
+Default: <code>TRUE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>outputLocation</code></td>
+<td>
+<p>A full or relative path where a copy of the converted theme will be saved.
+If this value is <code>NULL</code>, no copy will be saved.<br />
+Default: <code>NULL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>apply</code></td>
+<td>
+<p>Whether to immediately apply the newly added theme. This paramater cannot be set to
+<code>TRUE</code> if <code>add</code> is set to <code>FALSE</code>. Setting this and <code>add</code>
+to <code>TRUE</code> has the same impact as running
+<code>{ rstudioapi::convertTheme(&lt;themePath&gt;, outputLocation = &lt;convertedThemePath&gt;); rstudioapi::addTheme(&lt;convertedThemePath&gt;); rstudioapi::applyTheme(&lt;themeName&gt;) }</code>.<br />
+Default: <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>force</code></td>
+<td>
+<p>Whether to force the operation and overwrite an existing file with the same
+name.<br />
+Default: <code>FALSE</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>globally</code></td>
+<td>
+<p>Whether to install this theme for the current user or all users. If set to
+<code>TRUE</code> this will attempt to install the theme for all users, which may
+require administrator privileges. Only applies when <code>add</code> is <code>TRUE</code>. <br />
+Default: <code>FALSE</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Note</h3>
+
+<p>The <code>convertTheme</code> function was introduced in RStudio 1.2.879.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

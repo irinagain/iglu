@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Select a File / Folder</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for file-dialogs {rstudioapi}"><tr><td>file-dialogs {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Select a File / Folder</h2>
+
+<h3>Description</h3>
+
+<p>Prompt the user for the path to a file or folder, using the system
+file dialogs with RStudio Desktop, and RStudio's own web dialogs
+with RStudio Server.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+selectFile(caption = "Select File", label = "Select",
+  path = getActiveProject(), filter = "All Files (*)",
+  existing = TRUE)
+
+selectDirectory(caption = "Select Directory", label = "Select",
+  path = getActiveProject())
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>caption</code></td>
+<td>
+<p>The window title.</p>
+</td></tr>
+<tr valign="top"><td><code>label</code></td>
+<td>
+<p>The label to use for the 'Accept' / 'OK' button.</p>
+</td></tr>
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>The initial working directory, from which the file dialog
+should begin browsing. Defaults to the current RStudio
+project directory.</p>
+</td></tr>
+<tr valign="top"><td><code>filter</code></td>
+<td>
+<p>A glob filter, to be used when attempting to open a file with a
+particular extension. For example, to scope the dialog to <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> files, one could use
+<code>R Files (*.R)</code> here.</p>
+</td></tr>
+<tr valign="top"><td><code>existing</code></td>
+<td>
+<p>Boolean; should the file dialog limit itself to existing
+files on the filesystem, or allow the user to select the path to a new file?</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When the selected file resolves within the user's home directory,
+RStudio will return an aliased path &ndash; that is, prefixed with <code>~/</code>.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code>selectFile</code> and <code>selectDirectory</code> functions were
+added in version 1.1.287 of RStudio.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

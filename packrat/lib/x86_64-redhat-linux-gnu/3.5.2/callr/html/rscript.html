@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Run an R script</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rscript {callr}"><tr><td>rscript {callr}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Run an R script</h2>
+
+<h3>Description</h3>
+
+<p>It uses the <code>Rscript</code> program corresponding to the current R vesion,
+to run the script. It streams stdout and stderr of the process.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rscript(script, cmdargs = character(), libpath = .libPaths(),
+  repos = default_repos(), stdout = NULL, stderr = NULL,
+  poll_connection = TRUE, echo = FALSE, show = TRUE,
+  callback = NULL, block_callback = NULL, spinner = FALSE,
+  system_profile = FALSE, user_profile = FALSE,
+  env = rcmd_safe_env(), timeout = Inf, wd = ".",
+  fail_on_status = TRUE, color = TRUE, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>script</code></td>
+<td>
+<p>Path of the script to run.</p>
+</td></tr>
+<tr valign="top"><td><code>cmdargs</code></td>
+<td>
+<p>Command line arguments.</p>
+</td></tr>
+<tr valign="top"><td><code>libpath</code></td>
+<td>
+<p>The library path.</p>
+</td></tr>
+<tr valign="top"><td><code>repos</code></td>
+<td>
+<p>The <em>repos</em> option. If <code>NULL</code>, then no
+<em>repos</em> option is set. This options is only used if
+<code>user_profile</code> or <code>system_profile</code> is set <code>FALSE</code>,
+as it is set using the system or the user profile.</p>
+</td></tr>
+<tr valign="top"><td><code>stdout</code></td>
+<td>
+<p>Optionally a file name to send the standard output to.</p>
+</td></tr>
+<tr valign="top"><td><code>stderr</code></td>
+<td>
+<p>Optionally a file name to send the standard error to.
+It may be the same as <code>stdout</code>, in which case standard error is
+redirected to standard output. It can also be the special string
+<code>"2&gt;&amp;1"</code>, in which case standard error will be redirected to standard
+output.</p>
+</td></tr>
+<tr valign="top"><td><code>poll_connection</code></td>
+<td>
+<p>Whether to have a control connection to
+the process. This is used to transmit messages from the subprocess
+to the parent.</p>
+</td></tr>
+<tr valign="top"><td><code>echo</code></td>
+<td>
+<p>Whether to echo the complete command run by <code>rcmd</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>show</code></td>
+<td>
+<p>Logical, whether to show the standard output on the screen
+while the child process is running. Note that this is independent
+of the <code>stdout</code> and <code>stderr</code> arguments. The standard
+error is not shown currently.</p>
+</td></tr>
+<tr valign="top"><td><code>callback</code></td>
+<td>
+<p>A function to call for each line of the standard
+output and standard error from the child process. It works together
+with the <code>show</code> option; i.e. if <code>show = TRUE</code>, and a
+callback is provided, then the output is shown of the screen, and the
+callback is also called.</p>
+</td></tr>
+<tr valign="top"><td><code>block_callback</code></td>
+<td>
+<p>A function to call for each block of the standard
+output and standard error. This callback is not line oriented, i.e.
+multiple lines or half a line can be passed to the callback.</p>
+</td></tr>
+<tr valign="top"><td><code>spinner</code></td>
+<td>
+<p>Whether to show a calming spinner on the screen while
+the child R session is running. By default it is shown if
+<code>show = TRUE</code> and the R session is interactive.</p>
+</td></tr>
+<tr valign="top"><td><code>system_profile</code></td>
+<td>
+<p>Whether to use the system profile file.</p>
+</td></tr>
+<tr valign="top"><td><code>user_profile</code></td>
+<td>
+<p>Whether to use the user's profile file.</p>
+</td></tr>
+<tr valign="top"><td><code>env</code></td>
+<td>
+<p>Environment variables to set for the child process.</p>
+</td></tr>
+<tr valign="top"><td><code>timeout</code></td>
+<td>
+<p>Timeout for the function call to finish. It can be a
+<a href="../../base/html/difftime.html">base::difftime</a> object, or a real number, meaning seconds.
+If the process does not finish before the timeout period expires,
+then a <code>system_command_timeout_error</code> error is thrown. <code>Inf</code>
+means no timeout.</p>
+</td></tr>
+<tr valign="top"><td><code>wd</code></td>
+<td>
+<p>Working directory to use for running the command. Defaults
+to the current working directory.</p>
+</td></tr>
+<tr valign="top"><td><code>fail_on_status</code></td>
+<td>
+<p>Whether to throw an R error if the command returns
+with a non-zero status code. By default no error is thrown.</p>
+</td></tr>
+<tr valign="top"><td><code>color</code></td>
+<td>
+<p>Whether to use terminal colors in the child process,
+assuming they are active in the parent process.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Extra arguments are passed to <code><a href="../../processx/html/run.html">processx::run()</a></code>.</p>
+</td></tr>
+</table>
+
+<hr /><div style="text-align: center;">[Package <em>callr</em> version 3.2.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

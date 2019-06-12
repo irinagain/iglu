@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Parse and render markdown text</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for commonmark {commonmark}"><tr><td>commonmark {commonmark}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Parse and render markdown text</h2>
+
+<h3>Description</h3>
+
+<p>Converts markdown text to several formats using John MacFarlane's <a href="https://github.com/jgm/cmark">cmark</a>
+reference implementation. Supported output formats include <code>html</code>, <code>latex</code>, groff <code>man</code>, and normalized
+&quot;commonmark&quot; markdown. In addition the markdown parse tree can be returned in xml format.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+markdown_html(text, hardbreaks = FALSE, smart = FALSE, normalize = FALSE,
+  sourcepos = FALSE, extensions = FALSE)
+
+markdown_xml(text, hardbreaks = FALSE, smart = FALSE, normalize = FALSE,
+  sourcepos = FALSE, extensions = FALSE)
+
+markdown_man(text, hardbreaks = FALSE, smart = FALSE, normalize = FALSE,
+  width = 0, extensions = FALSE)
+
+markdown_commonmark(text, hardbreaks = FALSE, smart = FALSE,
+  normalize = FALSE, width = 0, extensions = FALSE)
+
+markdown_text(text, hardbreaks = FALSE, smart = FALSE, normalize = FALSE,
+  width = 0, extensions = FALSE)
+
+markdown_latex(text, hardbreaks = FALSE, smart = FALSE, normalize = FALSE,
+  width = 0, extensions = FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p>Markdown text</p>
+</td></tr>
+<tr valign="top"><td><code>hardbreaks</code></td>
+<td>
+<p>Treat newlines as hard line breaks. If this option is specified, hard wrapping is disabled
+regardless of the value given with <code>width</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>smart</code></td>
+<td>
+<p>Use smart punctuation. See details.</p>
+</td></tr>
+<tr valign="top"><td><code>normalize</code></td>
+<td>
+<p>Consolidate adjacent text nodes.</p>
+</td></tr>
+<tr valign="top"><td><code>sourcepos</code></td>
+<td>
+<p>Include source position attribute in output.</p>
+</td></tr>
+<tr valign="top"><td><code>extensions</code></td>
+<td>
+<p>Enables Github extensions. Can be <code>TRUE</code> (all) <code>FALSE</code> (none) or a character
+vector with a subset of available <a href="extensions.html">extensions</a>.</p>
+</td></tr>
+<tr valign="top"><td><code>width</code></td>
+<td>
+<p>Specify wrap width (default 0 = nowrap).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Support for extensions (including tables and autolink) is provided via the Github
+<a href="https://github.com/github/cmark">fork</a> of cmark. For now these are opt-in and have to be
+enabled with the <code>extensions</code> parameter. See also the manual page on <a href="extensions.html">extensions</a>.
+</p>
+<p>When smart punctuation is enabled, straight double and single quotes will be rendered as curly quotes,
+depending on their position. Moreover <code>--</code> will be rendered as &ndash; (en-dash), <code>---</code> will be
+rendered as &mdash; (em-dash), and <code>...</code> will be rendered as ... (ellipses).
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+md &lt;- readLines("https://raw.githubusercontent.com/yihui/knitr/master/NEWS.md")
+html &lt;- markdown_html(md)
+xml &lt;- markdown_xml(md)
+man &lt;- markdown_man(md)
+tex &lt;- markdown_latex(md)
+cm &lt;- markdown_commonmark(md)
+text &lt;- markdown_text(md)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>commonmark</em> version 1.7 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Establish handlers on the stack</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for with_handlers {rlang}"><tr><td>with_handlers {rlang}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Establish handlers on the stack</h2>
+
+<h3>Description</h3>
+
+<p>Condition handlers are functions established on the evaluation
+stack (see <code><a href="stack.html">ctxt_stack()</a></code>) that are called by R when a condition is
+signalled (see <code><a href="cnd_signal.html">cnd_signal()</a></code> and <code><a href="abort.html">abort()</a></code> for two common signal
+functions). They come in two types: exiting handlers, which jump
+out of the signalling context and are transferred to
+<code>with_handlers()</code> before being executed. And calling handlers,
+which are executed within the signal functions.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+with_handlers(.expr, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>.expr</code></td>
+<td>
+<p>An expression to execute in a context where new
+handlers are established. The underscored version takes a quoted
+expression or a quoted formula.</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>Named handlers. These should be functions of one
+argument. These handlers are treated as exiting by default. Use
+<code><a href="exiting.html">calling()</a></code> to specify a calling handler. These dots support
+<a href="tidy-dots.html">tidy dots</a> features and are passed to <code><a href="as_function.html">as_function()</a></code>
+to enable the formula shortcut for lambda functions.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>An exiting handler is taking charge of the condition. No other
+handler on the stack gets a chance to handle the condition. The
+handler is executed and <code>with_handlers()</code> returns the return value
+of that handler. On the other hand, in place handlers do not
+necessarily take charge. If they return normally, they decline to
+handle the condition, and R looks for other handlers established on
+the evaluation stack. Only by jumping to an earlier call frame can
+a calling handler take charge of the condition and stop the
+signalling process. Sometimes, a muffling restart has been
+established for the purpose of jumping out of the signalling
+function but not out of the context where the condition was
+signalled, which allows execution to resume normally. See
+<code><a href="cnd_muffle.html">cnd_muffle()</a></code> and the <code>mufflable</code> argument of <code><a href="cnd_signal.html">cnd_signal()</a></code>.
+</p>
+<p>Exiting handlers are established first by <code>with_handlers()</code>, and in
+place handlers are installed in second place. The latter handlers
+thus take precedence over the former.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="exiting.html">exiting()</a></code>, <code><a href="exiting.html">calling()</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# Signal a condition with signal():
+fn &lt;- function() {
+  g()
+  cat("called?\n")
+  "fn() return value"
+}
+g &lt;- function() {
+  h()
+  cat("called?\n")
+}
+h &lt;- function() {
+  signal("A foobar condition occurred", "foo")
+  cat("called?\n")
+}
+
+# Exiting handlers jump to with_handlers() before being
+# executed. Their return value is handed over:
+handler &lt;- function(c) "handler return value"
+with_handlers(fn(), foo = exiting(handler))
+
+# Handlers are exiting by default so you can omit the adjective:
+with_handlers(fn(), foo = handler)
+
+# In place handlers are called in turn and their return value is
+# ignored. Returning just means they are declining to take charge of
+# the condition. However, they can produce side-effects such as
+# displaying a message:
+some_handler &lt;- function(c) cat("some handler!\n")
+other_handler &lt;- function(c) cat("other handler!\n")
+with_handlers(fn(), foo = calling(some_handler), foo = calling(other_handler))
+
+# If an in place handler jumps to an earlier context, it takes
+# charge of the condition and no other handler gets a chance to
+# deal with it. The canonical way of transferring control is by
+# jumping to a restart. See with_restarts() and restarting()
+# documentation for more on this:
+exiting_handler &lt;- function(c) rst_jump("rst_foo")
+fn2 &lt;- function() {
+  with_restarts(g(), rst_foo = function() "restart value")
+}
+with_handlers(fn2(), foo = calling(exiting_handler), foo = calling(other_handler))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rlang</em> version 0.3.4 <a href="00Index.html">Index</a>]</div>
+</body></html>

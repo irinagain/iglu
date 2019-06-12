@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Create blob from file on disk</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for blob_create {git2r}"><tr><td>blob_create {git2r}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Create blob from file on disk</h2>
+
+<h3>Description</h3>
+
+<p>Read a file from the filesystem and write its content to the
+Object Database as a loose blob. The method is vectorized and
+accepts a vector of files to create blobs from.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+blob_create(repo = ".", path = NULL, relative = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>repo</code></td>
+<td>
+<p>The repository where the blob(s) will be written. Can
+be a bare repository. A <code>git_repository</code> object, or a
+path to a repository, or <code>NULL</code>.  If the <code>repo</code>
+argument is <code>NULL</code>, the repository is searched for with
+<code><a href="discover_repository.html">discover_repository</a></code> in the current working
+directory.</p>
+</td></tr>
+<tr valign="top"><td><code>path</code></td>
+<td>
+<p>The file(s) from which the blob will be created.</p>
+</td></tr>
+<tr valign="top"><td><code>relative</code></td>
+<td>
+<p>TRUE if the file(s) from which the blob will be
+created is relative to the repository's working dir. Default
+is TRUE.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>list of S3 class git_blob <code>objects</code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+## Initialize a temporary repository
+path &lt;- tempfile(pattern="git2r-")
+dir.create(path)
+repo &lt;- init(path)
+
+## Create blobs from files relative to workdir
+writeLines("Hello, world!", file.path(path, "example-1.txt"))
+writeLines("test content", file.path(path, "example-2.txt"))
+blob_list_1 &lt;- blob_create(repo, c("example-1.txt",
+                                   "example-2.txt"))
+
+## Create blobs from files not relative to workdir
+temp_file_1 &lt;- tempfile()
+temp_file_2 &lt;- tempfile()
+writeLines("Hello, world!", temp_file_1)
+writeLines("test content", temp_file_2)
+blob_list_2 &lt;- blob_create(repo, c(temp_file_1, temp_file_2), relative = FALSE)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>git2r</em> version 0.25.2 <a href="00Index.html">Index</a>]</div>
+</body></html>

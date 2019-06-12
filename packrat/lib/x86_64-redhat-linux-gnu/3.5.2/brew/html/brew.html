@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Report Brewing For Text and R Output</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for brew {brew}"><tr><td>brew {brew}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Report Brewing For Text and R Output</h2>
+
+<h3>Description</h3>
+
+<p><code>brew</code> provides a templating system for text reporting. The syntax is similar to PHP,
+Java Server Pages, Ruby's erb module, and Python's psp module.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+brew(file=stdin(),output=stdout(),text=NULL,envir=parent.frame(),
+     run=TRUE,parseCode=TRUE,tplParser=NULL,chdir=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>A connection, or a character string naming the file
+to read from. stdin() is the default.</p>
+</td></tr>
+<tr valign="top"><td><code>output</code></td>
+<td>
+<p>A connection, or a character string naming the file
+to print to. stdout() is the default.</p>
+</td></tr>
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p> A character string treated as if it contained lines of a file
+to read from. Only one of <code>file</code> or <code>text</code> is used as input. 
+Default is <code>NULL</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>envir</code></td>
+<td>
+<p>the <code><a href="../../base/html/environment.html">environment</a></code> in which the input is to
+be evaluated.  Default is the caller's environment, useful for 
+nested <code>brew</code> calls.</p>
+</td></tr>
+<tr valign="top"><td><code>run</code></td>
+<td>
+<p>Logical to determine if <code>brew</code> should evaluate the input (<code>run=TRUE</code>) or 
+just parse it (<code>run=FALSE</code>). Useful for debugging.</p>
+</td></tr>
+<tr valign="top"><td><code>parseCode</code></td>
+<td>
+<p>Logical. only relevant when run=FALSE. When TRUE the brewed code is parsed and then silently returned. When FALSE, the brewed code is returned as a list. See the Value section for details.</p>
+</td></tr>
+<tr valign="top"><td><code>tplParser</code></td>
+<td>
+<p>a function to parse the text between '&lt;%%' and '%%&gt;' and return the result as
+a character vector. The template text is passed to the function as a variable
+length character vector in the first argument position.</p>
+</td></tr>
+<tr valign="top"><td><code>chdir</code></td>
+<td>
+<p>logical; if <code>TRUE</code> and <code>file</code> is a pathname, the R working
+directory is temporarily changed to the directory containing
+<code>file</code> for evaluating. <code>brew</code> will also honor the global option <code>brew.chdir</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>brew syntax is quite simple and there are very few delimiters to learn:
+</p>
+
+<ul>
+<li><p>1.All text that falls outside of the delimiters is printed as-is.
+</p>
+</li>
+<li><p>2.R expressions between the '&lt;%' and '%&gt;' delimiters are executed in-place.
+</p>
+</li>
+<li><p>3.The value of the R expression between the '&lt;%=' and '%&gt;' delimiters is printed.
+</p>
+</li>
+<li><p>4.All text between the '&lt;%\#' and '%&gt;' delimiters is thrown away. Use it as a comment.
+</p>
+</li>
+<li><p>5.If you place a '-' just before the '%&gt;' delimiter, and it's placed at the end of a line, then the newline is omitted from the output.
+</p>
+</li></ul>
+
+<p>The following template contains syntax to exercise all <code>brew</code> functionality:
+</p>
+<pre>
+---------------
+You won't see this R output, but it will run. &lt;% foo &lt;- 'bar' %&gt;
+Now foo is &lt;%=foo%&gt; and today is &lt;%=format(Sys.time(),'%B %d, %Y')%&gt;.
+&lt;%# Comment -- ignored -- useful in testing. 
+    Also notice the dash-percent-gt.
+    It chops off the trailing newline. 
+    You can add it to any percent-gt. -%&gt;
+How about generating a template from a template?
+&lt;%% foo &lt;- 'fee fi fo fum' %%&gt;
+foo is still &lt;%=foo%&gt;.
+---------------
+</pre>
+<p>The output is:
+</p>
+<pre>
+--------------
+You won't see this R output, but it will run.
+Now foo is bar and today is April 20, 2007.
+How about generating a template from a template?
+&lt;% foo &lt;- 'fee fi fo fum' %&gt;
+foo is still bar.
+--------------
+</pre>
+<p>Also, for power users, there's one more thing:
+</p>
+
+<ul>
+<li><p>6.Text between the '&lt;%%' and '%%&gt;' delimiters is treated as a brew template and
+is printed as-is, but the delimiters are changed to '&lt;%' and '%&gt;'. This happens when tplParser=NULL. But if tplParser is a valid function, then the text is passed to tplParser which should return a character vector to replace the text.
+</p>
+</li></ul>
+
+<p>NOTE: brew calls can be nested and rely on placing a function named '.brew.cat' in the environment in which it is passed. Each time brew is called, a check for the existence of this function is made. If it exists, then it is replaced with a new copy that is lexically scoped to the current brew frame. Once the brew call is done, the function is replaced with the previous function. The function is finally removed from the environment once all brew calls return.
+</p>
+
+
+<h3>Value</h3>
+
+<p>When <code>run=TRUE</code>, the value of the last expression after brewing the input or an object of class 'try-error' containing the error message if brewing failed.
+</p>
+<p>When <code>run=FALSE</code> and <code>parseCode=TRUE</code>, a function whose environment contains the text vector and the code vector of the parsed expressions after brewing the input. It takes brew's output and envir arguments.
+</p>
+<p>When <code>run=FALSE</code> and <code>parseCode=FALSE</code>, a list containing the text vector and the unparsed code vector.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p> Jeffrey Horner &lt;jeff.horner@vanderbilt.edu&gt; </p>
+
+
+<h3>See Also</h3>
+
+ <p><code><a href="../../utils/html/Sweave.html">Sweave</a></code> for the original report generator. </p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+## A port of the Sweave test file.
+brew(system.file("brew-test-1.brew",package="brew"),"brew-test-1.tex",envir=new.env())
+
+## Everything you wanted to know about your R session.
+brew(system.file("brew-test-2.brew",package="brew"),"brew-test-2.html",envir=new.env())
+browseURL(paste('file://',file.path(getwd(),'brew-test-2.html'),sep=''))
+
+## Don't sully up environment, so use envir=new.env(). Nested brew calls will still work.
+brew(system.file("example1.brew",package="brew"),envir=new.env())
+
+## Various ways to print R output 
+library(datasets)
+brew(system.file("catprint.brew",package="brew"),envir=new.env())
+rm(iris)
+
+## The example from the Details section
+brew(system.file("featurefull.brew",package="brew"),envir=new.env())
+
+## Using the tplParser argument
+tParse &lt;- function(text) paste('Got this: &lt;',text,'&gt;\n',sep='',collapse='')
+brew(system.file("featurefull.brew",package="brew"),envir=new.env(),tplParser=tParse)
+rm(tParse)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>brew</em> version 1.0-6 <a href="00Index.html">Index</a>]</div>
+</body></html>

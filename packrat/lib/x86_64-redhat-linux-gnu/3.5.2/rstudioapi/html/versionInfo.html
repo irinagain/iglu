@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: RStudio Version Information</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for versionInfo {rstudioapi}"><tr><td>versionInfo {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+RStudio Version Information
+</h2>
+
+<h3>Description</h3>
+
+<p>Provides information about the currently running version of RStudio, including it's specific version number and whether it is running in desktop or server mode.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+versionInfo()
+</pre>
+
+
+<h3>Value</h3>
+
+<p>Returns a list with the following elements:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+   <code>version</code> </td><td style="text-align: left;"> A package version object that can be used in comparisons. This is the same value which would be returned from <code>packageVersion("rstudio")</code> </td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>mode</code> </td><td style="text-align: left;"> Current program mode (either "desktop" or "server")</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+   <code>citation</code> </td><td style="text-align: left;"> An object inheriting from class <code>bibentry</code></td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+
+
+<h3>Note</h3>
+
+<p>The <code>versionInfo</code> function was added in version 0.97.124 of RStudio.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+require(rstudioapi)
+ver &lt;- versionInfo()
+
+# Test specific version constraint
+if (ver$version &gt;= "0.97") {
+   # do some 0.97 dependent stuff
+}
+
+# Check current mode
+desktopMode &lt;- ver$mode == "desktop"
+serverMode &lt;- ver$mode == "server"
+
+# Get the citation
+ver$citation
+
+
+## End(Not run)
+
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

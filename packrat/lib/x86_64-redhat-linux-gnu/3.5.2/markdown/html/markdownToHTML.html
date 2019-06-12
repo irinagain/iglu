@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Render markdown to HTML</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for markdownToHTML {markdown}"><tr><td>markdownToHTML {markdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Render markdown to HTML</h2>
+
+<h3>Description</h3>
+
+<p><code>markdownToHTML</code> transforms the <em>markdown</em> text provided by the
+user in either the <code>file</code> or <code>text</code> variable. The HTML
+transformation is either written to the <code>output</code> file or returned to the
+user as a <code>character</code> vector.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+markdownToHTML(file, output = NULL, text = NULL,
+  options = getOption("markdown.HTML.options"),
+  extensions = getOption("markdown.extensions"), title = "",
+  stylesheet = getOption("markdown.HTML.stylesheet"),
+  header = getOption("markdown.HTML.header"),
+  template = getOption("markdown.HTML.template"),
+  fragment.only = FALSE, encoding = "UTF-8")
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>file</code></td>
+<td>
+<p>a character string giving the pathname of the file to read from.
+If it is omitted from the argument list, then it is presumed that the
+<code>text</code> argument will be used instead.</p>
+</td></tr>
+<tr valign="top"><td><code>output</code></td>
+<td>
+<p>a character string giving the pathname of the file to write to.
+If it is omitted (<code>NULL</code>), then it is presumed that the user expects
+the results returned as a <code>character</code> vector.</p>
+</td></tr>
+<tr valign="top"><td><code>text</code></td>
+<td>
+<p>a character vector containing the <em>markdown</em> text to
+transform (each element of this vector is treated as a line in a file).</p>
+</td></tr>
+<tr valign="top"><td><code>options</code></td>
+<td>
+<p>options that are passed to the renderer.  see
+<code><a href="markdownHTMLOptions.html">markdownHTMLOptions</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>extensions</code></td>
+<td>
+<p>options that are passed to the <em>markdown</em> engine. See
+<code><a href="markdownExtensions.html">markdownExtensions</a></code>.</p>
+</td></tr>
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>The HTML title.</p>
+</td></tr>
+<tr valign="top"><td><code>stylesheet</code></td>
+<td>
+<p>either valid CSS or a file containing CSS. will be included
+in the output.</p>
+</td></tr>
+<tr valign="top"><td><code>header</code></td>
+<td>
+<p>either valid HTML or a file containing HTML will be included in
+the header of the output.</p>
+</td></tr>
+<tr valign="top"><td><code>template</code></td>
+<td>
+<p>an HTML file used as template.</p>
+</td></tr>
+<tr valign="top"><td><code>fragment.only</code></td>
+<td>
+<p>Whether or not to produce an HTML fragment without the
+HTML header and body tags, CSS, and Javascript components.</p>
+</td></tr>
+<tr valign="top"><td><code>encoding</code></td>
+<td>
+<p>ignored (always assumes the file is encoded in UTF-8).</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>Three notable HTML options have been added to support collaborative
+reproducible research. They are as follows:
+</p>
+
+<ul>
+<li><p> Latex math expressions enclosed by one of the block level syntaxes,
+$latex ... $ , $$ ... $$, or \[ ... \], or one of the inline syntaxes, $...$,
+or \( ... \), will be rendered in real-time by the MathJax Javascript
+library.
+</p>
+</li>
+<li> <p><em>R</em> code blocks enclosed between <code style="white-space: pre;">```r</code> and <code style="white-space: pre;">```</code> will
+automatically be syntax highlighted.
+</p>
+</li>
+<li><p> Any local images linked using the &lt;img&gt; tag will be base64 encoded and
+included in the output HTML.
+</p>
+</li></ul>
+
+<p>See the DETAILS section below and <code><a href="markdownHTMLOptions.html">markdownHTMLOptions</a></code> for more
+information.
+</p>
+<p>There are two basic modes to <code>markdownToHTML</code> determined by the value of
+the <code>fragment.only</code> argument:
+</p>
+<p>When <code>FALSE</code>, <code>markdownToHTML</code> creates well-formed stand-alone HTML
+pages complete with HTML header, title, and body tags. The default template
+used for this mode may be found here:
+</p>
+<p><code>system.file('resources', 'markdown.html', package = 'markdown')</code>
+</p>
+<p>Also, <code>markdownToHTML</code> will automatically determine whether or not
+mathjax and R code highlighting are needed and will include the appropriate
+Javascript libraries in the output. Thus, there's no need to explicitly set
+the <code>'mathjax'</code> or <code>'highlight_code'</code> options (see
+<code><a href="markdownHTMLOptions.html">markdownHTMLOptions</a></code> for more details).
+</p>
+<p>When <code>fragment.only</code> is TRUE, nothing extra is added.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Invisible <code>NULL</code> when output is to a file, and a character
+vector otherwise.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="markdownExtensions.html">markdownExtensions</a></code>, <code><a href="markdownHTMLOptions.html">markdownHTMLOptions</a></code>,
+<code><a href="renderMarkdown.html">renderMarkdown</a></code>.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+(markdownToHTML(text = "Hello World!", fragment.only = TRUE))
+(markdownToHTML(file = NULL, text = "_text_ will override _file_", fragment.only = TRUE))
+# write HTML to an output file
+markdownToHTML(text = "_Hello_, **World**!", output = tempfile())
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>markdown</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Return the current version of the RStudio API</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for getVersion {rstudioapi}"><tr><td>getVersion {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Return the current version of the RStudio API</h2>
+
+<h3>Description</h3>
+
+<p>Return the current version of the RStudio API
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getVersion()
+</pre>
+
+
+<h3>Value</h3>
+
+<p>A <code><a href="../../base/html/numeric_version.html">numeric_version</a></code> which you can compare to a string
+and get correct results.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+if (rstudioapi::getVersion() &lt; "0.98.100") {
+  message("Your version of RStudio is quite old")
+}
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

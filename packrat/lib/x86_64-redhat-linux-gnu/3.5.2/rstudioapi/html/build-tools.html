@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Build Tools</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for build-tools {rstudioapi}"><tr><td>build-tools {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Build Tools</h2>
+
+<h3>Description</h3>
+
+<p>Check, install, and use build tools as required.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+buildToolsCheck()
+
+buildToolsInstall(action)
+
+buildToolsExec(expr)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>action</code></td>
+<td>
+<p>The action (as a string) being taken that will require
+installation of build tools.</p>
+</td></tr>
+<tr valign="top"><td><code>expr</code></td>
+<td>
+<p>An <span style="font-family: Courier New, Courier; color: #666666;"><b>R</b></span> expression (unquoted) to be executed with build tools
+available and on the <code>PATH</code>.</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>These functions are intended to be used together &ndash; one should
+first check whether build tools are available, and when not,
+prompt for installation. For example:</p>
+<pre>compile_model &lt;- function(...) {
+
+if (rstudioapi::isAvailable()) {
+
+if (!rstudioapi::buildToolsCheck())
+      rstudioapi::buildToolsInstall("Model compilation")
+
+rstudioapi::buildToolsExec({
+      # code requiring build tools here
+    })
+
+}
+}
+</pre>
+<p>The <code>action</code> parameter is used to communicate (with a prompt) the operation
+being performed that requires build tool installation. Setting it to <code>NULL</code>
+or the empty string will suppress that prompt.
+</p>
+
+
+<h3>Note</h3>
+
+<p>The <code>buildToolsCheck()</code>, <code>buildToolsInstall()</code>, and <code>buildToolsExec()</code>
+functions were added with version 1.2.962 of RStudio.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

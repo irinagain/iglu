@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Retrieve Information about an RStudio Editor</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rstudio-editors {rstudioapi}"><tr><td>rstudio-editors {rstudioapi}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Retrieve Information about an RStudio Editor</h2>
+
+<h3>Description</h3>
+
+<p>Returns information about an RStudio editor.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+getActiveDocumentContext()
+
+getSourceEditorContext()
+
+getConsoleEditorContext()
+</pre>
+
+
+<h3>Details</h3>
+
+<p>The <code>selection</code> field returned is a list of document selection objects.
+A document selection is just a pairing of a document <code>range</code>, and the
+<code>text</code> within that range.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A <code>list</code> with elements:
+</p>
+
+<table summary="Rd table">
+<tr>
+ <td style="text-align: left;">
+<code>id</code> </td><td style="text-align: left;"> The document ID.</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code>path</code> </td><td style="text-align: left;"> The path to the document on disk.</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code>contents</code> </td><td style="text-align: left;"> The contents of the document.</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+<code>selection</code> </td><td style="text-align: left;"> A <code>list</code> of selections. See <b>Details</b> for more information.</td>
+</tr>
+<tr>
+ <td style="text-align: left;">
+</td>
+</tr>
+
+</table>
+
+
+
+<h3>Note</h3>
+
+<p>The <code>getActiveDocumentContext</code> function was added with version 0.99.796
+of RStudio, while the <code>getSourceEditorContext</code> and the <code>getConsoleEditorContext</code>
+functions were added with version 0.99.1111.
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>rstudioapi</em> version 0.10 <a href="00Index.html">Index</a>]</div>
+</body></html>

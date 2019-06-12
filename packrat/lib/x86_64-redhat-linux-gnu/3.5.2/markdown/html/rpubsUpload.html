@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Upload an HTML file to RPubs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for rpubsUpload {markdown}"><tr><td>rpubsUpload {markdown}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Upload an HTML file to RPubs</h2>
+
+<h3>Description</h3>
+
+<p>This function uploads an HTML file to rpubs.com. If the upload succeeds a
+list that includes an <code>id</code> and <code>continueUrl</code> is returned. A browser
+should be opened to the <code>continueUrl</code> to complete publishing of the
+document. If an error occurs then a diagnostic message is returned in the
+<code>error</code> element of the list.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+rpubsUpload(title, htmlFile, id = NULL, properties = list(), 
+    method = getOption("rpubs.upload.method", "auto"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>title</code></td>
+<td>
+<p>The title of the document.</p>
+</td></tr>
+<tr valign="top"><td><code>htmlFile</code></td>
+<td>
+<p>The path to the HTML file to upload.</p>
+</td></tr>
+<tr valign="top"><td><code>id</code></td>
+<td>
+<p>If this upload is an update of an existing document then the id
+parameter should specify the document id to update. Note that the id is
+provided as an element of the list returned by successful calls to
+<code>rpubsUpload</code>.</p>
+</td></tr>
+<tr valign="top"><td><code>properties</code></td>
+<td>
+<p>A named list containing additional document properties
+(RPubs doesn't currently expect any additional properties, this parameter
+is reserved for future use).</p>
+</td></tr>
+<tr valign="top"><td><code>method</code></td>
+<td>
+<p>Method to be used for uploading. &quot;internal&quot; uses a plain http
+socket connection; &quot;curl&quot; uses the curl binary to do an https upload;
+&quot;rcurl&quot; uses the RCurl package to do an https upload; and &quot;auto&quot; uses the
+best available method searched for in the following order: &quot;curl&quot;, &quot;rcurl&quot;,
+and then &quot;internal&quot;. The global default behavior can be configured by
+setting the <code>rpubs.upload.method</code> option (the default is &quot;auto&quot;).</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A named list. If the upload was successful then the list contains a
+<code>id</code> element that can be used to subsequently update the document as
+well as a <code>continueUrl</code> element that provides a URL that a browser
+should be opened to in order to complete publishing of the document. If the
+upload fails then the list contains an <code>error</code> element which contains
+an explanation of the error that occurred.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+## Not run: 
+# upload a document
+result &lt;- rpubsUpload("My document title", "Document.html")
+if (!is.null(result$continueUrl)) 
+    browseURL(result$continueUrl) else stop(result$error)
+
+# update the same document with a new title
+updateResult &lt;- rpubsUpload("My updated title", "Document.html", result$id)
+
+## End(Not run)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>markdown</em> version 1.0 <a href="00Index.html">Index</a>]</div>
+</body></html>
