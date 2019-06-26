@@ -2,19 +2,17 @@
 % Please edit documentation in R/mage.R
 \name{mage}
 \alias{mage}
-\title{Calculate MAGE (Mean amplitude of glucose excursion)}
+\title{Calculate Mean Amplitude of Glucose Excursion (MAGE)}
 \usage{
-mage(data_, id_ = unique(data_$id), sd_ = 1)
+mage(data, sd = 1)
 }
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl").}
 
-\item{id}{Desired value(s) from id column. Default is all id's.}
-
 \item{sd}{Standard deviations used to classify "excursions". Default is 1.}
 }
 \description{
-Calculate MAGE (Mean amplitude of glucose excursion)
+Calculate Mean Amplitude of Glucose Excursion (MAGE)
 }
 \examples{
 mage(mydata)
