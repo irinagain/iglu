@@ -18,5 +18,8 @@ iglu::quantile_glu(data)
 iglu::range_glu(data)
 iglu::sd_glu(data)
 iglu::summary_glu(data)
+<<<<<<< HEAD
 iglu::plot_glu(data)
+=======
+>>>>>>> fbed29cf29e356c1c1d7f92b9d2e66bf6bc5827d
 
