@@ -19,4 +19,4 @@ iglu::quantile_glu(data)
 iglu::range_glu(data)
 iglu::sd_glu(data)
 iglu::summary_glu(data)
-s
+
