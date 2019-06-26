@@ -3,6 +3,10 @@
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #' @param targets List of target values. Default list is [(80,200), (70,180), (70,140)].
 #'
+#' @return
+#'
+#' @export
+#'
 #' @examples
 #' in_range_percent(data)
 #' in_range_percent(data, targets = list(c(100,200), c(150,250))

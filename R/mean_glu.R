@@ -4,6 +4,10 @@
 #'
 #' @description Simple wrapper for mean().
 #'
+#' @return
+#'
+#' @export
+#'
 #' @examples
 #' mean_glu(data)
 

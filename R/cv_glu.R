@@ -5,6 +5,10 @@
 #' @description The coefficient of variation is computed by dividing
 #' the sample standard deviation by the sample mean and multypling by 100%
 #'
+#' @return
+#'
+#' @export
+#'
 #' @examples
 #' cv_glu(data)
 

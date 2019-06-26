@@ -1,12 +1,14 @@
-
-#' Title
+#' Plot time series of glucose measurements
 #'
-#' @param data
+#' @param data DataFrame with column names ("id", "time", and "gl").
 #'
 #' @return
+#'
 #' @export
 #'
 #' @examples
+#' plot_glu(data)
+#'
 plot_glu <- function(data){
   gl_by_id = as.double(data$gl)
   # ***

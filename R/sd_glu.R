@@ -3,6 +3,11 @@
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #'
 #' @description Simple wrapper for sd().
+#'
+#' @return
+#'
+#' @export
+#'
 #' @examples
 #' sd_glu(data)
 

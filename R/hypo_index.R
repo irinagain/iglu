@@ -3,6 +3,9 @@
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #' @param lower Lower bound used for hypoglycemia cutoff. Default is 80.
 #'
+#' @return
+#'
+#' @export
 #'
 #' @examples
 #' hypo_index(data)

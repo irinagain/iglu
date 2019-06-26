@@ -2,8 +2,14 @@
 #'
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #'
+#' @return
+#'
+#' @export
+#'
 #' @examples
 #' hbgi(data)
+#'
+
 
 hbgi <- function(data){
   gl_by_id = as.double(data$gl)

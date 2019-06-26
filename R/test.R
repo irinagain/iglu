@@ -1,5 +1,4 @@
 data = read.csv('/share/RDirectory/iglu/Data/ExampleData1Subject.csv')
-
 iglu::above_percent(data)
 iglu::below_percent(data)
 iglu::cv_glu(data)
@@ -19,4 +18,5 @@ iglu::quantile_glu(data)
 iglu::range_glu(data)
 iglu::sd_glu(data)
 iglu::summary_glu(data)
-s
+iglu::plot_glu(data)
+

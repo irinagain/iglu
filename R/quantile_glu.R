@@ -5,6 +5,10 @@
 #'
 #' @description Simple wrapper for quantile().
 #'
+#' @return
+#'
+#' @export
+#'
 #' @examples
 #' quantile_glu(data)
 #' quantile_glu(data, quantiles = c(0, .33, .66, 1))

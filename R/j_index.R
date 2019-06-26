@@ -3,6 +3,10 @@
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #' 1 represents mmol/L. Default is 0 (mg/dL).
 #'
+#' @return
+#'
+#' @export
+#'
 #' @description The J-index is calculated differently for each of the
 #' two measurement units. For mg/dL (unit = 0), J-index = 0.001 * (mean + sd)^2
 #' For mmol/L (unit = 1), J-index = 0.324 * (mean + sd)^2

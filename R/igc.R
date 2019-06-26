@@ -5,6 +5,9 @@
 #' @param lower Lower bound used for hypoglycemia cutoff. Default is 80.
 #' @param upper Upper bound used for hyperglycemia cutoff. Default is 140.
 #'
+#' @return
+#'
+#' @export
 #'
 #' @examples
 #' igc(data)

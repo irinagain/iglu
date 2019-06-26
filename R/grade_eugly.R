@@ -3,6 +3,11 @@
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #' @param lower Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 80
 #' @param upper Upper bound used for hyperglycemia cutoff, in mg/dL. Default is 140.
+#'
+#' @return
+#'
+#' @export
+#'
 #' @examples
 #' grade_hyper(data)
 #' grade_hyper(data, lower = 70)

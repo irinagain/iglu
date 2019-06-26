@@ -3,6 +3,9 @@
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #' @param upper Upper bound used for hyperglycemia cutoff. Default is 140.
 #'
+#' @return
+#'
+#' @export
 #'
 #' @examples
 #' hyper_index(data)

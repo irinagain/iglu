@@ -3,6 +3,10 @@
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #' @param targets List of target values. Default list is (50,80).
 #'
+#' @return
+#'
+#' @export
+#'
 #' @examples
 #' below_percent(data)
 #' below_percent(data, targets = c(50,100, 180))

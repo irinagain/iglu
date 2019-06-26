@@ -3,6 +3,10 @@
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #' 1 represents mmol/L. Default is 0 (mg/dL).
 #'
+#' @return
+#'
+#' @export
+#'
 #' @examples
 #' grade(data)
 

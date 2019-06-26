@@ -2,6 +2,10 @@
 #'
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #'
+#' @return
+#'
+#' @export
+#'
 #' @examples
 #' lbgi(data)
 

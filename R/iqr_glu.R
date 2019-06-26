@@ -4,6 +4,10 @@
 #'
 #' @description Simple wrapper for IQR().
 #'
+#' @return
+#'
+#' @export
+#'
 #' @examples
 #' iqr_glu(data)
 

@@ -4,6 +4,10 @@
 #'
 #' @description Computes distance between min and max glucose value.
 #'
+#' @return
+#'
+#' @export
+#'
 #' @examples
 #' range_glu(data)
 

@@ -3,9 +3,13 @@
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #' @param sd Standard deviations used to classify "excursions". Default is 1.
 #'
+#' @return
+#'
+#' @export
+#'
 #' @examples
-#' mage(mydata)
-#' mage(mydata, 'Subject 1', 2)
+#' mage(data)
+#' mage(data, 'Subject 1', 2)
 #'
 
 mage <- function(data, sd = 1){
