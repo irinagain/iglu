@@ -9,6 +9,9 @@ lbgi(data)
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl").}
 }
+\value{
+
+}
 \description{
 Calculate Low Blood Glucose Index (LGBI)
 }

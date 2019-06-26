@@ -11,6 +11,9 @@ hyper_index(data, upper = 140)
 
 \item{upper}{Upper bound used for hyperglycemia cutoff. Default is 140.}
 }
+\value{
+
+}
 \description{
 Calculate hyperglycaemic index (HGI)
 }

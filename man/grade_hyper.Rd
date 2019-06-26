@@ -25,6 +25,13 @@ grade_hyper(data, lower = 80)
 
 \item{lower}{Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 80}
 }
+\value{
+
+
+
+
+
+}
 \description{
 Percentage of GRADE score in target range
 

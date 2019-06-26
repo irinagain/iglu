@@ -11,6 +11,9 @@ below_percent(data, targets = c(50, 80))
 
 \item{targets}{List of target values. Default list is (50,80).}
 }
+\value{
+
+}
 \description{
 Calculate percentage below targeted values
 }

@@ -11,11 +11,14 @@ mage(data, sd = 1)
 
 \item{sd}{Standard deviations used to classify "excursions". Default is 1.}
 }
+\value{
+
+}
 \description{
 Calculate Mean Amplitude of Glucose Excursion (MAGE)
 }
 \examples{
-mage(mydata)
-mage(mydata, 'Subject 1', 2)
+mage(data)
+mage(data, 'Subject 1', 2)
 
 }

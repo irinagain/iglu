@@ -13,6 +13,9 @@ igc(data, lower = 80, upper = 140)
 
 \item{upper}{Upper bound used for hyperglycemia cutoff. Default is 140.}
 }
+\value{
+
+}
 \description{
 Compute sum of Hyperglycemia index and Hypoglycemia index
 }

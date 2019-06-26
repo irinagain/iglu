@@ -10,6 +10,9 @@ j_index(data)
 \item{data}{DataFrame with column names ("id", "time", and "gl").
 1 represents mmol/L. Default is 0 (mg/dL).}
 }
+\value{
+
+}
 \description{
 The J-index is calculated differently for each of the
 two measurement units. For mg/dL (unit = 0), J-index = 0.001 * (mean + sd)^2

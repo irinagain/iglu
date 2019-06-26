@@ -10,6 +10,9 @@ grade(data)
 \item{data}{DataFrame with column names ("id", "time", and "gl").
 1 represents mmol/L. Default is 0 (mg/dL).}
 }
+\value{
+
+}
 \description{
 Calculate mean GRADE score
 }

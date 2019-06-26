@@ -11,6 +11,9 @@ above_percent(data, targets = c(140, 180, 200, 250))
 
 \item{targets}{List of target values. Default list is (140,180,200,250).}
 }
+\value{
+
+}
 \description{
 Calculate percentage above targeted values
 }

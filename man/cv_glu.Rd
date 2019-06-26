@@ -9,6 +9,9 @@ cv_glu(data)
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl").}
 }
+\value{
+
+}
 \description{
 The coefficient of variation is computed by dividing
 the sample standard deviation by the sample mean and multypling by 100%

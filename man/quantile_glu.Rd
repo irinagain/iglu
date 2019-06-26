@@ -11,6 +11,9 @@ quantile_glu(data, quantiles = c(0, 0.25, 0.5, 0.75, 1))
 
 \item{quantiles}{List of values between 0 and 1.}
 }
+\value{
+
+}
 \description{
 Simple wrapper for quantile().
 }

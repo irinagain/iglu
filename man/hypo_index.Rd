@@ -11,6 +11,9 @@ hypo_index(data, lower = 80)
 
 \item{lower}{Lower bound used for hypoglycemia cutoff. Default is 80.}
 }
+\value{
+
+}
 \description{
 Calculate hypoglycaemic index (HGI)
 }

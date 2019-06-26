@@ -9,6 +9,9 @@ range_glu(data)
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl").}
 }
+\value{
+
+}
 \description{
 Computes distance between min and max glucose value.
 }

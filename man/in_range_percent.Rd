@@ -12,6 +12,9 @@ in_range_percent(data, targets = list(c(80, 200), c(70, 180), c(70,
 
 \item{targets}{List of target values. Default list is [(80,200), (70,180), (70,140)].}
 }
+\value{
+
+}
 \description{
 Calculate percentage in targeted value ranges
 }

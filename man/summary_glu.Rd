@@ -9,6 +9,9 @@ summary_glu(data)
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl").}
 }
+\value{
+
+}
 \description{
 Simple wrapper for summary().
 }
