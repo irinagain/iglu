@@ -10,9 +10,11 @@
 #' @examples
 #' above_percent(data)
 #' above_percent(data, targets = c(100, 150, 180))
+#'
 
 above_percent <- function(data, targets = c(140,180,200,250)){
-  gl_by_id = as.double(data$gl)
+
+  gl_by_id = read_df_or_vec(data)
   targets = as.double(targets)
   out_vec = NULL
   names_list = NULL
