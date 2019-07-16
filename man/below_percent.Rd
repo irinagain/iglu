@@ -7,7 +7,8 @@
 below_percent(data, targets = c(50, 80))
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl").}
+\item{data}{DataFrame with column names ("id", "time", and "gl"),
+or vector of glucose values as integer, numeric, or double.}
 
 \item{targets}{List of target values. Default list is (50,80).}
 }

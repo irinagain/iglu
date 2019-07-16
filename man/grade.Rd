@@ -7,8 +7,8 @@
 grade(data)
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl").
-1 represents mmol/L. Default is 0 (mg/dL).}
+\item{data}{DataFrame with column names ("id", "time", and "gl"),
+or vector of glucose values as integer, numeric, or double.}
 }
 \value{
 

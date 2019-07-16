@@ -11,17 +11,20 @@ grade_hyper(data, lower = 80)
 grade_hyper(data, lower = 80)
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl").}
+\item{data}{DataFrame with column names ("id", "time", and "gl"),
+or vector of glucose values as integer, numeric, or double.}
 
 \item{lower}{Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 80}
 
 \item{upper}{Upper bound used for hyperglycemia cutoff, in mg/dL. Default is 140.}
 
-\item{data}{DataFrame with column names ("id", "time", and "gl").}
+\item{data}{DataFrame with column names ("id", "time", and "gl"),
+or vector of glucose values as integer, numeric, or double.}
 
 \item{upper}{Upper bound used for hyperglycemia cutoff, in mg/dL. Default is 140.}
 
-\item{data}{DataFrame with column names ("id", "time", and "gl").}
+\item{data}{DataFrame with column names ("id", "time", and "gl"),
+or vector of glucose values as integer, numeric, or double.}
 
 \item{lower}{Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 80}
 }

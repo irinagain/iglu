@@ -7,7 +7,8 @@
 plot_glu(data)
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl").}
+\item{data}{DataFrame with column names ("id", "time", and "gl"),
+or vector of glucose values as integer, numeric, or double.}
 }
 \value{
 

@@ -7,7 +7,8 @@
 quantile_glu(data, quantiles = c(0, 0.25, 0.5, 0.75, 1))
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl").}
+\item{data}{DataFrame with column names ("id", "time", and "gl"),
+or vector of glucose values as integer, numeric, or double.}
 
 \item{quantiles}{List of values between 0 and 1.}
 }

@@ -7,7 +7,8 @@
 igc(data, lower = 80, upper = 140)
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl").}
+\item{data}{DataFrame with column names ("id", "time", and "gl"),
+or vector of glucose values as integer, numeric, or double.}
 
 \item{lower}{Lower bound used for hypoglycemia cutoff. Default is 80.}
 

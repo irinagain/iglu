@@ -7,7 +7,8 @@
 above_percent(data, targets = c(140, 180, 200, 250))
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl").}
+\item{data}{DataFrame with column names ("id", "time", and "gl"),
+or vector of glucose values as integer, numeric, or double.}
 
 \item{targets}{List of target values. Default list is (140,180,200,250).}
 }
@@ -20,4 +21,5 @@ Calculate percentage above targeted values
 \examples{
 above_percent(data)
 above_percent(data, targets = c(100, 150, 180))
+
 }

@@ -1,6 +1,8 @@
 #' Calculate percentage above targeted values
 #'
-#' @param data DataFrame with column names ("id", "time", and "gl").
+#' @param data DataFrame with column names ("id", "time", and "gl"),
+#' or vector of glucose values as integer, numeric, or double.
+#'
 #' @param targets List of target values. Default list is (140,180,200,250).
 #'
 #' @return

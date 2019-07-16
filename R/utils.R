@@ -1,7 +1,14 @@
+read_df_or_vec <- function(data){
+  output = switch(class(data), 'data.frame' = as.double(data$gl), 'numeric' = as.double(data), 'integer' = as.double(data), 'double' = as.double(data))
+  return(output)
+}
+
 convert_glu_measurement_type <- function(){
 }
 
-data_to_gl_format
+data_to_gl_format <- function(){
+
+}
 rate_of_change <- function(){
 
 }

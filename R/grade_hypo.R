@@ -1,6 +1,8 @@
 #' Percentage of GRADE score below target
 #'
-#' @param data DataFrame with column names ("id", "time", and "gl").
+#' @param data DataFrame with column names ("id", "time", and "gl"),
+#' or vector of glucose values as integer, numeric, or double.
+#'
 #' @param lower Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 80
 #'
 #' @return
@@ -12,8 +14,8 @@
 #' grade_hypo(data, lower = 70)
 
 grade_hyper <- function(data, lower = 80){
-  gl_by_id = as.double(data$gl)
- # unit_constant = unit * 1 + (1-unit) * 18
+  gl_by_id = read_df_or_vec(data)
+  # unit_constant = unit * 1 + (1-unit) * 18
   grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
   out = sum(grade_vec[gl_by_id < lower])/sum(grade_vec) * 100
   return(out)

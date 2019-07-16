@@ -1,6 +1,8 @@
 #' Calculate percentage below targeted values
 #'
-#' @param data DataFrame with column names ("id", "time", and "gl").
+#' @param data DataFrame with column names ("id", "time", and "gl"),
+#' or vector of glucose values as integer, numeric, or double.
+#'
 #' @param targets List of target values. Default list is (50,80).
 #'
 #' @return
@@ -12,7 +14,7 @@
 #' below_percent(data, targets = c(50,100, 180))
 
 below_percent <- function(data, targets = c(50,80)){
-  gl_by_id = as.double(data$gl)
+  gl_by_id = read_df_or_vec(data)
   targets = as.double(targets)
   out_vec = NULL
   names_list = NULL

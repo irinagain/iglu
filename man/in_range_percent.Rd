@@ -8,7 +8,8 @@ in_range_percent(data, targets = list(c(80, 200), c(70, 180), c(70,
   140)))
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl").}
+\item{data}{DataFrame with column names ("id", "time", and "gl"),
+or vector of glucose values as integer, numeric, or double.}
 
 \item{targets}{List of target values. Default list is [(80,200), (70,180), (70,140)].}
 }

@@ -7,7 +7,8 @@
 mage(data, sd = 1)
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl").}
+\item{data}{DataFrame with column names ("id", "time", and "gl"),
+or vector of glucose values as integer, numeric, or double.}
 
 \item{sd}{Standard deviations used to classify "excursions". Default is 1.}
 }

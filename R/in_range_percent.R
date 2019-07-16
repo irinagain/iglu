@@ -1,6 +1,8 @@
 #' Calculate percentage in targeted value ranges
 #'
-#' @param data DataFrame with column names ("id", "time", and "gl").
+#' @param data DataFrame with column names ("id", "time", and "gl"),
+#' or vector of glucose values as integer, numeric, or double.
+#'
 #' @param targets List of target values. Default list is [(80,200), (70,180), (70,140)].
 #'
 #' @return
@@ -16,7 +18,7 @@
 
 in_range_percent <- function(data,
                   targets = list(c(80,200), c(70,180), c(70,140))){
-  gl_by_id = as.double(data$gl)
+  gl_by_id = read_df_or_vec(data)
   out_vec = NULL
   names_list = NULL
   for(target_range in targets){
