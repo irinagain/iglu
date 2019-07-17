@@ -3,7 +3,7 @@ Type: Package
 Title: Interpreting GLUcose data
 Version: 0.1.0
 Author: Steve Broll
-Maintainer: The package maintainer <stevebroll@tamu.edu>
+Maintainer: Steve Broll <stevebroll@tamu.edu>
 Description: 
 License: 
 Encoding: UTF-8
