@@ -15,7 +15,6 @@
 #'
 
 mage <- function(data, sd = 1){
-  # gl_by_id = as.double(data[data_$id %in% id_,]$gl)
   gl_by_id = read_df_or_vec(data)
   abs_diff_mean = abs(gl_by_id - mean(gl_by_id, na.rm = T))
   mage_out = mean(abs_diff_mean[abs_diff_mean > sd * sd(gl_by_id, na.rm = T)])
