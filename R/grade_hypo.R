@@ -11,9 +11,9 @@
 #'
 #' @examples
 #' grade_hypeodata)
-#' grade_hypo(data, lower = 70)
+#' grade_hypo(data, lower = 80)
 
-grade_hypo <- function(data, lower = 80){
+grade_hypo <- function(data, lower = 70){
   gl_by_id = read_df_or_vec(data)
   # unit_constant = unit * 1 + (1-unit) * 18
   grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
