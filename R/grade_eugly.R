@@ -14,7 +14,7 @@
 #' grade_hyper(data)
 #' grade_hyper(data, lower = 70)
 
-grade_hyper <- function(data, lower = 80, upper = 140){
+grade_eugly <- function(data, lower = 80, upper = 140){
   gl_by_id = read_df_or_vec(data)
   # unit_constant = unit * 1 + (1-unit) * 18
   grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
