@@ -24,5 +24,5 @@ in_range_percent(data)
 in_range_percent(data, targets = list(c(100,200), c(150,250))
 
 # The following will return same output as previous output:
-in_range_percent(data, targets = list(c(200, 100)), c(250,150))
+in_range_percent(data, targets = list(c(200, 100), c(250,150))
 }
