@@ -1,7 +1,7 @@
 Package: remotes
 Title: R Package Installation from Remote Repositories, Including
         'GitHub'
-Version: 2.0.4
+Version: 2.1.0
 Authors@R: c(
     person("Jim", "Hester", , "james.hester@rstudio.com", role = c("aut", "cre")),
     person("Gábor", "Csárdi", , "csardi.gabor@gmail.com", role = c("aut")),
@@ -20,16 +20,16 @@ License: GPL (>= 2)
 URL: https://github.com/r-lib/remotes#readme
 BugReports: https://github.com/r-lib/remotes/issues
 Imports: methods, stats, tools, utils
-Suggests: brew, callr, curl, covr, git2r (>= 0.23.0), knitr, mockery,
-        pkgbuild (>= 1.0.1), pingr, rmarkdown, rprojroot, testthat,
-        withr
+Suggests: brew, callr, codetools, curl, covr, git2r (>= 0.23.0), knitr,
+        mockery, pkgbuild (>= 1.0.1), pingr, rmarkdown, rprojroot,
+        testthat, withr
 Depends: R (>= 3.0.0)
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
 SystemRequirements: Subversion for install_svn, git for install_git
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2019-04-10 14:53:06 UTC; jhester
+Packaged: 2019-06-24 20:53:53 UTC; jhester
 Author: Jim Hester [aut, cre],
   Gábor Csárdi [aut],
   Hadley Wickham [aut],
@@ -40,5 +40,5 @@ Author: Jim Hester [aut, cre],
   Mango Solutions [cph]
 Maintainer: Jim Hester <james.hester@rstudio.com>
 Repository: CRAN
-Date/Publication: 2019-04-10 16:32:54 UTC
-Built: R 3.5.2; ; 2019-06-12 17:33:45 UTC; unix
+Date/Publication: 2019-06-24 21:30:03 UTC
+Built: R 3.5.2; ; 2019-08-24 18:57:23 UTC; unix

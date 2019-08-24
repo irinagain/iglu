@@ -19,11 +19,12 @@ or an external git client installed.
 
 <pre>
 install_git(url, subdir = NULL, ref = NULL, branch = NULL,
-  credentials = NULL, git = c("auto", "git2r", "external"),
-  dependencies = NA, upgrade = c("default", "ask", "always", "never"),
-  force = FALSE, quiet = FALSE, build = TRUE,
+  credentials = git_credentials(), git = c("auto", "git2r",
+  "external"), dependencies = NA, upgrade = c("default", "ask",
+  "always", "never"), force = FALSE, quiet = FALSE, build = TRUE,
   build_opts = c("--no-resave-data", "--no-manual",
-  "--no-build-vignettes"), repos = getOption("repos"),
+  "--no-build-vignettes"), build_manual = FALSE,
+  build_vignettes = FALSE, repos = getOption("repos"),
   type = getOption("pkgType"), ...)
 </pre>
 
@@ -95,7 +96,15 @@ since the previous install.</p>
 </td></tr>
 <tr valign="top"><td><code>build_opts</code></td>
 <td>
-<p>Options to pass to <code>R CMD build</code>, only used when <code>build</code>
+<p>Options to pass to <code>R CMD build</code>, only used when <code>build</code></p>
+</td></tr>
+<tr valign="top"><td><code>build_manual</code></td>
+<td>
+<p>If <code>FALSE</code>, don't build PDF manual ('&ndash;no-manual').</p>
+</td></tr>
+<tr valign="top"><td><code>build_vignettes</code></td>
+<td>
+<p>If <code>FALSE</code>, don't build package vignettes ('&ndash;no-build-vignettes').
 is <code>TRUE</code>.</p>
 </td></tr>
 <tr valign="top"><td><code>repos</code></td>
@@ -111,6 +120,14 @@ is <code>TRUE</code>.</p>
 <p>Other arguments passed on to <code><a href="../../utils/html/install.packages.html">utils::install.packages()</a></code>.</p>
 </td></tr>
 </table>
+
+
+<h3>Details</h3>
+
+<p>If you need to set git credentials for use in the <code>Remotes</code> field you can do
+so by placing the credentials in the <code>remotes.git_credentials</code> global
+option.
+</p>
 
 
 <h3>See Also</h3>
@@ -135,5 +152,5 @@ install_git("git://github.com/hadley/stringr.git", ref = "stringr-0.2")
 ## End(Not run)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>remotes</em> version 2.0.4 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>remotes</em> version 2.1.0 <a href="00Index.html">Index</a>]</div>
 </body></html>
