@@ -19,7 +19,7 @@ data(example_data_1_subject)
 ## Plot data
 
 # Use plot on glucose vector for histogram
-plot_glu(example_data_1_suject$gl)
+plot_glu(example_data_1_subject$gl)
 
 # Use plot on dataframe with time and glucose values for time series plot
 plot_glu(example_data_1_subject)
