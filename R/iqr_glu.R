@@ -16,4 +16,6 @@ iqr_glu <- function(data){
   gl_by_id = read_df_or_vec(data)
   out = IQR(gl_by_id, na.rm = T)
   return(out)
+  out = data.frame(out)
+  names(out) = 'iqr'
 }

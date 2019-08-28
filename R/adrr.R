@@ -15,8 +15,6 @@
 
 
 adrr <- function(data){
-  # temp
-
   data_ip = CGMS2DayByDay(data)
   gl_by_id_ip = data_ip[[1]]
 
@@ -30,5 +28,7 @@ adrr <- function(data){
   rhbg[which(fBG>0)] = rBG[which(fBG>0)]
 
   out = mean(apply(rlbg,1,max) + apply(rhbg,1,max))
+  out = data.frame(out)
+  names(out) = 'adrr'
   return(out)
 }

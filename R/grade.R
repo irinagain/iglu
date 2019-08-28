@@ -15,6 +15,8 @@ grade <- function(data){
   #unit_constant = unit * 1 + (1-unit) * 18
   grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
   out = mean(grade_vec, na.rm = T)
+  out = data.frame(out)
+  names(out) = 'grade'
   return(out)
 }
 

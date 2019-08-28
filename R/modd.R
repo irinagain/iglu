@@ -17,9 +17,10 @@
 
 modd <- function(data, lag = 1){
   # temp
-
   data_ip = CGMS2DayByDay(data)
   gl_by_id_ip = data_ip[[1]]
   out = mean(abs(diff(gl_by_id_ip, lag = 1)), na.rm=T)
+  out = data.frame(out)
+  names(out) = 'modd'
   return(out)
 }

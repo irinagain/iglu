@@ -15,5 +15,7 @@
 sd_glu <- function(data){
   gl_by_id = read_df_or_vec(data)
   out = sd(gl_by_id, na.rm = T)
+  out = data.frame(out)
+  names(out) = 'sd'
   return(out)
 }

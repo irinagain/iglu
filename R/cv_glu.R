@@ -16,5 +16,7 @@
 cv_glu <- function(data){
   gl_by_id = read_df_or_vec(data)
   out = sd(gl_by_id, na.rm = T) / mean(gl_by_id, na.rm = T) * 100
+  out = data.frame(out)
+  names(out) = 'cv'
   return(out)
 }

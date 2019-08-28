@@ -21,5 +21,7 @@ conga <- function(data){
   gl_by_id_ip = data_ip[[1]]
 
   out = sd(diff(gl_by_id_ip), na.rm = T)
+  out = data.frame(out)
+  names(out) = 'conga'
   return(out)
 }

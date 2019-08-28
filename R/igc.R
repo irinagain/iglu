@@ -20,5 +20,7 @@ igc <- function(data, lower = 80, upper = 140){
   hyper = sum(gl_by_id[gl_by_id > upper] ^ 1.1, na.rm = T)/(length(gl_by_id) * 30)
   hypo = sum(gl_by_id[gl_by_id < lower] ^ 2, na.rm = T)/(length(gl_by_id) * 30)
   out = hypo + hyper
+  out = data.frame(out)
+  names(out) = 'igc'
   return(out)
 }

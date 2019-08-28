@@ -20,6 +20,8 @@ grade_eugly <- function(data, lower = 80, upper = 140){
   grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
   out = sum(grade_vec[gl_by_id >= lower
                       & gl_by_id <= upper ])/sum(grade_vec) * 100
+  out = data.frame(out)
+  names(out) = 'grade_eugly'
   return(out)
 }
 

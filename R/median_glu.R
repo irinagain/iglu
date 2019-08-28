@@ -15,5 +15,7 @@
 median_glu <- function(data){
   gl_by_id = read_df_or_vec(data)
   out = median(gl_by_id, na.rm = T)
+  out = data.frame(out)
+  names(out) = 'median'
   return(out)
 }

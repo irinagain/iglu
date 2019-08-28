@@ -16,5 +16,7 @@ range_glu <- function(data){
   gl_by_id = read_df_or_vec(data)
   glucose_range = range(gl_by_id, na.rm = T)
   out = glucose_range[2] - glucose_range[1]
+  out = data.frame(out)
+  names(out) = 'range'
   return(out)
 }

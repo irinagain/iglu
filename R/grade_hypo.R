@@ -18,6 +18,8 @@ grade_hypo <- function(data, lower = 70){
   # unit_constant = unit * 1 + (1-unit) * 18
   grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
   out = sum(grade_vec[gl_by_id < lower])/sum(grade_vec) * 100
+  out = data.frame(out)
+  names(out) = 'grade_hypo'
   return(out)
 }
 

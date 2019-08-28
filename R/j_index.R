@@ -17,6 +17,8 @@ j_index <- function(data){
   gl_by_id = read_df_or_vec(data)
   #unit_constant = unit * 0.324 + (1-unit) * 0.001
   out = .001 * (mean(gl_by_id, na.rm = T) + sd(gl_by_id, na.rm = T))^2
+  out = data.frame(out)
+  names(out) = 'j_index'
   return(out)
 }
 

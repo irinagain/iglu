@@ -1,6 +1,7 @@
 #' Plot time series of glucose measurements
 #'
 #' @param data DataFrame with column names ("id", "time", and "gl"),
+#' or vector of glucose values as integer, numeric, or double.
 #'
 #' @return
 #'
