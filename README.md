@@ -1,7 +1,7 @@
-iglu: Interpretation of data from Continuous Glucose Monitors (CGMs)
+iglu: Interpreting of data from Continuous Glucose Monitors (CGMs)
 ====================================================================
 
-The R package 'iglu' provides functions for outputting relevant metrics for data collected from Continuous Glucose Monitors (CGM). For reference, see ["Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control." Robard (2009)](https://www.ncbi.nlm.nih.gov/pubmed/19469679)
+The R package 'iglu' provides functions for outputting relevant metrics for data collected from Continuous Glucose Monitors (CGM). For reference, see ["Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control." Rodbard (2009)](https://www.ncbi.nlm.nih.gov/pubmed/19469679)
 
 Installation
 ------------
