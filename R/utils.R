@@ -18,10 +18,6 @@ CGMS2DayByDay <- function(data){
   # Original code by Jacek Urbanek
   # Updated code (January 23, 2018) by Irina Gaynanova (as pertains to interval approximations)
 
-
-  library("lubridate")
-  library(intervals)
-
   data = data[complete.cases(data),]
 
   ### Get glycemic data
