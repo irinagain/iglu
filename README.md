@@ -15,7 +15,7 @@ Example
 
 ``` r
 library(iglu)
-data(example_data_1_subject)
+data(example_data_1_subject) # Load single subject data
 ## Plot data
 
 # Use plot on glucose vector for histogram
