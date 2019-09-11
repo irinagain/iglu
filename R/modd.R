@@ -24,7 +24,7 @@ modd <- function(data, lag = 1){
     names(out) = 'modd'
     return(out)
   }
-  modd_multi = function(data,targets){
+  modd_multi = function(data,lag){
     subjects = unique(data$id)
     out_mat = matrix(nrow = length(subjects), ncol = 1)
     for(row in 1:length(subjects)){
@@ -39,7 +39,7 @@ modd <- function(data, lag = 1){
   }
 
   if(class(data) == 'data.frame' && nrow(data) != 1){
-    modd_multi(data)
+    modd_multi(data, lag)
   } else{
     stop("Data must be in a data.frame structure
          with columns for 'id', 'time', and 'gl'")

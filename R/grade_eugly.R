@@ -42,9 +42,9 @@ grade_eugly <- function(data, lower = 80, upper = 140){
   }
 
   if(class(data) == 'data.frame'){
-    grade_eugly_multi(data)
+    grade_eugly_multi(data, lower, upper)
   } else {
-    grade_eugly_single(data)
+    grade_eugly_single(data, lower, upper)
   }
 }
 

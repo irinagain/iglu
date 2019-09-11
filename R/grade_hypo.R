@@ -39,8 +39,8 @@ grade_hypo <- function(data, lower = 70){
   }
 
   if(class(data) == 'data.frame'){
-    grade_hypo_multi(data)
+    grade_hypo_multi(data, lower)
   } else {
-    grade_hypo_single(data)
+    grade_hypo_single(data, upper)
   }
 }

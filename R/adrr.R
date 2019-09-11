@@ -15,7 +15,7 @@
 
 
 adrr <- function(data){
-  adrr_single = function(data,targets){
+  adrr_single = function(data){
     data_ip = CGMS2DayByDay(data)
     gl_by_id_ip = data_ip[[1]]
 
@@ -34,7 +34,7 @@ adrr <- function(data){
     return(out)
   }
 
-  adrr_multi = function(data,targets){
+  adrr_multi = function(data){
     subjects = unique(data$id)
     out_mat = matrix(nrow = length(subjects), ncol = 1)
     for(row in 1:length(subjects)){

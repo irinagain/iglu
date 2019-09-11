@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' hypo_index(data)
-#' hypo_index(data, upper = 70)
+#' hypo_index(data, lower = 70)
 
 hypo_index <- function(data, lower = 80){
   hypo_index_single = function(data, lower){
@@ -37,8 +37,8 @@ hypo_index <- function(data, lower = 80){
   }
 
   if(class(data) == 'data.frame'){
-    hypo_index_multi(data)
+    hypo_index_multi(data, lower)
   } else {
-    hypo_index_single(data)
+    hypo_index_single(data, lower)
   }
 }

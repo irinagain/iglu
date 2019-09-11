@@ -40,9 +40,9 @@ grade_hyper <- function(data, upper = 140){
   }
 
   if(class(data) == 'data.frame'){
-    grade_hyper_multi(data)
+    grade_hyper_multi(data, upper)
   } else {
-    grade_hyper_single(data)
+    grade_hyper_single(data, upper)
   }
 }
 

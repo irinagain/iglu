@@ -35,8 +35,8 @@ quantile_glu <- function(data, quantiles = c(0,0.25,0.5,0.75,1)){
   }
 
   if(class(data) == 'data.frame' && nrow(data) != 1){
-    quantile_glu_multi(data)
+    quantile_glu_multi(data, quantiles)
   } else {
-    quantile_glu_single(data)
+    quantile_glu_single(data, quantiles)
   }
 }
