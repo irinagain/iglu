@@ -11,8 +11,8 @@
 #' @export
 #'
 #' @examples
-#' grade_hyper(data)
-#' grade_hyper(data, lower = 70)
+#' grade_eugly(data)
+#' grade_eugly(data, lower = 70, upper = 180)
 
 grade_eugly <- function(data, lower = 80, upper = 140){
   grade_eugly_single = function(data, lower, upper){

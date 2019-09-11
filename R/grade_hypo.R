@@ -10,7 +10,7 @@
 #' @export
 #'
 #' @examples
-#' grade_hypeodata)
+#' grade_hypo(data)
 #' grade_hypo(data, lower = 80)
 
 grade_hypo <- function(data, lower = 70){

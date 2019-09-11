@@ -53,4 +53,3 @@ igc <- function(data, lower = 80, upper = 140){
 
 }
 
-}
