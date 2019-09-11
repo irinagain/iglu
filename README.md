@@ -9,7 +9,14 @@ Installation
 ------------
 
 ``` install
+# if all dependencies are installed
 devtools::install_github("stevebroll/iglu")
+
+# if dependencies are missing
+install.packages(c("lubridate",
+                   "intervals",
+                   "ggplot2"))
+devtools::install_github('swihart/lasagnar') # for lasagna plots (multi subject)
 ```
 
 Example

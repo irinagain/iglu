@@ -17,5 +17,5 @@ or vector of glucose values as integer, numeric, or double.}
 Simple wrapper for median().
 }
 \examples{
-mean_glu(data)
+median_glu(data)
 }

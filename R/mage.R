@@ -15,11 +15,36 @@
 #'
 
 mage <- function(data, sd = 1){
-  gl_by_id = read_df_or_vec(data)
-  abs_diff_mean = abs(gl_by_id - mean(gl_by_id, na.rm = T))
-  mage_out = mean(abs_diff_mean[abs_diff_mean > sd * sd(gl_by_id, na.rm = T)])
-  out = data.frame(out)
-  names(out) = 'mage'
-  return(mage_out)
+  mage_single = function(data, sd){
+    gl_by_id = read_df_or_vec(data)
+    abs_diff_mean = abs(gl_by_id - mean(gl_by_id, na.rm = T))
+    out = mean(abs_diff_mean[abs_diff_mean > sd * sd(gl_by_id, na.rm = T)])
+    out = data.frame(out)
+    names(out) = 'mage'
+    return(out)
+  }
+
+  mage_multi = function(data, sd){
+    subjects = unique(data$id)
+    out_mat = matrix(nrow = length(subjects), ncol = 1)
+    for(row in 1:length(subjects)){
+      gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
+      abs_diff_mean = abs(gl_by_id - mean(gl_by_id, na.rm = T))
+      out_mat[row, 1] =  mean(abs_diff_mean[abs_diff_mean > sd *
+                                              sd(gl_by_id, na.rm = T)])
+    }
+
+    out = data.frame(out_mat)
+    names(out) = 'mage'
+    row.names(out) = unique(subjects)
+    return(out)
+  }
+
+  if(class(data) == 'data.frame' && nrow(data) != 1){
+    mage_multi(data)
+  } else {
+    mage_single(data)
+  }
+
 }
 
