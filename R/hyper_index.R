@@ -38,8 +38,8 @@ hyper_index <- function(data, upper = 140){
   }
 
   if(class(data) == 'data.frame'){
-    hyper_index_multi(data)
+    hyper_index_multi(data, upper)
   } else {
-    hyper_index_single(data)
+    hyper_index_single(data, upper)
   }
 }

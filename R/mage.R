@@ -41,9 +41,9 @@ mage <- function(data, sd = 1){
   }
 
   if(class(data) == 'data.frame' && nrow(data) != 1){
-    mage_multi(data)
+    mage_multi(data, sd)
   } else {
-    mage_single(data)
+    mage_single(data, sd)
   }
 
 }
