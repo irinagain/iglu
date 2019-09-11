@@ -13,5 +13,6 @@ Requires:
   "lubridate"
   "intervals"
   "ggplot2"
+  "lasagnar"
 Suggests:
     testthat (>= 2.1.0)
