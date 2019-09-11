@@ -22,7 +22,7 @@ j_index <- function(data){
     return(out)
   }
 
-  j_index_mult = function(data){
+  j_index_multi = function(data){
     subjects = unique(data$id)
     out_mat = matrix(nrow = length(subjects), ncol = 1)
     for(row in 1:length(subjects)){

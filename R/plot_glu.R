@@ -13,17 +13,17 @@
 
 plot_glu <- function(data){
   gl_by_id = read_df_or_vec(data)
-  if(is.data.frame(data) & nrow(data)== 1){
+  if(is.data.frame(data) && length(unique(data$id))== 1){
     glu_tsplot <- function(data){
       date_by_id = as.POSIXct(data$time)
       ggplot2::ggplot(data = data, ggplot2::aes(x = date_by_id, y = gl_by_id, group = 1)) +
         ggplot2::geom_line() +
         ggplot2::scale_x_datetime(name = 'Date') +
         ggplot2::scale_y_continuous(name = 'Blood Glucose') +
-        ggplot2::ggtitle('')
+        ggplot2::ggtitle(paste('Time Series plot for', unique(data$id), sep = ' '))
     }
     glu_tsplot(data)
-  } else if(is.data.frame(data) & nrow(data) != 1){
+  } else if(is.data.frame(data) && nrow(data) != 1){
     glu_lasagnaplot <- function(data){
       subjects = unique(data$id)
       H.mat = matrix(NA, nrow = length(subjects), ncol = 1000)
@@ -42,7 +42,7 @@ plot_glu <- function(data){
 
       lasagnar::lasagna(H.mat, main = 'Initial lasagna plot', legend = T,
             xlab = 'Measurement ordered by time', ylab = 'Subject')
-      lasagna(wr.disc(H.mat), main = 'Within-row sorted lasagna plot',
+      lasagnar::lasagna(wr.disc(H.mat), main = 'Within-row sorted lasagna plot',
               legend = T, xlab = 'Measurement ordered by gl value, increasing',
               ylab = 'Subject')
       }

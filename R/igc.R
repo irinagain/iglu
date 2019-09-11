@@ -46,9 +46,9 @@ igc <- function(data, lower = 80, upper = 140){
   }
 
   if(class(data) == 'data.frame'){
-    igcmulti(data, lower, upper)
+    igc_multi(data, lower, upper)
   } else {
-    igcsingle(data, lower, upper)
+    igc_single(data, lower, upper)
   }
 
 }
