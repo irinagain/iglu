@@ -8,8 +8,8 @@
 #' @export
 #'
 #' @examples
-#' plot_glu(data)
-#'
+#' plot_glu(example_data_1_subject)
+#' plot_glu(example_data_5_subject)
 
 plot_glu <- function(data){
   gl_by_id = read_df_or_vec(data)
@@ -28,9 +28,10 @@ plot_glu <- function(data){
       subjects = unique(data$id)
       H.mat = matrix(NA, nrow = length(subjects), ncol = 1000)
       rownameslist = rep(NA, length(subjects))
+      min_obs = min(table(example_data_5_subject$id))
       for(row in 1:length(subjects)){
         subject_subset = na.omit((data[data$id == subjects[row],]))
-        subject_subset = subject_subset[1:1000,]
+        subject_subset = subject_subset[1:min_obs,]
         H.mat[row, 1:1000] = subject_subset$gl
         rownameslist[row] = paste('S',row, sep = '')
     }
@@ -42,13 +43,12 @@ plot_glu <- function(data){
 
       lasagnar::lasagna(H.mat, main = 'Initial lasagna plot', legend = T,
             xlab = 'Measurement ordered by time', ylab = 'Subject')
-      lasagnar::lasagna(wr.disc(H.mat), main = 'Within-row sorted lasagna plot',
+      lasagnar::lasagna(lasagnar::wr.disc(H.mat), main = 'Within-row sorted lasagna plot',
               legend = T, xlab = 'Measurement ordered by gl value, increasing',
               ylab = 'Subject')
       }
       glu_lasagnaplot(data)
   } else{
-
     hist(gl_by_id)
   }
 }
