@@ -57,13 +57,14 @@ above_percent <- function(data, targets = c(140,180,200,250)){
   above_percent_single = function(data, targets){
     gl_by_id = read_df_or_vec(data)
     targets = as.double(targets)
-    out_vec = NULL
-    colnames_list = NULL
+    nt = length(targets)
+    out_vec = rep(NA, nt)
+    colnames_list = rep(NA, nt)
     for(target_val in targets){
       percent = sum(gl_by_id > target_val)/length(gl_by_id) * 100
-      out_vec = c(out_vec, percent)
+      out_vec[targets == target_val] = percent
       name = paste('above_', target_val, sep = '')
-      colnames_list = c(colnames_list, name)
+      colnames_list[targets == target_val] =name
     }
     out = data.frame(matrix(out_vec, nrow = 1))
     names(out) = colnames_list
