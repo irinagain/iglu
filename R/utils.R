@@ -1,9 +1,20 @@
-read_df_or_vec <- function(data){
-  output = switch(class(data), 'data.frame' = as.double(data$gl), 'numeric' = as.double(data), 'integer' = as.double(data), 'double' = as.double(data))
+read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
+  if(class(data) %in% c('numeric', 'integer', 'double')){
+    output = as.double(data)
+  }
+  else if(class(data) = 'data.frame'){
+    indexes = which(names %in% c(id,time,gl))
+    if(length(indexes) < 3){
+      warning("If passing a dataframe, make sure there are columns corresponding to id, time, and gl glucose values. At least one of
+              these columns is missing or cannot be indentified by the supplied names.")
+    }
+    else if(length(indexes) > 3){
+      warning("If passing a dataframe, make sure there is exactly 1 column corresponding to each of id, time, and gl glucose values, with no duplicates. At least
+              one of id, time, or gl had multiple columns matching with supplied name.")
+    }
+  }
+  # output = switch(class(data), 'data.frame' = as.double(data$gl), 'numeric' = as.double(data), 'integer' = as.double(data), 'double' = as.double(data))
   return(output)
-}
-
-convert_glu_measurement_type <- function(){
 }
 
 data_to_gl_format <- function(){
@@ -18,7 +29,7 @@ CGMS2DayByDay <- function(data){
   # Original code by Jacek Urbanek
   # Updated code (January 23, 2018) by Irina Gaynanova (as pertains to interval approximations)
 
-  data = data[complete.cases(data),]
+  data = read_df_or_vec(data[complete.cases(data),])
 
   ### Get glycemic data
   g = data$gl
