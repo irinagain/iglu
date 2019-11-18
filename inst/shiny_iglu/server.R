@@ -40,3 +40,16 @@ parameter_type <- reactive({
     return("nested")
   }
 })
+
+metric_table <- reactive({
+  parameter_type = parameter_type()
+  data = transform_data()
+  library(iglu)
+  if(is.null(input$parameter) | parameter_type == 'none'){
+    string = paste('iglu::', input$metric, '(data)', sep = '')
+    eval(parse(text = string))
+  }
+
+
+  })
+
