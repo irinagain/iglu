@@ -18,3 +18,25 @@ shinyServer(function(input, output){
   })
 
 })
+
+parameter_type <- reactive({
+  if(input$metric %in% c('adrr', 'conga', 'cv_glu', 'grade', 'hbgi', 'iqr_glu', 'j_index', 'lbgi', 'mean_glu', 'median_glu', 'range_glu', 'sd_glu', 'summary_glu')){
+    return("none")
+  }
+
+  else if(input$metric %in% c('above_percent', 'below_percent', 'quantile_glu')){
+    return("list")
+  }
+
+  else if(input$metric %in% c('grade_hyper', 'grade_hypo', 'hyper_index', 'hypo_index', 'mage', 'modd')){
+    return("value")
+  }
+
+  else if(input$metric %in% c('grade_eugly', 'igc')){
+    return("lwrupr")
+  }
+
+  else if(input$metric %in% c('in_range_percent')){
+    return("nested")
+  }
+})
