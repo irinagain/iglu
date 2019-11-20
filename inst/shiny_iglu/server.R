@@ -41,6 +41,68 @@ parameter_type <- reactive({
   }
 })
 
+output$select_parameter <- renderUI({
+  parameter_type = parameter_type()
+
+  if(parameter_type == "list"){
+    if(input$metric == 'above_percent'){
+      textInput('parameter', 'Specify Parameter', value = '140, 180, 200, 250')
+    }
+    else if(input$metric == 'below_percent'){
+      textInput('parameter', 'Specify Parameter', value = '50, 80')
+    }
+    else if(input$metric == 'quantile_glu'){
+      textInput('parameter', 'Specify Parameter', value = '0, 25, 50, 75, 100')
+
+    }
+  }
+
+  else if(parameter_type == "value"){
+    if(input$metric == 'grade_hyper'){
+      textInput('parameter', "Specify Parameter", value = '140')
+    }
+
+    else if(input$metric == 'grade_hypo'){
+      textInput('parameter', 'Specify Parameter', value = '70')
+    }
+
+    else if(input$metric == 'hyper_index'){
+      textInput('parameter', 'Specify Parameter', value = '140')
+    }
+
+    else if(input$metric == 'hypo_index'){
+      textInput('parameter', 'Specify Parameter', value = '80')
+    }
+
+    else if(input$metric == 'mage'){
+      textInput('parameter', 'Specify Parameter', value = '1')
+    }
+
+    else if(input$metric == 'modd'){
+      textInput('parameter', 'Specify Parameter', value = '1')
+    }
+  }
+
+  else if(parameter_type == "lwrupr"){
+
+    if(input$metric == "grade_eugly"){
+      textInput('parameter', 'Specify Parameter', value = '80, 140')
+    }
+
+    else if(input$metric == 'igc'){
+      textInput('parameter', 'Specify Parameter', value = '80, 140')
+    }
+  }
+
+  else if(parameter_type == 'nested'){
+    if(input$metric == 'in_range_percent'){
+      textInput('parameter', 'Specify Parameter', value = '(80, 200), (70, 180), (70,140)')
+    }
+  }
+
+})
+
+
 metric_table <- reactive({
   parameter_type = parameter_type()
   data = transform_data()
