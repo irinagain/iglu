@@ -43,9 +43,14 @@ shinyUI(fluidPage(
                                                                                `Range` = 'range_glu',
                                                                                `Standard Deviation` = 'sd_glu',
                                                                                `Summary Statistics` = 'summary_glu'
+               )),
+
+               mainPanel(dataTableOutput("metric"))
                ))
-               ))
-    )
+
+
+
+       )
   )
 
 ))
