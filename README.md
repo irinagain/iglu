@@ -54,3 +54,10 @@ mage(example_data_5_subject)
 
 
 ```
+
+Shiny Demonstration
+-------------------
+
+For a demonstration of the package in a point and click interface, click the link below.
+
+https://stevebroll.shinyapps.io/shinyigludemo/
