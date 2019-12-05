@@ -17,7 +17,6 @@ shinyServer(function(input, output){
     iglu:::read_df_or_vec(data, id = input$id, time = input$time, gl = input$gl)
   })
 
-})
 
 parameter_type <- reactive({
   if(input$metric %in% c('adrr', 'conga', 'cv_glu', 'grade', 'hbgi', 'iqr_glu', 'j_index', 'lbgi', 'mean_glu', 'median_glu', 'range_glu', 'sd_glu', 'summary_glu')){
@@ -102,6 +101,24 @@ output$select_parameter <- renderUI({
 
 })
 
+output$help_text <- renderUI({
+  parameter_type = parameter_type()
+  if(parameter_type == "none"){
+    helpText("No parameters need to be specified.")
+  }
+  else if(parameter_type == "list"){
+    helpText("Enter numeric target values separated by commas.")
+  }
+  else if(parameter_type == "value"){
+    helpText("Enter numeric value corresponding to parameter.")
+  }
+  else if(parameter_type == "lwrupr"){
+    helpText("Enter numeric values corresponding to the lower and upper bounds, respectively, separated by commas.")
+  }
+  else if(parameter_type == "nested"){
+    helpText("Enter pairs of numeric values in parentheses, with commas separating values in each pair and the pairs themselves.")
+  }
+})
 
 metric_table <- reactive({
   parameter_type = parameter_type()
@@ -115,3 +132,4 @@ metric_table <- reactive({
 
   })
 
+})
