@@ -1,0 +1,107 @@
+---
+title: "Working in iglu"
+author: "Steve Broll"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(iglu)
+# date: "`r Sys.Date()`"
+```
+
+The iglu package is designed with the following three components of Continuous Glucose Monitor (CGM) data in mind:
+
+* Blood glucose level
+
+* Timestamp for measurement
+
+* Subject identification
+
+There are many metrics used to assess glycemic variability, many of which can be found in ["Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control." Rodbard (2009)](https://www.ncbi.nlm.nih.gov/pubmed/19469679). The iglu package streamlines the calculation of metrics by providing clearly named functions that output metrics with one line of code. 
+
+# Single Subject Workflow
+## Data
+
+Example data for 1 subject can be loaded with:
+
+```{r}
+data("example_data_1_subject")
+```
+  
+This dataset contains 2915 observations of 3 columns corresponding to the three components listed in the introduction:
+
+* `"id"` - Factor (character string) column for subject identification
+* `"time"` - Factor (character string) column that can be converted to DateTime for measurement timestamp
+* `"gl"` - Numeric column for glucose measurement
+
+
+```{r}
+dim(example_data_1_subject)
+str(example_data_1_subject)
+head(example_data_1_subject)
+```
+
+Observe that the timestamps in the first rows are not evenly spaced. Linear interpolation is used where appropriate for computation of metrics that require a time component. Time intervals within large gaps between variables will not be interpolated, but instead will be treated as missing values.
+
+## Calculating Metrics
+
+Some metric functions, like `above_percent()`, will return multiple values for a single subject. 
+
+```{r}
+above_percent(example_data_1_subject)
+```
+
+Subject id will always be printed as a rowname by default, and metrics will be printed as column name. The list of target values for the above_percent metric is a parameter that can be changed:
+
+```{r}
+above_percent(example_data_1_subject, targets = c(100, 200, 300))
+```
+
+Many metrics have parameters that can be changed. To see available parameters for a given metric, see the documentation i.e. ?above_percent or help(above_percent).  
+Some metric functions, like `conga()` (Continuous Overlapping Net Glycemic Action), will return just a single value for each subject.
+
+```{r REMOVE WHEN FIXED, include = F}
+library(lubridate); library(intervals)
+```
+
+```{r}
+conga(example_data_1_subject)
+```
+
+Note: `base::as.numeric()` can be used to convert output to a numeric value or vector instead of a dataframe object *only* when working with a single subject.
+
+```{r}
+as.numeric(conga(example_data_1_subject))
+
+as.numeric(above_percent(example_data_1_subject))
+```
+
+## Plots
+
+When working with a single subject, iglu currently supports the follwing plots: 
+
+* Histogram of glucose values
+* Time Series plot of glucose values
+
+The function `plot_glu()` can output either plot, dependent on the input.
+For a histogram, simply pass the glucose column of the dataset (numeric).
+
+```{r}
+plot_glu(example_data_1_subject$gl) # extract 'gl' column
+```
+
+For a time series plot, pass the whole dataset.
+
+```{r}
+plot_glu(example_data_1_subject)
+```
+
