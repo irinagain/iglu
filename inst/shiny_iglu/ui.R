@@ -4,6 +4,7 @@ library(DT)
 shinyUI(fluidPage(
 
   titlePanel("Shiny iglu"),
+
   tabsetPanel(
     tabPanel("Data", fluid = TRUE,
              sidebarLayout(
@@ -13,7 +14,7 @@ shinyUI(fluidPage(
                             textInput('id', 'Enter column name corresponding to subject ID', value = 'id'),
                             textInput('time', 'Enter column name corresponding to timestamp', value = 'time'),
                             textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl')
-               ),
+                            ),
                mainPanel(tableOutput("data"))
              )),
     tabPanel("Metrics", fluid = TRUE,
@@ -44,13 +45,14 @@ shinyUI(fluidPage(
                                                                                `Standard Deviation` = 'sd_glu',
                                                                                `Summary Statistics` = 'summary_glu'
                )),
-
+               uiOutput("select_parameter"),
+               uiOutput("help_text")),
                mainPanel(dataTableOutput("metric"))
                ))
 
 
 
        )
-  )
+
 
 ))
