@@ -1,9 +1,26 @@
 #' Calculate median glucose level
 #'
+#' @description The function median_glu is a wrapper for the base function
+#' median(). The output is in a data.frame form by default, with one column
+#' and a row corresponding to each subject.
+#'
 #' @param data DataFrame with column names ("id", "time", and "gl"),
 #' or vector of glucose values as integer, numeric, or double.
 #'
-#' @description Simple wrapper for median().
+#' @usage
+#' median_glu(data)
+#'
+#' @param data DataFrame object with column names "id", "time", and "gl",
+#' or numeric vector of glucose values. NA's will be omitted from the glucose
+#' values in calculation of median.
+#'
+#' @details
+#' A dataframe structure with 1 row for each subject and 1 column for the median
+#' value is returned.
+#'
+#' Wrapping as.numeric() around the median_glu call on a dataset with
+#' a single subject will return a numeric value corresponding to the median.
+#' This will not work for datasets with multiple subjects.
 #'
 #' @return
 #'
@@ -11,6 +28,7 @@
 #'
 #' @examples
 #' median_glu(data)
+#'
 
 median_glu <- function(data){
   median_glu_single = function(data){
