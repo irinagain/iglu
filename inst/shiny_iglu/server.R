@@ -164,7 +164,9 @@ metric_table <- reactive({
 
   }
 
-  output$metric <- renderDataTable(metric_table())
+  output$metric <- renderDataTable(metric_table(), extensions = 'Buttons',
+                                   options = list(dom = 'Btip',
+                                                  buttons = c('copy', 'csv', 'excel', 'pdf', 'print')))
 
   })
 
