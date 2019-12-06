@@ -7,13 +7,16 @@
 #' the subject id's if multiple subjects are passed. The values will be between
 #' 0 (no measurements) and 100 (all measurements).
 #'
+#' @usage
+#' below_percent(data, targets = c(50, 80))
+#'
 #' @param data DataFrame with column names ("id", "time", and "gl"),
 #' or vector of glucose values as integer, numeric, or double. NA's will be
 #' omitted from the glucose values in calculation of percent.
 #'
 #' @param targets Numeric vector of glucose thresholds. Glucose values from
 #' data argument will be compared to each value in the targets vector.
-#' Default list is (50,80).
+#' Default list is (50, 80).
 #'
 #' @details
 #' A dataframe structure with 1 row for each subject and a
@@ -39,7 +42,7 @@
 #' data(example_data_1_subject)
 #'
 #' below_percent(example_data_1_subject)
-#' below_percent(example_data_1_subject, targets = c(50,100, 180))
+#' below_percent(example_data_1_subject, targets = c(50, 100, 180))
 #'
 #' #' # output numeric vector instead of dataframe
 #' as.numeric(below_percent(example_data_1_subject))
