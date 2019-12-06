@@ -9,13 +9,28 @@ median_glu(data)
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl"),
 or vector of glucose values as integer, numeric, or double.}
+
+\item{data}{DataFrame object with column names "id", "time", and "gl",
+or numeric vector of glucose values. NA's will be omitted from the glucose
+values in calculation of median.}
 }
 \value{
 
 }
 \description{
-Simple wrapper for median().
+The function median_glu is a wrapper for the base function
+median(). The output is in a data.frame form by default, with one column
+and a row corresponding to each subject.
+}
+\details{
+A dataframe structure with 1 row for each subject and 1 column for the median
+value is returned.
+
+Wrapping as.numeric() around the median_glu call on a dataset with
+a single subject will return a numeric value corresponding to the median.
+This will not work for datasets with multiple subjects.
 }
 \examples{
 median_glu(data)
+
 }
