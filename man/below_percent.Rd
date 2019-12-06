@@ -8,17 +8,52 @@ below_percent(data, targets = c(50, 80))
 }
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl"),
-or vector of glucose values as integer, numeric, or double.}
+or vector of glucose values as integer, numeric, or double. NA's will be
+omitted from the glucose values in calculation of percent.}
 
-\item{targets}{List of target values. Default list is (50,80).}
+\item{targets}{Numeric vector of glucose thresholds. Glucose values from
+data argument will be compared to each value in the targets vector.
+Default list is (50,80).}
 }
 \value{
 
 }
 \description{
-Calculate percentage below targeted values
+#' @description
+The function below_percent produces a dataframe of values equal to
+the percentage of glucose measurements below target values. The output
+columns correspond to the target values. The output rows correspond to
+the subject id's if multiple subjects are passed. The values will be between
+0 (no measurements) and 100 (all measurements).
+}
+\details{
+A dataframe structure with 1 row for each subject and a
+column for each target value is returned.
+
+Wrapping as.numeric() around the below_percent call on a dataset with
+a single subject will return a numeric vector, where the values
+correspond to the percent of glucose values below each threshold
+in the order passed in the targets argument. This will not work for
+datasets with multiple subjects.
 }
 \examples{
-below_percent(data)
-below_percent(data, targets = c(50,100, 180))
+data(example_data_1_subject)
+
+below_percent(example_data_1_subject)
+below_percent(example_data_1_subject, targets = c(50,100, 180))
+
+#' # output numeric vector instead of dataframe
+as.numeric(below_percent(example_data_1_subject))
+
+data(example_data_5_subject)
+
+below_percent(example_data_5_subject)
+below_percent(example_data_5_subject, targets = c(80, 180))
+
+}
+\references{
+Rodbard (2009) Interpretation of continuous glucose monitoring data:
+glycemic variability and quality of glycemic control,
+\emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
+S55-67. \doi{10.1089/dia.2008.0132}.
 }
