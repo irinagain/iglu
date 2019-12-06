@@ -2,20 +2,37 @@
 % Please edit documentation in R/summary_glu.R
 \name{summary_glu}
 \alias{summary_glu}
-\title{Calculate summary statistics of glucose levels}
+\title{Calculate summary glucose level}
 \usage{
 summary_glu(data)
 }
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl"),
 or vector of glucose values as integer, numeric, or double.}
+
+\item{data}{DataFrame object with column names "id", "time", and "gl",
+or numeric vector of glucose values. NA's will be omitted from the glucose
+values in calculation of summary statistics.}
 }
 \value{
 
 }
 \description{
-Simple wrapper for summary().
+The function summary_glu is a wrapper for the base function
+summary(). The output is in a data.frame form by default, with one column
+and a row corresponding to each subject.
+}
+\details{
+A dataframe structure with 1 row for each subject and either 6 columns
+corresponding to minimum, 1st quantile, median, mean, 3rd quantile, and
+maximum value respectively, or 7 columns with the same 6 in order with
+the number of NA's if any exist in the data.
+
+Wrapping as.numeric() around the summary_glu call on a dataset with
+a single subject will return a numeric value corresponding to the summary.
+This will not work for datasets with multiple subjects.
 }
 \examples{
 summary_glu(data)
+
 }
