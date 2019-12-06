@@ -39,14 +39,15 @@ datasets with multiple subjects.
 
 data(example_data_1_subject)
 
-above_percent(example_data_1_subject) # above 140,180,200,250 by default
+above_percent(example_data_1_subject)
 above_percent(example_data_1_subject, targets = c(100, 150, 180))
 
-### output numeric vector instead of dataframe
+# output numeric vector instead of dataframe
 as.numeric(above_percent(example_data_1_subject))
 
 data(example_data_5_subject)
-above_percent(example_data_5_subject) # above 140,180,200,250 by default
+
+above_percent(example_data_5_subject)
 above_percent(example_data_5_subject, targets = c(70, 170))
 
 }
