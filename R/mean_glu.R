@@ -1,9 +1,26 @@
 #' Calculate mean glucose level
 #'
+#' @description The function mean_glu is a wrapper for the base function
+#' mean(). The output is in a data.frame form by default, with one column
+#' and a row corresponding to each subject.
+#'
 #' @param data DataFrame with column names ("id", "time", and "gl"),
 #' or vector of glucose values as integer, numeric, or double.
 #'
-#' @description Simple wrapper for mean().
+#' @usage
+#' mean_glu(data)
+#'
+#' @param data DataFrame object with column names "id", "time", and "gl",
+#' or numeric vector of glucose values. NA's will be omitted from the glucose
+#' values in calculation of mean.
+#'
+#' @details
+#' A dataframe structure with 1 row for each subject and 1 column for the mean
+#' value is returned.
+#'
+#' Wrapping as.numeric() around the mean_glu call on a dataset with
+#' a single subject will return a numeric value corresponding to the mean.
+#' This will not work for datasets with multiple subjects.
 #'
 #' @return
 #'
@@ -11,6 +28,7 @@
 #'
 #' @examples
 #' mean_glu(data)
+#'
 
 mean_glu <- function(data){
   mean_glu_single = function(data){
