@@ -13,7 +13,7 @@ omitted from the glucose values in calculation of percent.}
 
 \item{targets}{Numeric vector of glucose thresholds. Glucose values from
 data argument will be compared to each value in the targets vector.
-Default list is (50,80).}
+Default list is (50, 80).}
 }
 \value{
 
@@ -40,7 +40,7 @@ datasets with multiple subjects.
 data(example_data_1_subject)
 
 below_percent(example_data_1_subject)
-below_percent(example_data_1_subject, targets = c(50,100, 180))
+below_percent(example_data_1_subject, targets = c(50, 100, 180))
 
 #' # output numeric vector instead of dataframe
 as.numeric(below_percent(example_data_1_subject))
