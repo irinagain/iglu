@@ -8,7 +8,7 @@
 #' 0 (no measurements) and 100 (all measurements).
 #'
 #' @usage
-#' above_percent(data, targets = c(140,180,200,250))
+#' above_percent(data, targets = c(140, 180, 200, 250))
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
 #' or numeric vector of glucose values. NA's will be omitted from the glucose
@@ -16,7 +16,7 @@
 #'
 #' @param targets Numeric vector of glucose thresholds. Glucose values from
 #' data argument will be compared to each value in the targets vector.
-#' Default list is (140,180,200,250).
+#' Default list is (140, 180, 200, 250).
 #'
 #' @details
 #' A dataframe structure with 1 row for each subject and a
