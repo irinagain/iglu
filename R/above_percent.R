@@ -42,20 +42,21 @@
 #'
 #' data(example_data_1_subject)
 #'
-#' above_percent(example_data_1_subject) # above 140,180,200,250 by default
+#' above_percent(example_data_1_subject)
 #' above_percent(example_data_1_subject, targets = c(100, 150, 180))
 #'
-#' ### output numeric vector instead of dataframe
+#' # output numeric vector instead of dataframe
 #' as.numeric(above_percent(example_data_1_subject))
 #'
 #' data(example_data_5_subject)
-#' above_percent(example_data_5_subject) # above 140,180,200,250 by default
+#'
+#' above_percent(example_data_5_subject)
 #' above_percent(example_data_5_subject, targets = c(70, 170))
 #'
 
 above_percent <- function(data, targets = c(140,180,200,250)){
   above_percent_single = function(data, targets){
-    gl_by_id = read_df_or_vec(data)
+    gl_by_id = na.omit(read_df_or_vec(data))
     targets = as.double(targets)
     nt = length(targets)
     out_vec = rep(NA, nt)
@@ -64,7 +65,7 @@ above_percent <- function(data, targets = c(140,180,200,250)){
       percent = sum(gl_by_id > target_val)/length(gl_by_id) * 100
       out_vec[targets == target_val] = percent
       name = paste('above_', target_val, sep = '')
-      colnames_list[targets == target_val] =name
+      colnames_list[targets == target_val] = name
     }
     out = data.frame(matrix(out_vec, nrow = 1))
     names(out) = colnames_list
