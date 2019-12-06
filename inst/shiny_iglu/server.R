@@ -129,6 +129,42 @@ metric_table <- reactive({
     eval(parse(text = string))
   }
 
+  else if(parameter_type == "list"){
+    string = paste('iglu::', input$metric, '(data, c(', input$parameter, '))', sep = '')
+    eval(parse(text = string))
+  }
+
+  else if(parameter_type == "value"){
+    string = paste('iglu::', input$metric, '(data, ', input$parameter, ')', sep = '')
+    eval(parse(text = string))
+  }
+
+  else if(parameter_type == "lwrupr"){
+    string = paste('iglu::', input$metric, '(data, ' , input$parameter, ')', sep = '')
+    eval(parse(text = string))
+  }
+  else if(parameter_type == "nested"){
+    strlist = strsplit(input$parameter, ')')[[1]]
+    paramstr = rep.int(0, length(strlist))
+    if(length(strlist) == 1){
+      paramstr = paste('c', strlist[1], ')', sep = '')
+    }
+
+    else {
+      for(i in 2:length(strlist)){
+        strlist[i] = substring(strlist[i], 3)
+      }
+      for(s in 1:length(strlist)){
+        paramstr[s] = paste('c', strlist[s], ')', sep = '')
+      }
+      paramstr = paste(paramstr, collapse = ', ')
+    }
+    string = paste('iglu::', input$metric, '(data, list(', paramstr, '))', sep= '')
+    eval(parse(text = string))
+
+  }
+
+  output$metric <- renderDataTable(metric_table())
 
   })
 
