@@ -1,0 +1,12 @@
+name: shinyiglu
+title: shinyiglu
+username:
+account: stevebroll
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 1433293
+bundleId: 2649063
+url: https://stevebroll.shinyapps.io/shinyiglu/
+when: 1575746445.82656
+asMultiple: FALSE
+asStatic: FALSE
