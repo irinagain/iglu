@@ -13,9 +13,34 @@ adrr(data)
 
 }
 \description{
-Calculate average daily risk range (ADRR)
+The function adrr produces ADRR values in data.frame form
+with one column and one row per subject.
+}
+\details{
+A dataframe structure with one column and a row for each subject.
+
+ADRR is calculated by \eqn{1/M * \sum [LR^i + HR^i]}
+where M is number of days, LR is the max low risk value for day i
+and HR is the max high risk value for day i.
+
+Wrapping as.numeric() around the above_percent call on a dataset with
+a single subject will return a numeric vector, where the values
+correspond to the percent of glucose values above each threshold
+in the order passed in the targets argument. This will not work for
+datasets with multiple subjects.
 }
 \examples{
-adrr(data)
 
+data(example_data_1_subject)
+adrr(example_data_1_subject)
+
+data(example_data_5_subject)
+adrr(example_data_5_subject)
+
+}
+\references{
+Kovatchev et al. (2006) Evaluation of a New Measure of Blood Glucose Variability in,
+Diabetes
+\emph{Diabetes care} \strong{29} .2433-2438,
+\doi{10.2337/dc06-1085}.
 }
