@@ -83,7 +83,7 @@ tsplot = function(data, hypo, hyper){
     ggplot2::geom_vline(xintercept = hyper, color = 'red')
 }
 
-unsorted_lasagna = function(data, hypo, hyper){
+unsorted_lasagna = function(data){
   subjects = unique(data$id)
   limit = sum(data$id == subjects[1])
   if(length(subjects) >= 2){
@@ -110,7 +110,7 @@ unsorted_lasagna = function(data, hypo, hyper){
 }
 
 
-rowsorted_lasagna = function(data, hypo, hyper){
+rowsorted_lasagna = function(data){
   subjects = unique(data$id)
   limit = sum(data$id == subjects[1])
   if(length(subjects) >= 2){
