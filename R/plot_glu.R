@@ -24,10 +24,18 @@ plot_glu <- function(data, plottype = 'tsplot', hypo = 80, hyper = 140, subjects
   }
   else if(plottype == 'unsorted'){
     if(is.null(subjects)){
-      unsorted(data, hypo, hyper)
+      unsorted_lasagna(data, hypo, hyper)
     }
     else {
-      unsorted(data[which(data$subjects) %in% subjects, ], hypo, hyper)
+      unsorted_lasagna(data[which(data$subjects) %in% subjects, ], hypo, hyper)
+    }
+  }
+  else if(plottype == 'rowsorted'){
+    if(is.null(subjects)){
+      rowsorted_lasagna(data, hypo, hyper)
+    }
+    else {
+      rowsorted_lasagna(data[which(data$subjects) %in% subjects, ], hypo, hyper)
     }
   }
 
