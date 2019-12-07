@@ -19,7 +19,9 @@ Imports:
   stats,
   ggplot2,
   intervals,
-  lubridate
+  lubridate,
+  shiny,
+  DT
 Remotes: swihart/lasagnar  
 Suggests:
     knitr,
