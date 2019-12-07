@@ -2,20 +2,36 @@
 % Please edit documentation in R/sd_glu.R
 \name{sd_glu}
 \alias{sd_glu}
-\title{Calculate standard deviation of glucose levels}
+\title{Calculate sd glucose level}
 \usage{
 sd_glu(data)
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl"),
-or vector of glucose values as integer, numeric, or double.}
+\item{data}{DataFrame object with column names "id", "time", and "gl",
+or numeric vector of glucose values. NA's will be omitted from the glucose
+values in calculation of sd.}
 }
 \value{
 
 }
 \description{
-Simple wrapper for sd().
+The function sd_glu is a wrapper for the base function
+sd(). The output is in a data.frame form by default, with one column
+and a row corresponding to each subject.
+}
+\details{
+A dataframe structure with 1 row for each subject and 1 column for the sd
+value is returned.
+
+Wrapping as.numeric() around the sd_glu call on a dataset with
+a single subject will return a numeric value corresponding to the sd.
+This will not work for datasets with multiple subjects.
 }
 \examples{
-sd_glu(data)
+data(example_data_1_subject)
+sd_glu(example_data_1_subject)
+
+data(example_data_5_subject)
+sd_glu(example_data_5_subject)
+
 }
