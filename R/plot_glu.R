@@ -1,4 +1,4 @@
-#' Plot time series of glucose measurements
+#' Plot time series and lasagna plots of glucose measurements
 #'
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #'
