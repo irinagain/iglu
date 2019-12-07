@@ -19,7 +19,7 @@
 in_range_percent <- function(data,
                   targets = list(c(80,200), c(70,180), c(70,140))){
   in_range_percent_single = function(data, targets){
-    gl_by_id = read_df_or_vec(data)
+    gl_by_id = na.omit(read_df_or_vec(data))
     out_vec = NULL
     colnames_list = NULL
     for(target_range in targets){

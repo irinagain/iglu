@@ -12,7 +12,7 @@
 
 lbgi <- function(data){
   lbgi_single = function(data){
-    gl_by_id = read_df_or_vec(data)
+    gl_by_id = na.omit(read_df_or_vec(data))
     fbg = 1.509 * ((log(gl_by_id))^1.084 - 5.381)
     out = mean(10 * pmin(fbg, 0)^2, na.rm = T)
     out = data.frame(out)

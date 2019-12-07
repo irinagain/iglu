@@ -15,7 +15,7 @@
 
 grade_hypo <- function(data, lower = 70){
   grade_eugly_single = function(data, lower){
-    gl_by_id = read_df_or_vec(data)
+    gl_by_id = na.omit(read_df_or_vec(data))
     grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
     out = sum(grade_vec[gl_by_id < lower])/sum(grade_vec) * 100
     out = data.frame(out)

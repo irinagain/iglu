@@ -11,12 +11,12 @@
 #' @export
 #'
 #' @examples
-#' grade_eugly(data)
-#' grade_eugly(data, lower = 70, upper = 180)
+#' grade_eugly(example_data_5_subject)
+#' grade_eugly(example_data_5_subject, lower = 70, upper = 180)
 
 grade_eugly <- function(data, lower = 80, upper = 140){
   grade_eugly_single = function(data, lower, upper){
-   gl_by_id = read_df_or_vec(data)
+   gl_by_id = na.omit(read_df_or_vec(data))
     grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
     out = sum(grade_vec[gl_by_id >= lower
                         & gl_by_id <= upper ])/sum(grade_vec) * 100

@@ -17,7 +17,7 @@
 
 igc <- function(data, lower = 80, upper = 140){
   igc_single = function(data, lower, upper){
-    gl_by_id = read_df_or_vec(data)
+    gl_by_id = na.omit(read_df_or_vec(data))
     hyper = sum(gl_by_id[gl_by_id > upper] ^ 1.1, na.rm = T)/(length(gl_by_id) * 30)
     hypo = sum(gl_by_id[gl_by_id < lower] ^ 2, na.rm = T)/(length(gl_by_id) * 30)
     out = hypo + hyper

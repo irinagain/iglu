@@ -46,7 +46,7 @@
 
 quantile_glu <- function(data, quantiles = c(0, 25, 50, 75, 100)){
   quantile_glu_single = function(data, quantiles){
-    gl_by_id = read_df_or_vec(data)
+    gl_by_id = na.omit(read_df_or_vec(data))
     out = quantile(gl_by_id, na.rm = T, probs = quantiles/100)
     return(out)
   }

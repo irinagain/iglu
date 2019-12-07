@@ -10,13 +10,13 @@
 #' @export
 #'
 #' @examples
-#' grade_hyper(data)
-#' grade_hyper(data, upper = 160)
+#' grade_hyper(example_data_5_subject)
+#' grade_hyper(example_data_5_subject, upper = 160)
 #'
 
 grade_hyper <- function(data, upper = 140){
   grade_hyper_single = function(data, upper){
-    gl_by_id = read_df_or_vec(data)
+    gl_by_id = na.omit(read_df_or_vec(data))
     grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
     out = sum(grade_vec[gl_by_id > upper])/sum(grade_vec) * 100
     out = data.frame(out)
