@@ -38,5 +38,8 @@ plot_glu <- function(data, plottype = 'tsplot', hypo = 80, hyper = 140, subjects
       rowsorted_lasagna(data[which(data$subjects) %in% subjects, ], hypo, hyper)
     }
   }
+  else {
+    stop('Selected plotting type not supported. See ?plot_glu for available plot types.')
+  }
 
 }
