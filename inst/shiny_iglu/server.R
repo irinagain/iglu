@@ -163,12 +163,11 @@ metric_table <- reactive({
     eval(parse(text = string))
 
   }
+})
 
   output$metric <- renderDataTable(metric_table(), extensions = 'Buttons',
                                    options = list(dom = 'Btip',
                                                   buttons = c('copy', 'csv', 'excel', 'pdf', 'print')))
-
-  })
 
 output$plot <- renderPlot({
 
