@@ -1,14 +1,46 @@
-#' Calculate Low Blood Glucose Index (LGBI)
+#' Calculate High Blood Glucose Index (LBGI)
 #'
-#' @param data DataFrame with column names ("id", "time", and "gl"),
-#' or vector of glucose values as integer, numeric, or double.
+#' @description
+#' The function lbgi produces LBGI values in data.frame form
+#' with one column and one row per subject.
+#'
+#' @usage
+#' lbgi(data)
+#'
+#' @param data DataFrame object with column names "id", "time", and "gl",
+#' or numeric vector of glucose values. NA's will be omitted from the glucose
+#' values in calculation of LBGI.
 #'
 #' @return
 #'
 #' @export
 #'
+#' @details
+#' A dataframe structure with one column and a row for each subject.
+#'
+#' LBGI is calculated by \eqn{1/n * \sum (10 * fbg_i ^2)},
+#' where \eqn{fbg_i = min(0, 1.509 * (log(BG_i)^{1.084 - 5.381})},
+#' BG_i is the ith Blood Glucose measurement for a subject, and
+#' n is the total number of measurements for that subject.
+#'
+#' Wrapping as.numeric() around the lbgi call on a dataset with
+#' a single subject will return a numeric value corresponding
+#' to the LBGI value. This will not work for datasets with multiple subjects.
+#'
+#' @references
+#' Rodbard (2009) Interpretation of continuous glucose monitoring data:
+#' glycemic variability and quality of glycemic control,
+#' \emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
+#' S55-67. \doi{10.1089/dia.2008.0132}.
+#'
 #' @examples
-#' lbgi(data)
+#'
+#' data(example_data_1_subject)
+#' lbgi(example_data_1_subject)
+#'
+#' data(example_data_5_subject)
+#' lbgi(example_data_5_subject)
+#'
 
 lbgi <- function(data){
   lbgi_single = function(data){
