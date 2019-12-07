@@ -28,3 +28,22 @@ unsorted_lasagna = function(data, hypo, hyper){
 }
 
 
+rowsorted_lasagna = function(data){
+  subjects = unique(data$id)
+  H.mat = matrix(NA, nrow = length(subjects), ncol = 1000)
+  rownameslist = rep(NA, length(subjects))
+  for(row in 1:length(subjects)){
+    subject_subset = na.omit((data[data$id == subjects[row],]))
+    subject_subset = subject_subset[1:1000,]
+    H.mat[row, 1:1000] = subject_subset$gl
+    rownameslist[row] = paste('S',row, sep = '')
+  }
+  #rownames(H.mat) = subjects
+  rownames(H.mat) = rownameslist
+
+  colnames(H.mat) = seq(ncol(H.mat))
+
+  lasagnar::lasagna(lasagnar::wr.disc(H.mat), main = 'Within-row sorted lasagna plot',
+                    legend = T, xlab = 'Measurement ordered by gl value, increasing',
+                    ylab = 'Subject')
+}
