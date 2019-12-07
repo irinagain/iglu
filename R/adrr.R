@@ -8,7 +8,9 @@
 #' @usage
 #' adrr(data)
 #'
-#' @param data DataFrame with column names ("id", "time", and "gl").
+#' @param data DataFrame object with column names "id", "time", and "gl",
+#' or numeric vector of glucose values. Missing values will be linearly
+#' interpolated when close enough to non-missing values.
 #'
 #' @return
 #'
