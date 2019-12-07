@@ -2,13 +2,14 @@
 % Please edit documentation in R/grade_hyper.R
 \name{grade_hyper}
 \alias{grade_hyper}
-\title{Percentage of GRADE score above target}
+\title{Percentage of GRADE score attributable to hyperglycemia}
 \usage{
 grade_hyper(data, upper = 140)
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl"),
-or vector of glucose values as integer, numeric, or double.}
+\item{data}{DataFrame object with column names "id", "time", and "gl",
+or numeric vector of glucose values. NA's will be omitted from the glucose
+values in calculation of %GRADE hyperglycemia.}
 
 \item{upper}{Upper bound used for hyperglycemia cutoff, in mg/dL. Default is 140.}
 }
@@ -16,10 +17,34 @@ or vector of glucose values as integer, numeric, or double.}
 
 }
 \description{
-Percentage of GRADE score above target
+The function grade_hyper produces %GRADE hyperglycemia values in data.frame
+form with one column and one row per subject.
+}
+\details{
+A dataframe structure with one column and a row for each subject.
+
+%GRADE hyperglycemia is calculated by calculating the GRADE score (see grade
+function) just for values above the hyperglycemia cutoff and dividing by the
+total GRADE score.
+
+Wrapping as.numeric() around the grade_hyper call on a dataset with
+a single subject will return a numeric value corresponding to the %GRADE
+hyperglycemia value. This will not work for datasets with multiple subjects.
 }
 \examples{
-grade_hyper(data)
-grade_hyper(data, upper = 160)
 
+data(example_data_1_subject)
+grade_hyper(example_data_1_subject)
+grade_hyper(example_data_1_subject, upper = 180)
+
+data(example_data_5_subject)
+grade_hyper(example_data_5_subject)
+grade_hyper(example_data_5_subject, upper = 160)
+
+}
+\references{
+Rodbard (2009) Interpretation of continuous glucose monitoring data:
+glycemic variability and quality of glycemic control,
+\emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
+S55-67. \doi{10.1089/dia.2008.0132}.
 }
