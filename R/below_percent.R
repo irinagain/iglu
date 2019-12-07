@@ -1,11 +1,11 @@
 #' Calculate percentage below targeted values
 #'
 #' #' @description
-#' The function below_percent produces a dataframe of values equal to
-#' the percentage of glucose measurements below target values. The output
-#' columns correspond to the target values. The output rows correspond to
-#' the subject id's if multiple subjects are passed. The values will be between
-#' 0 (no measurements) and 100 (all measurements).
+#' The function above_percent produces a dataframe of values equal to
+#' the percentage of glucose measurements below target values. The output is in
+#' data.frame form by default, where the columns correspond to the target
+#' values and the output rows correspond to the subjects. The values will be
+#' between 0 (no measurements) and 100 (all measurements).
 #'
 #' @usage
 #' below_percent(data, targets = c(50, 80))
@@ -39,6 +39,7 @@
 #' S55-67. \doi{10.1089/dia.2008.0132}.
 #'
 #' @examples
+#'
 #' data(example_data_1_subject)
 #'
 #' below_percent(example_data_1_subject)

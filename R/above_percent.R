@@ -2,10 +2,10 @@
 #'
 #' @description
 #' The function above_percent produces a dataframe of values equal to
-#' the percentage of glucose measurements above target values. The output
-#' columns correspond to the target values. The output rows correspond to
-#' the subject id's if multiple subjects are passed. The values will be between
-#' 0 (no measurements) and 100 (all measurements).
+#' the percentage of glucose measurements above target values. The output is in
+#' data.frame form by default, where the columns correspond to the target
+#' values and the output rows correspond to the subjects. The values will be
+#' between 0 (no measurements) and 100 (all measurements).
 #'
 #' @usage
 #' above_percent(data, targets = c(140, 180, 200, 250))
