@@ -3,7 +3,7 @@
 #' @param data DataFrame with column names ("id", "time", and "gl"),
 #' or vector of glucose values as integer, numeric, or double.
 #'
-#' @param lower Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 80
+#' @param lower Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 70
 #' @param upper Upper bound used for hyperglycemia cutoff, in mg/dL. Default is 140.
 #'
 #' @return
@@ -14,7 +14,7 @@
 #' grade_eugly(example_data_5_subject)
 #' grade_eugly(example_data_5_subject, lower = 70, upper = 180)
 
-grade_eugly <- function(data, lower = 80, upper = 140){
+grade_eugly <- function(data, lower = 70, upper = 140){
   grade_eugly_single = function(data, lower, upper){
    gl_by_id = na.omit(read_df_or_vec(data))
     grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
