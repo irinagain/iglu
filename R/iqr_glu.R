@@ -1,16 +1,36 @@
-#' Calculate glucose IQR
+#' Calculate glucose level iqr
 #'
-#' @param data DataFrame with column names ("id", "time", and "gl"),
-#' or vector of glucose values as integer, numeric, or double.
+#' @description The function iqr_glu outputs the distance between the 25th
+#' percentile and the 25th percentile of the glucose values for each subject.
+#' The output is in a data.frame form by default, with one column and a
+#' row corresponding to each subject.
 #'
-#' @description Simple wrapper for IQR().
+#' @usage
+#' iqr_glu(data)
+#'
+#' @param data DataFrame object with column names "id", "time", and "gl",
+#' or numeric vector of glucose values. NA's will be omitted from the glucose
+#' values in calculation of the iqr.
+#'
+#' @details
+#' A dataframe structure with 1 row for each subject and 1 column
+#' for the iqr value is returned.
+#'
+#' Wrapping as.numeric() around the iqr_glu call on a dataset with
+#' a single subject will return a numeric value corresponding to the iqr.
+#' This will not work for datasets with multiple subjects.
 #'
 #' @return
 #'
 #' @export
 #'
 #' @examples
-#' iqr_glu(data)
+#' data(example_data_1_subject)
+#' iqr_glu(example_data_1_subject)
+#'
+#' data(example_data_5_subject)
+#' iqr_glu(example_data_5_subject)
+#'
 
 iqr_glu <- function(data){
   iqr_glu_single = function(data){
