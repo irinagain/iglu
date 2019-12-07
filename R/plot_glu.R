@@ -22,5 +22,13 @@ plot_glu <- function(data, plottype = 'tsplot', hypo = 80, hyper = 140, subjects
     tsdata = data[which(data$id == subject), ]
     tsplot(tsdata, hypo, hyper)
   }
+  else if(plottype == 'unsorted'){
+    if(is.null(subjects)){
+      unsorted(data, hypo, hyper)
+    }
+    else {
+      unsorted(data[which(data$subjects) %in% subjects, ], hypo, hyper)
+    }
+  }
 
 }
