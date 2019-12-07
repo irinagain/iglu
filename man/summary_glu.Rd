@@ -30,6 +30,10 @@ a single subject will return a numeric value corresponding to the summary.
 This will not work for datasets with multiple subjects.
 }
 \examples{
-summary_glu(data)
+data(example_data_1_subject)
+summary_glu(example_data_1_subject)
+
+data(example_data_5_subject)
+summary_glu(example_data_5_subject)
 
 }

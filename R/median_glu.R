@@ -4,9 +4,6 @@
 #' median(). The output is in a data.frame form by default, with one column
 #' and a row corresponding to each subject.
 #'
-#' @param data DataFrame with column names ("id", "time", and "gl"),
-#' or vector of glucose values as integer, numeric, or double.
-#'
 #' @usage
 #' median_glu(data)
 #'
@@ -27,7 +24,11 @@
 #' @export
 #'
 #' @examples
-#' median_glu(data)
+#' data(example_data_1_subject)
+#' median_glu(example_data_1_subject)
+#'
+#' data(example_data_5_subject)
+#' median_glu(example_data_5_subject)
 #'
 
 median_glu <- function(data){
