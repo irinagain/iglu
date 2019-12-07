@@ -85,12 +85,20 @@ tsplot = function(data, hypo, hyper){
 
 unsorted_lasagna = function(data, hypo, hyper){
   subjects = unique(data$id)
-  H.mat = matrix(NA, nrow = length(subjects), ncol = 1000)
+  limit = sum(data$id == subjects[1])
+  if(length(subjects) >= 2){
+    for(i in 2:length(subjects)){
+      if(sum(data$id == subjects[i]) < limit){
+        limit = sum(data$id == subjects[i])
+      }
+    }
+  }
+  H.mat = matrix(NA, nrow = length(subjects), ncol = limit)
   rownameslist = rep(NA, length(subjects))
   for(row in 1:length(subjects)){
     subject_subset = na.omit((data[data$id == subjects[row],]))
-    subject_subset = subject_subset[1:1000,]
-    H.mat[row, 1:1000] = subject_subset$gl
+    subject_subset = subject_subset[1:limit,]
+    H.mat[row, 1:limit] = subject_subset$gl
     rownameslist[row] = paste('S',row, sep = '')
   }
   rownames(H.mat) = rownameslist
@@ -102,17 +110,24 @@ unsorted_lasagna = function(data, hypo, hyper){
 }
 
 
-rowsorted_lasagna = function(data){
+rowsorted_lasagna = function(data, hypo, hyper){
   subjects = unique(data$id)
-  H.mat = matrix(NA, nrow = length(subjects), ncol = 1000)
+  limit = sum(data$id == subjects[1])
+  if(length(subjects) >= 2){
+    for(i in 2:length(subjects)){
+      if(sum(data$id == subjects[i]) < limit){
+        limit = sum(data$id == subjects[i])
+      }
+    }
+  }
+  H.mat = matrix(NA, nrow = length(subjects), ncol = limit)
   rownameslist = rep(NA, length(subjects))
   for(row in 1:length(subjects)){
     subject_subset = na.omit((data[data$id == subjects[row],]))
-    subject_subset = subject_subset[1:1000,]
-    H.mat[row, 1:1000] = subject_subset$gl
+    subject_subset = subject_subset[1:limit,]
+    H.mat[row, 1:limit] = subject_subset$gl
     rownameslist[row] = paste('S',row, sep = '')
   }
-  #rownames(H.mat) = subjects
   rownames(H.mat) = rownameslist
 
   colnames(H.mat) = seq(ncol(H.mat))
