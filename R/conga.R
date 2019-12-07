@@ -1,7 +1,8 @@
 #' Calculate continuous overall net glycemic action (CONGA)
 #'
 #' @description
-#' The function conga produces CONGA values in data.frame form
+
+#' The function conga produces a CONGA values in data.frame form
 #' with one column and one row per subject. conga currently only supports
 #' calculation of CONGA24.
 #'
