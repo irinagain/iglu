@@ -8,8 +8,8 @@
 #' cv_glu(data)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values. Missing values will be linearly
-#' interpolated when close enough to non-missing values.
+#' or numeric vector of glucose values. NA's will be omitted from the glucose
+#' values in calculation of GRADE score.
 #'
 #' @return
 #'

@@ -7,16 +7,39 @@
 cv_glu(data)
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl"),
-or vector of glucose values as integer, numeric, or double.}
+\item{data}{DataFrame object with column names "id", "time", and "gl",
+or numeric vector of glucose values. NA's will be omitted from the glucose
+values in calculation of GRADE score.}
 }
 \value{
 
 }
 \description{
-The coefficient of variation is computed by dividing
-the sample standard deviation by the sample mean and multypling by 100%
+The function cv_glu produces CV values in data.frame form
+with one column and one row per subject.
+}
+\details{
+A dataframe structure with one column and a row for each subject.
+
+CV (Coefficient of Variation) is calculated by \eqn{100 * sd(BG) / mean(BG)}
+Where BG is the list of all Blood Glucose measurements for a subject.
+
+Wrapping as.numeric() around the cv_glu call on a dataset with
+a single subject will return a numeric value corresponding
+to the CV value. This will not work for datasets with multiple subjects.
 }
 \examples{
-cv_glu(data)
+
+data(example_data_1_subject)
+cv_glu(example_data_1_subject)
+
+data(example_data_5_subject)
+cv_glu(example_data_5_subject)
+
+}
+\references{
+Kovatchev et al. (2006) Evaluation of a New Measure of Blood Glucose Variability in,
+Diabetes
+\emph{Diabetes care} \strong{29} .2433-2438,
+\doi{10.2337/dc06-1085}.
 }
