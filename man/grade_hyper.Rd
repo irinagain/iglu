@@ -9,7 +9,7 @@ grade_hyper(data, upper = 140)
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values. NA's will be omitted from the glucose
-values in calculation of %GRADE hyperglycemia.}
+values in calculation of \%GRADE hyperglycemia.}
 
 \item{upper}{Upper bound used for hyperglycemia cutoff, in mg/dL. Default is 140.}
 }
@@ -17,18 +17,18 @@ values in calculation of %GRADE hyperglycemia.}
 
 }
 \description{
-The function grade_hyper produces %GRADE hyperglycemia values in data.frame
+The function grade_hyper produces \%GRADE hyperglycemia values in data.frame
 form with one column and one row per subject.
 }
 \details{
 A dataframe structure with one column and a row for each subject.
 
-%GRADE hyperglycemia is calculated by calculating the GRADE score (see grade
+\%GRADE hyperglycemia is calculated by calculating the GRADE score (see grade
 function) just for values above the hyperglycemia cutoff and dividing by the
 total GRADE score.
 
 Wrapping as.numeric() around the grade_hyper call on a dataset with
-a single subject will return a numeric value corresponding to the %GRADE
+a single subject will return a numeric value corresponding to the \%GRADE
 hyperglycemia value. This will not work for datasets with multiple subjects.
 }
 \examples{
