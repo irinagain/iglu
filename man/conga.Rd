@@ -26,7 +26,7 @@ CONGA24 is currently the only supported CONGA type. CONGA24 is computed
 by taking the standard deviation of differences in measurements separated
 by 24 hours (same time of day).
 
-Wrapping as.numeric() around the adrr call on a dataset with
+Wrapping as.numeric() around the conga call on a dataset with
 a single subject will return a numeric value corresponding to the CONGA
 value. This will not work for datasets with multiple subjects.
 }
