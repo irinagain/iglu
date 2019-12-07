@@ -28,6 +28,10 @@ a single subject will return a numeric value corresponding to the median.
 This will not work for datasets with multiple subjects.
 }
 \examples{
-median_glu(data)
+data(example_data_1_subject)
+median_glu(example_data_1_subject)
+
+data(example_data_5_subject)
+median_glu(example_data_5_subject)
 
 }
