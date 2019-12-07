@@ -9,7 +9,7 @@ grade(data)
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values. NA's will be omitted from the glucose
-values in calculation of sd.}
+values in calculation of GRADE score.}
 }
 \value{
 
