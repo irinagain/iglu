@@ -85,23 +85,9 @@ as.numeric(conga(example_data_1_subject))
 as.numeric(above_percent(example_data_1_subject))
 ```
 
-## Plots
 
-When working with a single subject, iglu currently supports the follwing plots: 
+# Multiple Subject Workflow
 
-* Histogram of glucose values
-* Time Series plot of glucose values
+# Data Manipulation
 
-The function `plot_glu()` can output either plot, dependent on the input.
-For a histogram, simply pass the glucose column of the dataset (numeric).
-
-```{r}
-plot_glu(example_data_1_subject$gl) # extract 'gl' column
-```
-
-For a time series plot, pass the whole dataset.
-
-```{r}
-plot_glu(example_data_1_subject)
-```
-
+# Shiny App
