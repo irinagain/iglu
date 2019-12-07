@@ -170,4 +170,20 @@ metric_table <- reactive({
 
   })
 
+output$plot <- renderPlot({
+
+  data = transform_data()
+  library(iglu)
+  if(input$plottype == 'tsplot'){
+    plot_glu(data, plottype = 'tsplot')
+  }
+  else if(input$plottype == 'unsorted'){
+    plot_glu(data, plottype = 'unsorted')
+  }
+  else if(input$plottype == 'rowsorted'){
+    plot_glu(data, plottype = 'rowsorted')
+  }
+
+})
+
 })
