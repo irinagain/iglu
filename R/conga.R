@@ -1,16 +1,48 @@
 #' Calculate continuous overall net glycemic action (CONGA)
 #'
-#' @param data DataFrame with column names ("id", "time", and "gl").
+#' @description
+#' The function conga produces CONGA values in data.frame form
+#' with one column and one row per subject. conga currently only supports
+#' calculation of CONGA24.
+#'
+#' @usage
+#' conga(data)
+#'
+#' @param data DataFrame object with column names "id", "time", and "gl",
+#' or numeric vector of glucose values. Missing values will be linearly
+#' interpolated when close enough to non-missing values.
 #'
 #' @return
 #'
 #' @export
 #'
+#' @details
+#' A dataframe structure with one column and a row for each subject.
+#'
+#' CONGA24 is currently the only supported CONGA type. CONGA24 is computed
+#' by taking the standard deviation of differences in measurements separated
+#' by 24 hours (same time of day).
+#'
+#' Wrapping as.numeric() around the above_percent call on a dataset with
+#' a single subject will return a numeric vector, where the values
+#' correspond to the percent of glucose values above each threshold
+#' in the order passed in the targets argument. This will not work for
+#' datasets with multiple subjects.
+#'
+#' @references
+#' Rodbard (2009) Interpretation of continuous glucose monitoring data:
+#' glycemic variability and quality of glycemic control,
+#' \emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
+#' S55-67. \doi{10.1089/dia.2008.0132}.
+#'
 #' @examples
-#' conga(data)
-#
-
-#source(iglu:::utils)
+#'
+#' data(example_data_1_subject)
+#' conga(example_data_1_subject)
+#'
+#' data(example_data_5_subject)
+#' conga(example_data_5_subject)
+#'
 
 
 
