@@ -4,25 +4,62 @@
 \alias{in_range_percent}
 \title{Calculate percentage in targeted value ranges}
 \usage{
-in_range_percent(data, targets = list(c(80, 200), c(70, 180), c(70,
-  140)))
+in_range_percent(data, targets = list(c(80, 200), c(70, 180), c(70, 140)))
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl"),
-or vector of glucose values as integer, numeric, or double.}
+\item{data}{DataFrame object with column names "id", "time", and "gl",
+or numeric vector of glucose values. NA's will be omitted from the glucose
+values in calculation of percent.}
 
-\item{targets}{List of target values. Default list is [(80,200), (70,180), (70,140)].}
+\item{targets}{List of target value ranges wrapped in an r 'list' structure.
+Default list of ranges is ((80, 200), (70, 180), (70, 140)).}
 }
 \value{
 
 }
 \description{
-Calculate percentage in targeted value ranges
+The function in_range_percent produces a dataframe of values equal to
+the percentage of glucose measurements in ranges of target values. The
+output columns correspond to the target value ranges, and the rows
+correspond to the subjects. The values will be between 0 (no measurements)
+and 100 (all measurements).
+}
+\details{
+A dataframe structure with 1 row for each subject and a
+column for each range of target values is returned.
+
+in_range_percent will only work properly if the targets argument is a list
+of paired values in the format list(c(a1,b1), c(a2,b2), ...). The paired
+values can be ordered (min, max) or (max, min). See the Examples section
+for proper usage.
+
+Wrapping as.numeric() around the in_range_percent call on a dataset with
+a single subject will return a numeric vector, where the values
+correspond to the percent of glucose values in each range
+in the order passed in the targets argument. This will not work for
+datasets with multiple subjects.
 }
 \examples{
-in_range_percent(data)
-in_range_percent(data, targets = list(c(100,200), c(150,250))
 
-# The following will return same output as previous output:
-in_range_percent(data, targets = list(c(200, 100), c(250,150))
+data(example_data_1_subject)
+
+in_range_percent(example_data_1_subject)
+in_range_percent(example_data_1_subject, targets = list(c(50, 100), c(200,
+300), c(80, 140))
+
+# output numeric vector instead of dataframe
+as.numeric(in_range_percent(example_data_1_subject))
+
+data(example_data_5_subject)
+
+in_range_percent(example_data_5_subject)
+in_range_percent(example_data_1_subject, targets = list(c(60, 120), c(140,
+250))
+
+}
+\references{
+Rodbard (2009) Interpretation of continuous glucose monitoring data:
+glycemic variability and quality of glycemic control,
+\emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
+S55-67. \doi{10.1089/dia.2008.0132}.
 }
