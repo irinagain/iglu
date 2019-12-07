@@ -4,9 +4,6 @@
 #' mean(). The output is in a data.frame form by default, with one column
 #' and a row corresponding to each subject.
 #'
-#' @param data DataFrame with column names ("id", "time", and "gl"),
-#' or vector of glucose values as integer, numeric, or double.
-#'
 #' @usage
 #' mean_glu(data)
 #'
