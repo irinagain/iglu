@@ -38,8 +38,8 @@ cv_glu(example_data_5_subject)
 
 }
 \references{
-Kovatchev et al. (2006) Evaluation of a New Measure of Blood Glucose Variability in,
-Diabetes
-\emph{Diabetes care} \strong{29} .2433-2438,
-\doi{10.2337/dc06-1085}.
+Rodbard (2009) Interpretation of continuous glucose monitoring data:
+glycemic variability and quality of glycemic control,
+\emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
+S55-67. \doi{10.1089/dia.2008.0132}.
 }
