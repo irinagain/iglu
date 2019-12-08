@@ -110,7 +110,7 @@ quantile_glu(example_data_5_subject)
 Other metric functions, like `MAGE()` (Mean Amplitude of Glycemic Excursions), will return just a single value for each subject, producing a 1 column dataframe with a row for each subject.
 
 ```{r}
-conga(example_data_5_subject)
+mage(example_data_5_subject)
 ```
 
 Note: `base::as.numeric()` will produce an error when wrapped around a data.frame with more >1 row.
