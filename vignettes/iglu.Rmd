@@ -114,3 +114,46 @@ conga(example_data_5_subject)
 ```
 
 Note: `base::as.numeric()` will produce an error when wrapped around a data.frame with more >1 row.
+
+# Visualizations
+
+The iglu package currently supports 3 plot types:
+
+* Time series plot
+* Unsorted lasagna plot
+* Row sorted lasagna plot
+
+The time series plot can be used on a single subject or multiple subjects, but, in the case of multiple subjects, only the first will be used.
+```{r}
+plot_glu(example_data_1_subject, plottype = 'tsplot')
+plot_glu(example_data_5_subject, plottype = 'tsplot')
+```
+However, the 'subjects' parameter can be used to select a desired subject.
+
+```{r}
+plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3')
+```
+The red lines can be shifted to any hypo- and hyperglycemia cutoffs with the 'lower' and 'upper' arguments.
+
+```{r}
+plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', lower = 80, upper = 150)
+```
+
+The unsorted and row sorted lasagna plots are identical in their usage, other than changing the plottype parameter.
+
+```{r}
+plot_glu(example_data_5_subject, plottype = 'unsorted')
+plot_glu(example_data_5_subject, plottype = 'rowsorted')
+```
+
+The 'unsorted' lasagna plot compares the 5 subjects' blood glucose measurements, matching their values in the order the measurements were taken in.  
+  
+The 'row sorted' lasagna plot sorts the blood glucose measurements into an increasing order.
+
+# Shiny App
+
+The iglu package comes with a shiny app containing all of the metric calculations as well as all plot types of the package itself.
+  
+The full app can be accessed at [https://stevebroll.shinyapps.io/shinyiglu/](https://stevebroll.shinyapps.io/shinyiglu/), or by running `iglu::run_shiny()` (iglu must be installed to use the run_shiny function).
+  
+The app itself has a demo available at [https://stevebroll.shinyapps.io/shinyiglu/](https://stevebroll.shinyapps.io/shinyigludemo/) with data pre-loaded.
