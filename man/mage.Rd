@@ -2,24 +2,50 @@
 % Please edit documentation in R/mage.R
 \name{mage}
 \alias{mage}
-\title{Calculate Mean Amplitude of Glucose Excursion (MAGE)}
+\title{Calculate Mean Amplitude of Glycemic Excursions}
 \usage{
-mage(data, sd = 1)
+mage(data, sd_multiplier = 1)
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl"),
-or vector of glucose values as integer, numeric, or double.}
+\item{data}{DataFrame object with column names "id", "time", and "gl",
+or numeric vector of glucose values. NA's will be omitted from the glucose
+values in calculation of MAGE.}
 
-\item{sd}{Standard deviations used to classify "excursions". Default is 1.}
+\item{sd_multiplier}{A numeric value that can change the sd value used
+to determine size of glycemic excursions used in the calculation.}
 }
 \value{
 
 }
 \description{
-Calculate Mean Amplitude of Glucose Excursion (MAGE)
+The function mage produces MAGE values in data.frame form
+with one column and one row per subject.
+}
+\details{
+A dataframe structure with one column and a row for each subject.
+
+MAGE is calculated by taking the mean of absolute differences (between
+each value and the mean) that are greater than the standard deviation.
+A multiplier can be added to the standard deviation by the sd_multiplier
+argument.
+
+Wrapping as.numeric() around the mage call on a dataset with
+a single subject will return a numeric value corresponding to the MAGE value.
+This will not work for datasets with multiple subjects.
 }
 \examples{
-mage(data)
-mage(data, 'Subject 1', 2)
 
+data(example_data_1_subject)
+mage(example_data_1_subject)
+mage(example_data_1_subject, sd_multiplier = 2)
+
+data(example_data_5_subject)
+mage(example_data_5_subject, sd_multiplier = .9)
+
+}
+\references{
+Rodbard (2009) Interpretation of continuous glucose monitoring data:
+glycemic variability and quality of glycemic control,
+\emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
+S55-67. \doi{10.1089/dia.2008.0132}.
 }
