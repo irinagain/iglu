@@ -4,39 +4,39 @@
 \alias{lbgi}
 \title{Calculate High Blood Glucose Index (LBGI)}
 \usage{
-hbgi(data)
+lbgi(data)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values. NA's will be omitted from the glucose
-values in calculation of HBGI.}
+values in calculation of LBGI.}
 }
 \value{
 
 }
 \description{
-The function hbgi produces HBGI values in data.frame form
+The function lbgi produces LBGI values in data.frame form
 with one column and one row per subject.
 }
 \details{
 A dataframe structure with one column and a row for each subject.
 
-HBGI is calculated by \eqn{1/n * \sum (10 * fbg_i ^2)},
-where \eqn{fbg_i = max(0, 1.509 * (log(BG_i)^{1.084 - 5.381})},
+LBGI is calculated by \eqn{1/n * \sum (10 * fbg_i ^2)},
+where \eqn{fbg_i = min(0, 1.509 * (log(BG_i)^{1.084 - 5.381})},
 BG_i is the ith Blood Glucose measurement for a subject, and
 n is the total number of measurements for that subject.
 
-Wrapping as.numeric() around the hbgi call on a dataset with
+Wrapping as.numeric() around the lbgi call on a dataset with
 a single subject will return a numeric value corresponding
-to the HBGI value. This will not work for datasets with multiple subjects.
+to the LBGI value. This will not work for datasets with multiple subjects.
 }
 \examples{
 
 data(example_data_1_subject)
-hbgi(example_data_1_subject)
+lbgi(example_data_1_subject)
 
 data(example_data_5_subject)
-hbgi(example_data_5_subject)
+lbgi(example_data_5_subject)
 
 }
 \references{
