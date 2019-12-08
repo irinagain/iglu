@@ -2,7 +2,7 @@
 % Please edit documentation in R/hyper_index.R
 \name{hyper_index}
 \alias{hyper_index}
-\title{Calculate Hyperglycemia Hndex (HGI)}
+\title{Calculate Hyperglycemia Hndex}
 \usage{
 hyper_index(data, upper = 140)
 }
@@ -23,7 +23,7 @@ form with one column and one row per subject.
 \details{
 A dataframe structure with one column and a row for each subject.
 
-Hyperglycemia Inndex is calculated by \eqn{n/30 * \sum [hyperBG_j ^{1.1}]}
+Hyperglycemia Index is calculated by \eqn{n/30 * \sum [hyperBG_j ^{1.1}]}
 Where n is the total number of Blood Glucose measurements and \eqn{hyperBG_j}
 is the jth Blood Glucose measurement above the hyperglycemia cutoff.
 
@@ -39,4 +39,5 @@ hyper_index(example_data_1_subject, upper = 160)
 data(example_data_5_subject)
 hyper_index(example_data_5_subject)
 hyper_index(example_data_5_subject, upper = 150)
+
 }

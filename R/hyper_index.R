@@ -1,4 +1,4 @@
-#' Calculate Hyperglycemia Hndex (HGI)
+#' Calculate Hyperglycemia Hndex
 #'
 #' @description
 #' The function hyper_index produces Hyperglycemia index values in data.frame
@@ -16,7 +16,7 @@
 #' @details
 #' A dataframe structure with one column and a row for each subject.
 #'
-#' Hyperglycemia Inndex is calculated by \eqn{n/30 * \sum [hyperBG_j ^{1.1}]}
+#' Hyperglycemia Index is calculated by \eqn{n/30 * \sum [hyperBG_j ^{1.1}]}
 #' Where n is the total number of Blood Glucose measurements and \eqn{hyperBG_j}
 #' is the jth Blood Glucose measurement above the hyperglycemia cutoff.
 #'
@@ -36,6 +36,7 @@
 #' data(example_data_5_subject)
 #' hyper_index(example_data_5_subject)
 #' hyper_index(example_data_5_subject, upper = 150)
+#'
 
 
 hyper_index <- function(data, upper = 140){
