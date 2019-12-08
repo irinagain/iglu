@@ -62,7 +62,7 @@ plot_glu <- function(data, plottype = 'tsplot', lower = 70, upper = 140, subject
       unsorted_lasagna(data)
     }
     else {
-      unsorted_lasagna(data[which(data$subjects) %in% subjects, ])
+      unsorted_lasagna(data[which(data$id) %in% subjects, ])
     }
   }
   else if(plottype == 'rowsorted'){
@@ -70,7 +70,7 @@ plot_glu <- function(data, plottype = 'tsplot', lower = 70, upper = 140, subject
       rowsorted_lasagna(data)
     }
     else {
-      rowsorted_lasagna(data[which(data$subjects) %in% subjects, ])
+      rowsorted_lasagna(data[which(data$id) %in% subjects, ])
     }
   }
   else {
