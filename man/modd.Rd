@@ -8,7 +8,9 @@ of day (MODD)}
 modd(data, lag = 1)
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl").}
+\item{data}{DataFrame object with column names "id", "time", and "gl",
+or numeric vector of glucose values. Missing values will be linearly
+interpolated when close enough to non-missing values.}
 
 \item{lag}{Integer indicating which lag (# days) to use. Default is 1.}
 }
@@ -16,10 +18,33 @@ modd(data, lag = 1)
 
 }
 \description{
-Calculate mean difference between glucose values obtained at the same time
-of day (MODD)
+The function modd produces MODD values in data.frame form
+with one column and one row per subject.
+}
+\details{
+A dataframe structure with one column and a row for each subject.
+
+MODD is calculated by taking the mean of absolute differences between
+measurements at the same time 1 day away, or more if lag parameter
+is set to an integer > 1.
+
+Wrapping as.numeric() around the modd call on a dataset with
+a single subject will return a numeric value corresponding
+to the MODD value. This will not work for datasets with multiple subjects.
 }
 \examples{
-modd(data)
-modd(data, lag = 2)
+
+data(example_data_1_subject)
+modd(example_data_1_subject)
+modd(example_data_1_subject, lag = 2)
+
+data(example_data_5_subject)
+modd(example_data_5_subject, lag = 2)
+
+}
+\references{
+Rodbard (2009) Interpretation of continuous glucose monitoring data:
+glycemic variability and quality of glycemic control,
+\emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
+S55-67. \doi{10.1089/dia.2008.0132}.
 }
