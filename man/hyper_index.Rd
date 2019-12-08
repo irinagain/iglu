@@ -2,13 +2,14 @@
 % Please edit documentation in R/hyper_index.R
 \name{hyper_index}
 \alias{hyper_index}
-\title{Calculate hyperglycaemic index (HGI)}
+\title{Calculate Hyperglycemia Hndex (HGI)}
 \usage{
 hyper_index(data, upper = 140)
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl"),
-or vector of glucose values as integer, numeric, or double.}
+\item{data}{DataFrame object with column names "id", "time", and "gl",
+or numeric vector of glucose values. NA's will be omitted from the glucose
+values in calculation of Hyperglycemic Index.}
 
 \item{upper}{Upper bound used for hyperglycemia cutoff. Default is 140.}
 }
@@ -16,9 +17,26 @@ or vector of glucose values as integer, numeric, or double.}
 
 }
 \description{
-Calculate hyperglycaemic index (HGI)
+The function hyper_index produces Hyperglycemia index values in data.frame
+form with one column and one row per subject.
+}
+\details{
+A dataframe structure with one column and a row for each subject.
+
+Hyperglycemia Inndex is calculated by \eqn{n/30 * \sum [hyperBG_j ^{1.1}]}
+Where n is the total number of Blood Glucose measurements and \eqn{hyperBG_j}
+is the jth Blood Glucose measurement above the hyperglycemia cutoff.
+
+Wrapping as.numeric() around the hyper_index call on a dataset with
+a single subject will return a numeric value corresponding to the
+Hyperglycemia Index value. This will not work for datasets with multiple subjects.
 }
 \examples{
-hyper_index(data)
-hyper_index(data, upper = 160)
+data(example_data_1_subject)
+hyper_index(example_data_1_subject)
+hyper_index(example_data_1_subject, upper = 160)
+
+data(example_data_5_subject)
+hyper_index(example_data_5_subject)
+hyper_index(example_data_5_subject, upper = 150)
 }
