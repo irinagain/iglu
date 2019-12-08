@@ -2,15 +2,16 @@
 % Please edit documentation in R/igc.R
 \name{igc}
 \alias{igc}
-\title{Compute sum of Hyperglycemia index and Hypoglycemia index}
+\title{Calculate Index of Glycemic Control}
 \usage{
-igc(data, lower = 80, upper = 140)
+igc(data, lower = 70, upper = 140)
 }
 \arguments{
-\item{data}{DataFrame with column names ("id", "time", and "gl"),
-or vector of glucose values as integer, numeric, or double.}
+\item{data}{DataFrame object with column names "id", "time", and "gl",
+or numeric vector of glucose values. NA's will be omitted from the glucose
+values in calculation of IGC.}
 
-\item{lower}{Lower bound used for hypoglycemia cutoff. Default is 80.}
+\item{lower}{Lower bound used for hypoglycemia cutoff. Default is 70}
 
 \item{upper}{Upper bound used for hyperglycemia cutoff. Default is 140.}
 }
@@ -18,9 +19,32 @@ or vector of glucose values as integer, numeric, or double.}
 
 }
 \description{
-Compute sum of Hyperglycemia index and Hypoglycemia index
+The function igc produces IGC values in data.frame
+form with one column and one row per subject.
+}
+\details{
+A dataframe structure with one column and a row for each subject.
+
+IGC is calculated by taking the sum of the Hyperglycemia
+Index and the Hypoglycemia index. See hypo_index and hyper_index.
+
+Wrapping as.numeric() around the igc call on a dataset with
+a single subject will return a numeric value corresponding to the
+IGC value. This will not work for datasets with multiple subjects.
 }
 \examples{
-igc(data)
-igc(data, lower = 70, upper = 160)
+data(example_data_1_subject)
+igc(example_data_1_subject)
+igc(example_data_1_subject, lower = 80, upper = 160)
+
+data(example_data_5_subject)
+igc(example_data_5_subject)
+igc(example_data_5_subject, lower = 75, upper = 150)
+
+}
+\references{
+Rodbard (2009) Interpretation of continuous glucose monitoring data:
+glycemic variability and quality of glycemic control,
+\emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
+S55-67. \doi{10.1089/dia.2008.0132}.
 }
