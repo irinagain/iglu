@@ -55,7 +55,7 @@ plot_glu <- function(data, plottype = 'tsplot', lower = 70, upper = 140, subject
       subject = subjects[1]
     }
     tsdata = data[which(data$id == subject), ]
-    tsplot(tsdata, hypo, hyper)
+    tsplot(tsdata, lower, upper)
   }
   else if(plottype == 'unsorted'){
     if(is.null(subjects)){
