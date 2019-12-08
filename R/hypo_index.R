@@ -1,19 +1,44 @@
-#' Calculate hypoglycaemic index (HGI)
+#' Calculate Hypoglycemia Hndex
 #'
-#' @param data DataFrame with column names ("id", "time", and "gl"),
-#' or vector of glucose values as integer, numeric, or double.
+#' @description
+#' The function hypo_index produces Hypoglycemia index values in data.frame
+#' form with one column and one row per subject.
 #'
-#' @param lower Lower bound used for hypoglycemia cutoff. Default is 80.
+#' @usage
+#' hypo_index(data, lower = 70)
+#'
+#' @param data DataFrame object with column names "id", "time", and "gl",
+#' or numeric vector of glucose values. NA's will be omitted from the glucose
+#' values in calculation of Hypoglycemic Index.
+#'
+#' @param lower Lower bound used for hypoglycemia cutoff. Default is 70
+#'
+#' @details
+#' A dataframe structure with one column and a row for each subject.
+#'
+#' Hypoglycemia Index is calculated by \eqn{n/30 * \sum [hypoBG_j ^{2}]}
+#' Where n is the total number of Blood Glucose measurements and \eqn{hypoBG_j}
+#' is the jth Blood Glucose measurement below the hypoglycemia cutoff.
+#'
+#' Wrapping as.numeric() around the hypo_index call on a dataset with
+#' a single subject will return a numeric value corresponding to the
+#' Hypoglycemia Index value. This will not work for datasets with multiple subjects.
 #'
 #' @return
 #'
 #' @export
 #'
 #' @examples
-#' hypo_index(data)
-#' hypo_index(data, lower = 70)
+#' data(example_data_1_subject)
+#' hypo_index(example_data_1_subject)
+#' hypo_index(example_data_1_subject, lower = 60)
+#'
+#' data(example_data_5_subject)
+#' hypo_index(example_data_5_subject)
+#' hypo_index(example_data_5_subject, lower = 80)
+#'
 
-hypo_index <- function(data, lower = 80){
+hypo_index <- function(data, lower = 70){
   hypo_index_single = function(data, lower){
     gl_by_id = na.omit(read_df_or_vec(data))
     out = sum(gl_by_id[gl_by_id < lower] ^ 2, na.rm = T)/(length(gl_by_id) * 30)
