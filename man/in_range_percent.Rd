@@ -45,16 +45,13 @@ data(example_data_1_subject)
 
 in_range_percent(example_data_1_subject)
 in_range_percent(example_data_1_subject, targets = list(c(50, 100), c(200,
-300), c(80, 140))
-
-# output numeric vector instead of dataframe
-as.numeric(in_range_percent(example_data_1_subject))
+300), c(80, 140)))
 
 data(example_data_5_subject)
 
 in_range_percent(example_data_5_subject)
 in_range_percent(example_data_1_subject, targets = list(c(60, 120), c(140,
-250))
+250)))
 
 }
 \references{
