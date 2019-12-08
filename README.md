@@ -17,6 +17,9 @@ install.packages(c("lubridate",
                    "intervals",
                    "ggplot2"))
 devtools::install_github('swihart/lasagnar') # for lasagna plots (multi subject)
+
+# For installation with vignette
+devtools::install_github("stevebroll/iglu", build_vignettes = TRUE)
 ```
 
 Example
