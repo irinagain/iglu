@@ -43,6 +43,7 @@ This dataset contains 2915 observations of 3 columns corresponding to the three 
 * `"time"` - Factor (character string) column that can be converted to DateTime for measurement timestamp
 * `"gl"` - Numeric column for glucose measurement
 
+Data used with iglu functions may have additional columns, but the columns for id, time and glucose values must be named as above.
 
 ```{r}
 dim(example_data_1_subject)
@@ -87,7 +88,5 @@ as.numeric(above_percent(example_data_1_subject))
 
 
 # Multiple Subject Workflow
-
-# Data Manipulation
 
 # Shiny App
