@@ -4,15 +4,15 @@
 \alias{below_percent}
 \title{Calculate percentage below targeted values}
 \usage{
-below_percent(data, targets = c(50, 80))
+below_percent(data, targets_below = c(50, 80))
 }
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl"),
 or vector of glucose values as integer, numeric, or double. NA's will be
 omitted from the glucose values in calculation of percent.}
 
-\item{targets}{Numeric vector of glucose thresholds. Glucose values from
-data argument will be compared to each value in the targets vector.
+\item{targets_below}{Numeric vector of glucose thresholds. Glucose values from
+data argument will be compared to each value in the targets_below vector.
 Default list is (50, 80).}
 }
 \value{
@@ -33,7 +33,7 @@ column for each target value is returned.
 Wrapping as.numeric() around the below_percent call on a dataset with
 a single subject will return a numeric vector, where the values
 correspond to the percent of glucose values below each threshold
-in the order passed in the targets argument. This will not work for
+in the order passed in the targets_below argument. This will not work for
 datasets with multiple subjects.
 }
 \examples{
@@ -41,15 +41,14 @@ datasets with multiple subjects.
 data(example_data_1_subject)
 
 below_percent(example_data_1_subject)
-below_percent(example_data_1_subject, targets = c(50, 100, 180))
+below_percent(example_data_1_subject, targets_below = c(50, 100, 180))
 
-#' # output numeric vector instead of dataframe
 as.numeric(below_percent(example_data_1_subject))
 
 data(example_data_5_subject)
 
 below_percent(example_data_5_subject)
-below_percent(example_data_5_subject, targets = c(80, 180))
+below_percent(example_data_5_subject, targets_below = c(80, 180))
 
 }
 \references{

@@ -4,15 +4,15 @@
 \alias{above_percent}
 \title{Calculate percentage of values above target thresholds}
 \usage{
-above_percent(data, targets = c(140, 180, 200, 250))
+above_percent(data, targets_above = c(140, 180, 200, 250))
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values. NA's will be omitted from the glucose
 values in calculation of percent.}
 
-\item{targets}{Numeric vector of glucose thresholds. Glucose values from
-data argument will be compared to each value in the targets vector.
+\item{targets_above}{Numeric vector of glucose thresholds. Glucose values from
+data argument will be compared to each value in the targets_above vector.
 Default list is (140, 180, 200, 250).}
 }
 \value{
@@ -32,7 +32,7 @@ column for each target value is returned.
 Wrapping as.numeric() around the above_percent call on a dataset with
 a single subject will return a numeric vector, where the values
 correspond to the percent of glucose values above each threshold
-in the order passed in the targets argument. This will not work for
+in the order passed in the targets_above argument. This will not work for
 datasets with multiple subjects.
 }
 \examples{
@@ -40,7 +40,7 @@ datasets with multiple subjects.
 data(example_data_1_subject)
 
 above_percent(example_data_1_subject)
-above_percent(example_data_1_subject, targets = c(100, 150, 180))
+above_percent(example_data_1_subject, targets_above = c(100, 150, 180))
 
 # output numeric vector instead of dataframe
 as.numeric(above_percent(example_data_1_subject))
@@ -48,7 +48,7 @@ as.numeric(above_percent(example_data_1_subject))
 data(example_data_5_subject)
 
 above_percent(example_data_5_subject)
-above_percent(example_data_5_subject, targets = c(70, 170))
+above_percent(example_data_5_subject, targets_above = c(70, 170))
 
 }
 \references{
