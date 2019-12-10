@@ -26,8 +26,43 @@ metric_scatter <- function(data, metric1 = 'adrr', metric2 = 'conga',
          in their output.')
   }
 
+  string1 = make_metric_string(metric1, lower, upper, targets_above,
+                               targets_below, target_ranges, quantiles,
+                               sd_multiplier, lag)
+  string2 = make_metric_string(metric2, lower, upper, targets_above,
+                               targets_below, target_ranges, quantiles,
+                               sd_multiplier, lag)
 
 
 
 }
+
+make_metric_string <- function(metric, lower, upper, targets_above,
+                               targets_below, target_ranges, quantiles,
+                               sd_multiplier, lag){
+  # Lower only
+  if(metric %in% c('grade_hypo', 'hypo_index')){
+    string = paste('iglu::', metric, '(data, lower = ', lower, ')', sep = '')
+  }
+  # Upper only
+  else if(metric %in% c('grade_hyper', 'hyper_index')) {
+    string = paste('iglu::', metric, '(data, upper = ', upper, ')', sep = '')
+  }
+  # Lower and Upper
+  else if(metric %in% c('grade_eugly', 'igc')){
+    string = paste('iglu::', metric, '(data, lower = ', lower, ', upper = ', upper, ')', sep = '')
+  }
+  # sd_multiplier
+  else if(metric %in% c('mage')){
+    string = paste('iglu::', metric, '(data, sd_multiplier = ', sd_multiplier, ')', sep = '')
+  }
+  # lag
+  else if(metric %in% c('modd')){
+    string = paste('iglu::', metric, '(data, lag = ', lag, ')', sep = '')
+  }
+  # No params
+  else {
+    string = paste('iglu::', metric, '(data)', sep = '')
+  }
+  return(string)
 }
