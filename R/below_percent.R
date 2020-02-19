@@ -61,7 +61,7 @@ below_percent <- function(data, targets_below = c(50,80)){
     out_vec = NULL
     colnames_list = NULL
     for(target_val in targets_below){
-      percent = sum(gl_by_id < target_val)/length(gl_by_id) * 100
+      percent = sum(gl_by_id <= target_val)/length(gl_by_id) * 100
       out_vec = c(out_vec, percent)
       name = paste('below_', target_val, sep = '')
       colnames_list = c(colnames_list, name)
@@ -80,7 +80,7 @@ below_percent <- function(data, targets_below = c(50,80)){
       gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row],
                                              'gl']))
       for(col in 1:length(targets_below)){
-        percent = sum(gl_by_id < targets_below[col])/length(gl_by_id) * 100
+        percent = sum(gl_by_id <= targets_below[col])/length(gl_by_id) * 100
         out_mat[row, col] = percent
       }
     }

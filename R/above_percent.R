@@ -62,7 +62,7 @@ above_percent <- function(data, targets_above = c(140,180,200,250)){
     out_vec = rep(NA, nt)
     colnames_list = rep(NA, nt)
     for(target_val in targets_above){
-      percent = sum(gl_by_id > target_val)/length(gl_by_id) * 100
+      percent = sum(gl_by_id >= target_val)/length(gl_by_id) * 100
       out_vec[targets_above == target_val] = percent
       name = paste('above_', target_val, sep = '')
       colnames_list[targets_above == target_val] = name
@@ -81,7 +81,7 @@ above_percent <- function(data, targets_above = c(140,180,200,250)){
       gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row],
                                             'gl']))
       for(col in 1:length(targets_above)){
-        percent = sum(gl_by_id > targets_above[col])/length(gl_by_id) * 100
+        percent = sum(gl_by_id >= targets_above[col])/length(gl_by_id) * 100
         out_mat[row, col] = percent
       }
     }
