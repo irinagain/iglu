@@ -4,3 +4,4 @@
 ^\.Rprofile$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^R/metric_scatterplot\.R$
