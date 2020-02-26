@@ -1,4 +1,4 @@
-#' Calculate Hypoglycemia Hndex
+#' Calculate Hypoglycemia Index
 #'
 #' @description
 #' The function hypo_index produces Hypoglycemia index values in data.frame

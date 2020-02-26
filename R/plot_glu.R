@@ -19,17 +19,17 @@
 #' in 'id' column of data.
 #'
 #' @details
-#' For the tsplot option, only the first subject will be used, whether the subjects
-#' argument is left NULl or a subject list is provided. To choose a particular subject,
+#' For the 'tsplot' option, only the first subject will be used, whether the subjects
+#' argument is left NULL or a subject list is provided. To choose a particular subject,
 #' it is best to only list that subject's id in the subjects argument of plot_glu.
 #' The lower and upper values are shown as horizontal lines on the plot to show
 #' the target range.
 #'
-#' For the unsorted and rowsorted options, all subjects are used if the subjects
-#' argument is left NULl. If a list of subject id's is provided, all of those will
+#' For the 'unsorted' and 'rowsorted' options, all subjects are used if the subjects
+#' argument is left NULL. If a list of subject IDs is provided, all of those will
 #' be used.
 #'
-#' @return
+#' @return Any output from the plot object
 #'
 #' @export
 #'
@@ -45,8 +45,11 @@
 #' plot_glu(example_data_5_subject, plottype = 'rowsorted')
 #'
 
-plot_glu <- function(data, plottype = 'tsplot', lower = 70, upper = 140, subjects = NULL){
+plot_glu <- function(data,
+                     plottype = c('tsplot', 'unsorted', 'rowsorted'),
+                     lower = 70, upper = 140, subjects = NULL){
 
+  plottype = match.arg(plottype)
   if(plottype == 'tsplot'){
     if(is.null(subjects)){
       subject = unique(data$id)[1]
@@ -55,26 +58,26 @@ plot_glu <- function(data, plottype = 'tsplot', lower = 70, upper = 140, subject
       subject = subjects[1]
     }
     tsdata = data[which(data$id == subject), ]
-    tsplot(tsdata, lower, upper)
+    res = tsplot(tsdata, lower, upper)
   }
   else if(plottype == 'unsorted'){
     if(is.null(subjects)){
-      unsorted_lasagna(data)
+      res = unsorted_lasagna(data)
     }
     else {
-      unsorted_lasagna(data[which(data$id) %in% subjects, ])
+      res = unsorted_lasagna(data[which(data$id) %in% subjects, ])
     }
   }
   else if(plottype == 'rowsorted'){
     if(is.null(subjects)){
-      rowsorted_lasagna(data)
+      res = rowsorted_lasagna(data)
     }
     else {
-      rowsorted_lasagna(data[which(data$id) %in% subjects, ])
+      res = rowsorted_lasagna(data[which(data$id) %in% subjects, ])
     }
   }
   else {
     stop('Selected plotting type not supported. See ?plot_glu for available plot types.')
   }
-
+  return(res)
 }

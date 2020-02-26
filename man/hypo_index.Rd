@@ -2,7 +2,7 @@
 % Please edit documentation in R/hypo_index.R
 \name{hypo_index}
 \alias{hypo_index}
-\title{Calculate Hypoglycemia Hndex}
+\title{Calculate Hypoglycemia Index}
 \usage{
 hypo_index(data, lower = 70)
 }

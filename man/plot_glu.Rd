@@ -4,7 +4,13 @@
 \alias{plot_glu}
 \title{Plot time series and lasagna plots of glucose measurements}
 \usage{
-plot_glu(data, plottype = "tsplot", lower = 70, upper = 140, subjects = NULL)
+plot_glu(
+  data,
+  plottype = c("tsplot", "unsorted", "rowsorted"),
+  lower = 70,
+  upper = 140,
+  subjects = NULL
+)
 }
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl").}
@@ -22,21 +28,21 @@ row-sorted lasagna plot.}
 in 'id' column of data.}
 }
 \value{
-
+Any output from the plot object
 }
 \description{
 The function plot_glu contains several plotting types for single and multiple
 subject data.
 }
 \details{
-For the tsplot option, only the first subject will be used, whether the subjects
-argument is left NULl or a subject list is provided. To choose a particular subject,
+For the 'tsplot' option, only the first subject will be used, whether the subjects
+argument is left NULL or a subject list is provided. To choose a particular subject,
 it is best to only list that subject's id in the subjects argument of plot_glu.
 The lower and upper values are shown as horizontal lines on the plot to show
 the target range.
 
-For the unsorted and rowsorted options, all subjects are used if the subjects
-argument is left NULl. If a list of subject id's is provided, all of those will
+For the 'unsorted' and 'rowsorted' options, all subjects are used if the subjects
+argument is left NULL. If a list of subject IDs is provided, all of those will
 be used.
 }
 \examples{

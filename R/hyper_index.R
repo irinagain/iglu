@@ -1,4 +1,4 @@
-#' Calculate Hyperglycemia Hndex
+#' Calculate Hyperglycemia Index
 #'
 #' @description
 #' The function hyper_index produces Hyperglycemia index values in data.frame
