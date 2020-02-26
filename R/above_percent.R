@@ -28,7 +28,8 @@
 #' in the order passed in the targets_above argument. This will not work for
 #' datasets with multiple subjects.
 #'
-#' @return
+#' @return A data.frame with columns of the percentage of values above a
+#' threshold
 #'
 #' @export
 #'
@@ -61,7 +62,7 @@ above_percent <- function(data, targets_above = c(140,180,200,250)){
     nt = length(targets_above)
     out_vec = rep(NA, nt)
     colnames_list = rep(NA, nt)
-    for(target_val in targets_above){
+    for (target_val in targets_above){
       percent = sum(gl_by_id >= target_val)/length(gl_by_id) * 100
       out_vec[targets_above == target_val] = percent
       name = paste('above_', target_val, sep = '')
@@ -97,9 +98,11 @@ above_percent <- function(data, targets_above = c(140,180,200,250)){
   }
 
   if(class(data) == 'data.frame'){
-    above_percent_multi(data,targets_above)
-  } else above_percent_single(data,targets_above)
-
+    out = above_percent_multi(data,targets_above)
+  } else {
+    out = above_percent_single(data,targets_above)
+  }
+  return(out)
 }
 
 
