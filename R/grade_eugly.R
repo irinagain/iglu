@@ -49,6 +49,7 @@ grade_eugly <- function(data, lower = 70, upper = 140){
   grade_eugly_single = function(data, lower, upper){
    gl_by_id = na.omit(read_df_or_vec(data))
     grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
+    grade_vec[grade_vec > 50] = 50
     out = sum(grade_vec[gl_by_id >= lower
                         & gl_by_id <= upper ])/sum(grade_vec) * 100
     out = data.frame(out)
@@ -62,6 +63,7 @@ grade_eugly <- function(data, lower = 70, upper = 140){
     for(row in 1:length(subjects)){
       gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
       grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
+      grade_vec[grade_vec > 50] = 50
       out_mat[row, 1] = sum(grade_vec[gl_by_id >= lower
                           & gl_by_id <= upper ])/sum(grade_vec) * 100
     }
