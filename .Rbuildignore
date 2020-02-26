@@ -6,3 +6,5 @@
 ^\.Rproj\.user$
 ^R/metric_scatterplot\.R$
 ^README\.Rmd$
+^\.travis\.yml$
+^appveyor\.yml$

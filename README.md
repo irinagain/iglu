@@ -5,6 +5,10 @@
 
 <!-- badges: start -->
 
+[![Travis build
+status](https://travis-ci.com/muschellij2/iglu.svg?branch=master)](https://travis-ci.com/muschellij2/iglu)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/muschellij2/iglu?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/iglu)
 <!-- badges: end -->
 
 # iglu: Interpreting data from Continuous Glucose Monitors (CGMs)
