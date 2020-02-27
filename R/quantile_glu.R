@@ -47,7 +47,7 @@
 quantile_glu <- function(data, quantiles = c(0, 25, 50, 75, 100)){
   quantile_glu_single = function(data, quantiles){
     gl_by_id = na.omit(read_df_or_vec(data))
-    out = quantile(gl_by_id, na.rm = T, probs = quantiles/100)
+    out = quantile(gl_by_id, na.rm = TRUE, probs = quantiles/100)
     return(out)
   }
   quantile_glu_multi = function(data, quantiles){
@@ -55,7 +55,7 @@ quantile_glu <- function(data, quantiles = c(0, 25, 50, 75, 100)){
     out_mat = matrix(nrow = length(subjects), ncol = length(quantiles))
     for(row in 1:length(subjects)){
       gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
-      out_mat[row, ] = quantile(gl_by_id, na.rm = T, probs = quantiles/100)
+      out_mat[row, ] = quantile(gl_by_id, na.rm = TRUE, probs = quantiles/100)
     }
 
     out = data.frame(out_mat)
