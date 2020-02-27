@@ -57,54 +57,34 @@
 #' 250)))
 #'
 
-in_range_percent <- function(data,
-                  target_ranges = list(c(80,200), c(70,180), c(70,140))){
-  in_range_percent_single = function(data, target_ranges){
-    gl_by_id = na.omit(read_df_or_vec(data))
-    out_vec = NULL
-    colnames_list = NULL
-    for(target_range in target_ranges){
-      target_range = as.double(target_range)
-      percent = sum(gl_by_id >= min(target_range) &
-                    gl_by_id <= max(target_range))/length(gl_by_id) * 100
-      out_vec = c(out_vec, percent)
-      name = paste('in_range_', min(target_range),'_',
-                  max(target_range), sep = '')
-      colnames_list = c(colnames_list, name)
-    }
-    out = data.frame(matrix(out_vec, nrow = 1))
-    names(out) = colnames_list
-    return(out)
+in_range_percent <- function(
+  data,
+  target_ranges = list(c(80,200), c(70,180), c(70,140))){
+
+  x = target_val = id = NULL
+  rm(list = c("id", "target_val", "x"))
+  data = check_data_columns(data)
+  is_vector = attr(data, "is_vector")
+  out = lapply(
+    target_ranges,
+    function(target_val) {
+      target_val = as.double(target_val)
+      target_val = sort(target_val)
+      target_val = range(target_val)
+      data = data %>%
+        dplyr::group_by(id) %>%
+        dplyr::summarise(
+          x = sum(gl >= target_val[1] & gl <= target_val[2]) /
+            sum(!is.na(gl)) * 100) %>%
+        dplyr::mutate(target_val =
+                        paste0('in_range_', target_val[1], '_', target_val[2]))
+      data
+    })
+  out = dplyr::bind_rows(out) %>%
+    tidyr::spread(data = ., key = target_val, value = x)
+  if (is_vector) {
+    out$id = NULL
   }
-
-  in_range_percent_multi = function(data, target_ranges){
-    subjects = unique(data$id)
-    colnames_list = vector(length = length(target_ranges))
-    out_mat = matrix(nrow = length(subjects), ncol = length(target_ranges))
-    for(row in 1:length(subjects)){
-      gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
-      for(col in 1:length(target_ranges)){
-        target_range = target_ranges[[col]]
-        percent = sum(gl_by_id >= min(target_range) &
-                        gl_by_id <= max(target_range))/length(gl_by_id) * 100
-        out_mat[row, col] = percent
-      }
-    }
-    for(col in 1:length(target_ranges)){
-      target_range = target_ranges[[col]]
-      name = paste('in_range_', min(target_range),'_',
-                   max(target_range), sep = '')
-      colnames_list[col] = name
-    }
-
-    out = data.frame(out_mat)
-    names(out) = colnames_list
-    row.names(out) = unique(subjects)
-    return(out)
-  }
-
-  if(class(data) == 'data.frame' && nrow(data)){
-    in_range_percent_multi(data,target_ranges)
-  } else in_range_percent_single(data,target_ranges)
+  return(out)
 
 }

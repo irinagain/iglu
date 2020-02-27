@@ -46,36 +46,26 @@
 #'
 
 mage <- function(data, sd_multiplier = 1){
-  mage_single = function(data, sd_multiplier){
-    gl_by_id = na.omit(read_df_or_vec(data))
-    abs_diff_mean = abs(gl_by_id - mean(gl_by_id, na.rm = T))
-    out = mean(abs_diff_mean[abs_diff_mean > sd_multiplier * sd(gl_by_id, na.rm = T)])
-    out = data.frame(out)
-    names(out) = 'mage'
-    return(out)
-  }
 
-  mage_multi = function(data, sd_multiplier){
-    subjects = unique(data$id)
-    out_mat = matrix(nrow = length(subjects), ncol = 1)
-    for(row in 1:length(subjects)){
-      gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
-      abs_diff_mean = abs(gl_by_id - mean(gl_by_id, na.rm = T))
-      out_mat[row, 1] =  mean(abs_diff_mean[abs_diff_mean > sd_multiplier *
-                                              sd(gl_by_id, na.rm = T)])
-    }
 
-    out = data.frame(out_mat)
-    names(out) = 'mage'
-    row.names(out) = unique(subjects)
-    return(out)
-  }
+  abs_diff_mean = gl = id = NULL
+  rm(list = c("gl", "id", "abs_diff_mean"))
+  data = check_data_columns(data)
+  is_vector = attr(data, "is_vector")
 
-  if(class(data) == 'data.frame' && nrow(data) != 1){
-    mage_multi(data, sd_multiplier)
-  } else {
-    mage_single(data, sd_multiplier)
+  out = data %>%
+    dplyr::filter(!is.na(gl)) %>%
+    dplyr::mutate(abs_diff_mean = abs(gl - mean(gl, na.rm = TRUE))) %>%
+    dplyr::group_by(id) %>%
+    dplyr::summarise(
+      mage = mean(
+        abs_diff_mean[abs_diff_mean > (sd_multiplier * sd(gl, na.rm = TRUE))],
+        na.rm = TRUE)
+    )
+  if (is_vector) {
+    out$id = NULL
   }
+  return(out)
 
 }
 

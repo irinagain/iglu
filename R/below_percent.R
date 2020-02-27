@@ -55,50 +55,27 @@
 
 
 below_percent <- function(data, targets_below = c(50,80)){
-  below_percent_single = function(data,targets_below){
-    gl_by_id = na.omit(read_df_or_vec(data))
-    targets_below = as.double(targets_below)
-    out_vec = NULL
-    colnames_list = NULL
-    for(target_val in targets_below){
-      percent = sum(gl_by_id <= target_val)/length(gl_by_id) * 100
-      out_vec = c(out_vec, percent)
-      name = paste('below_', target_val, sep = '')
-      colnames_list = c(colnames_list, name)
-    }
-    out = data.frame(matrix(out_vec, nrow = 1))
-    names(out) = colnames_list
-    return(out)
+
+  x = target_val = id = NULL
+  rm(list = c("id", "target_val", "x"))
+  data = check_data_columns(data)
+  is_vector = attr(data, "is_vector")
+  targets_below = as.double(targets_below)
+  out = lapply(
+    targets_below,
+    function(target_val) {
+      data = data %>%
+        dplyr::group_by(id) %>%
+        dplyr::summarise(x = mean(gl <= target_val, na.rm = TRUE) * 100) %>%
+        dplyr::mutate(target_val = paste0("below_", target_val))
+      data
+    })
+  out = dplyr::bind_rows(out) %>%
+    tidyr::spread(data = ., key = target_val, value = x)
+  if (is_vector) {
+    out$id = NULL
   }
-
-  below_percent_multi = function(data, targets_below){
-    subjects = unique(data$id)
-    targets_below = as.double(targets_below)
-    colnames_list = vector(length = length(targets_below))
-    out_mat = matrix(nrow = length(subjects), ncol = length(targets_below))
-    for(row in 1:length(subjects)){
-      gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row],
-                                             'gl']))
-      for(col in 1:length(targets_below)){
-        percent = sum(gl_by_id <= targets_below[col])/length(gl_by_id) * 100
-        out_mat[row, col] = percent
-      }
-    }
-    for(col in 1:length(targets_below)){
-      name = paste('below_', targets_below[col], sep = '')
-      colnames_list[col] = name
-    }
-
-    out = data.frame(out_mat)
-    names(out) = colnames_list
-    row.names(out) = unique(subjects)
-    return(out)
-  }
-
-  if(class(data) == 'data.frame'){
-    below_percent_multi(data,targets_below)
-  } else below_percent_single(data,targets_below)
-
+  return(out)
 }
 
 

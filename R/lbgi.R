@@ -19,7 +19,7 @@
 #' A dataframe structure with one column and a row for each subject.
 #'
 #' LBGI is calculated by \eqn{1/n * \sum (10 * fbg_i ^2)},
-#' where \eqn{fbg_i = min(0, 1.509 * (log(BG_i)^{1.084 - 5.381})},
+#' where \eqn{fbg_i = min(0, 1.509 * (log(BG_i)^{1.084} - 5.381)},
 #' BG_i is the ith Blood Glucose measurement for a subject, and
 #' n is the total number of measurements for that subject.
 #'
@@ -43,34 +43,26 @@
 #'
 
 lbgi <- function(data){
-  lbgi_single = function(data){
-    gl_by_id = na.omit(read_df_or_vec(data))
-    fbg = 1.509 * ((log(gl_by_id))^1.084 - 5.381)
-    out = mean(10 * pmin(fbg, 0)^2, na.rm = T)
-    out = data.frame(out)
-    names(out) = 'lbgi'
-    return(out)
-  }
 
-  lbgi_multi = function(data){
-    subjects = unique(data$id)
-    out_mat = matrix(nrow = length(subjects), ncol = 1)
-    for(row in 1:length(subjects)){
-      gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
-      fbg = 1.509 * ((log(gl_by_id))^1.084 - 5.381)
-      out_mat[row, 1] = mean(10 * pmin(fbg, 0)^2, na.rm = T)
-    }
-    out = data.frame(out_mat)
-    names(out) = 'lbgi'
-    row.names(out) = unique(subjects)
-    return(out)
-  }
+  fbg = gl = id = NULL
+  rm(list = c("fbg", "gl", "id"))
+  data = check_data_columns(data)
+  is_vector = attr(data, "is_vector")
 
-  if(class(data) == 'data.frame' && nrow(data) != 1){
-    lbgi_multi(data)
-  } else {
-    lbgi_single(data)
+  out = data %>%
+    dplyr::filter(!is.na(gl)) %>%
+    dplyr::mutate(
+      fbg = log(gl)^{1.084} - 5.381,
+      fbg = pmax(fbg, 0)) %>%
+    dplyr::group_by(id) %>%
+    dplyr::summarise(
+      lbgi = 22.77  *
+        sum(fbg[ gl <  112.5], na.rm = TRUE) /
+        sum(!is.na(gl))
+    )
+  if (is_vector) {
+    out$id = NULL
   }
-
+  return(out)
 }
 
