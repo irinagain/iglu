@@ -11,7 +11,8 @@
 #' or numeric vector of glucose values. NA's will be omitted from the glucose
 #' values in calculation of LBGI.
 #'
-#' @return
+#' @return A data.frame with the index/measure and identifier column, if
+#' the input data is a `data.frame`
 #'
 #' @export
 #'

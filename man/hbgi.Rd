@@ -12,7 +12,8 @@ or numeric vector of glucose values. NA's will be omitted from the glucose
 values in calculation of HBGI.}
 }
 \value{
-
+A data.frame with the index/measure and identifier column, if
+the input data is a `data.frame`
 }
 \description{
 The function hbgi produces HBGI values in data.frame form
