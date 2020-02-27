@@ -22,7 +22,10 @@ Imports:
     lubridate,
     shiny,
     DT,
-    lasagnar
+    lasagnar,
+    dplyr,
+    magrittr,
+    tidyr
 Remotes: swihart/lasagnar  
 Suggests:
     knitr,
