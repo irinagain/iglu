@@ -71,7 +71,7 @@ grade_hypo <- function(data, lower = 70){
     return(out)
   }
 
-  if (is.data.frame(data))
+  if (is.data.frame(data)) {
     out = grade_hypo_multi(data, lower)
   } else {
     out = grade_hypo_single(data, lower)
