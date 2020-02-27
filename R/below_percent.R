@@ -70,8 +70,8 @@ below_percent <- function(data, targets_below = c(50,80)){
         dplyr::mutate(target_val = paste0("below_", target_val))
       data
     })
-  out = dplyr::bind_rows(out) %>%
-    tidyr::spread(data = ., key = target_val, value = x)
+  out = dplyr::bind_rows(out)
+  out = tidyr::spread(data = out, key = target_val, value = x)
   if (is_vector) {
     out$id = NULL
   }

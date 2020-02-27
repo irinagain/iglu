@@ -72,8 +72,8 @@ above_percent <- function(data, targets_above = c(140,180,200,250)){
         dplyr::mutate(target_val = paste0("above_", target_val))
       data
     })
-  out = dplyr::bind_rows(out) %>%
-    tidyr::spread(data = ., key = target_val, value = x)
+  out = dplyr::bind_rows(out)
+  out = tidyr::spread(data = out, key = target_val, value = x)
   if (is_vector) {
     out$id = NULL
   }

@@ -35,8 +35,8 @@
 
 summary_glu <- function(data){
 
-  gl = id = NULL
-  rm(list = c("gl", "id"))
+  . = gl = id = NULL
+  rm(list = c("gl", "id", "."))
   data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
 

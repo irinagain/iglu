@@ -71,11 +71,12 @@ CGMS2DayByDay <- function(data){
   ti = cumsum(dti)
 
   # What is the data that we actually have?
-  dt = c(as.double(minute(tr[1])) + as.double(hour(tr[1]))* 60, as.double(timediff))
+  dt = c(as.double(lubridate::minute(tr[1])) + as.double(
+    lubridate::hour(tr[1]))* 60, as.double(timediff))
   t0 = cumsum(dt)
 
   # Next, from ti remove all the ones that are more than dt0 min away from t0
-  how_far_away = distance_to_nearest(ti, t0)
+  how_far_away = intervals::distance_to_nearest(ti, t0)
   ti_reduced = ti[how_far_away < dt0]
 
   # Extrapolate to the needed times only

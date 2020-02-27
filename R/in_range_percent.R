@@ -80,8 +80,8 @@ in_range_percent <- function(
                         paste0('in_range_', target_val[1], '_', target_val[2]))
       data
     })
-  out = dplyr::bind_rows(out) %>%
-    tidyr::spread(data = ., key = target_val, value = x)
+  out = dplyr::bind_rows(out)
+  out = tidyr::spread(data = out, key = target_val, value = x)
   if (is_vector) {
     out$id = NULL
   }

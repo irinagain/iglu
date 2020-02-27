@@ -46,8 +46,8 @@
 
 quantile_glu <- function(data, quantiles = c(0, 25, 50, 75, 100)){
 
-  gl = id = NULL
-  rm(list = c("gl", "id"))
+  . = gl = id = NULL
+  rm(list = c("gl", "id", "."))
   data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
 
