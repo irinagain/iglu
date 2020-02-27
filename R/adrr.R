@@ -12,7 +12,7 @@
 #' or numeric vector of glucose values. Missing values will be linearly
 #' interpolated when close enough to non-missing values.
 #'
-#' @return
+#' @return A data.frame of values of ADRR
 #'
 #' @export
 #'
@@ -77,11 +77,11 @@ adrr <- function(data){
     return(out)
   }
 
-  if(class(data) == 'data.frame' && nrow(data) != 1){
-    adrr_multi(data)
+  if (class(data) == 'data.frame' && nrow(data) != 1){
+    out = adrr_multi(data)
   } else{
     stop("Data must be in a data.frame structure
          with columns for 'id', 'time', and 'gl'")
   }
-
+  return(out)
 }

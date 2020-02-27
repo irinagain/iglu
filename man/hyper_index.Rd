@@ -2,7 +2,7 @@
 % Please edit documentation in R/hyper_index.R
 \name{hyper_index}
 \alias{hyper_index}
-\title{Calculate Hyperglycemia Hndex}
+\title{Calculate Hyperglycemia Index}
 \usage{
 hyper_index(data, upper = 140)
 }
