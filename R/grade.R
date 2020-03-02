@@ -47,6 +47,7 @@ grade <- function(data){
   grade_single = function(data){
     gl_by_id = na.omit(read_df_or_vec(data))
     grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
+    grade_vec[grade_vec > 50] = 50
     out = mean(grade_vec, na.rm = T)
     out = data.frame(out)
     names(out) = 'grade'
@@ -59,6 +60,7 @@ grade <- function(data){
     for(row in 1:length(subjects)){
       gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
       grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
+      grade_vec[grade_vec > 50] = 50
       out_mat[row, 1] = mean(grade_vec, na.rm = T)
     }
 
