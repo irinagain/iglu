@@ -4,5 +4,4 @@ inst/doc
 packrat/lib*/
 .Rproj.user
 .Rhistory
-.dcf
 .RData
