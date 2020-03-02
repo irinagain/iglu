@@ -61,7 +61,7 @@ Some metric functions, like `above_percent()`, will return multiple values for a
 above_percent(example_data_1_subject)
 ```
 
-Subject id will always be printed as a rowname by default, and metrics will be printed as column name. The list of target values for the above_percent metric is a parameter that can be changed:
+Subject id will always be printed as a row name by default, and metrics will be printed as column name. The list of target values for the above_percent metric is a parameter that can be changed:
 
 ```{r}
 above_percent(example_data_1_subject, targets = c(100, 200, 300))
@@ -139,7 +139,7 @@ The red lines can be shifted to any hypo- and hyperglycemia cutoffs with the 'lo
 plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', lower = 80, upper = 150)
 ```
 
-The unsorted and row sorted lasagna plots are identical in their usage, other than changing the plottype parameter.
+The unsorted and row sorted lasagna plots are identical in their usage, other than changing the `plottype` parameter.
 
 ```{r}
 plot_glu(example_data_5_subject, plottype = 'unsorted')

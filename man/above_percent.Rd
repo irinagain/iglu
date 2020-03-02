@@ -16,7 +16,8 @@ data argument will be compared to each value in the targets_above vector.
 Default list is (140, 180, 200, 250).}
 }
 \value{
-
+A data.frame with columns of the percentage of values above a
+threshold
 }
 \description{
 The function above_percent produces a dataframe of values equal to

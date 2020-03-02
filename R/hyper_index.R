@@ -1,4 +1,4 @@
-#' Calculate Hyperglycemia Hndex
+#' Calculate Hyperglycemia Index
 #'
 #' @description
 #' The function hyper_index produces Hyperglycemia index values in data.frame
@@ -48,7 +48,7 @@
 hyper_index <- function(data, upper = 140){
   hyper_index_single = function(data, upper){
     gl_by_id = na.omit(read_df_or_vec(data))
-    out = sum(gl_by_id[gl_by_id > upper] ^ 1.1, na.rm = T)/(length(gl_by_id) * 30)
+    out = sum((gl_by_id[gl_by_id > upper] - upper) ^ 1.1, na.rm = T)/(length(gl_by_id[gl_by_id > upper]) * 30)
     out = data.frame(out)
     names(out) = 'hyper_index'
     return(out)
@@ -59,8 +59,8 @@ hyper_index <- function(data, upper = 140){
     out_mat = matrix(nrow = length(subjects), ncol = 1)
     for(row in 1:length(subjects)){
       gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
-      out_mat[row, 1] = sum(gl_by_id[gl_by_id > upper] ^ 1.1, na.rm = T)/
-                                                  (length(gl_by_id) * 30)
+      out_mat[row, 1] = sum((gl_by_id[gl_by_id > upper] - upper) ^ 1.1, na.rm = T)/
+                                                  (length(gl_by_id[gl_by_id > upper]) * 30)
     }
 
     out = data.frame(out_mat)

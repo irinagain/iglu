@@ -12,7 +12,7 @@ or numeric vector of glucose values. Missing values will be linearly
 interpolated when close enough to non-missing values.}
 }
 \value{
-
+A data.frame of values of ADRR
 }
 \description{
 The function adrr produces ADRR values in data.frame form

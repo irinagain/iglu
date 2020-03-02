@@ -1,4 +1,4 @@
-#' Calculate Hypoglycemia Hndex
+#' Calculate Hypoglycemia Index
 #'
 #' @description
 #' The function hypo_index produces Hypoglycemia index values in data.frame
@@ -47,7 +47,7 @@
 hypo_index <- function(data, lower = 70){
   hypo_index_single = function(data, lower){
     gl_by_id = na.omit(read_df_or_vec(data))
-    out = sum(gl_by_id[gl_by_id < lower] ^ 2, na.rm = T)/(length(gl_by_id) * 30)
+    out = sum((lower - gl_by_id[gl_by_id < lower]) ^ 2, na.rm = T)/(length(gl_by_id[gl_by_id < lower]) * 30)
     out = data.frame(out)
     names(out) = 'hypo_index'
     return(out)
@@ -57,8 +57,9 @@ hypo_index <- function(data, lower = 70){
     out_mat = matrix(nrow = length(subjects), ncol = 1)
     for(row in 1:length(subjects)){
       gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
-      out_mat[row, 1] = sum(gl_by_id[gl_by_id < lower] ^ 2, na.rm = T)/
-        (length(gl_by_id) * 30)
+      out_mat[row, 1] = sum((lower - gl_by_id[gl_by_id < lower]) ^ 2, na.rm = T)/
+        (length(gl_by_id[gl_by_id < lower]) * 30)
+
     }
 
     out = data.frame(out_mat)

@@ -1,27 +1,28 @@
 Package: iglu
 Type: Package
-Title: Interpreting GLUcose data
-Version: 0.1.0
+Title: Interpreting Glucose Data
+Version: 0.1.1
 Authors@R: c(person("Steve", "Broll",
             email = "stevebroll@tamu.edu",
             role = c("aut", "cre")),
              person("Irina", "Gaynanova",
              email = "irinag@stat.tamu.edu",
              role = "aut"))
-Description: The iglu package is designed for reading data from Continuous
-    Glucose Monitors and outputting metrics and relevant plots with a single
+Description: Reads and analyzes data from continuous
+    glucose monitors. Functions return metrics and relevant plots with a single
     line of code.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Imports:
-  stats,
-  ggplot2,
-  intervals,
-  lubridate,
-  shiny,
-  DT
+    stats,
+    ggplot2,
+    intervals,
+    lubridate,
+    shiny,
+    DT,
+    lasagnar
 Remotes: swihart/lasagnar  
 Suggests:
     knitr,
