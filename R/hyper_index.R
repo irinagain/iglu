@@ -46,7 +46,6 @@
 
 
 hyper_index <- function(data, upper = 140){
-
   gl = id = NULL
   rm(list = c("gl", "id"))
   data = check_data_columns(data)

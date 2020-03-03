@@ -67,7 +67,7 @@ CGMS2DayByDay <- function(data){
 
   # What is the total number of days between last and first?
   ndays = ceiling(as.double(difftime(max(tr), min(tr), units = "days")) + 1)
-  dti = c(0,rep(dt0,ndays * 24 * 60 /dt0))
+  dti = c(0,rep(dt0, ndays * 24 * 60 /dt0))
   ti = cumsum(dti)
 
   # What is the data that we actually have?

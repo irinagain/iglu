@@ -50,10 +50,28 @@ modd <- function(data, lag = 1){
   modd_single = function(data, lag){
     data_ip = CGMS2DayByDay(data)
     gl_by_id_ip = data_ip[[1]]
-    out = mean(abs(diff(gl_by_id_ip, lag = 1)), na.rm=T)
+    out = mean(abs(diff(gl_by_id_ip, lag = lag)), na.rm=T)
     out = data.frame(out)
     names(out) = 'modd'
     return(out)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
   modd_multi = function(data,lag){
     subjects = unique(data$id)

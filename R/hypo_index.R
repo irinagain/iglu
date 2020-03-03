@@ -49,8 +49,6 @@
 #'
 
 hypo_index <- function(data, lower = 70){
-
-
   gl = id = NULL
   rm(list = c("gl", "id"))
   data = check_data_columns(data)
