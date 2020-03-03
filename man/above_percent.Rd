@@ -45,7 +45,7 @@ above_percent(example_data_1_subject$gl)
 above_percent(example_data_1_subject, targets_above = c(100, 150, 180))
 
 # output numeric vector instead of dataframe
-as.numeric(above_percent(example_data_1_subject))
+above_percent(example_data_1_subject)
 
 data(example_data_5_subject)
 
