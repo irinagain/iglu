@@ -9,8 +9,7 @@
 #' adrr(data)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values. Missing values will be linearly
-#' interpolated when close enough to non-missing values.
+#' or numeric vector of glucose values.
 #'
 #' @return A data.frame of values of ADRR
 #'
@@ -21,7 +20,8 @@
 #'
 #' ADRR is calculated by \eqn{1/M * \sum [LR^i + HR^i]}
 #' where M is number of days, LR is the max low risk value for day i
-#' and HR is the max high risk value for day i.
+#' and HR is the max high risk value for day i. If there are no low/high risk values
+#' in a day, zero is used as the corresponding LR/HR value for that day.
 #'
 #' Wrapping as.numeric() around the adrr call on a dataset with
 #' a single subject will return a numeric value corresponding
@@ -44,20 +44,18 @@
 
 
 adrr <- function(data){
-  adrr_single = function(data){
-    data_ip = CGMS2DayByDay(data)
-    gl_by_id_ip = data_ip[[1]]
-
-    fBG = 1.509*(log(gl_by_id_ip)^1.084 - 5.381)
-    rBG = 10*fBG^2
-
-    rlbg = matrix(0, nrow = nrow(gl_by_id_ip), ncol = ncol(gl_by_id_ip))
-    rhbg = matrix(0, nrow = nrow(gl_by_id_ip), ncol = ncol(gl_by_id_ip))
-
-    rlbg[which(fBG<0)] = rBG[which(fBG<0)]
-    rhbg[which(fBG>0)] = rBG[which(fBG>0)]
-
-    out = mean(apply(rlbg,1,max) + apply(rhbg,1,max))
+  adrr_single = function(subj) {
+    dates = as.Date(subj$time,format="%Y-%m-%d")
+    index = function(x){
+      ((log(x))^1.084) - 5.381
+    }
+    get_extrema = function(day) {
+      thisday = subj$gl[dates==day]
+      HBGImax = max(index(max(thisday)),0)
+      LBGImin = min(index(min(thisday)),0)
+      return(22.77*((HBGImax^2)+(LBGImin^2)))
+    }
+    out = mean(sapply(unique(dates),FUN=get_extrema))
     out = data.frame(out)
     names(out) = 'adrr'
     return(out)
