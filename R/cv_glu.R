@@ -41,33 +41,20 @@
 #'
 
 cv_glu <- function(data){
-  cv_glu_single = function(data){
-    gl_by_id = na.omit(read_df_or_vec(data))
-    out = sd(gl_by_id, na.rm = T) / mean(gl_by_id, na.rm = T) * 100
-    out = data.frame(out)
-    names(out) = 'cv'
-    return(out)
+
+  gl = id = NULL
+  rm(list = c("gl", "id"))
+  data = check_data_columns(data)
+  is_vector = attr(data, "is_vector")
+
+  out = data %>%
+    dplyr::filter(!is.na(gl)) %>%
+    dplyr::group_by(id) %>%
+    dplyr::summarise(
+      cv = sd(gl, na.rm = TRUE) / mean(gl, na.rm = TRUE) * 100
+    )
+  if (is_vector) {
+    out$id = NULL
   }
-
-  cv_glu_multi = function(data){
-    subjects = unique(data$id)
-    out_mat = matrix(nrow = length(subjects), ncol = 1)
-    for(row in 1:length(subjects)){
-      gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
-      out_mat[row, 1] = sd(gl_by_id, na.rm = T) / mean(gl_by_id,
-                                                       na.rm = T) * 100
-    }
-
-    out = data.frame(out_mat)
-    names(out) = 'cv'
-    row.names(out) = unique(subjects)
-    return(out)
-  }
-
-  if(class(data) == 'data.frame'){
-    cv_glu_multi(data)
-  } else {
-    cv_glu_single(data)
-  }
-
+  return(out)
 }

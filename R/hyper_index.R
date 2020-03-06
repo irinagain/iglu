@@ -47,32 +47,20 @@
 
 
 hyper_index <- function(data, upper = 140){
-  hyper_index_single = function(data, upper){
-    gl_by_id = na.omit(read_df_or_vec(data))
-    out = sum((gl_by_id[gl_by_id > upper] - upper) ^ 1.1, na.rm = T)/(length(gl_by_id[gl_by_id > upper]) * 30)
-    out = data.frame(out)
-    names(out) = 'hyper_index'
-    return(out)
-  }
+  gl = id = NULL
+  rm(list = c("gl", "id"))
+  data = check_data_columns(data)
+  is_vector = attr(data, "is_vector")
 
-  hyper_index_multi = function(data, upper){
-    subjects = unique(data$id)
-    out_mat = matrix(nrow = length(subjects), ncol = 1)
-    for(row in 1:length(subjects)){
-      gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
-      out_mat[row, 1] = sum((gl_by_id[gl_by_id > upper] - upper) ^ 1.1, na.rm = T)/
-                                                  (length(gl_by_id[gl_by_id > upper]) * 30)
-    }
-
-    out = data.frame(out_mat)
-    names(out) = 'hyper_index'
-    row.names(out) = unique(subjects)
-    return(out)
+  out = data %>%
+    dplyr::filter(!is.na(gl)) %>%
+    dplyr::group_by(id) %>%
+    dplyr::summarise(
+      hyper_index = sum( (gl[gl > upper] - upper) ^ 1.1, na.rm = TRUE) /
+        (sum(!is.na(gl)) * 30)
+    )
+  if (is_vector) {
+    out$id = NULL
   }
-
-  if(class(data) == 'data.frame'){
-    hyper_index_multi(data, upper)
-  } else {
-    hyper_index_single(data, upper)
-  }
+  return(out)
 }

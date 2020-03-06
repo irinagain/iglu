@@ -33,7 +33,11 @@ Hypoglycemia Index value. This will not work for datasets with multiple subjects
 }
 \examples{
 data(example_data_1_subject)
-hypo_index(example_data_1_subject)
+res = hypo_index(example_data_1_subject)
+hp1 = res$hypo_index
+res = hypo_index(example_data_1_subject$gl)
+hp2 = res$hypo_index
+stopifnot(isTRUE(all.equal(hp1, hp2)))
 hypo_index(example_data_1_subject, lower = 60)
 
 data(example_data_5_subject)

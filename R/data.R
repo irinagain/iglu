@@ -2,7 +2,7 @@
 #'
 #' @description A data.frame of example data
 #'
-#' @format A data.frame with 3 columns and  2915 rows, which are:
+#' @format A data.frame with 2915 rows and 3 columns, which are:
 #' \describe{
 #' \item{id}{identifier of subject}
 #' \item{time}{5-10 minute time value}

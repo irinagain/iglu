@@ -32,32 +32,21 @@
 #'
 
 mean_glu <- function(data){
-  mean_glu_single = function(data){
-    gl_by_id = na.omit(read_df_or_vec(data))
-    out = mean(gl_by_id, na.rm = T)
-    out = data.frame(out)
-    names(out) = 'mean'
-    return(out)
-  }
 
-  mean_glu_multi = function(data){
-    subjects = unique(data$id)
-    out_mat = matrix(nrow = length(subjects), ncol = 1)
-    for(row in 1:length(subjects)){
-      gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
-      out_mat[row, 1] = mean(gl_by_id, na.rm = T)
-    }
+  gl = id = NULL
+  rm(list = c("gl", "id"))
+  data = check_data_columns(data)
+  is_vector = attr(data, "is_vector")
 
-    out = data.frame(out_mat)
-    names(out) = 'mean'
-    row.names(out) = unique(subjects)
-    return(out)
+  out = data %>%
+    dplyr::filter(!is.na(gl)) %>%
+    dplyr::group_by(id) %>%
+    dplyr::summarise(
+      mean = mean(gl, na.rm = TRUE)
+    )
+  if (is_vector) {
+    out$id = NULL
   }
-
-  if(class(data) == 'data.frame' && nrow(data) != 1){
-    mean_glu_multi(data)
-  } else {
-    mean_glu_single(data)
-  }
+  return(out)
 
 }

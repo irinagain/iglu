@@ -37,7 +37,11 @@
 #'
 #' @examples
 #' data(example_data_1_subject)
-#' hypo_index(example_data_1_subject)
+#' res = hypo_index(example_data_1_subject)
+#' hp1 = res$hypo_index
+#' res = hypo_index(example_data_1_subject$gl)
+#' hp2 = res$hypo_index
+#' stopifnot(isTRUE(all.equal(hp1, hp2)))
 #' hypo_index(example_data_1_subject, lower = 60)
 #'
 #' data(example_data_5_subject)
@@ -46,32 +50,20 @@
 #'
 
 hypo_index <- function(data, lower = 70){
-  hypo_index_single = function(data, lower){
-    gl_by_id = na.omit(read_df_or_vec(data))
-    out = sum((lower - gl_by_id[gl_by_id < lower]) ^ 2, na.rm = T)/(length(gl_by_id[gl_by_id < lower]) * 30)
-    out = data.frame(out)
-    names(out) = 'hypo_index'
-    return(out)
-  }
-  hypo_index_multi = function(data, lower){
-    subjects = unique(data$id)
-    out_mat = matrix(nrow = length(subjects), ncol = 1)
-    for(row in 1:length(subjects)){
-      gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
-      out_mat[row, 1] = sum((lower - gl_by_id[gl_by_id < lower]) ^ 2, na.rm = T)/
-        (length(gl_by_id[gl_by_id < lower]) * 30)
+  gl = id = NULL
+  rm(list = c("gl", "id"))
+  data = check_data_columns(data)
+  is_vector = attr(data, "is_vector")
 
-    }
-
-    out = data.frame(out_mat)
-    names(out) = 'hypo_index'
-    row.names(out) = unique(subjects)
-    return(out)
+  out = data %>%
+    dplyr::filter(!is.na(gl)) %>%
+    dplyr::group_by(id) %>%
+    dplyr::summarise(
+      hypo_index = sum( (lower - gl[gl < lower]) ^ 2, na.rm = TRUE) /
+        (sum(!is.na(gl)) * 30)
+    )
+  if (is_vector) {
+    out$id = NULL
   }
-
-  if(class(data) == 'data.frame'){
-    hypo_index_multi(data, lower)
-  } else {
-    hypo_index_single(data, lower)
-  }
+  return(out)
 }

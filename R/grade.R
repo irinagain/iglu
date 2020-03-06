@@ -44,35 +44,24 @@
 #'
 
 grade <- function(data){
-  grade_single = function(data){
-    gl_by_id = na.omit(read_df_or_vec(data))
-    grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
-    out = mean(grade_vec, na.rm = T)
-    out = data.frame(out)
-    names(out) = 'grade'
-    return(out)
-  }
 
-  grade_multi = function(data){
-    subjects = unique(data$id)
-    out_mat = matrix(nrow = length(subjects), ncol = 1)
-    for(row in 1:length(subjects)){
-      gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
-      grade_vec = 425*(log10(log10(gl_by_id/18))+0.16)^2
-      out_mat[row, 1] = mean(grade_vec, na.rm = T)
-    }
+  grade = gl = id = NULL
+  rm(list = c("grade", "gl", "id"))
+  data = check_data_columns(data)
+  is_vector = attr(data, "is_vector")
 
-    out = data.frame(out_mat)
-    names(out) = 'grade'
-    row.names(out) = unique(subjects)
-    return(out)
+  out = data %>%
+    dplyr::filter(!is.na(gl)) %>%
+    dplyr::mutate(grade = 425*(log10(log10(gl/18)) + 0.16)^2,
+                  grade = ifelse(grade > 50, 50, grade)) %>%
+    dplyr::group_by(id) %>%
+    dplyr::summarise(
+      grade = median(grade, na.rm = TRUE)
+    )
+  if (is_vector) {
+    out$id = NULL
   }
-
-  if(class(data) == 'data.frame' && nrow(data) != 1){
-    grade_multi(data)
-  } else {
-    grade_single(data)
-  }
+  return(out)
 
 }
 

@@ -12,7 +12,8 @@ or numeric vector of glucose values. NA's will be omitted from the glucose
 values in calculation of HBGI.}
 }
 \value{
-
+A data.frame with the index/measure and identifier column, if
+the input data is a `data.frame`
 }
 \description{
 The function hbgi produces HBGI values in data.frame form
@@ -22,7 +23,7 @@ with one column and one row per subject.
 A dataframe structure with one column and a row for each subject.
 
 HBGI is calculated by \eqn{1/n * \sum (10 * fbg_i ^2)},
-where \eqn{fbg_i = max(0, 1.509 * (log(BG_i)^{1.084 - 5.381})},
+where \eqn{fbg_i = max(0, 1.509 * (log(BG_i)^{1.084} - 5.381)},
 BG_i is the ith Blood Glucose measurement for a subject, and
 n is the total number of measurements for that subject.
 
