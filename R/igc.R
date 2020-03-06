@@ -47,8 +47,8 @@
 igc <- function(data, lower = 70, upper = 140){
   igc_single = function(data, lower, upper){
     gl_by_id = na.omit(read_df_or_vec(data))
-    hyper = sum(gl_by_id[gl_by_id > upper] ^ 1.1, na.rm = T)/(length(gl_by_id) * 30)
-    hypo = sum(gl_by_id[gl_by_id < lower] ^ 2, na.rm = T)/(length(gl_by_id) * 30)
+    hyper = sum((gl_by_id[gl_by_id > upper]-upper) ^ 1.1, na.rm = T)/(length(gl_by_id) * 30)
+    hypo = sum((lower-gl_by_id[gl_by_id < lower]) ^ 2, na.rm = T)/(length(gl_by_id) * 30)
     out = hypo + hyper
     out = data.frame(out)
     names(out) = 'igc'
@@ -60,9 +60,9 @@ igc <- function(data, lower = 70, upper = 140){
     out_mat = matrix(nrow = length(subjects), ncol = 1)
     for(row in 1:length(subjects)){
       gl_by_id = na.omit(read_df_or_vec(data[data$id == subjects[row], 'gl']))
-      hyper = sum(gl_by_id[gl_by_id > upper] ^ 1.1, na.rm = T)/
+      hyper = sum((gl_by_id[gl_by_id > upper]-upper) ^ 1.1, na.rm = T)/
                                           (length(gl_by_id) * 30)
-      hypo = sum(gl_by_id[gl_by_id < lower] ^ 2, na.rm = T)/
+      hypo = sum((lower-gl_by_id[gl_by_id < lower]) ^ 2, na.rm = T)/
                                           (length(gl_by_id) * 30)
 
       out_mat[row, 1] = hypo + hyper
