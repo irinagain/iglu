@@ -56,8 +56,8 @@ hyper_index <- function(data, upper = 140){
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      hyper_index = sum( (gl[gl > upper] - upper) ^ 1.1, na.rm = TRUE) /
-        (sum(!is.na(gl)) * 30)
+      hyper_index = sum((gl[gl > upper] - upper) ^ 1.1, na.rm = TRUE) /
+        (length(!is.na(gl)) * 30)
     )
   if (is_vector) {
     out$id = NULL
