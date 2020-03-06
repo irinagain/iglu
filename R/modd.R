@@ -54,25 +54,8 @@ modd <- function(data, lag = 1){
     out = data.frame(out)
     names(out) = 'modd'
     return(out)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   }
+
   modd_multi = function(data,lag){
     subjects = unique(data$id)
     out_mat = matrix(nrow = length(subjects), ncol = 1)
