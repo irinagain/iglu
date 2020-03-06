@@ -20,7 +20,7 @@
 #' A dataframe structure with one column and a row for each subject.
 #'
 #' GRADE score is calculated by \eqn{1/n * \sum [425 *
-#' (log(log(BG_i * 18)) + .16)^2]}
+#' (log(log(BG_i / 18)) + .16)^2]}
 #' Where \eqn{BG_i} is the ith Blood Glucose measurement and n is the total
 #' number of measurements.
 #'

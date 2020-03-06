@@ -45,7 +45,6 @@
 #'
 
 igc <- function(data, lower = 70, upper = 140){
-
   hyper = hypo = gl = id = NULL
   rm(list = c("gl", "id", "hyper", "hypo"))
   data = check_data_columns(data)
@@ -55,8 +54,8 @@ igc <- function(data, lower = 70, upper = 140){
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      hyper = sum(gl[gl > upper] ^ 1.1, na.rm = TRUE)/(sum(!is.na(gl)) * 30),
-      hypo = sum(gl[gl < upper] ^ 2, na.rm = TRUE)/(sum(!is.na(gl)) * 30)
+      hyper = sum((gl[gl > upper] - upper) ^ 1.1, na.rm = TRUE)/(length(!is.na(gl)) * 30),
+      hypo = sum((lower - gl[gl < lower]) ^ 2, na.rm = TRUE)/(length(!is.na(gl)) * 30)
       ) %>%
     dplyr::mutate(igc = hyper + hypo) %>%
     dplyr::select(-hyper, -hypo)

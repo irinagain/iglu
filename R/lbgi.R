@@ -1,4 +1,4 @@
-#' Calculate High Blood Glucose Index (LBGI)
+#' Calculate Low Blood Glucose Index (LBGI)
 #'
 #' @description
 #' The function lbgi produces LBGI values in data.frame form

@@ -16,9 +16,10 @@
 #' @details
 #' A dataframe structure with one column and a row for each subject.
 #'
-#' Hypoglycemia Index is calculated by \eqn{n/30 * \sum [hypoBG_j ^{2}]}
+#' Hypoglycemia Index is calculated by \eqn{n/30 * \sum [lower-hypoBG_j ^{2}]}
 #' Where n is the total number of Blood Glucose measurements and \eqn{hypoBG_j}
-#' is the jth Blood Glucose measurement below the hypoglycemia cutoff.
+#' is the jth Blood Glucose measurement below the hypoglycemia cutoff and lower
+#' is the hypoglycemia cutoff.
 #'
 #' Wrapping as.numeric() around the hypo_index call on a dataset with
 #' a single subject will return a numeric value corresponding to the
