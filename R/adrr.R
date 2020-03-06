@@ -44,18 +44,20 @@
 
 
 adrr <- function(data){
-  adrr_single = function(subj) {
-    dates = as.Date(subj$time,format="%Y-%m-%d")
-    index = function(x){
-      ((log(x))^1.084) - 5.381
-    }
-    get_extrema = function(day) {
-      thisday = subj$gl[dates==day]
-      HBGImax = max(index(max(thisday)),0)
-      LBGImin = min(index(min(thisday)),0)
-      return(22.77*((HBGImax^2)+(LBGImin^2)))
-    }
-    out = mean(sapply(unique(dates),FUN=get_extrema))
+  adrr_single = function(data){
+    data_ip = CGMS2DayByDay(data)
+    gl_by_id_ip = data_ip[[1]]
+
+    fBG = 1.509*(log(gl_by_id_ip)^1.084 - 5.381)
+    rBG = 10*fBG^2
+
+    rlbg = matrix(0, nrow = nrow(gl_by_id_ip), ncol = ncol(gl_by_id_ip))
+    rhbg = matrix(0, nrow = nrow(gl_by_id_ip), ncol = ncol(gl_by_id_ip))
+
+    rlbg[which(fBG<0)] = rBG[which(fBG<0)]
+    rhbg[which(fBG>0)] = rBG[which(fBG>0)]
+
+    out = mean(apply(rlbg,1,max) + apply(rhbg,1,max))
     out = data.frame(out)
     names(out) = 'adrr'
     return(out)
