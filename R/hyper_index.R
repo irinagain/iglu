@@ -16,9 +16,10 @@
 #' @details
 #' A dataframe structure with one column and a row for each subject.
 #'
-#' Hyperglycemia Index is calculated by \eqn{n/30 * \sum [hyperBG_j ^{1.1}]}
+#' Hyperglycemia Index is calculated by \eqn{n/30 * \sum [(hyperBG_j-upper) ^{1.1}]}
 #' Where n is the total number of Blood Glucose measurements and \eqn{hyperBG_j}
-#' is the jth Blood Glucose measurement above the hyperglycemia cutoff.
+#' is the jth Blood Glucose measurement above the hyperglycemia cutoff and upper
+#' is the hyperglycemia cutoff.
 #'
 #' Wrapping as.numeric() around the hyper_index call on a dataset with
 #' a single subject will return a numeric value corresponding to the

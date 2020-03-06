@@ -9,8 +9,7 @@
 #' adrr(data)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values. Missing values will be linearly
-#' interpolated when close enough to non-missing values.
+#' or numeric vector of glucose values.
 #'
 #' @return A data.frame of values of ADRR
 #'
@@ -21,7 +20,8 @@
 #'
 #' ADRR is calculated by \eqn{1/M * \sum [LR^i + HR^i]}
 #' where M is number of days, LR is the max low risk value for day i
-#' and HR is the max high risk value for day i.
+#' and HR is the max high risk value for day i. If there are no low/high risk values
+#' in a day, zero is used as the corresponding LR/HR value for that day.
 #'
 #' Wrapping as.numeric() around the adrr call on a dataset with
 #' a single subject will return a numeric value corresponding
