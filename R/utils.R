@@ -59,7 +59,9 @@ CGMS2DayByDay <- function(data){
   ### estimate equally spaced time intervals starting from midnight
   t = data$time
   t = t[!is.na(g)]
-  tr = as.POSIXct(t)
+  # Alternative time formatting (this was the issue before)
+  tr = strptime(t, format = "%Y-%m-%d %H:%M:%S")
+  tr = as.POSIXct(tr)
 
   timeindex = 2:length(tr)
   timediff = difftime(tr[timeindex], tr[timeindex - 1], units = "mins")
