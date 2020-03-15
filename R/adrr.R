@@ -24,8 +24,9 @@
 #' in a day, zero is used as the corresponding LR/HR value for that day.
 #'
 #' Wrapping as.numeric() around the adrr call on a dataset with
-#' a single subject will return a numeric value corresponding
-#' to the ADRR value. This will not work for datasets with multiple subjects.
+#' a single subject will return a vector with first element corresponding
+#' to the subject's id converted to numeric and second element corresponding
+#' to that subject's ADRR. This will not work for datasets with multiple subjects.
 #'
 #' @references
 #' Kovatchev et al. (2006) Evaluation of a New Measure of Blood Glucose Variability in,
@@ -60,7 +61,7 @@ adrr <- function(data){
     return(data.frame(out))
   }
 
-  if (class(data) == 'data.frame'){
+  if (class(data) == 'data.frame' && nrow(data) != 1){
     out = adrr_multi(data)
   } else{
     stop("Data must be in a data.frame structure
