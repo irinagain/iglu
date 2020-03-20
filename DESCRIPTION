@@ -22,7 +22,6 @@ Imports:
     lubridate,
     shiny,
     DT,
-    lasagnar,
     dplyr,
     magrittr,
     tidyr
