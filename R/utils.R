@@ -55,7 +55,7 @@ CGMS2DayByDay <- function(data){
   g = data$gl
 
   ### estimate equally spaced time intervals starting from midnight
-  t = data$time
+  t = as.character(data$time)
   t = t[!is.na(g)]
   # Alternative time formatting (this was the issue before)
   tr = strptime(t, format = "%Y-%m-%d %H:%M:%S")
