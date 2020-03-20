@@ -39,7 +39,6 @@ mean_glu <- function(data){
   is_vector = attr(data, "is_vector")
 
   out = data %>%
-    dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
       mean = mean(gl, na.rm = TRUE)
