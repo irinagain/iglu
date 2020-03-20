@@ -46,10 +46,8 @@ read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
   return(output)
 }
 
+# Interpolate on an equally spaced grid from day to day, allows cross-day comparisons at the same time
 CGMS2DayByDay <- function(data){
-  # This function creates interpolated data (using linear interpolation) for every dt0 times across, correctly handling missing data
-  # Original code by Jacek Urbanek
-  # Updated code (January 23, 2018) by Irina Gaynanova (as pertains to interval approximations)
 
   data = read_df_or_vec(data[complete.cases(data),])
 
