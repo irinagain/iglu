@@ -1,3 +1,11 @@
+# Helper for grade to avoid repetition
+grade_formula <- function(x){
+  grade = 425 * (log10(log10(x/18)) + 0.16)^2
+  grade = ifelse(grade > 50, 50, grade)
+  return(grade)
+}
+
+
 #' Calculate mean GRADE score
 #'
 #' @description
@@ -52,17 +60,16 @@ grade <- function(data){
 
   out = data %>%
     dplyr::filter(!is.na(gl)) %>%
-    dplyr::mutate(grade = 425*(log10(log10(gl/18)) + 0.16)^2,
-                  grade = ifelse(grade > 50, 50, grade)) %>%
+    dplyr::mutate(grade = grade_formula(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      grade = median(grade, na.rm = TRUE)
+      grade = mean(grade, na.rm = TRUE)
     )
   if (is_vector) {
     out$id = NULL
   }
   return(out)
-
 }
+
 
 
