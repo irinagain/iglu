@@ -54,11 +54,11 @@ lbgi <- function(data){
     dplyr::filter(!is.na(gl)) %>%
     dplyr::mutate(
       fbg = log(gl)^{1.084} - 5.381,
-      fbg = pmax(fbg, 0)) %>%
+      fbg = pmin(fbg, 0)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
       lbgi = 22.77  *
-        sum(fbg[ gl <  112.5], na.rm = TRUE) /
+        sum(fbg[ gl <  112.5]^2, na.rm = TRUE) /
         sum(!is.na(gl))
     )
   if (is_vector) {
