@@ -33,10 +33,10 @@ mvalue <- function(data, r = 90){
   data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
   out = data %>%
-      dplyr::group_by(id) %>%
-      dplyr::summarise(
-        Mvalue = mean(1000 * abs(log10(gl / r)) ^ 3, na.rm = T)
-      )
+    dplyr::group_by(id) %>%
+    dplyr::summarise(
+      Mvalue = mean(1000 * abs(log10(gl / r)) ^ 3, na.rm = T)
+    )
 
   if (is_vector) {
     out$id = NULL
