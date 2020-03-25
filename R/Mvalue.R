@@ -1,12 +1,14 @@
 #' Calculate the M-value
 #'
-#' @description Calculates the M-value of Schlichtkrull et al. (1965) for each subject in the data, where the M-value is the mean of the logarithmic transformation of the deviation from a reference value.
+#' @description Calculates the M-value of Schlichtkrull et al. (1965) for
+#' each subject in the data, where the M-value is the mean of the logarithmic
+#' transformation of the deviation from a reference value.
 #'
 #' @usage
 #' mvalue(data)
 #'
 #' @inheritParams mean_glu
-#' @param R A reference value corresponding to basal glycemia in normal subjects; default is 90 mg/dL.
+#' @param r A reference value corresponding to basal glycemia in normal subjects; default is 90 mg/dL.
 #'
 #' @return A data.frame with two columns: subject id and corresponding M value.
 #'
@@ -19,16 +21,16 @@
 #' data(example_data_5_subject)
 #'
 #' mvalue(example_data_5_subject)
-#' mvalue(example_data_5_subject, R = 100)
+#' mvalue(example_data_5_subject, r = 100)
 #'
-mvalue <- function(data, R = 90){
+mvalue <- function(data, r = 90){
   x = id = NULL
   rm(list = c("id", "x"))
   data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
   out = data %>%
       dplyr::group_by(id) %>%
-      dplyr::summarise(Mvalue = mean(1000 * abs(log10(gl/R))^3, na.rm = T))
+      dplyr::summarise(Mvalue = mean(1000 * abs(log10(gl/r))^3, na.rm = T))
 
   if (is_vector) {
     out$id = NULL
