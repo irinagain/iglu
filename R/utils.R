@@ -46,54 +46,106 @@ read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
   return(output)
 }
 
-# Interpolate on an equally spaced grid from day to day, allows cross-day comparisons at the same time
-CGMS2DayByDay <- function(data){
+
+#' Interpolate on an equally spaced grid from day to day, allows cross-day comparisons at the same time
+#'
+#' @inheritParams mean_glu
+#' @param dt0 The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).
+#' @param inter_gap The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements thare are more than inter_gap minutes apart. The default value is 45 min.
+#'
+#' @return
+#'
+#' @examples
+CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
 
   data = read_df_or_vec(data[complete.cases(data),])
 
   ### Get glycemic data
-  g = data$gl
+  g = as.numeric(data$gl) # in case it's not
 
-  ### estimate equally spaced time intervals starting from midnight
-  t = as.character(data$time)
-  t = t[!is.na(g)]
-  # Alternative time formatting (this was the issue before)
-  tr = strptime(t, format = "%Y-%m-%d %H:%M:%S")
-  tr = as.POSIXct(tr)
+  ### Get time data
+  if (lubridate::is.POSIXct(data$time)){ # Check if already in date format
+    tr = data$time
+  }else{
+    tr = as.character(data$time)
+    tr = as.POSIXct(tr, format='%Y-%m-%d %H:%M:%S', tz = tz)
+    # Check if any NAs from conversion, this happens if wrong time format (e.g. 25:00:00) or wrong time zone which will affect daylight savings time
+    if (any(is.na(tr))){
+      warning(paste("During time conversion,", sum(is.na(tr)), "values were set to NA. Check the correct time zone specification."))
+      g = g[!is.na(tr)]
+      tr = tr[!is.na(tr)]
+    }
+  }
 
   timeindex = 2:length(tr)
   timediff = difftime(tr[timeindex], tr[timeindex - 1], units = "mins")
-  dt0 = as.double(round(median(timediff, na.rm = T)))
 
-  # What is the total number of days between last and first?
+  ### Check for time soring
+  if (min(timediff) < 0){
+    stop(paste("The times for subject", unique(data$id), "are not in increasing order!"))
+  }
+
+  ### Automatically identify grid width dt0
+  if (is.null(dt0)){
+    dt0 = as.double(round(median(timediff, na.rm = T)))
+  }
+
+  if (dt0 > inter_gap){
+    stop(paste("Identified measurements frequency,", dt0, "min, is above the maximal interpolation gap of", inter_gap, "min!"))
+  }
+
+  ### Check for misaligned grid length dt0 across days, and adjust if needed
+  if (1440 %% dt0 != 0){
+    if (dt0 > 20){ # Larger grid lengths are set to 20 min
+      dt0 = 20
+    }else{ # Smaller grid lengths are rounded so that they are divisible by 5 min
+      remainder = dt0 %% 5
+      if (remainder > 2){
+        dt0 = dt0 + 5 - remainder
+      }else{
+        dt0 = dt0 - remainder
+      }
+    }
+  }
+
+  ### Create ideal grid to interpolate over, from minimal to maximal day
   ndays = ceiling(as.double(difftime(max(tr), min(tr), units = "days")) + 1)
-  dti = c(0,rep(dt0, ndays * 24 * 60 /dt0))
-  ti = cumsum(dti)
+  dti = rep(dt0, ndays * 24 * 60 /dt0)
+  dti_cum = cumsum(dti)
+  dti_cum = lubridate::minutes(dti_cum)
 
-  # What is the data that we actually have?
-  dt = c(as.double(lubridate::minute(tr[1])) + as.double(
-    lubridate::hour(tr[1]))* 60, as.double(timediff))
-  t0 = cumsum(dt)
+  # Set up starting point at 00:00am on the first day
+  minD = min(tr) # 1st day of measurements
+  lubridate::hour(minD) = 0 # set to 00am
+  lubridate::minute(minD) = 0 # set to 00:00
+  lubridate::second(minD) = 0 # set to 00:00:00
+
+  # Create a set of time points for interpolation
+  time_out = minD + dti_cum
+
+  ### Interpolate on the ideal grid
+  new <- as.data.frame(stats::approx(x = tr, y = g, xout = time_out))
+
+  ### Adjust to that there is no interpolation between values > inter_gap appart
+  ### Thanks to weather_interp function from weathercan R package for inspiration
+  inter_gap <- lubridate::minutes(inter_gap)
+  timediff <- lubridate::minutes(round(timediff))
+  which_gap <- tr[c(timediff > inter_gap, FALSE)]
+  missing <- lubridate::interval(which_gap + 1, which_gap + timediff[timediff > inter_gap] - 1)
+  missing <- vapply(new$x, FUN.VALUE = TRUE, FUN = function(x, missing) {
+    any(lubridate::`%within%`(x, missing))
+  }, missing = missing)
+  new$y[missing] <- NA
 
   # Next, from ti remove all the ones that are more than dt0 min away from t0
-  how_far_away = intervals::distance_to_nearest(ti, t0)
-  ti_reduced = ti[how_far_away < dt0]
+  gd2d = matrix(new$y, nrow = ndays, byrow = T)
 
-  # Extrapolate to the needed times only
-  gi = approx(t0,g,ti_reduced)$y # g on equally spaced grid
-
-  # Put NA to all other times
-  gall = rep(NA, length(ti))
-  gall[how_far_away < dt0] = gi
-
-  gd2d = matrix(gall[-1], nrow = ndays, byrow = T)
-
-  return(list(gd2d,dt0))
+  return(list(gd2d, dt0))
 }
 
-rename_glu_data <- function(data){
-
-}
+# rename_glu_data <- function(data){
+#
+# }
 
 tsplot = function(data, hypo, hyper){
   gl = date_by_id = NULL
