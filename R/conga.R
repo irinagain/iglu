@@ -45,9 +45,9 @@
 
 
 
-conga <- function(data){
-  conga_single = function(data){
-    data_ip = CGMS2DayByDay(data)
+conga <- function(data, tz = ""){
+  conga_single = function(data, tz = ""){
+    data_ip = CGMS2DayByDay(data, tz = tz)
     gl_by_id_ip = data_ip[[1]]
 
     out = sd(diff(gl_by_id_ip), na.rm = T)
@@ -56,12 +56,12 @@ conga <- function(data){
     return(out)
   }
 
-  conga_multi = function(data){
+  conga_multi = function(data, tz = ""){
     subjects = unique(data$id)
     out_mat = matrix(nrow = length(subjects), ncol = 1)
     for(row in 1:length(subjects)){
       data_by_id = data[data$id == subjects[row],]
-      out_mat[row, 1] = as.numeric(conga_single(data_by_id))
+      out_mat[row, 1] = as.numeric(conga_single(data_by_id, tz = tz))
     }
     out = data.frame(out_mat)
     names(out) = 'conga'
@@ -70,7 +70,7 @@ conga <- function(data){
   }
 
   if(class(data) == 'data.frame'){
-    conga_multi(data)
+    conga_multi(data, tz = tz)
   } else{
     stop("Data must be in a data.frame structure
          with columns for 'id', 'time', and 'gl'")
