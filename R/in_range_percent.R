@@ -74,8 +74,7 @@ in_range_percent <- function(
       data = data %>%
         dplyr::group_by(id) %>%
         dplyr::summarise(
-          x = sum(gl >= target_val[1] & gl <= target_val[2]) /
-            sum(!is.na(gl)) * 100) %>%
+          x = mean(gl >= target_val[1] & gl <= target_val[2], na.rm = TRUE) * 100) %>%
         dplyr::mutate(target_val =
                         paste0('in_range_', target_val[1], '_', target_val[2]))
       data

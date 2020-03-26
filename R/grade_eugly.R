@@ -54,7 +54,7 @@ grade_eugly <- function(data, lower = 70, upper = 140){
 
   out = data %>%
     dplyr::filter(!is.na(gl)) %>%
-    dplyr::mutate(grade = 425*(log10(log10(gl/18)) + 0.16)^2) %>%
+    dplyr::mutate(grade = grade_formula(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
       grade_eugly = sum(grade[gl >= lower & gl <= upper ], na.rm = TRUE) /

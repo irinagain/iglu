@@ -2,7 +2,7 @@
 % Please edit documentation in R/lbgi.R
 \name{lbgi}
 \alias{lbgi}
-\title{Calculate High Blood Glucose Index (LBGI)}
+\title{Calculate Low Blood Glucose Index (LBGI)}
 \usage{
 lbgi(data)
 }

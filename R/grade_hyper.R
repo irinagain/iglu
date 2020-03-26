@@ -54,7 +54,7 @@ grade_hyper <- function(data, upper = 140){
 
   out = data %>%
     dplyr::filter(!is.na(gl)) %>%
-    dplyr::mutate(grade = 425*(log10(log10(gl/18)) + 0.16)^2) %>%
+    dplyr::mutate(grade = grade_formula(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
       grade_hyper = sum(grade[gl > upper], na.rm = TRUE) /

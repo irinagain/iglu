@@ -4,14 +4,18 @@
 \alias{hyper_index}
 \title{Calculate Hyperglycemia Index}
 \usage{
-hyper_index(data, upper = 140)
+hyper_index(data, ULTR = 140)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values. NA's will be omitted from the glucose
 values in calculation of Hyperglycemic Index.}
 
-\item{upper}{Upper bound used for hyperglycemia cutoff. Default is 140.}
+\item{ULTR}{Upper Limit of Target Range, default value is 140 mg/dL.}
+
+\item{a}{Exponent, generally in the range from 1.0 to 2.0, efault value is 1.1.}
+
+\item{c}{Scaling factor,to display Hyperglycemia Index, Hypoglycemia Index, and IGC on approximately the same numerical range as measurements of HBGI, LBGI and GRADE, default value is 30.}
 }
 \value{
 
@@ -23,22 +27,18 @@ form with one column and one row per subject.
 \details{
 A dataframe structure with one column and a row for each subject.
 
-Hyperglycemia Index is calculated by \eqn{n/30 * \sum [hyperBG_j ^{1.1}]}
-Where n is the total number of Blood Glucose measurements and \eqn{hyperBG_j}
-is the jth Blood Glucose measurement above the hyperglycemia cutoff.
-
-Wrapping as.numeric() around the hyper_index call on a dataset with
-a single subject will return a numeric value corresponding to the
-Hyperglycemia Index value. This will not work for datasets with multiple subjects.
+Hyperglycemia Index is calculated by \eqn{n/c * \sum [(hyperBG_j-ULTR) ^{a}]}
+Here n is the total number of Blood Glucose measurements (excluding NA values), \eqn{hyperBG_j}
+is the jth Blood Glucose measurement above the ULTR cutoff, a is an exponent, and c is a scaling factor.
 }
 \examples{
 data(example_data_1_subject)
 hyper_index(example_data_1_subject)
-hyper_index(example_data_1_subject, upper = 160)
+hyper_index(example_data_1_subject, ULTR = 160)
 
 data(example_data_5_subject)
 hyper_index(example_data_5_subject)
-hyper_index(example_data_5_subject, upper = 150)
+hyper_index(example_data_5_subject, ULTR = 150)
 
 }
 \references{

@@ -10,10 +10,7 @@
 #' @usage
 #' above_percent(data, targets_above = c(140, 180, 200, 250))
 #'
-#' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values. NA's will be omitted from the glucose
-#' values in calculation of percent.
-#'
+#' @inheritParams mean_glu
 #' @param targets_above Numeric vector of glucose thresholds. Glucose values from
 #' data argument will be compared to each value in the targets_above vector.
 #' Default list is (140, 180, 200, 250).

@@ -4,16 +4,22 @@
 \alias{igc}
 \title{Calculate Index of Glycemic Control}
 \usage{
-igc(data, lower = 70, upper = 140)
+igc(data, LLTR = 80, ULTR = 140, a = 1.1, b = 2, c = 30, d = 30)
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl",
-or numeric vector of glucose values. NA's will be omitted from the glucose
-values in calculation of IGC.}
+\item{data}{DataFrame object with column names "id", "time", and "gl".}
 
-\item{lower}{Lower bound used for hypoglycemia cutoff. Default is 70}
+\item{LLTR}{Lower Limit of Target Range, default value is 80 mg/dL.}
 
-\item{upper}{Upper bound used for hyperglycemia cutoff. Default is 140.}
+\item{ULTR}{Upper Limit of Target Range, default value is 140 mg/dL.}
+
+\item{a}{Exponent, generally in the range from 1.0 to 2.0, efault value is 1.1.}
+
+\item{b}{Exponent, generally in the range from 1.0 to 2.0, default value is 2.}
+
+\item{c}{Scaling factor,to display Hyperglycemia Index, Hypoglycemia Index, and IGC on approximately the same numerical range as measurements of HBGI, LBGI and GRADE, default value is 30.}
+
+\item{d}{Scaling factor,to display Hyperglycemia Index, Hypoglycemia Index, and IGC on approximately the same numerical range as measurements of HBGI, LBGI and GRADE, default value is 30.}
 }
 \value{
 
@@ -27,19 +33,15 @@ A dataframe structure with one column and a row for each subject.
 
 IGC is calculated by taking the sum of the Hyperglycemia
 Index and the Hypoglycemia index. See hypo_index and hyper_index.
-
-Wrapping as.numeric() around the igc call on a dataset with
-a single subject will return a numeric value corresponding to the
-IGC value. This will not work for datasets with multiple subjects.
 }
 \examples{
 data(example_data_1_subject)
 igc(example_data_1_subject)
-igc(example_data_1_subject, lower = 80, upper = 160)
+igc(example_data_1_subject, ULTR = 160)
 
 data(example_data_5_subject)
 igc(example_data_5_subject)
-igc(example_data_5_subject, lower = 75, upper = 150)
+igc(example_data_5_subject, LLTR = 75, ULTR = 150)
 
 }
 \references{

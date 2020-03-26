@@ -4,14 +4,18 @@
 \alias{hypo_index}
 \title{Calculate Hypoglycemia Index}
 \usage{
-hypo_index(data, lower = 70)
+hypo_index(data, LLTR = 70)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values. NA's will be omitted from the glucose
 values in calculation of Hypoglycemic Index.}
 
-\item{lower}{Lower bound used for hypoglycemia cutoff. Default is 70}
+\item{LLTR}{Lower Limit of Target Range, default value is 80 mg/dL.}
+
+\item{b}{Exponent, generally in the range from 1.0 to 2.0, default value is 2.}
+
+\item{d}{Scaling factor,to display Hyperglycemia Index, Hypoglycemia Index, and IGC on approximately the same numerical range as measurements of HBGI, LBGI and GRADE, default value is 30.}
 }
 \value{
 
@@ -23,26 +27,16 @@ form with one column and one row per subject.
 \details{
 A dataframe structure with one column and a row for each subject.
 
-Hypoglycemia Index is calculated by \eqn{n/30 * \sum [hypoBG_j ^{2}]}
-Where n is the total number of Blood Glucose measurements and \eqn{hypoBG_j}
-is the jth Blood Glucose measurement below the hypoglycemia cutoff.
-
-Wrapping as.numeric() around the hypo_index call on a dataset with
-a single subject will return a numeric value corresponding to the
-Hypoglycemia Index value. This will not work for datasets with multiple subjects.
+Hypoglycemia Index is calculated by \eqn{n/d * \sum [(LLTR-hypoBG_j)^{b}]}
+Here n is the total number of Blood Glucose measurements (excluding NA values), and \eqn{hypoBG_j} is the jth Blood Glucose measurement below the LLTR cutoff, b is an exponent, and d is a scaling factor.
 }
 \examples{
 data(example_data_1_subject)
-res = hypo_index(example_data_1_subject)
-hp1 = res$hypo_index
-res = hypo_index(example_data_1_subject$gl)
-hp2 = res$hypo_index
-stopifnot(isTRUE(all.equal(hp1, hp2)))
-hypo_index(example_data_1_subject, lower = 60)
+hypo_index(example_data_1_subject, LLTR = 60)
 
 data(example_data_5_subject)
 hypo_index(example_data_5_subject)
-hypo_index(example_data_5_subject, lower = 80)
+hypo_index(example_data_5_subject, LLTR = 70)
 
 }
 \references{

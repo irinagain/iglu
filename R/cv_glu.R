@@ -48,7 +48,6 @@ cv_glu <- function(data){
   is_vector = attr(data, "is_vector")
 
   out = data %>%
-    dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
       cv = sd(gl, na.rm = TRUE) / mean(gl, na.rm = TRUE) * 100

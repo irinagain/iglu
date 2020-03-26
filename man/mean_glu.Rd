@@ -7,9 +7,7 @@
 mean_glu(data)
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl",
-or numeric vector of glucose values. NA's will be omitted from the glucose
-values in calculation of mean.}
+\item{data}{DataFrame object with column names "id", "time", and "gl".}
 }
 \value{
 
@@ -21,11 +19,7 @@ and a row corresponding to each subject.
 }
 \details{
 A dataframe structure with 1 row for each subject and 1 column for the mean
-value is returned.
-
-Wrapping as.numeric() around the mean_glu call on a dataset with
-a single subject will return a numeric value corresponding to the mean.
-This will not work for datasets with multiple subjects.
+value is returned. NA glucose values are be omitted from the  calculation of the mean.
 }
 \examples{
 data(example_data_1_subject)

@@ -48,7 +48,6 @@ j_index <- function(data){
   is_vector = attr(data, "is_vector")
 
   out = data %>%
-    dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
       j_index = 0.001 * (mean(gl, na.rm = TRUE) + sd(gl, na.rm = TRUE))^2

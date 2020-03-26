@@ -59,7 +59,7 @@ hbgi <- function(data){
     dplyr::group_by(id) %>%
     dplyr::summarise(
       hbgi = 22.77  *
-        sum(fbg[ gl >=  112.5], na.rm = TRUE) /
+        sum(fbg[gl >=  112.5]^2, na.rm = TRUE) /
         sum(!is.na(gl))
     )
   if (is_vector) {

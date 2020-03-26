@@ -55,8 +55,8 @@ mage <- function(data, sd_multiplier = 1){
 
   out = data %>%
     dplyr::filter(!is.na(gl)) %>%
-    dplyr::mutate(abs_diff_mean = abs(gl - mean(gl, na.rm = TRUE))) %>%
     dplyr::group_by(id) %>%
+    dplyr::mutate(abs_diff_mean = abs(gl - mean(gl, na.rm = TRUE))) %>%
     dplyr::summarise(
       mage = mean(
         abs_diff_mean[abs_diff_mean > (sd_multiplier * sd(gl, na.rm = TRUE))],

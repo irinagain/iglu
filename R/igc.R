@@ -5,24 +5,17 @@
 #' form with one column and one row per subject.
 #'
 #' @usage
-#' igc(data, lower = 70, upper = 140)
+#' igc(data, LLTR = 80, ULTR = 140, a = 1.1, b = 2, c = 30, d = 30)
 #'
-#' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values. NA's will be omitted from the glucose
-#' values in calculation of IGC.
-#'
-#' @param lower Lower bound used for hypoglycemia cutoff. Default is 70
-#' @param upper Upper bound used for hyperglycemia cutoff. Default is 140.
+#' @inheritParams mean_glu
+#' @inheritParams hyper_index
+#' @inheritParams hypo_index
 #'
 #' @details
 #' A dataframe structure with one column and a row for each subject.
 #'
 #' IGC is calculated by taking the sum of the Hyperglycemia
 #' Index and the Hypoglycemia index. See hypo_index and hyper_index.
-#'
-#' Wrapping as.numeric() around the igc call on a dataset with
-#' a single subject will return a numeric value corresponding to the
-#' IGC value. This will not work for datasets with multiple subjects.
 #'
 #' @return
 #'
@@ -37,31 +30,22 @@
 #' @examples
 #' data(example_data_1_subject)
 #' igc(example_data_1_subject)
-#' igc(example_data_1_subject, lower = 80, upper = 160)
+#' igc(example_data_1_subject, ULTR = 160)
 #'
 #' data(example_data_5_subject)
 #' igc(example_data_5_subject)
-#' igc(example_data_5_subject, lower = 75, upper = 150)
+#' igc(example_data_5_subject, LLTR = 75, ULTR = 150)
 #'
 
-igc <- function(data, lower = 70, upper = 140){
-  hyper = hypo = gl = id = NULL
-  rm(list = c("gl", "id", "hyper", "hypo"))
-  data = check_data_columns(data)
-  is_vector = attr(data, "is_vector")
+igc <- function(data, LLTR = 80, ULTR = 140, a = 1.1, b = 2, c = 30, d = 30){
 
-  out = data %>%
-    dplyr::filter(!is.na(gl)) %>%
-    dplyr::group_by(id) %>%
-    dplyr::summarise(
-      hyper = sum((gl[gl > upper] - upper) ^ 1.1, na.rm = TRUE)/(length(!is.na(gl)) * 30),
-      hypo = sum((lower - gl[gl < lower]) ^ 2, na.rm = TRUE)/(length(!is.na(gl)) * 30)
-      ) %>%
-    dplyr::mutate(igc = hyper + hypo) %>%
-    dplyr::select(-hyper, -hypo)
-  if (is_vector) {
-    out$id = NULL
-  }
+  out_hyper <- hyper_index(data, ULTR = ULTR, a = a, c = c)
+  out_hypo <- hypo_index(data, LLTR = LLTR, b = b, d = d)
+
+  out <- dplyr::inner_join(out_hyper, out_hypo)%>%
+    dplyr::group_by(id)%>%
+    dplyr::summarize(igc = hyper_index + hypo_index)
+
   return(out)
 }
 
