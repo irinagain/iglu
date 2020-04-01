@@ -7,11 +7,13 @@
 #' calculation of CONGA24.
 #'
 #' @usage
-#' conga(data)
+#' conga(data, tz = "")
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
 #' or numeric vector of glucose values. Missing values will be linearly
 #' interpolated when close enough to non-missing values.
+#'
+#' @param tz A character string specifying the time zone to be used. System-specific (see \code{\link[base]{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
 #'
 #' @return
 #'

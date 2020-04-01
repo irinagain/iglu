@@ -4,12 +4,14 @@
 \alias{conga}
 \title{Calculate continuous overall net glycemic action (CONGA)}
 \usage{
-conga(data)
+conga(data, tz = " ")
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values. Missing values will be linearly
 interpolated when close enough to non-missing values.}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link[base]{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 
