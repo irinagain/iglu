@@ -4,13 +4,8 @@
 \alias{plot_glu}
 \title{Plot time series and lasagna plots of glucose measurements}
 \usage{
-plot_glu(
-  data,
-  plottype = c("tsplot", "unsorted", "rowsorted"),
-  lower = 70,
-  upper = 140,
-  subjects = NULL
-)
+plot_glu(data, plottype = c("tsplot", "unsorted", "rowsorted"),
+  lower = 70, upper = 140, subjects = NULL)
 }
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl").}
