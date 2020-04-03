@@ -23,9 +23,8 @@ form with one column and one row per subject.
 \details{
 A dataframe structure with one column and a row for each subject.
 
-\%GRADE hypoglycemia is calculated by calculating the GRADE score (see grade
-function) just for values below the hypoglycemia cutoff and dividing by the
-total GRADE score.
+\%GRADE hypoglycemia is determined by calculating the percentage of
+GRADE score (see grade function) attributed to hypoglycemic glucose values.
 
 Wrapping as.numeric() around the grade_hypo call on a dataset with
 a single subject will return a numeric value corresponding to the \%GRADE
