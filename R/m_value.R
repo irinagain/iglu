@@ -5,7 +5,7 @@
 #' transformation of the deviation from a reference value.
 #'
 #' @usage
-#' mvalue(data)
+#' m_value(data)
 #'
 #' @inheritParams mean_glu
 #' @param r A reference value corresponding to basal glycemia in normal
@@ -24,10 +24,10 @@
 #' @examples
 #' data(example_data_5_subject)
 #'
-#' mvalue(example_data_5_subject)
-#' mvalue(example_data_5_subject, r = 100)
+#' m_value(example_data_5_subject)
+#' m_value(example_data_5_subject, r = 100)
 #'
-mvalue <- function(data, r = 90){
+m_value <- function(data, r = 90){
   x = id = NULL
   rm(list = c("id", "x"))
   data = check_data_columns(data)
@@ -35,7 +35,7 @@ mvalue <- function(data, r = 90){
   out = data %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      Mvalue = mean(1000 * abs(log10(gl / r)) ^ 3, na.rm = T)
+      m_value = mean(1000 * abs(log10(gl / r)) ^ 3, na.rm = T)
     )
 
   if (is_vector) {
