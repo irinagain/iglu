@@ -56,9 +56,14 @@ read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
 #' @return
 #'
 #' @examples
+#'
+#' CGMS2DayByDay(example_data_1_subject)
+#'
+
+
 CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
 
-  data = read_df_or_vec(data[complete.cases(data),])
+  data = data[complete.cases(data),]
 
   ### Get glycemic data
   g = as.numeric(data$gl) # in case it's not
@@ -140,7 +145,10 @@ CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
   # Next, from ti remove all the ones that are more than dt0 min away from t0
   gd2d = matrix(new$y, nrow = ndays, byrow = T)
 
-  return(list(gd2d, dt0))
+  # Assign rownames that correspond to actual dates
+  actual_dates = as.Date(minD) + lubridate::days(0:(ndays - 1))
+
+  return(list(gd2d = gd2d, actual_dates = actual_dates, dt0 = dt0))
 }
 
 # rename_glu_data <- function(data){
@@ -160,7 +168,7 @@ tsplot = function(data, hypo, hyper){
     ggplot2::geom_hline(yintercept = hyper, color = 'red')
 }
 
-unsorted_lasagna = function(data){
+unsorted_lasagna = function(data, limits = c(50, 400), midpoint = 125){
   subjects = unique(data$id)
   limit = sum(data$id == subjects[1])
   if(length(subjects) >= 2){
@@ -182,8 +190,11 @@ unsorted_lasagna = function(data){
 
   colnames(H.mat) = seq(ncol(H.mat))
 
-  lasagnar::lasagna(H.mat, main = 'Unsorted lasagna plot', legend = T,
-                    xlab = 'Measurement ordered by time', ylab = 'Subject')
+  #lasagnar::lasagna(H.mat, main = 'Unsorted lasagna plot', legend = T, xlab = 'Measurement ordered by time', ylab = 'Subject')
+  H.mat_melt = reshape::melt(H.mat)
+  p = ggplot(data=H.mat_melt,aes(x = X2, y = X1, fill = value)) + geom_tile()+scale_fill_gradient2(low = "blue", high = "red", limits = limits, midpoint = midpoint)+ ylab("Subject") + ggtitle("Unsorted lasagna plot") + xlab("Measurement ordered by time")
+  print(p)
+
 }
 
 
