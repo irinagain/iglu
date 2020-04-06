@@ -24,11 +24,6 @@ ADRR is calculated by \eqn{1/M * \sum [LR^i + HR^i]}
 where M is number of days, LR is the max low risk value for day i
 and HR is the max high risk value for day i. If there are no low/high risk values
 in a day, zero is used as the corresponding LR/HR value for that day.
-
-Wrapping as.numeric() around the adrr call on a dataset with
-a single subject will return a vector with first element corresponding
-to the subject's id converted to numeric and second element corresponding
-to that subject's ADRR. This will not work for datasets with multiple subjects.
 }
 \examples{
 

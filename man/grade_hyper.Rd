@@ -23,9 +23,8 @@ form with one column and one row per subject.
 \details{
 A dataframe structure with one column and a row for each subject.
 
-\%GRADE hyperglycemia is calculated by calculating the GRADE score (see grade
-function) just for values above the hyperglycemia cutoff and dividing by the
-total GRADE score.
+\%GRADE hyperglycemia is determined by calculating the percentage of
+GRADE score (see grade function) attributed to hyperglycemic glucose values.
 
 Wrapping as.numeric() around the grade_hyper call on a dataset with
 a single subject will return a numeric value corresponding to the \%GRADE

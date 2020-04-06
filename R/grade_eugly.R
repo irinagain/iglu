@@ -14,9 +14,9 @@
 #' @details
 #' A dataframe structure with one column and a row for each subject.
 #'
-#' \%GRADE euglycemia is calculated by calculating the GRADE score (see grade
-#' function) just for values in the target range and dividing by the total
-#' GRADE score.
+#' \%GRADE euglycemia is determined by calculating the percentage of GRADE score (see grade
+#' function) attributed to values in the target range, i.e. values not below
+#' hypoglycemic or above hyperglycemic cutoffs.
 #'
 #' Wrapping as.numeric() around the grade_eugly call on a dataset with
 #' a single subject will return a numeric value corresponding to the \%GRADE
