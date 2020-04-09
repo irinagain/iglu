@@ -18,12 +18,11 @@ The function adrr produces ADRR values in data.frame form
 with one column and one row per subject.
 }
 \details{
-A dataframe structure with one column and a row for each subject.
-
-ADRR is calculated by \eqn{1/M * \sum [LR^i + HR^i]}
-where M is number of days, LR is the max low risk value for day i
-and HR is the max high risk value for day i. If there are no low/high risk values
-in a day, zero is used as the corresponding LR/HR value for that day.
+ADRR is the average sum of HBGI corresponding to the highest glucose
+value and LBGI corresponding to the lowest glucose value for each day,
+with the average taken over the daily sums. If there are no high glucose or
+no low glucose values, then 0 will be substituted for the HBGI value or the
+LBGI value, respectively, for that day.
 }
 \examples{
 
