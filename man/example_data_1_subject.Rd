@@ -4,14 +4,12 @@
 \name{example_data_1_subject}
 \alias{example_data_1_subject}
 \title{Example Data from Subject 1}
-\format{
-A data.frame with 2915 rows and 3 columns, which are:
+\format{A data.frame with 2915 rows and 3 columns, which are:
 \describe{
 \item{id}{identifier of subject}
 \item{time}{5-10 minute time value}
 \item{gl}{glucose level}
-}
-}
+}}
 \usage{
 example_data_1_subject
 }

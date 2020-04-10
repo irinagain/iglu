@@ -4,14 +4,12 @@
 \name{example_data_5_subject}
 \alias{example_data_5_subject}
 \title{CGM Data for 5 Subjects with Type II Diabetes}
-\format{
-A data.frame with 13866 rows and 3 columns, which are:
+\format{A data.frame with 13866 rows and 3 columns, which are:
 \describe{
 \item{id}{identifier of subject}
 \item{time}{date and time stamp}
 \item{gl}{glucose level as measured by CGM (mg/dL)}
-}
-}
+}}
 \usage{
 example_data_5_subject
 }
