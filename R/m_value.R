@@ -9,12 +9,15 @@
 #'
 #' @inheritParams mean_glu
 #' @param r A reference value corresponding to basal glycemia in normal
-#'subjects; default is 90 mg/dL.
+#' subjects; default is 90 mg/dL.
 #'
 #' @return A data.frame with two columns: subject id and corresponding M value.
 #'
 #' @export
 #'
+#' @details
+#' M-value is computed by averaging the transformed gluvose values, where each
+#' transformed value is equal to \eqn{|{1000 * log_10(glucose/100)|^3}
 #' @references
 #' Schlichtkrull J, Munck O, Jersild M. (1965) The M-value, an index of
 #' blood-sugar control in diabetics. \emph{Acta Medica Scandinavica}
