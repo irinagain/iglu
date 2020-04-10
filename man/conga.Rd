@@ -24,13 +24,7 @@ calculation of CONGA24.
 \details{
 A dataframe structure with one column and a row for each subject.
 
-CONGA24 is currently the only supported CONGA type. CONGA24 is computed
-by taking the standard deviation of differences in measurements separated
-by 24 hours (same time of day).
-
-Wrapping as.numeric() around the conga call on a dataset with
-a single subject will return a numeric value corresponding to the CONGA
-value. This will not work for datasets with multiple subjects.
+CONGA_n is the standard deviation of the difference between glucose values that are exactly n hours apart. CONGA_{24} is currently the only supported CONGA type (n = 24), and is computed by taking the standard deviation of differences in measurements separated by 24 hours.
 }
 \examples{
 
