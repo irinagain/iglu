@@ -1,7 +1,7 @@
 #' Lasagna plot of glucose values for 1 subject aligned across times of day
 #'
 #' @inheritParams conga
-#' @param plottype String corresponding to plot type, currently supported
+#' @param lasagnatype String corresponding to plot type, currently supported
 #' options are 'unsorted' for an unsorted single-subject lasagna plot, and 'timesorted' for a
 #' lasgna plot with glucose values sorted for each time point across days.
 #' @param limits The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link[ggplot2]{scale_fill_gradient2}})
@@ -16,7 +16,7 @@
 #'
 #' plot_lasagna_1subject(example_data_1_subject)
 #'
-plot_lasagna_1subject <- function(data, plottype = c('unsorted', 'timesorted'), limits = c(50, 500), midpoint = 105, lower = 70, upper = 140, dt0 = NULL, inter_gap = 60, tz = ""){
+plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'), limits = c(50, 500), midpoint = 105, lower = 70, upper = 140, dt0 = NULL, inter_gap = 60, tz = ""){
 
   subject = unique(data$id)
   ns = length(subject)
@@ -36,8 +36,8 @@ plot_lasagna_1subject <- function(data, plottype = c('unsorted', 'timesorted'), 
 
   title = ""
 
-  plottype = match.arg(plottype)
-  if (plottype == 'timesorted'){
+  lasagnatype = match.arg(lasagnatype)
+  if (lasagnatype == 'timesorted'){
     gl_by_id_ip = apply(gl_by_id_ip, 2, sort, decreasing = T, na.last = T)
     title = ", sorted at each time point."
   }
@@ -57,7 +57,7 @@ plot_lasagna_1subject <- function(data, plottype = c('unsorted', 'timesorted'), 
 #' @inheritParams plot_lasagna_1subject
 #' @param datatype String corresponding to data aggregation used for plotting, currently supported
 #' options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject
-#' @param plottype_average String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, and 'timesorted' for a
+#' @param lasagnatype String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, and 'timesorted' for a
 #' lasgna plot with glucose values sorted for each time point across subjects
 #' @param maxd For datatype "all", maximal number of days to be plotted from the study. The default value is 14 days (2 weeks).
 #'
@@ -71,9 +71,9 @@ plot_lasagna_1subject <- function(data, plottype = c('unsorted', 'timesorted'), 
 #' plot_lasagna(example_data_5_subject, datatype = "average")
 #' plot_lasagna(example_data_5_subject, datatype = "average", plottype_average = 'timesorted')
 #'
-plot_lasagna <- function(data, datatype = c("all", "average"), plottype_average = c('unsorted', 'timesorted'), maxd = 14, limits = c(50, 500), midpoint = 105, lower = 70, upper = 140, dt0 = NULL, inter_gap = 60, tz = ""){
+plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('unsorted', 'timesorted'), maxd = 14, limits = c(50, 500), midpoint = 105, lower = 70, upper = 140, dt0 = NULL, inter_gap = 60, tz = ""){
 
-  plottype_average = match.arg(plottype_average)
+  lasagnatype = match.arg(lasagnatype)
   datatype = match.arg(datatype)
 
 
@@ -101,7 +101,7 @@ plot_lasagna <- function(data, datatype = c("all", "average"), plottype_average 
 
     # Adjust the title and sort if needed
     title = ""
-    if (plottype_average == 'timesorted'){
+    if (lasagnatype == 'timesorted'){
       average24 = apply(average24, 2, sort, decreasing = T, na.last = T)
       title = ", sorted at each time point."
     }
