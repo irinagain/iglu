@@ -47,23 +47,36 @@ read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
 }
 
 
-#' Interpolate on an equally spaced grid from day to day, allows cross-day comparisons at the same time
+#' Interpolate glucose value on an equally spaced grid from day to day
 #'
-#' @inheritParams mean_glu
+#' @inheritParams conga
+#' @param data DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.
 #' @param dt0 The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).
 #' @param inter_gap The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements thare are more than inter_gap minutes apart. The default value is 45 min.
 #'
-#' @return
+#'
+#' @return A list with
+#' @param gd2d - a matrix of glucose values with each row corresponding to a new day, and each column corresponding to time
+#' @param actual_dates - a vector of dates corresponding to the rows of \code{gd2d}
+#' @param dt0 - time frequency of the resulting frid, in minutes
+#'
+#' @export
 #'
 #' @examples
 #'
 #' CGMS2DayByDay(example_data_1_subject)
 #'
-
-
 CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
 
   data = data[complete.cases(data),]
+
+  ns = length(unique(data$id))
+
+  if (ns > 1){
+    first = unique(data$id)[1]
+    data = data %>% dplyr::filter(id == first)
+    warning(paste("Data contains more than 1 subject. Only the first subject with id", first,  "is used for output."))
+  }
 
   ### Get glycemic data
   g = as.numeric(data$gl) # in case it's not
