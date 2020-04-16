@@ -24,8 +24,8 @@
 #' @references
 #' Rodbard (2009) Interpretation of continuous glucose monitoring data:
 #' glycemic variability and quality of glycemic control,
-#' \emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
-#' S55-67. \doi{10.1089/dia.2008.0132}.
+#' \emph{Diabetes Technology and Therapeutics} \strong{11} .55-67,
+#' \doi{10.1089/dia.2008.0132}.
 #'
 #' @examples
 #' data(example_data_1_subject)

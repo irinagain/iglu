@@ -20,9 +20,9 @@
 #'
 #' @references
 #' Schlichtkrull J, Munck O, Jersild M. (1965) The M-value, an index of
-#' blood-sugar control in diabetics. \emph{Acta Medica Scandinavica}
-#' \strong{177}, 95-102.
-#' \doi{https://doi.org/10.1111/j.0954-6820.1965.tb01810.x}.
+#' blood-sugar control in diabetics.
+#' \emph{Acta Medica Scandinavica} \strong{177} .95-102.
+#' \doi{10.1111/j.0954-6820.1965.tb01810.x}.
 #'
 #' @examples
 #' data(example_data_5_subject)

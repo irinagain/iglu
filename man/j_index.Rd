@@ -38,7 +38,7 @@ j_index(example_data_5_subject)
 
 }
 \references{
-Wojcicki (1995) : "J"-index. A new proposition of the assessment
+Wojcicki (1995) "J"-index. A new proposition of the assessment
 of current glucose control in diabetic patients
 \emph{Hormone and Metabolic Research} \strong{27} .41-42,
 \doi{10.1055/s-2007-979906}.
