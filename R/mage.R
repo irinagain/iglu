@@ -30,10 +30,10 @@
 #' This will not work for datasets with multiple subjects.
 #'
 #' @references
-#' Rodbard (2009) Interpretation of continuous glucose monitoring data:
-#' glycemic variability and quality of glycemic control,
-#' \emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
-#' S55-67. \doi{10.1089/dia.2008.0132}.
+#' Service et al. (1970) Mean amplitude of glycemic excursions, a
+#' measure of diabetic instability
+#' \emph{Diabetes}  \strong{19} .644-655,
+#' \doi{10.2337/diab.19.9.644}.
 #'
 #' @examples
 #'

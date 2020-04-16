@@ -29,10 +29,10 @@
 #' to the LBGI value. This will not work for datasets with multiple subjects.
 #'
 #' @references
-#' Rodbard (2009) Interpretation of continuous glucose monitoring data:
-#' glycemic variability and quality of glycemic control,
-#' \emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
-#' S55-67. \doi{10.1089/dia.2008.0132}.
+#' Kovatchev et al. (2006) Evaluation of a New Measure of Blood Glucose Variability in,
+#' Diabetes
+#' \emph{Diabetes care} \strong{29} .2433-2438,
+#' \doi{10.2337/dc06-1085}.
 #'
 #' @examples
 #'

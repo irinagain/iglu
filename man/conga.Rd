@@ -36,8 +36,8 @@ conga(example_data_5_subject)
 
 }
 \references{
-Rodbard (2009) Interpretation of continuous glucose monitoring data:
-glycemic variability and quality of glycemic control,
-\emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
-S55-67. \doi{10.1089/dia.2008.0132}.
+McDonnell et al. (2005) : A novel approach to continuous glucose analysis
+utilizing glycemic variation
+\emph{Diabetes Technology and Therapeutics} \strong{7} .253-263,
+\doi{10.1089/dia.2005.7.253}.
 }

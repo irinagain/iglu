@@ -42,8 +42,8 @@ grade_hyper(example_data_5_subject, upper = 160)
 
 }
 \references{
-Rodbard (2009) Interpretation of continuous glucose monitoring data:
-glycemic variability and quality of glycemic control,
-\emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
-S55-67. \doi{10.1089/dia.2008.0132}.
+Hill et al. (2007): A method for assessing quality of control
+from glucose profiles
+\emph{Diabetic Medicine} \strong{24} .753-758,
+\doi{10.1111/j.1464-5491.2007.02119.x}.
 }
