@@ -44,35 +44,24 @@
 #' modd(example_data_5_subject, lag = 2)
 #'
 
-modd <- function(data, lag = 1){
+modd <- function(data, lag = 1, tz = ""){
   modd_single = function(data, lag){
-    data_ip = CGMS2DayByDay(data)
+    data_ip = CGMS2DayByDay(data, tz=tz)
     gl_by_id_ip = data_ip[[1]]
-    out = mean(abs(diff(gl_by_id_ip, lag = lag)), na.rm=T)
-    out = data.frame(out)
-    names(out) = 'modd'
+    out = mean(abs(diff(gl_by_id_ip, lag = lag)), na.rm = TRUE)
     return(out)
   }
 
-  modd_multi = function(data,lag){
-    subjects = unique(data$id)
-    out_mat = matrix(nrow = length(subjects), ncol = 1)
-    for(row in 1:length(subjects)){
-      data_by_id = data[data$id == subjects[row],]
-      out_mat[row, 1] = as.numeric(modd_single(data_by_id))
-    }
-
-    out = data.frame(out_mat)
-    names(out) = 'modd'
-    row.names(out) = unique(subjects)
-    return(out)
+  data = check_data_columns(data)
+  is_vector = attr(data, "is_vector")
+  out = data %>%
+    dplyr::filter(!is.na(gl)) %>%
+    dplyr::group_by(id) %>%
+    dplyr::summarise(
+      modd = modd_single(data.frame(id,time,gl),lag)
+    )
+  if (is_vector) {
+    out$id = NULL
   }
-
-  if(class(data) == 'data.frame' && nrow(data) != 1){
-    modd_multi(data, lag)
-  } else{
-    stop("Data must be in a data.frame structure
-         with columns for 'id', 'time', and 'gl'")
-  }
-
+  return(out)
 }
