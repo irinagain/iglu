@@ -54,7 +54,6 @@ modd <- function(data, lag = 1, tz = ""){
 
   data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
-
   out = data %>%
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
