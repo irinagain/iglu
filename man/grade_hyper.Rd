@@ -23,9 +23,8 @@ form with one column and one row per subject.
 \details{
 A dataframe structure with one column and a row for each subject.
 
-\%GRADE hyperglycemia is calculated by calculating the GRADE score (see grade
-function) just for values above the hyperglycemia cutoff and dividing by the
-total GRADE score.
+\%GRADE hyperglycemia is determined by calculating the percentage of
+GRADE score (see grade function) attributed to hyperglycemic glucose values.
 
 Wrapping as.numeric() around the grade_hyper call on a dataset with
 a single subject will return a numeric value corresponding to the \%GRADE
@@ -43,8 +42,8 @@ grade_hyper(example_data_5_subject, upper = 160)
 
 }
 \references{
-Rodbard (2009) Interpretation of continuous glucose monitoring data:
-glycemic variability and quality of glycemic control,
-\emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
-S55-67. \doi{10.1089/dia.2008.0132}.
+Hill et al. (2007): A method for assessing quality of control
+from glucose profiles
+\emph{Diabetic Medicine} \strong{24} .753-758,
+\doi{10.1111/j.1464-5491.2007.02119.x}.
 }

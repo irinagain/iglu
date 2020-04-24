@@ -43,8 +43,7 @@ modd(example_data_5_subject, lag = 2)
 
 }
 \references{
-Rodbard (2009) Interpretation of continuous glucose monitoring data:
-glycemic variability and quality of glycemic control,
-\emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
-S55-67. \doi{10.1089/dia.2008.0132}.
+Service, Nelson (1980) Characteristics of glycemic stability.
+\emph{Diabetes care} \strong{3} .58-62,
+\doi{10.2337/diacare.3.1.58}.
 }

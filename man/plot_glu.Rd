@@ -6,10 +6,13 @@
 \usage{
 plot_glu(
   data,
-  plottype = c("tsplot", "unsorted", "rowsorted"),
+  plottype = c("tsplot", "lasagna"),
+  datatype = c("all", "average", "single"),
+  lasagnatype = c("unsorted", "timesorted"),
   lower = 70,
   upper = 140,
-  subjects = NULL
+  subjects = NULL,
+  tz = ""
 )
 }
 \arguments{
