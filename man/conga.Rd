@@ -4,12 +4,14 @@
 \alias{conga}
 \title{Calculate continuous overall net glycemic action (CONGA)}
 \usage{
-conga(data)
+conga(data, tz = "")
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values. Missing values will be linearly
 interpolated when close enough to non-missing values.}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link[base]{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 
@@ -22,13 +24,7 @@ calculation of CONGA24.
 \details{
 A dataframe structure with one column and a row for each subject.
 
-CONGA24 is currently the only supported CONGA type. CONGA24 is computed
-by taking the standard deviation of differences in measurements separated
-by 24 hours (same time of day).
-
-Wrapping as.numeric() around the conga call on a dataset with
-a single subject will return a numeric value corresponding to the CONGA
-value. This will not work for datasets with multiple subjects.
+CONGA_n is the standard deviation of the difference between glucose values that are exactly n hours apart. CONGA_{24} is currently the only supported CONGA type (n = 24), and is computed by taking the standard deviation of differences in measurements separated by 24 hours.
 }
 \examples{
 
@@ -40,8 +36,8 @@ conga(example_data_5_subject)
 
 }
 \references{
-Rodbard (2009) Interpretation of continuous glucose monitoring data:
-glycemic variability and quality of glycemic control,
-\emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
-S55-67. \doi{10.1089/dia.2008.0132}.
+McDonnell et al. (2005) : A novel approach to continuous glucose analysis
+utilizing glycemic variation
+\emph{Diabetes Technology and Therapeutics} \strong{7} .253-263,
+\doi{10.1089/dia.2005.7.253}.
 }

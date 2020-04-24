@@ -27,10 +27,10 @@
 #' score. This will not work for datasets with multiple subjects.
 #'
 #' @references
-#' Rodbard (2009) Interpretation of continuous glucose monitoring data:
-#' glycemic variability and quality of glycemic control,
-#' \emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
-#' S55-67. \doi{10.1089/dia.2008.0132}.
+#' Wojcicki (1995) "J"-index. A new proposition of the assessment
+#' of current glucose control in diabetic patients
+#' \emph{Hormone and Metabolic Research} \strong{27} .41-42,
+#' \doi{10.1055/s-2007-979906}.
 #'
 #' @examples
 #'

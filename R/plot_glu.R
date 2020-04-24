@@ -1,3 +1,23 @@
+tsplot = function(data, lower, upper, tz = ""){
+  gl = date_by_id = NULL
+  rm(list = c("gl", "date_by_id"))
+  if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
+    data$time = as.character(data$time)
+    data$time = as.POSIXct(data$time, format='%Y-%m-%d %H:%M:%S', tz = tz)
+    # Check if any NAs from conversion, this happens if wrong time format (e.g. 25:00:00) or wrong time zone which will affect daylight savings time
+    if (any(is.na(data$time))){
+      warning(paste("During time conversion,", sum(is.na(data$time)), "values were set to NA. Check the correct time zone specification."))
+    }
+  }
+  ggplot2::ggplot(data = data, ggplot2::aes(x = time, y = gl, group = id)) +
+    ggplot2::geom_line() +
+    ggplot2::scale_x_datetime(name = 'Date') +
+    ggplot2::scale_y_continuous(name = 'Blood Glucose') +
+    ggplot2::geom_hline(yintercept = lower, color = 'red') +
+    ggplot2::geom_hline(yintercept = upper, color = 'red') + ggplot2::facet_wrap(~id, scales = "free_x")
+}
+
+
 #' Plot time series and lasagna plots of glucose measurements
 #'
 #' @description
@@ -45,39 +65,29 @@
 #' plot_glu(example_data_5_subject, plottype = 'rowsorted')
 #'
 
-plot_glu <- function(data,
-                     plottype = c('tsplot', 'unsorted', 'rowsorted'),
-                     lower = 70, upper = 140, subjects = NULL){
+plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), lower = 70, upper = 140, subjects = NULL, tz = ""){
 
   plottype = match.arg(plottype)
-  if(plottype == 'tsplot'){
-    if(is.null(subjects)){
-      subject = unique(data$id)[1]
-    }
-    else {
-      subject = subjects[1]
-    }
-    tsdata = data[which(data$id == subject), ]
-    res = tsplot(tsdata, lower, upper)
+  datatype = match.arg(datatype)
+  lasagnatype = match.arg(lasagnatype)
+
+  # Only choose the selected subjects
+  if (!is.null(subjects)){
+    data = data[data$id %in% subjects, ]
   }
-  else if(plottype == 'unsorted'){
-    if(is.null(subjects)){
-      res = unsorted_lasagna(data)
-    }
-    else {
-      res = unsorted_lasagna(data[which(data$id) %in% subjects, ])
-    }
+
+  if (plottype == 'tsplot'){
+    tsplot(data, lower = lower, upper = upper, tz = tz)
+  }else if (datatype == "single"){
+      subject = unique(data$id)
+      ns = length(subject)
+      if (ns > 1){
+        subject = subject[1]
+        warning(paste("The provided data have", ns, "subjects. The plot will only be created for subject", subject))
+        data = data[which(data$id == subject)]
+      }
+    plot_lasagna_1subject(data, lasagnatype = lasagnatype, lower = lower, upper = upper, tz = tz)
+  }else{
+    plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, lower = lower, upper = upper, tz = tz)
   }
-  else if(plottype == 'rowsorted'){
-    if(is.null(subjects)){
-      res = rowsorted_lasagna(data)
-    }
-    else {
-      res = rowsorted_lasagna(data[which(data$id) %in% subjects, ])
-    }
-  }
-  else {
-    stop('Selected plotting type not supported. See ?plot_glu for available plot types.')
-  }
-  return(res)
 }

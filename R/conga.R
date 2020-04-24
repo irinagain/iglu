@@ -7,11 +7,13 @@
 #' calculation of CONGA24.
 #'
 #' @usage
-#' conga(data)
+#' conga(data, tz = "")
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
 #' or numeric vector of glucose values. Missing values will be linearly
 #' interpolated when close enough to non-missing values.
+#'
+#' @param tz A character string specifying the time zone to be used. System-specific (see \code{\link[base]{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
 #'
 #' @return
 #'
@@ -20,19 +22,14 @@
 #' @details
 #' A dataframe structure with one column and a row for each subject.
 #'
-#' CONGA24 is currently the only supported CONGA type. CONGA24 is computed
-#' by taking the standard deviation of differences in measurements separated
-#' by 24 hours (same time of day).
+#' CONGA_n is the standard deviation of the difference between glucose values that are exactly n hours apart. CONGA_{24} is currently the only supported CONGA type (n = 24), and is computed by taking the standard deviation of differences in measurements separated by 24 hours.
 #'
-#' Wrapping as.numeric() around the conga call on a dataset with
-#' a single subject will return a numeric value corresponding to the CONGA
-#' value. This will not work for datasets with multiple subjects.
 #'
 #' @references
-#' Rodbard (2009) Interpretation of continuous glucose monitoring data:
-#' glycemic variability and quality of glycemic control,
-#' \emph{Diabetes Technology and Therapeutics} \strong{11 Suppl 1},
-#' S55-67. \doi{10.1089/dia.2008.0132}.
+#' McDonnell et al. (2005) : A novel approach to continuous glucose analysis
+#' utilizing glycemic variation
+#' \emph{Diabetes Technology and Therapeutics} \strong{7} .253-263,
+#' \doi{10.1089/dia.2005.7.253}.
 #'
 #' @examples
 #'
@@ -51,28 +48,22 @@ conga <- function(data, tz = ""){
     gl_by_id_ip = data_ip[[1]]
 
     out = sd(diff(gl_by_id_ip), na.rm = T)
-    out = data.frame(out)
-    names(out) = 'conga'
     return(out)
   }
 
-  conga_multi = function(data, tz = ""){
-    subjects = unique(data$id)
-    out_mat = matrix(nrow = length(subjects), ncol = 1)
-    for(row in 1:length(subjects)){
-      data_by_id = data[data$id == subjects[row],]
-      out_mat[row, 1] = as.numeric(conga_single(data_by_id, tz = tz))
-    }
-    out = data.frame(out_mat)
-    names(out) = 'conga'
-    row.names(out) = unique(subjects)
-    return(out)
-  }
+  conga = gl = id = NULL
+  rm(list = c("conga", "gl", "id"))
+  data = check_data_columns(data)
+  is_vector = attr(data, "is_vector")
 
-  if(class(data) == 'data.frame'){
-    conga_multi(data, tz = tz)
-  } else{
-    stop("Data must be in a data.frame structure
-         with columns for 'id', 'time', and 'gl'")
+  out = data %>%
+    dplyr::filter(!is.na(gl)) %>%
+    dplyr::group_by(id) %>%
+    dplyr::summarise(
+      conga = conga_single(data.frame(id, time, gl), tz = tz)
+    )
+  if (is_vector) {
+    out$id = NULL
   }
+  return(out)
 }
