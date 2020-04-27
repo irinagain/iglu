@@ -1,11 +1,45 @@
-#' Title
+#' Calculate SD subtypes
+#'
+#' @description
+#' The function sd_measures produces SD subtype value with a row for each
+#' subject and columns corresponding to id and each SD subtype.
+#'
+#' @usage
+#' sd_measures(data,dt0 = NULL, inter_gap = 45, tz = "")
 #'
 #' @inheritParams conga
+#' @inheritParams CGMS2DayByDay
 #'
 #' @return
+#' A data.frame with subjects ordered by rows and column values
+#' corresponding to the sd subtypes
+#'
 #' @export
 #'
+#' @details
+#' A dataframe structure with a row for each subject and seven columns, one
+#' for id and one for each of the six SD subtypes:
+#' \enumerate{
+#' \item SdW- vertical within days
+#' \item SdHHMM - between time points
+#' \item SdwSH - within series
+#' \item SdDM - horizontal sd
+#' \item SdB -  between days, within timepoints
+#' \item SdBDM - between days, within timepoints, corrected for changes in daily means
+#' }
+#'
+#' @references
+#' Rodbard (2009) New and Improved Methods to Characterize Glycemic Variability
+#' Using Continuous Glucose Monitoring
+#' \emph{Diabetes Technology and Therapeutics} \strong{11} .551-565,
+#' \doi{10.1089/dia.2009.0015}.
+#'
 #' @examples
+#'
+#' data(example_data_1_subject)
+#' sd_measures(example_data_1_subject)
+#'
+
 sd_measures <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
 
   subject = unique(data$id)
