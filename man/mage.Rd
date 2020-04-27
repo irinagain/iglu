@@ -28,10 +28,6 @@ MAGE is calculated by taking the mean of absolute differences (between
 each value and the mean) that are greater than the standard deviation.
 A multiplier can be added to the standard deviation by the sd_multiplier
 argument.
-
-Wrapping as.numeric() around the mage call on a dataset with
-a single subject will return a numeric value corresponding to the MAGE value.
-This will not work for datasets with multiple subjects.
 }
 \examples{
 
