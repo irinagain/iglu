@@ -13,7 +13,7 @@ values in calculation of Hyperglycemic Index.}
 
 \item{ULTR}{Upper Limit of Target Range, default value is 140 mg/dL.}
 
-\item{a}{Exponent, generally in the range from 1.0 to 2.0, efault value is 1.1.}
+\item{a}{Exponent, generally in the range from 1.0 to 2.0, default value is 1.1.}
 
 \item{c}{Scaling factor,to display Hyperglycemia Index, Hypoglycemia Index, and IGC on approximately the same numerical range as measurements of HBGI, LBGI and GRADE, default value is 30.}
 }
