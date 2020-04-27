@@ -15,7 +15,8 @@
 #' A dataframe structure with one column and a row for each subject.
 #'
 #' IGC is calculated by taking the sum of the Hyperglycemia
-#' Index and the Hypoglycemia index. See hypo_index and hyper_index.
+#' Index and the Hypoglycemia index. See \code{\link{hypo_index}} and
+#' \code{\link{hyper_index}}.
 #'
 #' @return
 #'

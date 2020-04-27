@@ -13,7 +13,7 @@ igc(data, LLTR = 80, ULTR = 140, a = 1.1, b = 2, c = 30, d = 30)
 
 \item{ULTR}{Upper Limit of Target Range, default value is 140 mg/dL.}
 
-\item{a}{Exponent, generally in the range from 1.0 to 2.0, efault value is 1.1.}
+\item{a}{Exponent, generally in the range from 1.0 to 2.0, default value is 1.1.}
 
 \item{b}{Exponent, generally in the range from 1.0 to 2.0, default value is 2.}
 
@@ -32,7 +32,8 @@ form with one column and one row per subject.
 A dataframe structure with one column and a row for each subject.
 
 IGC is calculated by taking the sum of the Hyperglycemia
-Index and the Hypoglycemia index. See hypo_index and hyper_index.
+Index and the Hypoglycemia index. See \code{\link{hypo_index}} and
+\code{\link{hyper_index}}.
 }
 \examples{
 data(example_data_1_subject)
