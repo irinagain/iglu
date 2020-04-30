@@ -1,8 +1,9 @@
 #' Calculate SD subtypes
 #'
 #' @description
-#' The function sd_measures produces SD subtype value with a row for each
-#' subject and columns corresponding to id and each SD subtype.
+#' The function sd_measures produces SD subtype values in a tibble object
+#' with a row for each subject and columns corresponding to id followed by
+#' each SD subtype.
 #'
 #' @usage
 #' sd_measures(data,dt0 = NULL, inter_gap = 45, tz = "")
@@ -11,14 +12,16 @@
 #' @inheritParams CGMS2DayByDay
 #'
 #' @return
-#' A data.frame with subjects ordered by rows and column values
-#' corresponding to the sd subtypes
+#' A tibble object with a column for id and a column for each of the six SD subtypes.
 #'
 #' @export
 #'
 #' @details
-#' A dataframe structure with a row for each subject and seven columns, one
-#' for id and one for each of the six SD subtypes:
+#' A tibble object with 1 row for each subject, a column for subject id and
+#' a column for each SD subtype values is returned.
+#'
+#' Missing values will be linearly interpolated when close enough to non-missing values.
+#'
 #' \enumerate{
 #' \item SdW- vertical within days
 #' \item SdHHMM - between time points

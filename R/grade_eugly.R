@@ -1,26 +1,27 @@
 #' Percentage of GRADE score attributable to target range
 #'
 #' @description
-#' The function grade_eugly produces \%GRADE euglycemia values in data.frame form
-#' with one column and one row per subject.
+#' The function grade_eugly produces \%GRADE euglycemia values in a tibble object.
 #'
 #' @usage
 #' grade_eugly(data, lower = 70, upper = 140)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values. NA's will be omitted from the glucose
-#' values in calculation of \%GRADE euglycemia.
+#' or numeric vector of glucose values.
+#'
+#' @return If a data.frame object is passed, then a tibble object with
+#' two columns: subject id and corresponding \%GRADE euglycemia value is returned. If a vector of glucose
+#' values is passed, then a tibble object with just the \%GRADE euglycemia value is returned.
+#' as.numeric() can be wrapped around the latter to ouput just a numeric value.
 #'
 #' @details
-#' A dataframe structure with one column and a row for each subject.
+#' A tibble object with 1 row for each subject, a column for subject id and
+#' a column for \%GRADE euglycemia values is returned. NA glucose values are
+#' omitted from the calculation of the \%GRADE euglycemia values.
 #'
 #' \%GRADE euglycemia is determined by calculating the percentage of GRADE score (see grade
 #' function) attributed to values in the target range, i.e. values not below
 #' hypoglycemic or above hyperglycemic cutoffs.
-#'
-#' Wrapping as.numeric() around the grade_eugly call on a dataset with
-#' a single subject will return a numeric value corresponding to the \%GRADE
-#' euglycemia value. This will not work for datasets with multiple subjects.
 #'
 #' @param lower Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 70
 #' @param upper Upper bound used for hyperglycemia cutoff, in mg/dL. Default is 140.

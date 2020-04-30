@@ -8,33 +8,30 @@ below_percent(data, targets_below = c(50, 80))
 }
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl"),
-or vector of glucose values as integer, numeric, or double. NA's will be
-omitted from the glucose values in calculation of percent.}
+or numeric vector of glucose values.}
 
 \item{targets_below}{Numeric vector of glucose thresholds. Glucose values from
 data argument will be compared to each value in the targets_below vector.
 Default list is (50, 80).}
 }
 \value{
-
+If a data.frame object is passed, then a tibble object with
+a column for subject id and then a column for each target value is returned. If a vector of glucose
+values is passed, then a tibble object without the subject id is returned.
+as.numeric() can be wrapped around the latter to ouput a numeric vector.
 }
 \description{
 #' @description
-The function above_percent produces a dataframe of values equal to
-the percentage of glucose measurements below target values. The output is in
-data.frame form by default, where the columns correspond to the target
-values and the output rows correspond to the subjects. The values will be
-between 0 (no measurements) and 100 (all measurements).
+The function below_percent produces a tibble object with values equal to
+the percentage of glucose measurements below target values. The output columns
+correspond to the subject id followed by the target values and the output rows
+correspond to the subjects. The values will be between 0 (no measurements)
+and 100 (all measurements).
 }
 \details{
-A dataframe structure with 1 row for each subject and a
-column for each target value is returned.
-
-Wrapping as.numeric() around the below_percent call on a dataset with
-a single subject will return a numeric vector, where the values
-correspond to the percent of glucose values below each threshold
-in the order passed in the targets_below argument. This will not work for
-datasets with multiple subjects.
+A tibble object with 1 row for each subject, a column for subject id and
+column for each target value is returned. NA's will be omitted from the glucose
+values in calculation of percent.
 }
 \examples{
 
@@ -42,8 +39,6 @@ data(example_data_1_subject)
 
 below_percent(example_data_1_subject)
 below_percent(example_data_1_subject, targets_below = c(50, 100, 180))
-
-as.numeric(below_percent(example_data_1_subject))
 
 data(example_data_5_subject)
 

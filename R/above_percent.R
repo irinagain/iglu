@@ -1,11 +1,11 @@
 #' Calculate percentage of values above target thresholds
 #'
 #' @description
-#' The function above_percent produces a dataframe of values equal to
-#' the percentage of glucose measurements above target values. The output is in
-#' data.frame form by default, where the columns correspond to the target
-#' values and the output rows correspond to the subjects. The values will be
-#' between 0 (no measurements) and 100 (all measurements).
+#' The function above_percent produces a tibble object with values equal to
+#' the percentage of glucose measurements above target values. The output columns
+#' correspond to the subject id followed by the target values and the
+#' output rows correspond to the subjects. The values will be between 0
+#' (no measurements) and 100 (all measurements).
 #'
 #' @usage
 #' above_percent(data, targets_above = c(140, 180, 200, 250))
@@ -16,17 +16,14 @@
 #' Default list is (140, 180, 200, 250).
 #'
 #' @details
-#' A dataframe structure with 1 row for each subject and a
-#' column for each target value is returned.
+#' A tibble object with 1 row for each subject, a column for subject id and
+#' column for each target value is returned. NA's will be omitted from the glucose
+#' values in calculation of percent.
 #'
-#' Wrapping as.numeric() around the above_percent call on a dataset with
-#' a single subject will return a numeric vector, where the values
-#' correspond to the percent of glucose values above each threshold
-#' in the order passed in the targets_above argument. This will not work for
-#' datasets with multiple subjects.
-#'
-#' @return A data.frame with columns of the percentage of values above a
-#' threshold
+#' @return If a data.frame object is passed, then a tibble object with
+#' a column for subject id and then a column for each target value is returned. If a vector of glucose
+#' values is passed, then a tibble object without the subject id is returned.
+#' as.numeric() can be wrapped around the latter to ouput a numeric vector.
 #'
 #' @export
 #'
@@ -41,11 +38,7 @@
 #' data(example_data_1_subject)
 #'
 #' above_percent(example_data_1_subject)
-#' above_percent(example_data_1_subject$gl)
 #' above_percent(example_data_1_subject, targets_above = c(100, 150, 180))
-#'
-#' # output numeric vector instead of dataframe
-#' above_percent(example_data_1_subject)
 #'
 #' data(example_data_5_subject)
 #'

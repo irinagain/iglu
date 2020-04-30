@@ -1,25 +1,23 @@
 #' Calculate glucose level range
 #'
 #' @description The function range_glu outputs the distance between minimum
-#' and maximum glucose values per subject. The output is in a data.frame form
-#' by default, with one column and a row corresponding to each subject.
+#' and maximum glucose values per subject in a tibble object.
 #'
 #' @usage
 #' range_glu(data)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values. NA's will be omitted from the glucose
-#' values in calculation of the range.
+#' or numeric vector of glucose values.
 #'
 #' @details
-#' A dataframe structure with 1 row for each subject and 1 column
-#' for the range value is returned.
+#' A tibble object with 1 row for each subject, a column for subject id and
+#' a column for the range values is returned. NA glucose values are
+#' omitted from the calculation of the range.
 #'
-#' Wrapping as.numeric() around the range_glu call on a dataset with
-#' a single subject will return a numeric value corresponding to the range.
-#' This will not work for datasets with multiple subjects.
-#'
-#' @return
+#' @return If a data.frame object is passed, then a tibble object with
+#' two columns: subject id and corresponding range value is returned. If a vector of glucose
+#' values is passed, then a tibble object with just the range value is returned.
+#' as.numeric() can be wrapped around the latter to ouput just a numeric value.
 #'
 #' @export
 #'

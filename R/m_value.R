@@ -2,7 +2,8 @@
 #'
 #' @description Calculates the M-value of Schlichtkrull et al. (1965) for
 #' each subject in the data, where the M-value is the mean of the logarithmic
-#' transformation of the deviation from a reference value.
+#' transformation of the deviation from a reference value. Produces a tibble
+#' object with subject id and M-values.
 #'
 #' @usage
 #' m_value(data)
@@ -11,11 +12,19 @@
 #' @param r A reference value corresponding to basal glycemia in normal
 #' subjects; default is 90 mg/dL.
 #'
-#' @return A data.frame with two columns: subject id and corresponding M value.
+#' @return If a data.frame object is passed, then a tibble object with
+#' two columns: subject id and corresponding M-value is returned. If a vector of glucose
+#' values is passed, then a tibble object with just the M-value is returned.
+#' as.numeric() can be wrapped around the latter to ouput just a numeric value.
 #'
 #' @export
 #'
-#' @details M-value is computed by averaging the transformed gluvose values, where each
+#' @details
+#' A tibble object with 1 row for each subject, a column for subject id and
+#' a column for the M-values is returned. NA glucose values are
+#' omitted from the calculation of the M-value.
+#'
+#' M-value is computed by averaging the transformed gluvose values, where each
 #' transformed value is equal to \eqn{|1000 * log_10(glucose/100)|^3}
 #'
 #' @references

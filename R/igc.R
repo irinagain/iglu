@@ -1,24 +1,27 @@
 #' Calculate Index of Glycemic Control
 #'
 #' @description
-#' The function igc produces IGC values in data.frame
-#' form with one column and one row per subject.
+#' The function igc produces IGC values in a tibble object.
 #'
 #' @usage
 #' igc(data, LLTR = 80, ULTR = 140, a = 1.1, b = 2, c = 30, d = 30)
 #'
-#' @inheritParams mean_glu
+#' @param data DataFrame object with column names "id", "time", and "gl".
+#' Currently cannot support glucose vectors, but the sum of hypo_index
+#' and hyper_index for that glucose vector can be used instead.
+#'
 #' @inheritParams hyper_index
 #' @inheritParams hypo_index
 #'
 #' @details
-#' A dataframe structure with one column and a row for each subject.
+#' A tibble object with 1 row for each subject, a column for subject id and
+#' a column for the IGC values is returned.
 #'
 #' IGC is calculated by taking the sum of the Hyperglycemia
 #' Index and the Hypoglycemia index. See \code{\link{hypo_index}} and
 #' \code{\link{hyper_index}}.
 #'
-#' @return
+#' @return A tibble object with two columns: subject id and corresponding IGC value.
 #'
 #' @export
 #'
