@@ -23,12 +23,45 @@
 #' Missing values will be linearly interpolated when close enough to non-missing values.
 #'
 #' \enumerate{
-#' \item SdW- vertical within days
-#' \item SdHHMM - between time points
-#' \item SdwSH - within series
-#' \item SdDM - horizontal sd
-#' \item SdB -  between days, within timepoints
-#' \item SdBDM - between days, within timepoints, corrected for changes in daily means
+#'
+#' \item SdW- vertical within days:
+#'
+#' Calculated by first taking the standard deviation of each day's glucose measurements,
+#' then taking the mean of all the standard deviations. That is, for d
+#' days we compute SD_1 ... SD_d daily standard deviations and calculate
+#' \eqn{1/d * \sum [(SD_i)]}
+#'
+#' \item SdHHMM - between time points:
+#'
+#' Calculated by taking the mean glucose values at each time point in the grid across days,
+#' and taking the standard deviation of those mans. That is, for t time points
+#' we compute X_t means for each time point and then compute SD([X_1, X_2, ... X_t]).
+#'
+#' \item SdwSH - within series:
+#'
+#' Calculated by taking the hour-long intervals starting at every point in the interpolated
+#' grid, computing the standard deviation of the points in each hour-long interval, and then
+#' finding the mean of those standard deviations. That is, for n time points compute
+#' SD_1 ... SD_n, where SD_i is the standard deviation of the set [SD_i, SD_i+2, ... SD_k-1]
+#' where SD_k is the first measurement more than an hour later than SD_1. Then, take
+#' \eqn{1/n * \sum [(SD_i)]}.
+#'
+#' \item SdDM - horizontal sd:
+#'
+#' Calcualted by taking the daily mean glucose values, and then taking the standard deviation
+#' of those daily means. That is, for d days we take X_1 ... X_d daily means, and then compute
+#' SD([X_1, X_2, ... X_d]).
+#'
+#' \item SdB -  between days, within timepoints:
+#'
+#' Calculated by taking the standard deviation of the glucose values across days for each time point,
+#' and then taking the mean of those standard deviations.
+#' That is, for t time points take SD_1 ... SD_t standard deviations, and then compute
+#' \eqn{1/t * \sum[(SD_i)]}
+#'
+#' \item SdBDM - between days, within timepoints, corrected for changes in daily means:
+#'
+#'
 #' }
 #'
 #' @references
