@@ -42,6 +42,8 @@
 #'
 
 igc <- function(data, LLTR = 80, ULTR = 140, a = 1.1, b = 2, c = 30, d = 30){
+  data <- check_data_columns(data)
+  is_vector <- attr(data, "is_vector")
 
   out_hyper <- hyper_index(data, ULTR = ULTR, a = a, c = c)
   out_hypo <- hypo_index(data, LLTR = LLTR, b = b, d = d)
