@@ -117,7 +117,8 @@ sd_measures <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
 
       # SdBDM - between days, within timepoints, corrected for changes in daily means
       med = matrix(rep(meanR, each = ncol(gd2d)), ncol = ncol(gd2d), byrow = T)
-      out$SdBDM = mean(apply(sqrt((gd2d - med)^2), 1, mean, na.rm = T), na.rm = T)
+      # out$SdBDM = mean(apply(sqrt((gd2d - med)^2), 1, mean, na.rm = T), na.rm = T)
+      out$SdBDM = mean(apply(gd2d - med, 2, sd, na.rm = T), na.rm = T)
 
       out
     })
