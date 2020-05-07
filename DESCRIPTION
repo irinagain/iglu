@@ -4,10 +4,13 @@ Title: Interpreting Glucose Data
 Version: 0.1.1
 Authors@R: c(person("Steve", "Broll",
             email = "stevebroll@tamu.edu",
-            role = c("aut", "cre")),
-             person("Irina", "Gaynanova",
-             email = "irinag@stat.tamu.edu",
-             role = "aut"))
+            role = c("aut")),
+            person("Jacek", "Urbanek",
+            role = c("aut")),
+            person("David", "Buchanan",
+            role = c("aut")),
+            person("Irina", "Gaynanova",
+            email = "irinag@stat.tamu.edu",role = c("aut", "cre")))
 Description: Reads and analyzes data from continuous
     glucose monitors. Functions return metrics and relevant plots with a single
     line of code.
