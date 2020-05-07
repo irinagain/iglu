@@ -5,12 +5,13 @@
 #' The function modd produces MODD values in a tibble object.
 #'
 #' @usage
-#' modd(data, lag = 1)
+#' modd(data, lag = 1, tz = "")
 #'
 #'
-#' @param data DataFrame object with column names "id", "time", and "gl".
+#' @inheritParams conga
 #'
 #' @param lag Integer indicating which lag (# days) to use. Default is 1.
+#'
 #'
 #' @return A tibble object with two columns: subject id and corresponding MODD value.
 #'

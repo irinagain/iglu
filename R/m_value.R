@@ -6,7 +6,7 @@
 #' object with subject id and M-values.
 #'
 #' @usage
-#' m_value(data)
+#' m_value(data, r = 90)
 #'
 #' @inheritParams mean_glu
 #' @param r A reference value corresponding to basal glycemia in normal

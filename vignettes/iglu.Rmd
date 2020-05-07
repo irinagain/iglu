@@ -125,25 +125,28 @@ The iglu package currently supports 3 plot types:
 
 The time series plot can be used on a single subject or multiple subjects, but, in the case of multiple subjects, only the first will be used.
 ```{r}
-plot_glu(example_data_1_subject, plottype = 'tsplot')
-plot_glu(example_data_5_subject, plottype = 'tsplot')
+plot_glu(example_data_1_subject, plottype = 'tsplot', tz = "EST")
+plot_glu(example_data_5_subject, plottype = 'tsplot', tz = "EST")
 ```
 However, the 'subjects' parameter can be used to select a desired subject.
 
 ```{r}
-plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3')
+plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', tz = "EST")
 ```
 The red lines can be shifted to any hypo- and hyperglycemia cutoffs with the 'lower' and 'upper' arguments.
 
 ```{r}
-plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', lower = 80, upper = 150)
+plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', lower = 80, upper = 150, tz = "EST")
 ```
 
-The unsorted and row sorted lasagna plots are identical in their usage, other than changing the `plottype` parameter.
+
+Need to add more
+
+The unsorted and row sorted lasagna plots are identical in their usage, other than changing the `lasagnatype` parameter.
 
 ```{r}
-plot_glu(example_data_5_subject, plottype = 'unsorted')
-plot_glu(example_data_5_subject, plottype = 'rowsorted')
+plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = "single", lasagnatype = "unsorted")
+plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = "single", lasagnatype = "timesorted")
 ```
 
 The 'unsorted' lasagna plot compares the 5 subjects' blood glucose measurements, matching their values in the order the measurements were taken in.  

@@ -4,7 +4,7 @@
 \alias{hyper_index}
 \title{Calculate Hyperglycemia Index}
 \usage{
-hyper_index(data, ULTR = 140)
+hyper_index(data, ULTR = 140, a = 1.1, c = 30)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",

@@ -4,7 +4,7 @@
 \alias{hypo_index}
 \title{Calculate Hypoglycemia Index}
 \usage{
-hypo_index(data, LLTR = 70)
+hypo_index(data, LLTR = 70, b = 2, d = 30)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",

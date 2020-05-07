@@ -5,12 +5,14 @@
 \title{Calculate mean difference between glucose values obtained at the same time
 of day (MODD)}
 \usage{
-modd(data, lag = 1)
+modd(data, lag = 1, tz = "")
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
 
 \item{lag}{Integer indicating which lag (# days) to use. Default is 1.}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link[base]{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 A tibble object with two columns: subject id and corresponding MODD value.

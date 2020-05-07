@@ -4,7 +4,7 @@
 #' The function hyper_index produces Hyperglycemia Index values in a tibble object.
 #'
 #' @usage
-#' hyper_index(data, ULTR = 140)
+#' hyper_index(data, ULTR = 140, a = 1.1, c = 30)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
 #' or numeric vector of glucose values.

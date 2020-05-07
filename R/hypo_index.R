@@ -4,7 +4,7 @@
 #' The function hypo_index produces Hypoglycemia index values in a tibble object.
 #'
 #' @usage
-#' hypo_index(data, LLTR = 70)
+#' hypo_index(data, LLTR = 70, b = 2, d = 30)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
 #' or numeric vector of glucose values.
