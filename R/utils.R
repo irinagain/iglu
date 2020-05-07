@@ -98,9 +98,13 @@ CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
   timeindex = 2:length(tr)
   timediff = difftime(tr[timeindex], tr[timeindex - 1], units = "mins")
 
-  ### Check for time soring
+  ### Check for time sorting
   if (min(timediff) < 0){
-    stop(paste("The times for subject", unique(data$id), "are not in increasing order!"))
+    warning(paste("The times for subject", unique(data$id), "are not in increasing order! The times will be sorted automatically."))
+    index = order(tr)
+    tr = tr[index]
+    g = g[index]
+    timediff = difftime(tr[timeindex], tr[timeindex - 1], units = "mins")
   }
 
   ### Automatically identify grid width dt0
