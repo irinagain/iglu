@@ -105,11 +105,12 @@ sd_measures <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
       # SdHHMM - between time points
       out$SdHHMM = sd(apply(gd2d, 2, mean, na.rm = T), na.rm = T)
       # SdWSH - Within series - for 1 hour window
-      win = round(60/dt0)
+      win = round(60/dt0) # how many measurements are within 1 hour
       gs = as.vector(t(gd2d))
-      N = length(gs)
-      ind = rep(1:ceiling(N/win), each = win)[1:N]
-      out$SdWSH = mean(tapply(gs, ind, sd, na.rm = T), na.rm = T)
+      #N = length(gs) # total # of measurements
+      #ind = rep(1:ceiling(N/win), each = win)[1:N] # consecutive indexing
+      #out$SdWSH = mean(tapply(gs, ind, sd, na.rm = T), na.rm = T)
+      out$SdWSH = mean(caTools::runsd(gs, k = win, endrule = "trim"), na.rm = T)
 
       # SdDM - "Horizontal" sd
       meanR = apply(gd2d, 1, mean, na.rm = T)
