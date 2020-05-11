@@ -31,9 +31,7 @@ Installation
 ------------
 
 ```{r, eval = FALSE}
-# Plain installation with dependency 
-
-devtools::install_github('swihart/lasagnar') # for lasagna plots (multi subject)
+# Plain installation
 devtools::install_github("stevebroll/iglu") # iglu package
 
 
