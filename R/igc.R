@@ -42,6 +42,9 @@
 #'
 
 igc <- function(data, LLTR = 80, ULTR = 140, a = 1.1, b = 2, c = 30, d = 30){
+  id = igc = NULL
+  rm(list = c("id", "igc"))
+
   data <- check_data_columns(data)
   is_vector <- attr(data, "is_vector")
 

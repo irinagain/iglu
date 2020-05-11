@@ -1,6 +1,6 @@
 tsplot = function(data, lower, upper, tz = ""){
-  gl = date_by_id = NULL
-  rm(list = c("gl", "date_by_id"))
+  gl = date_by_id = id = NULL
+  rm(list = c("gl", "date_by_id", "id"))
   if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
     data$time = as.character(data$time)
     data$time = as.POSIXct(data$time, format='%Y-%m-%d %H:%M:%S', tz = tz)
@@ -70,6 +70,9 @@ plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all"
   plottype = match.arg(plottype)
   datatype = match.arg(datatype)
   lasagnatype = match.arg(lasagnatype)
+
+  id = NULL
+  rm(list = c("id"))
 
   # Only choose the selected subjects
   if (!is.null(subjects)){

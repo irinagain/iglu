@@ -73,6 +73,9 @@ CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
   ns = length(unique(data$id))
 
   if (ns > 1){
+    id = NULL
+    rm(list = c("id"))
+
     first = unique(data$id)[1]
     data = data %>% dplyr::filter(id == first)
     warning(paste("Data contains more than 1 subject. Only the first subject with id", first,  "is used for output."))

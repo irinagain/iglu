@@ -49,6 +49,9 @@ modd <- function(data, lag = 1, tz = ""){
     return(out)
   }
 
+  id = modd = NULL
+  rm(list = c("id", "modd"))
+
   data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
   out = data %>%

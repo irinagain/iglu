@@ -18,6 +18,9 @@
 #'
 plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'), limits = c(50, 500), midpoint = 105, lower = 70, upper = 140, dt0 = NULL, inter_gap = 60, tz = ""){
 
+  id = glucose = day = NULL
+  rm(list = c("id", "glucose", "day"))
+
   subject = unique(data$id)
   ns = length(subject)
   if (ns > 1){
@@ -76,6 +79,8 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
   lasagnatype = match.arg(lasagnatype)
   datatype = match.arg(datatype)
 
+  id = glucose = day = NULL
+  rm(list = c("id", "glucose", "day"))
 
   subject = unique(data$id)
   ns = length(subject)

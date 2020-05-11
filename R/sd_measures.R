@@ -78,6 +78,9 @@
 
 sd_measures <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
 
+  id = NULL
+  rm(list = c("id"))
+
   subject = unique(data$id)
   ns = length(subject)
 
