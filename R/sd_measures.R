@@ -60,6 +60,13 @@
 #' \eqn{1/t * \sum[(SD_i)]}
 #'
 #' \item SdBDM - between days, within timepoints, corrected for changes in daily means:
+#' Calculated by subtracting the daily mean from each glucose value, then taking the standard deviation
+#' of the corrected glucose values across days for each time point, and then taking the mean of those
+#' standard deviations.
+#' That is, for t time points take SD_1 ... SD_t standard deviations, and then compute
+#' \eqn{1/t * \sum[(SD_i)]}. where SD_i is the standard deviation of d daily values at the
+#' 1st time point, where each value is the dth measurement for the ith time point subtracted by
+#' the mean of all glucose values for day d.
 #'
 #'
 #' }
