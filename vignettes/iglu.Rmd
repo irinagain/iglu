@@ -51,9 +51,11 @@ str(example_data_1_subject)
 head(example_data_1_subject)
 ```
 
-Observe that the timestamps in the first rows are not evenly spaced. Linear interpolation is used where appropriate for computation of metrics that require a time component. Time intervals within large gaps between variables will not be interpolated, but instead will be treated as missing values.
+Observe that the timestamps in the first rows are not evenly spaced. Linear interpolation is used where appropriate for computation of metrics that require a time component with equally spaced measurements. Time intervals within large gaps between variables will not be interpolated, but instead will be treated as missing values. 
 
 ## Calculating Metrics
+
+All metric functions in iglu will produce the output in a tibble form. See documentation on tibbles with vignette('tibble') or ?`tbl_df-class` .
 
 Some metric functions, like `above_percent()`, will return multiple values for a single subject. 
 
