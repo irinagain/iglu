@@ -7,9 +7,8 @@
 igc(data, LLTR = 80, ULTR = 140, a = 1.1, b = 2, c = 30, d = 30)
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl".
-Currently cannot support glucose vectors, but the sum of hypo_index
-and hyper_index for that glucose vector can be used instead.}
+\item{data}{DataFrame object with column names "id", "time", and "gl",
+or numeric vector of glucose values.}
 
 \item{LLTR}{Lower Limit of Target Range, default value is 80 mg/dL.}
 
