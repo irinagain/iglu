@@ -63,14 +63,15 @@ Some metric functions, like `above_percent()`, will return multiple values for a
 above_percent(example_data_1_subject)
 ```
 
-Subject id will always be printed as a row name by default, and metrics will be printed as column name. The list of target values for the above_percent metric is a parameter that can be changed:
+Subject id will always be printed in the id column, and metrics will be printed in the following columns. The list of target values for the above_percent metric is a parameter that can be changed:
 
 ```{r}
 above_percent(example_data_1_subject, targets = c(100, 200, 300))
 ```
 
 Many metrics have parameters that can be changed. To see available parameters for a given metric, see the documentation i.e. ?above_percent or help(above_percent).  
-Some metric functions, like `conga()` (Continuous Overlapping Net Glycemic Action), will return just a single value for each subject.
+Some metric functions, like `conga()` (Continuous Overlapping Net Glycemic Action), will return just a single value for each subject,
+resulting in a 2 column tibble (1 column for id and 1 for the single value).
 
 ```{r}
 conga(example_data_1_subject)
@@ -94,7 +95,7 @@ Example data for multiple subjects can be loaded with:
 data("example_data_5_subject")
 ```
   
-This dataset contains the same 3 columns as the single subject case, but now with 13866 observations from 5 subjects.
+This dataset contains the same 3 columns as the dataset in the single subject case, but now with 13866 observations from 5 subjects.
 
 ```{r}
 dim(example_data_5_subject)
@@ -103,13 +104,13 @@ str(example_data_5_subject)
 
 ## Calculating Metrics
 
-Some metric functions, like `quantile_glu()`, will return multiple values for each subject, producing a dataframe with >1 columns and >1 rows. 
+Some metric functions, like `quantile_glu()`, will return multiple values for each subject, producing a dataframe with >2 columns and >1 rows. 
 
 ```{r}
 quantile_glu(example_data_5_subject)
 ```
 
-Other metric functions, like `MAGE()` (Mean Amplitude of Glycemic Excursions), will return just a single value for each subject, producing a 1 column dataframe with a row for each subject.
+Other metric functions, like `MAGE()` (Mean Amplitude of Glycemic Excursions), will return just a single value for each subject, producing a 2 column dataframe with a row for each subject.
 
 ```{r}
 mage(example_data_5_subject)
