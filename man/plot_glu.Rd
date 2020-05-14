@@ -9,8 +9,8 @@ plot_glu(
   plottype = c("tsplot", "lasagna"),
   datatype = c("all", "average", "single"),
   lasagnatype = c("unsorted", "timesorted"),
-  lower = 70,
-  upper = 140,
+  LLTR = 80,
+  ULTR = 140,
   subjects = NULL,
   tz = ""
 )
@@ -23,12 +23,20 @@ options are 'tsplot' for a 1 subject time series line plot, 'unsorted'
 for an unsorted multi-subject lasagna plot, and 'rowsorted' for a
 row-sorted lasagna plot.}
 
-\item{lower}{Numeric value for hypoglycemia cutoff}
+\item{datatype}{String corresponding to data aggregation used for plotting, currently supported
+options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject}
 
-\item{upper}{Numeric value for hyperglycemia cutoff}
+\item{lasagnatype}{String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, and 'timesorted' for a
+lasgna plot with glucose values sorted for each time point across subjects}
+
+\item{LLTR}{Lower Limit of Target Range, default value is 80 mg/dL.}
+
+\item{ULTR}{Upper Limit of Target Range, default value is 140 mg/dL.}
 
 \item{subjects}{String or list of strings corresponding to subject names
 in 'id' column of data.}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link[base]{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 Any output from the plot object
@@ -52,11 +60,12 @@ be used.
 
 data(example_data_1_subject)
 plot_glu(example_data_1_subject)
-plot_glu(example_data_1_subject, lower = 80)
+plot_glu(example_data_1_subject, LLTR = 70)
 
 data(example_data_5_subject)
 plot_glu(example_data_5_subject, subjects = 'Subject 2')
-plot_glu(example_data_5_subject, plottype = 'unsorted')
-plot_glu(example_data_5_subject, plottype = 'rowsorted')
+plot_glu(example_data_5_subject, plottype = 'tsplot', tz = 'EST', LLTR = 70, ULTR= 150)
+plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'timesorted')
+plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'unsorted')
 
 }

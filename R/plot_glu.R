@@ -25,7 +25,7 @@ tsplot = function(data, LLTR, ULTR, tz = ""){
 #' subject data.
 #'
 #' @param data DataFrame with column names ("id", "time", and "gl").
-#'
+#' @inheritParams plot_lasagna
 #' @param plottype String corresponding to plot type, currently supported
 #' options are 'tsplot' for a 1 subject time series line plot, 'unsorted'
 #' for an unsorted multi-subject lasagna plot, and 'rowsorted' for a
@@ -60,8 +60,9 @@ tsplot = function(data, LLTR, ULTR, tz = ""){
 #'
 #' data(example_data_5_subject)
 #' plot_glu(example_data_5_subject, subjects = 'Subject 2')
-#' plot_glu(example_data_5_subject, plottype = 'unsorted')
-#' plot_glu(example_data_5_subject, plottype = 'rowsorted')
+#' plot_glu(example_data_5_subject, plottype = 'tsplot', tz = 'EST', LLTR = 70, ULTR= 150)
+#' plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'timesorted')
+#' plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'unsorted')
 #'
 
 plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 80, ULTR = 140, subjects = NULL, tz = ""){
