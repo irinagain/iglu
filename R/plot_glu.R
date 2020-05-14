@@ -1,4 +1,4 @@
-tsplot = function(data, lower, upper, tz = ""){
+tsplot = function(data, LLTR, ULTR, tz = ""){
   gl = date_by_id = id = NULL
   rm(list = c("gl", "date_by_id", "id"))
   if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
@@ -13,8 +13,8 @@ tsplot = function(data, lower, upper, tz = ""){
     ggplot2::geom_line() +
     ggplot2::scale_x_datetime(name = 'Date') +
     ggplot2::scale_y_continuous(name = 'Blood Glucose') +
-    ggplot2::geom_hline(yintercept = lower, color = 'red') +
-    ggplot2::geom_hline(yintercept = upper, color = 'red') + ggplot2::facet_wrap(~id, scales = "free_x")
+    ggplot2::geom_hline(yintercept = LLTR, color = 'red') +
+    ggplot2::geom_hline(yintercept = ULTR, color = 'red') + ggplot2::facet_wrap(~id, scales = "free_x")
 }
 
 
@@ -31,9 +31,8 @@ tsplot = function(data, lower, upper, tz = ""){
 #' for an unsorted multi-subject lasagna plot, and 'rowsorted' for a
 #' row-sorted lasagna plot.
 #'
-#' @param lower Numeric value for hypoglycemia cutoff
-#'
-#' @param upper Numeric value for hyperglycemia cutoff
+#' @param LLTR Lower Limit of Target Range, default value is 80 mg/dL.
+#' @param ULTR Upper Limit of Target Range, default value is 140 mg/dL.
 #'
 #' @param subjects String or list of strings corresponding to subject names
 #' in 'id' column of data.
@@ -57,7 +56,7 @@ tsplot = function(data, lower, upper, tz = ""){
 #'
 #' data(example_data_1_subject)
 #' plot_glu(example_data_1_subject)
-#' plot_glu(example_data_1_subject, lower = 80)
+#' plot_glu(example_data_1_subject, LLTR = 70)
 #'
 #' data(example_data_5_subject)
 #' plot_glu(example_data_5_subject, subjects = 'Subject 2')
@@ -65,7 +64,7 @@ tsplot = function(data, lower, upper, tz = ""){
 #' plot_glu(example_data_5_subject, plottype = 'rowsorted')
 #'
 
-plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), lower = 70, upper = 140, subjects = NULL, tz = ""){
+plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 80, ULTR = 140, subjects = NULL, tz = ""){
 
   plottype = match.arg(plottype)
   datatype = match.arg(datatype)
@@ -80,7 +79,7 @@ plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all"
   }
 
   if (plottype == 'tsplot'){
-    tsplot(data, lower = lower, upper = upper, tz = tz)
+    tsplot(data, LLTR = LLTR, ULTR = ULTR, tz = tz)
   }else if (datatype == "single"){
       subject = unique(data$id)
       ns = length(subject)
@@ -89,8 +88,8 @@ plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all"
         warning(paste("The provided data have", ns, "subjects. The plot will only be created for subject", subject))
         data = data[which(data$id == subject)]
       }
-    plot_lasagna_1subject(data, lasagnatype = lasagnatype, lower = lower, upper = upper, tz = tz)
+    plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz)
   }else{
-    plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, lower = lower, upper = upper, tz = tz)
+    plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz)
   }
 }
