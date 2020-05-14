@@ -134,8 +134,9 @@ sd_measures <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
       out
     })
 
-  results = tibble(dplyr::bind_rows(results) %>%
-    dplyr::mutate(id = unique(data$id)))
+    results = dplyr::bind_rows(results)
+    results$id = unique(data$id)
+    results = dplyr::as_tibble(results)
 
   return(results)
 }
