@@ -34,7 +34,6 @@ Installation
 # Plain installation
 devtools::install_github("stevebroll/iglu") # iglu package
 
-
 # For installation with vignette
 devtools::install_github("stevebroll/iglu", build_vignettes = TRUE)
 ```
