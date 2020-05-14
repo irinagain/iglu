@@ -139,7 +139,7 @@ plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', tz
 The red lines can be shifted to any hypo- and hyperglycemia cutoffs with the 'lower' and 'upper' arguments.
 
 ```{r}
-plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', lower = 80, upper = 150, tz = "EST")
+plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', LLTR = 80, ULTR = 150, tz = "EST")
 ```
 
 
