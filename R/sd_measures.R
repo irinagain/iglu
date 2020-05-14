@@ -108,7 +108,7 @@ sd_measures <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
     gdall,
     function(gd2d) {
       # SdW - vertical within days
-      out = data.frame(id = NA, SdW = mean(apply(gd2d, 1, sd, na.rm = T), na.rm = T))
+      out = tibble::tibble(id = NA, SdW = mean(apply(gd2d, 1, sd, na.rm = T), na.rm = T))
       # SdHHMM - between time points
       out$SdHHMM = sd(apply(gd2d, 2, mean, na.rm = T), na.rm = T)
       # SdWSH - Within series - for 1 hour window
@@ -135,8 +135,7 @@ sd_measures <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
     })
 
     results = dplyr::bind_rows(results)
-    results$id = unique(data$id)
-    results = dplyr::as_tibble(results)
+    results$id = subject
 
   return(results)
 }

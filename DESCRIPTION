@@ -29,6 +29,7 @@ Imports:
     DT,
     dplyr,
     magrittr,
+    tibble,
     tidyr
 Suggests:
     knitr,
