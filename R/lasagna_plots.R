@@ -73,10 +73,10 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 #'
 #' @examples
 #'
-#' plot_lasagna(example_data_5_subject)
-#' plot_lasagna(example_data_5_subject, maxd = 18)
-#' plot_lasagna(example_data_5_subject, datatype = "average")
-#' plot_lasagna(example_data_5_subject, datatype = "average", plottype_average = 'timesorted')
+#' plot_lasagna(example_data_5_subject, tz = "EST")
+#' plot_lasagna(example_data_5_subject, maxd = 18, tz = "EST")
+#' plot_lasagna(example_data_5_subject, datatype = "average", tz = "EST")
+#' plot_lasagna(example_data_5_subject, datatype = "average", lasagnatype = 'timesorted', tz = "EST")
 #'
 plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('unsorted', 'timesorted'), maxd = 14, limits = c(50, 500), midpoint = 105, LLTR = 80, ULTR = 140, dt0 = NULL, inter_gap = 60, tz = ""){
 
