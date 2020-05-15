@@ -26,10 +26,9 @@ tsplot = function(data, LLTR, ULTR, tz = ""){
 #'
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #' @inheritParams plot_lasagna
-#' @param plottype String corresponding to plot type, currently supported
-#' options are 'tsplot' for a 1 subject time series line plot, 'unsorted'
-#' for an unsorted multi-subject lasagna plot, and 'rowsorted' for a
-#' row-sorted lasagna plot.
+#' @param plottype String corresponding to the desired plot type. Options are
+#' 'tsplot' for a time series plot and 'lasagna' for a lasagna plot. See the
+#' lasagnatype parameter for further options corresponding to the 'lasagna' plottype.
 #'
 #' @param LLTR Lower Limit of Target Range, default value is 80 mg/dL.
 #' @param ULTR Upper Limit of Target Range, default value is 140 mg/dL.

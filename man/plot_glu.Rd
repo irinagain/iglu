@@ -18,10 +18,9 @@ plot_glu(
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl").}
 
-\item{plottype}{String corresponding to plot type, currently supported
-options are 'tsplot' for a 1 subject time series line plot, 'unsorted'
-for an unsorted multi-subject lasagna plot, and 'rowsorted' for a
-row-sorted lasagna plot.}
+\item{plottype}{String corresponding to the desired plot type. Options are
+'tsplot' for a time series plot and 'lasagna' for a lasagna plot. See the
+lasagnatype parameter for further options corresponding to the 'lasagna' plottype.}
 
 \item{datatype}{String corresponding to data aggregation used for plotting, currently supported
 options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject}
