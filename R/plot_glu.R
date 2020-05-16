@@ -21,7 +21,7 @@ tsplot = function(data, LLTR, ULTR, tz = ""){
 #' Plot time series and lasagna plots of glucose measurements
 #'
 #' @description
-#' The function plot_glu contains several plotting types for single and multiple
+#' The function plot_glu supports several plotting methods for both single and multiple
 #' subject data.
 #'
 #' @param data DataFrame with column names ("id", "time", and "gl").
@@ -29,23 +29,21 @@ tsplot = function(data, LLTR, ULTR, tz = ""){
 #' @param plottype String corresponding to the desired plot type. Options are
 #' 'tsplot' for a time series plot and 'lasagna' for a lasagna plot. See the
 #' lasagnatype parameter for further options corresponding to the 'lasagna' plottype.
+#' Default is 'tsplot'.
 #'
 #' @param LLTR Lower Limit of Target Range, default value is 80 mg/dL.
 #' @param ULTR Upper Limit of Target Range, default value is 140 mg/dL.
 #'
 #' @param subjects String or list of strings corresponding to subject names
-#' in 'id' column of data.
+#' in 'id' column of data. Default is all subjects.
 #'
 #' @details
-#' For the 'tsplot' option, only the first subject will be used, whether the subjects
-#' argument is left NULL or a subject list is provided. To choose a particular subject,
-#' it is best to only list that subject's id in the subjects argument of plot_glu.
-#' The lower and upper values are shown as horizontal lines on the plot to show
-#' the target range.
+#' For the default option 'tsplot', a time series graph for each subject is
+#' produced with hypo- and hyperglycemia cuttofs shown as horizontal red lines.
+#' The time series plots for all subjects chosen (all by default) are displayed
+#' on a grid.
 #'
-#' For the 'unsorted' and 'rowsorted' options, all subjects are used if the subjects
-#' argument is left NULL. If a list of subject IDs is provided, all of those will
-#' be used.
+#' The 'lasagna' plot type works best when the datatype argument is set to average.
 #'
 #' @return Any output from the plot object
 #'

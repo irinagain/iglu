@@ -20,12 +20,13 @@ plot_glu(
 
 \item{plottype}{String corresponding to the desired plot type. Options are
 'tsplot' for a time series plot and 'lasagna' for a lasagna plot. See the
-lasagnatype parameter for further options corresponding to the 'lasagna' plottype.}
+lasagnatype parameter for further options corresponding to the 'lasagna' plottype.
+Default is 'tsplot'.}
 
 \item{datatype}{String corresponding to data aggregation used for plotting, currently supported
 options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject}
 
-\item{lasagnatype}{String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, and 'timesorted' for a
+\item{lasagnatype}{String corresponding to plot type when using \code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, and 'timesorted' for a
 lasgna plot with glucose values sorted for each time point across subjects}
 
 \item{LLTR}{Lower Limit of Target Range, default value is 80 mg/dL.}
@@ -33,7 +34,7 @@ lasgna plot with glucose values sorted for each time point across subjects}
 \item{ULTR}{Upper Limit of Target Range, default value is 140 mg/dL.}
 
 \item{subjects}{String or list of strings corresponding to subject names
-in 'id' column of data.}
+in 'id' column of data. Default is all subjects.}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link[base]{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
@@ -41,19 +42,16 @@ in 'id' column of data.}
 Any output from the plot object
 }
 \description{
-The function plot_glu contains several plotting types for single and multiple
+The function plot_glu supports several plotting methods for both single and multiple
 subject data.
 }
 \details{
-For the 'tsplot' option, only the first subject will be used, whether the subjects
-argument is left NULL or a subject list is provided. To choose a particular subject,
-it is best to only list that subject's id in the subjects argument of plot_glu.
-The lower and upper values are shown as horizontal lines on the plot to show
-the target range.
+For the default option 'tsplot', a time series graph for each subject is
+produced with hypo- and hyperglycemia cuttofs shown as horizontal red lines.
+The time series plots for all subjects chosen (all by default) are displayed
+on a grid.
 
-For the 'unsorted' and 'rowsorted' options, all subjects are used if the subjects
-argument is left NULL. If a list of subject IDs is provided, all of those will
-be used.
+The 'lasagna' plot type works best when the datatype argument is set to average.
 }
 \examples{
 
