@@ -63,7 +63,7 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 #' @param datatype String corresponding to data aggregation used for plotting, currently supported
 #' options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject
 #' @param lasagnatype String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, and 'timesorted' for a
-#' lasgna plot with glucose values sorted for each time point across subjects
+#' lasagna plot with glucose values sorted for each time point across subjects
 #' @param maxd For datatype "all", maximal number of days to be plotted from the study. The default value is 14 days (2 weeks).
 #' @param LLTR Lower Limit of Target Range, default value is 80 mg/dL.
 #' @param ULTR Upper Limit of Target Range, default value is 140 mg/dL.
@@ -138,10 +138,19 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
     }
 
     out = t(sapply(gdall, stretch_select))
+
+    # Adjust the title and sort if needed
+    title = ""
+    if (lasagnatype == 'timesorted'){
+      out = apply(out, 2, sort, decreasing = T, na.last = T)
+      title = ", sorted at each time point."
+    }
+
+
     data_l = data.frame(subject = rep(subject, each = nt * max_days), day = rep(time_grid_days, ns), glucose = as.vector(t(out)))
 
     p = data_l%>%
-      ggplot(aes(x = day + 1, y = subject, fill = glucose)) + geom_tile() + ylab("Subject") + ggtitle("All subjects") + xlab("Day") + geom_vline(xintercept = c(1:max_days)) + scale_x_continuous(breaks = seq(1, max_days, by = 2)) + scale_fill_gradientn(colors = c("#3182bd", "#deebf7", "white", "#fee0d2", "#de2d26"), na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits)
+      ggplot(aes(x = day + 1, y = subject, fill = glucose)) + geom_tile() + ylab("Subject") + ggtitle(paste0("All subjects", title)) + xlab("Day") + geom_vline(xintercept = c(1:max_days)) + scale_x_continuous(breaks = seq(1, max_days, by = 2)) + scale_fill_gradientn(colors = c("#3182bd", "#deebf7", "white", "#fee0d2", "#de2d26"), na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits)
 
     return(p)
   }

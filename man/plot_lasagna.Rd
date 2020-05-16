@@ -25,7 +25,7 @@ plot_lasagna(
 options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject}
 
 \item{lasagnatype}{String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, and 'timesorted' for a
-lasgna plot with glucose values sorted for each time point across subjects}
+lasagna plot with glucose values sorted for each time point across subjects}
 
 \item{maxd}{For datatype "all", maximal number of days to be plotted from the study. The default value is 14 days (2 weeks).}
 
