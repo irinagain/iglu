@@ -6,7 +6,7 @@
 \usage{
 plot_lasagna_1subject(
   data,
-  lasagnatype = c("unsorted", "timesorted"),
+  lasagnatype = c("unsorted", "timesorted", "daysorted"),
   limits = c(50, 500),
   midpoint = 105,
   LLTR = 80,
@@ -20,8 +20,7 @@ plot_lasagna_1subject(
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
 
 \item{lasagnatype}{String corresponding to plot type, currently supported
-options are 'unsorted' for an unsorted single-subject lasagna plot, and 'timesorted' for a
-lasgna plot with glucose values sorted for each time point across days.}
+options are 'unsorted' for an unsorted single-subject lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across days, and 'daysorted' for a lasagna plot with glucose values sorted within each day across time points.}
 
 \item{limits}{The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link[ggplot2]{scale_fill_gradient2}})}
 
@@ -46,5 +45,10 @@ Lasagna plot of glucose values for 1 subject aligned across times of day
 \examples{
 
 plot_lasagna_1subject(example_data_1_subject)
+plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'timesorted')
+plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted')
 
+}
+\references{
+Swihart et al. (2010) Lasagna Plots: A Saucy Alternative to Spaghetti Plots, \emph{Epidemiology} \strong{21}(5), 621-625, \doi{10.1097/EDE.0b013e3181e5b06a}
 }

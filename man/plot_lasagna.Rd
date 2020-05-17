@@ -7,7 +7,7 @@
 plot_lasagna(
   data,
   datatype = c("all", "average"),
-  lasagnatype = c("unsorted", "timesorted"),
+  lasagnatype = c("unsorted", "timesorted", "subjectsorted"),
   maxd = 14,
   limits = c(50, 500),
   midpoint = 105,
@@ -21,11 +21,9 @@ plot_lasagna(
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
 
-\item{datatype}{String corresponding to data aggregation used for plotting, currently supported
-options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject}
+\item{datatype}{String corresponding to data aggregation used for plotting, currently supported options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject}
 
-\item{lasagnatype}{String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, and 'timesorted' for a
-lasagna plot with glucose values sorted for each time point across subjects}
+\item{lasagnatype}{String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and 'subjectsorted' for a lasagna plot with glucose values sorted within each subject across time points.}
 
 \item{maxd}{For datatype "all", maximal number of days to be plotted from the study. The default value is 14 days (2 weeks).}
 
@@ -51,9 +49,11 @@ Lasagna plot of glucose values for multiple subjects
 }
 \examples{
 
-plot_lasagna(example_data_5_subject, tz = "EST")
 plot_lasagna(example_data_5_subject, maxd = 18, tz = "EST")
-plot_lasagna(example_data_5_subject, datatype = "average", tz = "EST")
 plot_lasagna(example_data_5_subject, datatype = "average", lasagnatype = 'timesorted', tz = "EST")
+plot_lasagna(example_data_5_subject, lasagnatype = "subjectsorted", LLTR = 100, tz = "EST")
 
+}
+\references{
+Swihart et al. (2010) Lasagna Plots: A Saucy Alternative to Spaghetti Plots, \emph{Epidemiology} \strong{21}(5), 621-625, \doi{10.1097/EDE.0b013e3181e5b06a}
 }
