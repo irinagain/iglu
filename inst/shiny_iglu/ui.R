@@ -54,16 +54,26 @@ shinyUI(fluidPage(
              sidebarLayout(
                sidebarPanel(
                  radioButtons("plottype",  "Plot Type",
-                              choices = c(`Time Series` = 'tsplot'
-
-
+                              choices = c(`Time Series` = 'tsplot',
+                                          `Lasagna Plot (Multiple Subject)` = 'lasagnamulti',
+                                          `Lasagna Plot (Single Subject)` = 'lasagnasingle'
                )),
-               uiOutput("plot_TR"),
-               uiOutput("plot_TR_help_text"),
+               uiOutput("plot_lasagnatype"),
+               #uiOutput("plot_subjects"),
+               #uiOutput("plot_subjects_help_text"),
+               #uiOutput("plot_maxd"),
+               #uiOutput("plot_maxd_help_text"),
                uiOutput("plot_datatype"),
+               uiOutput("plot_datatype_help_text"),
                #uiOutput("plot_tz"),
                #uiOutput("plot_tz_help_text"),
-               uiOutput("plot_midpoint")),
+               uiOutput("plot_TR"),
+               uiOutput("plot_TR_help_text")
+               #uiOutput('plot_limits'),
+               #uiOutput('plot_limits_help_text'),
+               #uiOutput("plot_midpoint"),
+               #uiOutput("plot_midpoint_help_text")
+               ),
                mainPanel(plotOutput("plot"))
              ))
 

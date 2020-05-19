@@ -179,30 +179,71 @@ metric_table <- reactive({
 
   plottype <- reactive({  # wrap plottype input in a reactive for rendering UI and Plot
     if(input$plottype == 'tsplot'){
-      return("tsplot")
+      return('tsplot')
+    }
+    else if(input$plottype == 'lasagnamulti'){
+      return('lasagnamulti')
+    }
+    else if(input$plottype == 'lasagnasingle'){
+      return('lasagnasingle')
     }
   })
 
-  output$plot_TR <- renderUI({  # Request input parameters depending on type of plot
-    plottype = plottype() # bring reactive input variable into this renderUI call
+### Get Lasagna Type (lasagnatype)
+
+  output$plot_lasagnatype <- renderUI({
+    plottype = plottype()
     if(plottype == 'tsplot'){
-      textInput('plot_TR', 'Specify Lower and Upper Target Values', value = '80, 140')
+      NULL # lasagnatype doesn't matter for tsplot, so no input UI is necessary
     }
-
+    else if(plottype == 'lasagnamulti'){
+      radioButtons('plot_lasagnatype', "Lasagna Plot Type",
+                   choices = c(`Unsorted` = 'unsorted',
+                               `Time-sorted` = 'timesorted',
+                               `Subject-sorted` = 'subjectsorted'))
+    }
+    else if(plottype == 'lasagnasingle'){
+      radioButtons('plot_lasagnatype', "Lasagna Plot Type",
+                   choices = c(`Unsorted` = 'unsorted',
+                               `Time-sorted` = 'timesorted'))
+    }
   })
 
-  output$plot_TR_help_text <- renderUI({ # Display help text related to target range parameters
-    plottype = plottype() # bring reactive input variable into this renderUI call
-    if(plottype == 'tsplot'){
-      helpText("Enter numeric values corresponding to the Lower and Upper Limits of the Target Range,
-             respectively, separated by commas.")
-    }
-  })
+### Get desired subjects
+  # output$plot_subjects <- renderUI({
+  #   data = transform_data() # bring reactive data input into this renderUI call in case subjects = NULL
+  #   plottype = plottype() # bring reactive input variable into this renderUI call
+  #
+  # })
 
+  ### Get datatype
   output$plot_datatype <- renderUI({  # Request input parameters depending on type of plot
     plottype = plottype() # bring reactive input variable into this renderUI call
     if(plottype == 'tsplot'){
       NULL # datatype doesn't matter for tsplot, so no input is necessary
+    }
+    else if(plottype == 'lasagnamulti'){
+      radioButtons('plot_datatype', "Data Aggregation Type",
+                   choices = c(`Average across days` = 'average',
+                               `All data points` = 'all'
+                               ))
+    }
+    else if(plottype == 'lasagnasingle'){
+      NULL  # datatype doesn't matter for single subject lasagna plots, so no input is necessary
+    }
+  })
+
+  output$plot_datatype_help_text <- renderUI({  # Request input parameters depending on type of plot
+    plottype = plottype() # bring reactive input variable into this renderUI call
+    if(plottype == 'tsplot'){
+      NULL # datatype doesn't matter for tsplot, so no input is necessary
+    }
+    else if(plottype == 'lasagnamulti'){
+      helpText("Select whether to use all data points in the first maxd days, or whether
+               to take the average value at each time point across the first maxd days")
+    }
+    else if(plottype == 'lasagnasingle'){
+      NULL # datatype doesn't matter for single lasagna plot, so no input is necessary
     }
   })
 
@@ -218,6 +259,21 @@ metric_table <- reactive({
   #              time zone, and "GMT" is UTC.')
   # })
 
+
+### Get Target Range Limits (LLTR and ULTR)
+
+
+  output$plot_TR <- renderUI({  # Request input parameters depending on type of plot
+    plottype = plottype() # bring reactive input variable into this renderUI call
+      textInput('plot_TR', 'Specify Lower and Upper Target Values', value = '80, 140')
+  })
+
+  output$plot_TR_help_text <- renderUI({ # Display help text related to target range parameters
+    plottype = plottype() # bring reactive input variable into this renderUI call
+      helpText("Enter numeric values corresponding to the Lower and Upper Limits of the Target Range,
+             respectively, separated by commas.")
+  })
+
 output$plot <- renderPlot({
 
   data = transform_data()
@@ -225,9 +281,21 @@ output$plot <- renderPlot({
   library(iglu)
   if(plottype == 'tsplot'){
     #plot_glu(data, plottype = 'tsplot')
-    string = paste('iglu::plot_glu(data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ', input$plot_TR, ', subjects = NULL, tz = "")', sep = '')
+    string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
+                   input$plot_TR, ', subjects = NULL, tz = "")', sep = '')
     eval(parse(text = string))
-
+  }
+  else if(plottype == 'lasagnamulti'){
+    string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
+                   input$plot_lasagnatype, '", maxd = 14, limits = c(50, 500), midpoint = 105, ',
+                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")',sep = '')
+    eval(parse(text = string))
+  }
+  else if(plottype == 'lasagnasingle'){
+    string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
+                   input$plot_lasagnatype, '", limits = c(50, 500), midpoint = 105, ',
+                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")',sep = '')
+    eval(parse(text = string))
   }
 
 })
