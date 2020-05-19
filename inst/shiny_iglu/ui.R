@@ -58,9 +58,12 @@ shinyUI(fluidPage(
 
 
                )),
-               uiOutput("select_plot_parameter"),
-               uiOutput("plot_help_text")),
-             #  uiOutput("plot_datatype"),
+               uiOutput("plot_TR"),
+               uiOutput("plot_TR_help_text"),
+               uiOutput("plot_datatype"),
+               #uiOutput("plot_tz"),
+               #uiOutput("plot_tz_help_text"),
+               uiOutput("plot_midpoint")),
                mainPanel(plotOutput("plot"))
              ))
 

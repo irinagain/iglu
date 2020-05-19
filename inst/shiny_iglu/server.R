@@ -3,6 +3,8 @@ library(DT)
 
 shinyServer(function(input, output){
 
+############################## DATA SECTION #######################################################
+
   data <- reactive({
     req(input$datafile)
     read.csv(input$datafile$datapath)
@@ -18,8 +20,11 @@ shinyServer(function(input, output){
   })
 
 
+############################# METRIC SECTION ######################################################
+
 parameter_type <- reactive({
-  if(input$metric %in% c('adrr', 'conga', 'cv_glu', 'grade', 'hbgi', 'iqr_glu', 'j_index', 'lbgi', 'mean_glu', 'median_glu', 'range_glu', 'sd_glu', 'summary_glu')){
+  if(input$metric %in% c('adrr', 'conga', 'cv_glu', 'grade', 'hbgi', 'iqr_glu', 'j_index', 'lbgi',
+                         'mean_glu', 'median_glu', 'range_glu', 'sd_glu', 'summary_glu')){
     return("none")
   }
 
@@ -170,7 +175,7 @@ metric_table <- reactive({
                                                   buttons = c('copy', 'csv', 'excel', 'pdf', 'print')))
 
 
-  ##########################PLOTTING SECTION##########################################################
+############################ PLOTTING SECTION #####################################################
 
   plottype <- reactive({  # wrap plottype input in a reactive for rendering UI and Plot
     if(input$plottype == 'tsplot'){
@@ -178,22 +183,40 @@ metric_table <- reactive({
     }
   })
 
-  output$select_plot_parameter <- renderUI({  # Request input parameters depending on type of plot
+  output$plot_TR <- renderUI({  # Request input parameters depending on type of plot
     plottype = plottype() # bring reactive input variable into this renderUI call
     if(plottype == 'tsplot'){
-      textInput('plot_parameter', 'Specify Lower and Upper Target Values', value = '80, 140')
+      textInput('plot_TR', 'Specify Lower and Upper Target Values', value = '80, 140')
     }
 
   })
 
-  output$plot_help_text <- renderUI({ # Display help text related to parameter(s)
+  output$plot_TR_help_text <- renderUI({ # Display help text related to target range parameters
     plottype = plottype() # bring reactive input variable into this renderUI call
     if(plottype == 'tsplot'){
       helpText("Enter numeric values corresponding to the Lower and Upper Limits of the Target Range,
              respectively, separated by commas.")
     }
-
   })
+
+  output$plot_datatype <- renderUI({  # Request input parameters depending on type of plot
+    plottype = plottype() # bring reactive input variable into this renderUI call
+    if(plottype == 'tsplot'){
+      NULL # datatype doesn't matter for tsplot, so no input is necessary
+    }
+  })
+
+  # output$plot_tz <- renderUI({ # Optionally accept new input for timezone
+  #   plottype = plottype() # bring reactive input variable into this renderUI call
+  #
+  #   textInput('plot_tz', 'Specify Timezone', value = '')
+  # })
+  #
+  # output$plot_tz_help_text <- renderUI({ # Display help text related to timezone
+  #   plottype = plottype() # bring reactive input variable into this renderUI call
+  #     helpText('Enter time zone specification as characters, if one is required. Default (blank) is system current
+  #              time zone, and "GMT" is UTC.')
+  # })
 
 output$plot <- renderPlot({
 
@@ -202,7 +225,7 @@ output$plot <- renderPlot({
   library(iglu)
   if(plottype == 'tsplot'){
     #plot_glu(data, plottype = 'tsplot')
-    string = paste('iglu::plot_glu(data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ' , input$plot_parameter, ', subjects = NULL, tz = "")', sep = '')
+    string = paste('iglu::plot_glu(data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ', input$plot_TR, ', subjects = NULL, tz = "")', sep = '')
     eval(parse(text = string))
 
   }
