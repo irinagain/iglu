@@ -169,20 +169,45 @@ metric_table <- reactive({
                                    options = list(dom = 'Btip',
                                                   buttons = c('copy', 'csv', 'excel', 'pdf', 'print')))
 
+
+  ##########################PLOTTING SECTION##########################################################
+
+  plottype <- reactive({  # wrap plottype input in a reactive for rendering UI and Plot
+    if(input$plottype == 'tsplot'){
+      return("tsplot")
+    }
+  })
+
+  output$select_plot_parameter <- renderUI({  # Request input parameters depending on type of plot
+    plottype = plottype() # bring reactive input variable into this renderUI call
+    if(plottype == 'tsplot'){
+      textInput('plot_parameter', 'Specify Lower and Upper Target Values', value = '80, 140')
+    }
+
+  })
+
+  output$plot_help_text <- renderUI({ # Display help text related to parameter(s)
+    plottype = plottype() # bring reactive input variable into this renderUI call
+    if(plottype == 'tsplot'){
+      helpText("Enter numeric values corresponding to the Lower and Upper Limits of the Target Range,
+             respectively, separated by commas.")
+    }
+
+  })
+
 output$plot <- renderPlot({
 
   data = transform_data()
+  plottype = plottype() # bring reactive input variable into this renderPlot call
   library(iglu)
-  if(input$plottype == 'tsplot'){
-    plot_glu(data, plottype = 'tsplot')
-  }
-  else if(input$plottype == 'unsorted'){
-    plot_glu(data, plottype = 'unsorted')
-  }
-  else if(input$plottype == 'rowsorted'){
-    plot_glu(data, plottype = 'rowsorted')
+  if(plottype == 'tsplot'){
+    #plot_glu(data, plottype = 'tsplot')
+    string = paste('iglu::plot_glu(data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ' , input$plot_parameter, ', subjects = NULL, tz = "")', sep = '')
+    eval(parse(text = string))
+
   }
 
 })
 
 })
+

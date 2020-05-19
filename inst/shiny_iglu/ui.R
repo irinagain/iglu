@@ -54,13 +54,13 @@ shinyUI(fluidPage(
              sidebarLayout(
                sidebarPanel(
                  radioButtons("plottype",  "Plot Type",
-                              choices = c(`Time Series (1 subject)` = 'tsplot',
-                                          `Lasagna Unsorted` = 'unsorted',
-                                          `Lasagna Within-Row Sorted` = 'rowsorted'
-                                          #                        ,
-                                          #                        `Scatterplot of Metrics` = 'metric_scatter'
-                              ))
-               ),
+                              choices = c(`Time Series` = 'tsplot'
+
+
+               )),
+               uiOutput("select_plot_parameter"),
+               uiOutput("plot_help_text")),
+             #  uiOutput("plot_datatype"),
                mainPanel(plotOutput("plot"))
              ))
 
