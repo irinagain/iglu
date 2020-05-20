@@ -199,8 +199,9 @@ metric_table <- reactive({
     else if(plottype == 'lasagnamulti'){
       radioButtons('plot_lasagnatype', "Lasagna Plot Type",
                    choices = c(`Unsorted` = 'unsorted',
-                               `Time-sorted` = 'timesorted',
-                               `Subject-sorted` = 'subjectsorted'))
+                               `Subject-sorted` = 'subjectsorted',
+                               `Time-sorted` = 'timesorted'
+                               ))
     }
     else if(plottype == 'lasagnasingle'){
       radioButtons('plot_lasagnatype', "Lasagna Plot Type",
@@ -209,12 +210,36 @@ metric_table <- reactive({
     }
   })
 
-### Get desired subjects
-  # output$plot_subjects <- renderUI({
-  #   data = transform_data() # bring reactive data input into this renderUI call in case subjects = NULL
-  #   plottype = plottype() # bring reactive input variable into this renderUI call
-  #
-  # })
+## Get desired subjects
+  output$plot_subjects <- renderUI({
+    data = transform_data() # bring reactive data input into this renderUI call to default to all subjects
+    plottype = plottype() # bring reactive input variable into this renderUI call
+    if(plottype == 'tsplot'){
+      NULL
+    }
+    else if(plottype == 'lasagnamulti'){
+      NULL
+    }
+    else if(plottype == 'lasagnasingle'){
+      subject = unique(data$id)[1]
+      textInput('plot_subjects', "Enter Subject ID", value = subject)
+    }
+  })
+
+  output$plot_subjects_help_text <- renderUI({
+    data = transform_data()
+    plottype = plottype()
+    if(plottype == 'tsplot'){
+      NULL
+    }
+    else if(plottype == 'lasagnamulti'){
+      NULL
+    }
+    else if(plottype == 'lasagnasingle'){
+      helpText("Enter the ID of a subject to display their individualized lasagna plot")
+    }
+
+  })
 
   ### Get datatype
   output$plot_datatype <- renderUI({  # Request input parameters depending on type of plot
@@ -274,24 +299,34 @@ metric_table <- reactive({
              respectively, separated by commas.")
   })
 
+  subset_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
+
+      data = transform_data()
+      data = data[data$id == input$plot_subjects,] # reactively subset data when subjects input is modified
+      return(data)
+  })
+
 output$plot <- renderPlot({
 
-  data = transform_data()
   plottype = plottype() # bring reactive input variable into this renderPlot call
   library(iglu)
+
   if(plottype == 'tsplot'){
     #plot_glu(data, plottype = 'tsplot')
+    data = transform_data()
     string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
                    input$plot_TR, ', subjects = NULL, tz = "")', sep = '')
     eval(parse(text = string))
   }
   else if(plottype == 'lasagnamulti'){
+    data = transform_data()
     string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
                    input$plot_lasagnatype, '", maxd = 14, limits = c(50, 500), midpoint = 105, ',
                    input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")',sep = '')
     eval(parse(text = string))
   }
   else if(plottype == 'lasagnasingle'){
+    data = subset_data() # subset data to only user-specified subject
     string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
                    input$plot_lasagnatype, '", limits = c(50, 500), midpoint = 105, ',
                    input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")',sep = '')

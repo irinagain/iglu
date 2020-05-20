@@ -59,8 +59,8 @@ shinyUI(fluidPage(
                                           `Lasagna Plot (Single Subject)` = 'lasagnasingle'
                )),
                uiOutput("plot_lasagnatype"),
-               #uiOutput("plot_subjects"),
-               #uiOutput("plot_subjects_help_text"),
+               uiOutput("plot_subjects"),
+               uiOutput("plot_subjects_help_text"),
                #uiOutput("plot_maxd"),
                #uiOutput("plot_maxd_help_text"),
                uiOutput("plot_datatype"),
