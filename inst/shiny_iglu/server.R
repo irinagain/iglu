@@ -210,7 +210,7 @@ metric_table <- reactive({
     }
   })
 
-## Get desired subjects
+### Get desired subjects
   output$plot_subjects <- renderUI({
     data = transform_data() # bring reactive data input into this renderUI call to default to all subjects
     plottype = plottype() # bring reactive input variable into this renderUI call
@@ -241,7 +241,24 @@ metric_table <- reactive({
 
   })
 
-  ### Get datatype
+### Get max days to plot (maxd)
+
+  output$plot_maxd <- renderUI({
+    data = transform_data() # bring reactive data input into this renderUI call to default to all subjects
+    plottype = plottype() # bring reactive input variable into this renderUI call
+    if(plottype == 'tsplot'){
+      NULL
+    }
+    else if(plottype == 'lasagnamulti'){
+      textInput('plot_maxd', "Enter Maximum # of Days to Plot", value = 14)
+    }
+    else if(plottype == 'lasagnasingle'){
+      NULL
+    }
+  })
+
+
+### Get datatype
   output$plot_datatype <- renderUI({  # Request input parameters depending on type of plot
     plottype = plottype() # bring reactive input variable into this renderUI call
     if(plottype == 'tsplot'){
@@ -321,7 +338,7 @@ output$plot <- renderPlot({
   else if(plottype == 'lasagnamulti'){
     data = transform_data()
     string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
-                   input$plot_lasagnatype, '", maxd = 14, limits = c(50, 500), midpoint = 105, ',
+                   input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(50, 500), midpoint = 105, ',
                    input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")',sep = '')
     eval(parse(text = string))
   }
