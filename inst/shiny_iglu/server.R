@@ -112,7 +112,7 @@ output$help_text <- renderUI({
     helpText("No parameters need to be specified.")
   }
   else if(parameter_type == "list"){
-    helpText("Enter numeric target values separated by commas.")
+    helpText("Enter numeric target values separated by comma.")
   }
   else if(parameter_type == "value"){
     helpText("Enter numeric value corresponding to parameter.")
@@ -241,10 +241,17 @@ metric_table <- reactive({
 
   })
 
+
+  subset_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
+
+    data = transform_data()
+    data = data[data$id == input$plot_subjects,] # reactively subset data when subjects input is modified
+    return(data)
+  })
+
 ### Get max days to plot (maxd)
 
   output$plot_maxd <- renderUI({
-    data = transform_data() # bring reactive data input into this renderUI call to default to all subjects
     plottype = plottype() # bring reactive input variable into this renderUI call
     if(plottype == 'tsplot'){
       NULL
@@ -257,8 +264,8 @@ metric_table <- reactive({
     }
   })
 
-
 ### Get datatype
+
   output$plot_datatype <- renderUI({  # Request input parameters depending on type of plot
     plottype = plottype() # bring reactive input variable into this renderUI call
     if(plottype == 'tsplot'){
@@ -289,6 +296,8 @@ metric_table <- reactive({
     }
   })
 
+### Get time zone (tz)
+
   # output$plot_tz <- renderUI({ # Optionally accept new input for timezone
   #   plottype = plottype() # bring reactive input variable into this renderUI call
   #
@@ -307,21 +316,63 @@ metric_table <- reactive({
 
   output$plot_TR <- renderUI({  # Request input parameters depending on type of plot
     plottype = plottype() # bring reactive input variable into this renderUI call
-      textInput('plot_TR', 'Specify Lower and Upper Target Values', value = '80, 140')
+      textInput('plot_TR', 'Specify Lower and Upper Target Values, separated by a Comma', value = '80, 140')
   })
 
-  output$plot_TR_help_text <- renderUI({ # Display help text related to target range parameters
+  # output$plot_TR_help_text <- renderUI({ # Display help text related to target range parameters
+  #   plottype = plottype() # bring reactive input variable into this renderUI call
+  #     helpText("Enter numeric values corresponding to the Lower and Upper Limits of the Target Range,
+  #            respectively, separated by a comma.")
+  # })
+
+
+### Get midpoint
+
+  output$plot_midpoint <- renderUI({
     plottype = plottype() # bring reactive input variable into this renderUI call
-      helpText("Enter numeric values corresponding to the Lower and Upper Limits of the Target Range,
-             respectively, separated by commas.")
+    if(plottype == 'tsplot'){
+      NULL
+    }
+    else if(plottype == 'lasagnamulti'){
+      textInput('plot_midpoint', "Enter Midpoint Glucose Value for Color Scale", value = 105)
+    }
+    else if(plottype == 'lasagnasingle'){
+      textInput('plot_midpoint', "Enter Midpoint Glucose Value for Color Scale", value = 105)
+    }
   })
 
-  subset_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
+### Get color bar limits (limits)
 
-      data = transform_data()
-      data = data[data$id == input$plot_subjects,] # reactively subset data when subjects input is modified
-      return(data)
+  output$plot_limits <- renderUI({
+    plottype = plottype() # bring reactive input variable into this renderUI call
+    if(plottype == 'tsplot'){
+      NULL
+    }
+    else if(plottype == 'lasagnamulti'){
+      textInput('plot_limits', "Enter Limit Glucose Values for Color Scale Separated by a Comma", value = '50, 500')
+    }
+    else if(plottype == 'lasagnasingle'){
+      textInput('plot_limits', "Enter Limit Glucose Values for Color Scale Separated by a Comma", value = '50, 500')
+    }
   })
+
+### Color Bar help text
+
+  output$plot_colorbar_help_text <- renderUI({ # render help text below color bar options
+    plottype = plottype() # bring reactive input variable into this renderUI call
+    if(plottype == 'tsplot'){ # tsplot doesn't make use of a colorbar, no helptext necessary
+      NULL
+    }
+    else if(plottype == 'lasagnamulti'){
+      helpText('The color bar can be modified by changing the values of the target range, the midpoint,
+               and the color bar limits')
+    }
+    else if(plottype == 'lasagnasingle'){
+      helpText('The color bar can be modified by changing the values of the target range, the midpoint,
+               and the color bar limits')
+    }
+  })
+### Render Plot
 
 output$plot <- renderPlot({
 
@@ -338,15 +389,17 @@ output$plot <- renderPlot({
   else if(plottype == 'lasagnamulti'){
     data = transform_data()
     string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
-                   input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(50, 500), midpoint = 105, ',
-                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")',sep = '')
+                   input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(', input$plot_limits, '), ',
+                   midpoint = input$plot_midpoint, ', ',
+                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = '')
     eval(parse(text = string))
   }
   else if(plottype == 'lasagnasingle'){
     data = subset_data() # subset data to only user-specified subject
     string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
-                   input$plot_lasagnatype, '", limits = c(50, 500), midpoint = 105, ',
-                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")',sep = '')
+                   input$plot_lasagnatype, '", limits = c(', input$plot_limits, '), ',
+                   midpoint = input$plot_midpoint, ', ',
+                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = '')
     eval(parse(text = string))
   }
 

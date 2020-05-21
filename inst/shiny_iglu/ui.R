@@ -67,11 +67,10 @@ shinyUI(fluidPage(
                #uiOutput("plot_tz"),
                #uiOutput("plot_tz_help_text"),
                uiOutput("plot_TR"),
-               uiOutput("plot_TR_help_text")
-               #uiOutput('plot_limits'),
-               #uiOutput('plot_limits_help_text'),
-               #uiOutput("plot_midpoint"),
-               #uiOutput("plot_midpoint_help_text")
+               #uiOutput("plot_TR_help_text"),
+               uiOutput("plot_midpoint"),
+               uiOutput('plot_limits'),
+               uiOutput('plot_colorbar_help_text')
                ),
                mainPanel(plotOutput("plot"))
              ))
