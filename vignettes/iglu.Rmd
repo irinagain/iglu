@@ -126,7 +126,7 @@ The iglu package currently supports 3 plot types:
 * Unsorted lasagna plot
 * Row sorted lasagna plot
 
-The time series plot tpye is the default type. This plot type can support both single and multiple subjects.
+The time series plot is the default type for the function `plot_glu`. This plot type can support both single and multiple subjects.
 
 ```{r}
 plot_glu(example_data_1_subject, plottype = 'tsplot', tz = "EST")
@@ -141,28 +141,61 @@ To just plot a single subject of interest from the grid of time series plots, se
 plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', tz = "EST")
 ```
 
-The red lines can be shifted to any Lower and Upper target range limits with the 'LLTR' and 'ULTR' arguments.
+The red lines can be shifted to any Lower and Upper Target Range Limits with the 'LLTR' and 'ULTR' arguments.
 
 ```{r}
 plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', LLTR = 80, ULTR = 150, tz = "EST")
 ```
 
-
-Need to add more
-
-The unsorted and row sorted lasagna plots are identical in their usage, other than changing the `lasagnatype` parameter.
+The `plot_glu` function also supports lasagna plots by changing the 'plottype' parameter.
 
 ```{r}
-plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = "single", lasagnatype = "unsorted")
-plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = "single", lasagnatype = "timesorted")
+plot_glu(example_data_5_subject, plottype = 'lasagna', tz = 'EST')
 ```
 
-Need to add more
+By default, this will produce an unsorted lasagna plot using up to 14 days worth of data displayed separately. To average across days at each time point, we can use `datatype = 'average'`:
+
+```{r}
+plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average', tz = 'EST')
+```
+
+We can additionally sort the values at each time point across the five subjects by setting `lasagnatype = 'timesorted'
+
+```{r}
+plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average', lasagnatype = 'timesorted', tz = 'EST')
+```
+
+When working with a single subject, setting `datatype = single` will produce plots where rows represent days instead of subjects.
+
+```{r}
+plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = 'single', lasagnatype = 'unsorted', tz = 'EST')
+```
+
+```{r}
+plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = 'single', lasagnatype = 'timesorted', tz = 'EST')
+
+```
+
+For further customization of lasagna plots, use the `plot_lasagna` and `plot_lasagna_1subject` functions. 
+
+`plot_lasagna` allows for multi-subject lasagna plots with the additional options of sorting the hours by glucose values for each subject, i.e. horizontal sorting, by setting
+`lasagnatype = 'subjectsorted'`.
+
+```{r}
+plot_lasagna(example_data_5_subject, datatype = 'average', lasagnatype = 'subjectsorted', tz = 'EST')
+```
+
+`plot_lasagna` also supports changing the maximum number of days to display, as well as the upper and lower target range limits (LLTR and ULTR), midpoint, and minimum and maximum values to display, all of which will affect the colorbar.
+
+```{r}
+plot_lasagna(example_data_5_subject, datatype = 'average', lasagnatype = 'subjectsorted', LLTR = 100, ULTR = 180, midpoint = 150, limits = c(80, 500), tz = 'EST')
+```
+
 
 # Shiny App
 
 The iglu package comes with a shiny app containing all of the metric calculations as well as all plot types of the package itself.
   
-The full app can be accessed at [https://stevebroll.shinyapps.io/shinyiglu/](https://stevebroll.shinyapps.io/shinyiglu/), or by running `iglu::run_shiny()` (iglu must be installed to use the run_shiny function).
+The full app can be accessed by running `iglu::run_shiny()` (iglu must be installed to use the run_shiny function).
   
 The app itself has a demo available at [https://stevebroll.shinyapps.io/shinyiglu/](https://stevebroll.shinyapps.io/shinyigludemo/) with data pre-loaded.
