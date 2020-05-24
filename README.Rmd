@@ -63,6 +63,8 @@ conga(example_data_1_subject)
 # Load multiple subject data
 data(example_data_5_subject)
 
+plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average')
+
 below_percent(example_data_5_subject, targets = c(80,170,260))
 
 mage(example_data_5_subject)
