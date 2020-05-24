@@ -1,6 +1,6 @@
 ---
 title: "Working in iglu"
-author: "Steve Broll"
+author: "Steve Broll, Irina Gaynanova"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Working in iglu}
@@ -31,7 +31,7 @@ There are many metrics used to assess glycemic variability, many of which can be
 # Single Subject Workflow
 ## Data
 
-Example data for 1 subject can be loaded with:
+Example data with 1 subject can be loaded with:
 
 ```{r}
 data("example_data_1_subject")
@@ -77,7 +77,7 @@ resulting in a 2 column tibble (1 column for id and 1 for the single value).
 conga(example_data_1_subject)
 ```
 
-Note: `base::as.numeric()` can be used to convert output to a numeric value or vector instead of a dataframe object *only* when working with a single subject.
+Note: `base::as.numeric()` can be used to convert output to a numeric value or vector instead of a tibble object *only* when working with a single subject.
 
 ```{r}
 as.numeric(conga(example_data_1_subject))
@@ -89,13 +89,13 @@ as.numeric(above_percent(example_data_1_subject))
 
 ## Data
 
-Example data for multiple subjects can be loaded with:
+Example data with multiple subjects can be loaded with:
 
 ```{r}
 data("example_data_5_subject")
 ```
   
-This dataset contains the same 3 columns as the dataset in the single subject case, but now with 13866 observations from 5 subjects.
+This dataset contains the same 3 columns as the dataset in the single subject case, but now with 13866 observations from 5 subjects. The first subject in this multiple subject dataset is the same as the single subject from the previous examples.
 
 ```{r}
 dim(example_data_5_subject)
@@ -126,17 +126,22 @@ The iglu package currently supports 3 plot types:
 * Unsorted lasagna plot
 * Row sorted lasagna plot
 
-The time series plot can be used on a single subject or multiple subjects, but, in the case of multiple subjects, only the first will be used.
+The time series plot tpye is the default type. This plot type can support both single and multiple subjects.
+
 ```{r}
 plot_glu(example_data_1_subject, plottype = 'tsplot', tz = "EST")
 plot_glu(example_data_5_subject, plottype = 'tsplot', tz = "EST")
 ```
-However, the 'subjects' parameter can be used to select a desired subject.
+
+We set the 'tz' (timezone) parameter to be EST because the data was collected in the eastern time zone. If left blank, the time zone used for plotting will be the system's time zone. Time zone is mainly an issue in cases where daylight savings time might make it appear as though there were duplicate values at some time points.
+
+To just plot a single subject of interest from the grid of time series plots, set the 'subjects' parameter to be that subject's ID.
 
 ```{r}
 plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', tz = "EST")
 ```
-The red lines can be shifted to any hypo- and hyperglycemia cutoffs with the 'lower' and 'upper' arguments.
+
+The red lines can be shifted to any Lower and Upper target range limits with the 'LLTR' and 'ULTR' arguments.
 
 ```{r}
 plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', LLTR = 80, ULTR = 150, tz = "EST")
@@ -152,9 +157,7 @@ plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = "single", lasa
 plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = "single", lasagnatype = "timesorted")
 ```
 
-The 'unsorted' lasagna plot compares the 5 subjects' blood glucose measurements, matching their values in the order the measurements were taken in.  
-  
-The 'row sorted' lasagna plot sorts the blood glucose measurements into an increasing order.
+Need to add more
 
 # Shiny App
 
