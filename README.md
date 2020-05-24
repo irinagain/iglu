@@ -1,20 +1,31 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-iglu
-====
+
+# iglu
 
 <!-- badges: start -->
-[![Travis build status](https://api.travis-ci.com/irinagain/iglu.svg?branch=master)](https://travis-ci.com/github/irinagain/iglu) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/muschellij2/iglu?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/iglu) <!-- badges: end -->
 
-iglu: Interpreting data from Continuous Glucose Monitors (CGMs)
-===============================================================
+[![Travis build
+status](https://api.travis-ci.com/irinagain/iglu.svg?branch=master)](https://travis-ci.com/github/irinagain/iglu)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/muschellij2/iglu?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/iglu)
+<!-- badges: end -->
 
-The R package 'iglu' provides functions for outputting relevant metrics for data collected from Continuous Glucose Monitors (CGM). For reference, see ["Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control." Rodbard (2009)](https://www.ncbi.nlm.nih.gov/pubmed/19469679).
+# iglu: Interpreting data from Continuous Glucose Monitors (CGMs)
 
-iglu comes with two example datasets: example\_data\_1\_subject and example\_data\_5\_subject. Each dataset follows the structure iglu's functions are designed around. Note that the 1 subject data is a subset of the 5 subject data. See the examples below for loading and using the data.
+The R package ‘iglu’ provides functions for outputting relevant metrics
+for data collected from Continuous Glucose Monitors (CGM). For
+reference, see [“Interpretation of continuous glucose monitoring data:
+glycemic variability and quality of glycemic control.” Rodbard
+(2009)](https://www.ncbi.nlm.nih.gov/pubmed/19469679).
 
-Installation
-------------
+iglu comes with two example datasets: example\_data\_1\_subject and
+example\_data\_5\_subject. Each dataset follows the structure iglu’s
+functions are designed around. Note that the 1 subject data is a subset
+of the 5 subject data. See the examples below for loading and using the
+data.
+
+## Installation
 
 ``` r
 # Plain installation
@@ -24,8 +35,7 @@ devtools::install_github("stevebroll/iglu") # iglu package
 devtools::install_github("stevebroll/iglu", build_vignettes = TRUE)
 ```
 
-Example
--------
+## Example
 
 ``` r
 library(iglu)
@@ -75,6 +85,16 @@ conga(example_data_1_subject)
 # Load multiple subject data
 data(example_data_5_subject)
 
+plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average')
+#> Warning in CGMS2DayByDay(., tz = tz, dt0 = dt0, inter_gap = inter_gap): The
+#> times for subject Subject 5 are not in increasing order! The times will be
+#> sorted automatically.
+```
+
+<img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
+
+``` r
+
 below_percent(example_data_5_subject, targets = c(80,170,260))
 #> # A tibble: 5 x 4
 #>   id        below_170 below_260 below_80
@@ -96,9 +116,9 @@ mage(example_data_5_subject)
 #> 5 Subject 5  90.0
 ```
 
-Shiny Demonstration
--------------------
+## Shiny Demonstration
 
-For a demonstration of the package in a point and click interface, click the link below.
+For a demonstration of the package in a point and click interface, click
+the link below.
 
 <https://stevebroll.shinyapps.io/shinyigludemo/>
