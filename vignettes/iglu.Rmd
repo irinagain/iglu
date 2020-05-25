@@ -191,11 +191,30 @@ plot_lasagna(example_data_5_subject, datatype = 'average', lasagnatype = 'subjec
 plot_lasagna(example_data_5_subject, datatype = 'average', lasagnatype = 'subjectsorted', LLTR = 100, ULTR = 180, midpoint = 150, limits = c(80, 500), tz = 'EST')
 ```
 
+`plot_lasagna_1subject` allows for customization of the more detailed single subject lasagna plots. There is no datatype parameter for `plot_lasagna_1subject`, but there are three types of plots available, accessed with the `lasagnatype` parameter.
+
+```{r}
+plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'unsorted', tz = 'EST')
+```
+
+```{r}
+plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'timesorted', tz = 'EST')
+```
+
+```{r}
+plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted', tz = 'EST')
+```
+
+As with the `lasagna_plot` function, changing the LLTR, ULTR, midpoint, and limits parameters will affect the colorbar.
+
+```{r}
+plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted', midpoint = 150, limits = c(80,500), tz = 'EST')
+```
 
 # Shiny App
 
 The iglu package comes with a shiny app containing all of the metric calculations as well as all plot types of the package itself.
   
-The full app can be accessed by running `iglu::run_shiny()` (iglu must be installed to use the run_shiny function).
+The full app can be accessed by running `iglu::run_shiny()` (iglu must be installed to use the `run_shiny` function).
   
-The app itself has a demo available at [https://stevebroll.shinyapps.io/shinyiglu/](https://stevebroll.shinyapps.io/shinyigludemo/) with data pre-loaded.
+The app itself has a demo available at [https://stevebroll.shinyapps.io/shinyigludemo/](https://stevebroll.shinyapps.io/shinyigludemo/) with data pre-loaded.
