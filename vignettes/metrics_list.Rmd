@@ -1,0 +1,24 @@
+---
+title: "List of metrics implemented in iglu"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{List of metrics implemented in iglu}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(iglu)
+```
+
+|Metric Name | Corresponding function in iglu | Reference|
+|------------|:------------------------------:|----------|
+|Mean        | mean_glu                       |          |
+|
