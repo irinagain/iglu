@@ -30,6 +30,7 @@ The iglu package is designed with the following three components of Continuous G
 
 * Subject identification
 
+The iglu package comes with the example data from 5 subjects with Type II diabetes whose glucose leveles were measured using Dexcom G4 CGM.  
 
 # Single Subject Workflow
 ## Data
