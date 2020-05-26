@@ -32,7 +32,7 @@ parameter_type <- reactive({
     return("list")
   }
 
-  else if(input$metric %in% c('grade_hyper', 'grade_hypo', 'hyper_index', 'hypo_index', 'mage', 'modd')){
+  else if(input$metric %in% c('grade_hyper', 'grade_hypo', 'hyper_index', 'hypo_index', 'm_value', 'mage', 'modd')){
     return("value")
   }
 
@@ -67,7 +67,7 @@ output$select_parameter <- renderUI({
     }
 
     else if(input$metric == 'grade_hypo'){
-      textInput('parameter', 'Specify Parameter', value = '70')
+      textInput('parameter', 'Specify Parameter', value = '80')
     }
 
     else if(input$metric == 'hyper_index'){
@@ -76,6 +76,10 @@ output$select_parameter <- renderUI({
 
     else if(input$metric == 'hypo_index'){
       textInput('parameter', 'Specify Parameter', value = '80')
+    }
+
+    else if(input$metric == 'm_value'){
+      textInput('parameter', 'Specify Reference Value', value = '90')
     }
 
     else if(input$metric == 'mage'){
