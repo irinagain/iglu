@@ -18,15 +18,18 @@ library(iglu)
 # date: "`r Sys.Date()`"
 ```
 
+The iglu package is developed to assist the analyses of data from Continuous Glucose Monitors (CGMs). CGMs are small wearable devices that measure the glucose levels continuously throughout the day, with some monitors taking measurements as often as every 5 minutes. Data from these monitors provide a detailed quantification of the variation in blood glucose levels during the course of the day, and thus CGMs play an increasing role in clinical practice. For more on CGMs, see [Rodbard (2006) "Continuous Glucose Monitoring: A Review of Successes, Challenges, and Opportunities."](https://doi.org/10.1089/dia.2015.0417).
+
+Multiple CGM-derived metrics have been developed to assess the quality of glycemic control and glycemic variability, many of which are summarized in [Rodbard (2009) "Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control."](https://www.ncbi.nlm.nih.gov/pubmed/19469679). The iglu package streamlines the calculation of these metrics by providing clearly named functions that output metrics values with one line of code. 
+
 The iglu package is designed with the following three components of Continuous Glucose Monitor (CGM) data in mind:
 
-* Blood glucose level
+* Blood glucose level measurement [in mg/dL]
 
-* Timestamp for measurement
+* Timestamp for glucose measurement
 
 * Subject identification
 
-There are many metrics used to assess glycemic variability, many of which can be found in ["Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control." Rodbard (2009)](https://www.ncbi.nlm.nih.gov/pubmed/19469679). The iglu package streamlines the calculation of metrics by providing clearly named functions that output metrics with one line of code. 
 
 # Single Subject Workflow
 ## Data
@@ -147,7 +150,7 @@ The red lines can be shifted to any Lower and Upper Target Range Limits with the
 plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', LLTR = 80, ULTR = 150, tz = "EST")
 ```
 
-The `plot_glu` function also supports lasagna plots by changing the 'plottype' parameter.
+The `plot_glu` function also supports lasagna plots by changing the 'plottype' parameter. For more on lasagna plots, see  [Swihart et al. (2010) "Lasagna Plots: A Saucy Alternative to Spaghetti Plots." ](https://doi.org/10.1097/ede.0b013e3181e5b06a).
 
 ```{r}
 plot_glu(example_data_5_subject, plottype = 'lasagna', tz = 'EST')
