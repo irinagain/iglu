@@ -24,7 +24,7 @@ shinyServer(function(input, output){
 
 parameter_type <- reactive({
   if(input$metric %in% c('adrr', 'conga', 'cv_glu', 'grade', 'hbgi', 'iqr_glu', 'j_index', 'lbgi',
-                         'mean_glu', 'median_glu', 'range_glu', 'sd_glu', 'summary_glu')){
+                         'mean_glu', 'median_glu', 'range_glu', 'sd_glu', 'sd_measures', 'summary_glu')){
     return("none")
   }
 

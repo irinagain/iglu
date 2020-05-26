@@ -43,6 +43,7 @@ shinyUI(fluidPage(
                                                                                `Quantiles` = 'quantile_glu',
                                                                                `Range` = 'range_glu',
                                                                                `Standard Deviation` = 'sd_glu',
+                                                                               `Standard Deviation Subtypes` = 'sd_measures',
                                                                                `Summary Statistics` = 'summary_glu'
                )),
                uiOutput("select_parameter"),
