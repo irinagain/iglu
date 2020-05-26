@@ -154,7 +154,7 @@ The red lines can be shifted to any Lower and Upper Target Range Limits with the
 plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', LLTR = 80, ULTR = 150, tz = "EST")
 ```
 
-The `plot_glu` function also supports lasagna plots by changing the 'plottype' parameter. For more on lasagna plots, see  [Swihart et al. (2010) "Lasagna Plots: A Saucy Alternative to Spaghetti Plots." ](https://doi.org/10.1097/ede.0b013e3181e5b06a).
+The `plot_glu` function also supports lasagna plots by changing the 'plottype' parameter. For more on lasagna plots, see [Swihart et al. (2010) "Lasagna Plots: A Saucy Alternative to Spaghetti Plots." ](https://doi.org/10.1097/ede.0b013e3181e5b06a)
 
 ```{r, cache = T}
 plot_glu(example_data_5_subject, plottype = 'lasagna', tz = 'EST')
