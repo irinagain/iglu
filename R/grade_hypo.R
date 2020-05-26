@@ -4,12 +4,12 @@
 #' The function grade_hypo produces \%GRADE hypoglycemia values in a tibble object.
 #'
 #' @usage
-#' grade_hypo(data, lower = 70)
+#' grade_hypo(data, lower = 80)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
 #' or numeric vector of glucose values.
 #'
-#' @param lower Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 70
+#' @param lower Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 80
 #'
 #' @return If a data.frame object is passed, then a tibble object with
 #' two columns: subject id and corresponding \%GRADE hypoglycemia value is returned. If a vector of glucose
@@ -38,14 +38,14 @@
 #'
 #' data(example_data_1_subject)
 #' grade_hypo(example_data_1_subject)
-#' grade_hypo(example_data_1_subject, lower = 80)
+#' grade_hypo(example_data_1_subject, lower = 70)
 #'
 #' data(example_data_5_subject)
 #' grade_hypo(example_data_5_subject)
 #' grade_hypo(example_data_5_subject, lower = 65)
 #'
 
-grade_hypo <- function(data, lower = 70){
+grade_hypo <- function(data, lower = 80){
 
   grade = gl = id = NULL
   rm(list = c("grade", "gl", "id"))

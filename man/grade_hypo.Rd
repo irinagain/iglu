@@ -4,13 +4,13 @@
 \alias{grade_hypo}
 \title{Percentage of GRADE score attributable to hypoglycemia}
 \usage{
-grade_hypo(data, lower = 70)
+grade_hypo(data, lower = 80)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values.}
 
-\item{lower}{Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 70}
+\item{lower}{Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 80}
 }
 \value{
 If a data.frame object is passed, then a tibble object with
@@ -35,7 +35,7 @@ GRADE score (see grade function) attributed to hypoglycemic glucose values.
 
 data(example_data_1_subject)
 grade_hypo(example_data_1_subject)
-grade_hypo(example_data_1_subject, lower = 80)
+grade_hypo(example_data_1_subject, lower = 70)
 
 data(example_data_5_subject)
 grade_hypo(example_data_5_subject)
