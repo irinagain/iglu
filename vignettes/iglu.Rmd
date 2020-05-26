@@ -32,8 +32,9 @@ The iglu package is designed with the following three components of Continuous G
 
 The iglu package comes with the example data from 5 subjects with Type II diabetes whose glucose leveles were measured using Dexcom G4 CGM.  
 
-# Single Subject Workflow
-## Data
+# Calculating time-independent metrics
+
+## Example data for 1 subject
 
 Example data with 1 subject can be loaded with:
 
@@ -55,9 +56,22 @@ str(example_data_1_subject)
 head(example_data_1_subject)
 ```
 
-Observe that the timestamps in the first rows are not evenly spaced. Linear interpolation is used where appropriate for computation of metrics that require a time component with equally spaced measurements. Time intervals within large gaps between variables will not be interpolated, but instead will be treated as missing values. 
+## Example data for 5 subjects
 
-## Calculating Metrics
+Example data with multiple subjects can be loaded with:
+
+```{r}
+data("example_data_5_subject")
+```
+  
+This dataset contains the same 3 columns as the dataset in the single subject case, but now with 13866 observations from 5 subjects. The first subject in this multiple subject dataset is the same as the single subject from the previous examples.
+
+```{r}
+dim(example_data_5_subject)
+str(example_data_5_subject)
+```
+
+## Example metrics
 
 All metric functions in iglu will produce the output in a tibble form. See documentation on tibbles with vignette('tibble') or ?`tbl_df-class` .
 
@@ -74,39 +88,6 @@ above_percent(example_data_1_subject, targets = c(100, 200, 300))
 ```
 
 Many metrics have parameters that can be changed. To see available parameters for a given metric, see the documentation i.e. ?above_percent or help(above_percent).  
-Some metric functions, like `conga()` (Continuous Overlapping Net Glycemic Action), will return just a single value for each subject,
-resulting in a 2 column tibble (1 column for id and 1 for the single value).
-
-```{r}
-conga(example_data_1_subject)
-```
-
-Note: `base::as.numeric()` can be used to convert output to a numeric value or vector instead of a tibble object *only* when working with a single subject.
-
-```{r}
-as.numeric(conga(example_data_1_subject))
-
-as.numeric(above_percent(example_data_1_subject))
-```
-
-# Multiple Subject Workflow
-
-## Data
-
-Example data with multiple subjects can be loaded with:
-
-```{r}
-data("example_data_5_subject")
-```
-  
-This dataset contains the same 3 columns as the dataset in the single subject case, but now with 13866 observations from 5 subjects. The first subject in this multiple subject dataset is the same as the single subject from the previous examples.
-
-```{r}
-dim(example_data_5_subject)
-str(example_data_5_subject)
-```
-
-## Calculating Metrics
 
 Some metric functions, like `quantile_glu()`, will return multiple values for each subject, producing a dataframe with >2 columns and >1 rows. 
 
@@ -121,6 +102,28 @@ mage(example_data_5_subject)
 ```
 
 Note: `base::as.numeric()` will produce an error when wrapped around a data.frame with more >1 row.
+
+
+# Calculating time-dependent metrics
+
+Observe that the timestamps in the first rows are not evenly spaced. Linear interpolation is used where appropriate for computation of metrics that require a time component with equally spaced measurements. Time intervals within large gaps between variables will not be interpolated, but instead will be treated as missing values. 
+
+[Add a little more on interpolation (potentially explicit example with CGMs2DayBy Day) and then a note on time zone]
+
+Some metric functions, like `conga()` (Continuous Overlapping Net Glycemic Action), will return just a single value for each subject,
+resulting in a 2 column tibble (1 column for id and 1 for the single value).
+
+```{r, cache = T}
+conga(example_data_1_subject)
+```
+
+Note: `base::as.numeric()` can be used to convert output to a numeric value or vector instead of a tibble object *only* when working with a single subject.
+
+```{r, cache = T}
+as.numeric(conga(example_data_1_subject))
+as.numeric(above_percent(example_data_1_subject))
+```
+
 
 # Visualizations
 
@@ -153,29 +156,29 @@ plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', LL
 
 The `plot_glu` function also supports lasagna plots by changing the 'plottype' parameter. For more on lasagna plots, see  [Swihart et al. (2010) "Lasagna Plots: A Saucy Alternative to Spaghetti Plots." ](https://doi.org/10.1097/ede.0b013e3181e5b06a).
 
-```{r}
+```{r, cache = T}
 plot_glu(example_data_5_subject, plottype = 'lasagna', tz = 'EST')
 ```
 
 By default, this will produce an unsorted lasagna plot using up to 14 days worth of data displayed separately. To average across days at each time point, we can use `datatype = 'average'`:
 
-```{r}
+```{r, cache = T}
 plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average', tz = 'EST')
 ```
 
 We can additionally sort the values at each time point across the five subjects by setting `lasagnatype = 'timesorted'
 
-```{r}
+```{r, cache = T}
 plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average', lasagnatype = 'timesorted', tz = 'EST')
 ```
 
 When working with a single subject, setting `datatype = single` will produce plots where rows represent days instead of subjects.
 
-```{r}
+```{r, cache = T}
 plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = 'single', lasagnatype = 'unsorted', tz = 'EST')
 ```
 
-```{r}
+```{r, cache = T}
 plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = 'single', lasagnatype = 'timesorted', tz = 'EST')
 
 ```
@@ -185,33 +188,33 @@ For further customization of lasagna plots, use the `plot_lasagna` and `plot_las
 `plot_lasagna` allows for multi-subject lasagna plots with the additional options of sorting the hours by glucose values for each subject, i.e. horizontal sorting, by setting
 `lasagnatype = 'subjectsorted'`.
 
-```{r}
+```{r, cache = T}
 plot_lasagna(example_data_5_subject, datatype = 'average', lasagnatype = 'subjectsorted', tz = 'EST')
 ```
 
 `plot_lasagna` also supports changing the maximum number of days to display, as well as the upper and lower target range limits (LLTR and ULTR), midpoint, and minimum and maximum values to display, all of which will affect the colorbar.
 
-```{r}
+```{r, cache = T}
 plot_lasagna(example_data_5_subject, datatype = 'average', lasagnatype = 'subjectsorted', LLTR = 100, ULTR = 180, midpoint = 150, limits = c(80, 500), tz = 'EST')
 ```
 
 `plot_lasagna_1subject` allows for customization of the more detailed single subject lasagna plots. There is no datatype parameter for `plot_lasagna_1subject`, but there are three types of plots available, accessed with the `lasagnatype` parameter.
 
-```{r}
+```{r, cache = T}
 plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'unsorted', tz = 'EST')
 ```
 
-```{r}
+```{r, cache = T}
 plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'timesorted', tz = 'EST')
 ```
 
-```{r}
+```{r, cache = T}
 plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted', tz = 'EST')
 ```
 
 As with the `lasagna_plot` function, changing the LLTR, ULTR, midpoint, and limits parameters will affect the colorbar.
 
-```{r}
+```{r, cache = T}
 plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted', midpoint = 150, limits = c(80,500), tz = 'EST')
 ```
 
