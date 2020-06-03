@@ -58,7 +58,7 @@ read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
 #' @return A list with
 #' \item{gd2d}{A matrix of glucose values with each row corresponding to a new day, and each column corresponding to time}
 #' \item{actual_dates}{A vector of dates corresponding to the rows of \code{gd2d}}
-#' \item{dt0}{Time frequency of the resulting frid, in minutes}
+#' \item{dt0}{Time frequency of the resulting grid, in minutes}
 #'
 #' @export
 #'
