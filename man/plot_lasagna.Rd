@@ -23,7 +23,7 @@ plot_lasagna(
 
 \item{datatype}{String corresponding to data aggregation used for plotting, currently supported options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject}
 
-\item{lasagnatype}{String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and 'subjectsorted' for a lasagna plot with glucose values sorted within each subject across time points.}
+\item{lasagnatype}{String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.}
 
 \item{maxd}{For datatype "all", maximal number of days to be plotted from the study. The default value is 14 days (2 weeks).}
 
@@ -37,7 +37,10 @@ plot_lasagna(
 
 \item{dt0}{The time frequency for interpolated aligned grid in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
-\item{inter_gap}{The maximum allowable gap (in minutes) for interpolation of NA glucose values. The values will not be interpolated between the glucose measurements thare are more than inter_gap minutes apart. The default value is 60 min.}
+\item{inter_gap}{The maximum allowable gap (in minutes) for interpolation of
+NA glucose values. The values will not be interpolated between
+the glucose measurements that are more than inter_gap minutes apart.
+The default value is 60 min.}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link[base]{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }

@@ -17,13 +17,13 @@ Default list of ranges is ((80, 200), (70, 180), (70, 140)).}
 If a data.frame object is passed, then a tibble object with
 a column for subject id and then a column for each target value is returned. If a vector of glucose
 values is passed, then a tibble object without the subject id is returned.
-as.numeric() can be wrapped around the latter to ouput a numeric vector.
+as.numeric() can be wrapped around the latter to output a numeric vector.
 }
 \description{
 The function in_range_percent produces a tibble object with values equal to
 the percentage of glucose measurements in ranges of target values. The
 output columns correspond to subject id followed by the target value ranges,
-and the rowscorrespond to the subjects. The values will be between 0
+and the rows correspond to the subjects. The values will be between 0
 (no measurements) and 100 (all measurements).
 }
 \details{

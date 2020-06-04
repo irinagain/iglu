@@ -30,7 +30,7 @@ The iglu package is designed with the following three components of Continuous G
 
 * Subject identification
 
-The iglu package comes with example data from 5 subjects with Type II diabetes whose glucose leveles were measured using Dexcom G4 CGM.  
+The iglu package comes with example data from 5 subjects with Type II diabetes whose glucose levels were measured using Dexcom G4 CGM.  
 
 
 ## Example data for 1 subject
@@ -204,7 +204,7 @@ By default, this will produce an unsorted lasagna plot using up to 14 days worth
 plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average', tz = 'EST')
 ```
 
-We can additionally sort the values at each time point across the five subjects by setting `lasagnatype = 'timesorted'
+We can additionally sort the values at each time point across the five subjects by setting `lasagnatype = 'timesorted'`
 
 ```{r, cache = T}
 plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average', lasagnatype = 'timesorted', tz = 'EST')
