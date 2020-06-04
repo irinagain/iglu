@@ -20,7 +20,7 @@ plot_glu(
 
 \item{plottype}{String corresponding to the desired plot type. Options are
 'tsplot' for a time series plot and 'lasagna' for a lasagna plot. See the
-lasagnatype parameter for further options corresponding to the 'lasagna' `plottype`.
+`lasagnatype` parameter for further options corresponding to the 'lasagna' `plottype`.
 Default is 'tsplot'.}
 
 \item{datatype}{String corresponding to data aggregation used for plotting, currently supported options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject}
@@ -45,7 +45,7 @@ subject data.
 }
 \details{
 For the default option 'tsplot', a time series graph for each subject is
-produced with hypo- and hyperglycemia cuttofs shown as horizontal red lines.
+produced with hypo- and hyperglycemia cuttoffs shown as horizontal red lines.
 The time series plots for all subjects chosen (all by default) are displayed
 on a grid.
 

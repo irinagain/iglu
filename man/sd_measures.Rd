@@ -55,7 +55,7 @@ where SD_k is the first measurement more than an hour later than SD_1. Then, tak
 
 \item SdDM - horizontal sd:
 
-Calcualted by taking the daily mean glucose values, and then taking the standard deviation
+Calculated by taking the daily mean glucose values, and then taking the standard deviation
 of those daily means. That is, for d days we take X_1 ... X_d daily means, and then compute
 SD([X_1, X_2, ... X_d]).
 
