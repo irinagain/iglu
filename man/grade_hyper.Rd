@@ -16,7 +16,7 @@ or numeric vector of glucose values.}
 If a data.frame object is passed, then a tibble object with
 two columns: subject id and corresponding \%GRADE hyperglycemia value is returned. If a vector of glucose
 values is passed, then a tibble object with just the \%GRADE hyperglycemia value is returned.
-as.numeric() can be wrapped around the latter to ouput just a numeric value.
+as.numeric() can be wrapped around the latter to output just a numeric value.
 }
 \description{
 The function grade_hyper produces \%GRADE hyperglycemia values in a tibble object.

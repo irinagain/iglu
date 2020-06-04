@@ -36,7 +36,7 @@ library(iglu)
 |M-value| m_value | [Schlichtkrull et al. (1965)](https://doi.org/10.1111/j.0954-6820.1965.tb01810.x)
 |MAGE (Mean Amplitude of Glycemic Excursions)| mage | [Service et al. (1970)](https://doi.org/10.2337/diab.19.9.644) |
 |Mean        | mean_glu                       |          |
-|MODD (Mean Of Daily Diffrences)| modd | [Nelson (1980)](https://doi.org/10.2337/diacare.3.1.58) |
+|MODD (Mean Of Daily Differences)| modd | [Nelson (1980)](https://doi.org/10.2337/diacare.3.1.58) |
 |SD | sd_glu | |
 |SdB (between days, within timepoints)| sd_measures (SdB) |[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)|
 |SdBDM (between days, within timepoints, corrected for changes in daily means)| sd_measures (SdBDM) |[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)|
