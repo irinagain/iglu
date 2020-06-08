@@ -11,7 +11,7 @@ sd_measures(data,dt0 = NULL, inter_gap = 45, tz = "")
 
 \item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
-\item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements thare are more than inter_gap minutes apart. The default value is 45 min.}
+\item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link[base]{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
@@ -55,7 +55,7 @@ where SD_k is the first measurement more than an hour later than SD_1. Then, tak
 
 \item SdDM - horizontal sd:
 
-Calcualted by taking the daily mean glucose values, and then taking the standard deviation
+Calculated by taking the daily mean glucose values, and then taking the standard deviation
 of those daily means. That is, for d days we take X_1 ... X_d daily means, and then compute
 SD([X_1, X_2, ... X_d]).
 

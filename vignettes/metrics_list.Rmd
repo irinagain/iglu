@@ -52,3 +52,30 @@ library(iglu)
 |SdW (vertical within days)| sd_measures (Sd)|[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)| Yes |
 |SdWSH (within time series)| sd_measures (SdWSH) |[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)| Yes |
 |Summary of several | summary_glu | | No |
+=======
+|Metric Name | Corresponding function in iglu | Reference|
+|------------|:------------------------------:|----------|
+|ADRR (Average Daily Risk Range) | adrr |[Kovatchev et al. (2006)](https://doi.org/10.2337/dc06-1085)|
+|CONGA (continuous overall net glycemic action) | conga | [McDonnell et al. (2005)](https://doi.org/10.1089/dia.2005.7.253)|
+|GRADE (Glycemic Risk Assessment Diabetes Equation) | grade | [Hill et al. (2007)](https://doi.org/10.1111/j.1464-5491.2007.02119.x)|
+|GRADEeu | grade_eugly | [Hill et al. (2007)](https://doi.org/10.1111/j.1464-5491.2007.02119.x)|
+|GRADEhyper | grade_hyper | [Hill et al. (2007)](https://doi.org/10.1111/j.1464-5491.2007.02119.x)|
+|GRADEhypo | grade_hypo | [Hill et al. (2007)](https://doi.org/10.1111/j.1464-5491.2007.02119.x)|
+|HBGI (High Blood Glucose Index) | hbgi | [Kovatchev et al. (2006)](https://doi.org/10.2337/dc06-1085)|
+|LBGI (Low Blood Glucose Index) | lbgi | [Kovatchev et al. (2006)](https://doi.org/10.2337/dc06-1085)|
+|Hyperglycemia Index parameters | hyper_index | [Rodbard (2009)](https://doi.org/10.1089/dia.2008.0132)|
+|Hypoglycemia Index parameters | hypo_index | [Rodbard (2009)](https://doi.org/10.1089/dia.2008.0132)|
+|IGC (Index of Glycemic Control)| igc | [Rodbard (2009)](https://doi.org/10.1089/dia.2008.0132) |
+|IQR (Interquartile Range)| iqr_glu | |
+|J-Index| j_index | [Wojcicki (1995)](https://doi.org/10.1055/s-2007-979906) |
+|M-value| m_value | [Schlichtkrull et al. (1965)](https://doi.org/10.1111/j.0954-6820.1965.tb01810.x)
+|MAGE (Mean Amplitude of Glycemic Excursions)| mage | [Service et al. (1970)](https://doi.org/10.2337/diab.19.9.644) |
+|Mean        | mean_glu                       |          |
+|MODD (Mean Of Daily Differences)| modd | [Nelson (1980)](https://doi.org/10.2337/diacare.3.1.58) |
+|SD | sd_glu | |
+|SdB (between days, within timepoints)| sd_measures (SdB) |[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)|
+|SdBDM (between days, within timepoints, corrected for changes in daily means)| sd_measures (SdBDM) |[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)|
+|SdDM (horizontal sd)| sd_measures (SdDM) |[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)|
+|SdHHMM (between time points)| sd_measures (SdHHMM) |[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)|
+|SdW (vertical within days)| sd_measures (Sd)|[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)|
+|SdWSH (within time series)| sd_measures (SdWSH) |[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)|

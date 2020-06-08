@@ -52,13 +52,13 @@ read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
 #' @inheritParams conga
 #' @param data DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.
 #' @param dt0 The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).
-#' @param inter_gap The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements thare are more than inter_gap minutes apart. The default value is 45 min.
+#' @param inter_gap The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.
 #'
 #'
 #' @return A list with
 #' \item{gd2d}{A matrix of glucose values with each row corresponding to a new day, and each column corresponding to time}
 #' \item{actual_dates}{A vector of dates corresponding to the rows of \code{gd2d}}
-#' \item{dt0}{Time frequency of the resulting frid, in minutes}
+#' \item{dt0}{Time frequency of the resulting grid, in minutes}
 #'
 #' @export
 #'

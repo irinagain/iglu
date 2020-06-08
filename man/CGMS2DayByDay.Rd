@@ -11,7 +11,7 @@ CGMS2DayByDay(data, dt0 = NULL, inter_gap = 45, tz = "")
 
 \item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
-\item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements thare are more than inter_gap minutes apart. The default value is 45 min.}
+\item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link[base]{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
@@ -19,7 +19,7 @@ CGMS2DayByDay(data, dt0 = NULL, inter_gap = 45, tz = "")
 A list with
 \item{gd2d}{A matrix of glucose values with each row corresponding to a new day, and each column corresponding to time}
 \item{actual_dates}{A vector of dates corresponding to the rows of \code{gd2d}}
-\item{dt0}{Time frequency of the resulting frid, in minutes}
+\item{dt0}{Time frequency of the resulting grid, in minutes}
 }
 \description{
 Interpolate glucose value on an equally spaced grid from day to day

@@ -12,7 +12,7 @@
 #' @return If a data.frame object is passed, then a tibble object with
 #' two columns: subject id and corresponding CV value is returned. If a vector of glucose
 #' values is passed, then a tibble object with just the CV value is returned.
-#' as.numeric() can be wrapped around the latter to ouput just a numeric value.
+#' as.numeric() can be wrapped around the latter to output just a numeric value.
 #'
 #' @export
 #'

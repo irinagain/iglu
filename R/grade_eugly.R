@@ -12,7 +12,7 @@
 #' @return If a data.frame object is passed, then a tibble object with
 #' two columns: subject id and corresponding \%GRADE euglycemia value is returned. If a vector of glucose
 #' values is passed, then a tibble object with just the \%GRADE euglycemia value is returned.
-#' as.numeric() can be wrapped around the latter to ouput just a numeric value.
+#' as.numeric() can be wrapped around the latter to output just a numeric value.
 #'
 #' @details
 #' A tibble object with 1 row for each subject, a column for subject id and
