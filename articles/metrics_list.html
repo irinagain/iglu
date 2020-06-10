@@ -90,139 +90,214 @@
     
 <table class="table">
 <colgroup>
-<col width="22%">
-<col width="59%">
+<col width="18%">
+<col width="48%">
+<col width="15%">
 <col width="18%">
 </colgroup>
 <thead><tr class="header">
 <th>Metric Name</th>
 <th align="center">Corresponding function in iglu</th>
 <th>Reference</th>
+<th>Time-dependent</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td>ADRR (Average Daily Risk Range)</td>
 <td align="center">adrr</td>
 <td><a href="https://doi.org/10.2337/dc06-1085">Kovatchev et al. (2006)</a></td>
+<td>Yes</td>
 </tr>
 <tr class="even">
-<td>CONGA (continuous overall net glycemic action)</td>
+<td>CONGA (Continuous Overall Net Glycemic Action)</td>
 <td align="center">conga</td>
 <td><a href="https://doi.org/10.1089/dia.2005.7.253">McDonnell et al. (2005)</a></td>
+<td>Yes</td>
 </tr>
 <tr class="odd">
+<td>Coefficient of variation (CV)</td>
+<td align="center">cv_glu</td>
+<td><a href="https://doi.org/10.1089/dia.2008.0132">Rodbard (2009)</a></td>
+<td>No</td>
+</tr>
+<tr class="even">
 <td>GRADE (Glycemic Risk Assessment Diabetes Equation)</td>
 <td align="center">grade</td>
 <td><a href="https://doi.org/10.1111/j.1464-5491.2007.02119.x">Hill et al. (2007)</a></td>
+<td>No</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>GRADEeu</td>
 <td align="center">grade_eugly</td>
 <td><a href="https://doi.org/10.1111/j.1464-5491.2007.02119.x">Hill et al. (2007)</a></td>
+<td>No</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>GRADEhyper</td>
 <td align="center">grade_hyper</td>
 <td><a href="https://doi.org/10.1111/j.1464-5491.2007.02119.x">Hill et al. (2007)</a></td>
+<td>No</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>GRADEhypo</td>
 <td align="center">grade_hypo</td>
 <td><a href="https://doi.org/10.1111/j.1464-5491.2007.02119.x">Hill et al. (2007)</a></td>
+<td>No</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>HBGI (High Blood Glucose Index)</td>
 <td align="center">hbgi</td>
 <td><a href="https://doi.org/10.2337/dc06-1085">Kovatchev et al. (2006)</a></td>
+<td>No</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>LBGI (Low Blood Glucose Index)</td>
 <td align="center">lbgi</td>
 <td><a href="https://doi.org/10.2337/dc06-1085">Kovatchev et al. (2006)</a></td>
-</tr>
-<tr class="odd">
-<td>Hyperglycemia Index parameters</td>
-<td align="center">hyper_index</td>
-<td><a href="https://doi.org/10.1089/dia.2008.0132">Rodbard (2009)</a></td>
+<td>No</td>
 </tr>
 <tr class="even">
-<td>Hypoglycemia Index parameters</td>
-<td align="center">hypo_index</td>
+<td>Hyperglycemia Index Parameters</td>
+<td align="center">hyper_index</td>
 <td><a href="https://doi.org/10.1089/dia.2008.0132">Rodbard (2009)</a></td>
+<td></td>
 </tr>
 <tr class="odd">
+<td>Hypoglycemia Index Parameters</td>
+<td align="center">hypo_index</td>
+<td><a href="https://doi.org/10.1089/dia.2008.0132">Rodbard (2009)</a></td>
+<td>No</td>
+</tr>
+<tr class="even">
 <td>IGC (Index of Glycemic Control)</td>
 <td align="center">igc</td>
 <td><a href="https://doi.org/10.1089/dia.2008.0132">Rodbard (2009)</a></td>
+<td>No</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>IQR (Interquartile Range)</td>
 <td align="center">iqr_glu</td>
 <td></td>
+<td>No</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>J-Index</td>
 <td align="center">j_index</td>
 <td><a href="https://doi.org/10.1055/s-2007-979906">Wojcicki (1995)</a></td>
+<td>No</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>M-value</td>
 <td align="center">m_value</td>
 <td><a href="https://doi.org/10.1111/j.0954-6820.1965.tb01810.x">Schlichtkrull et al. (1965)</a></td>
+<td>No</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>MAGE (Mean Amplitude of Glycemic Excursions)</td>
 <td align="center">mage</td>
 <td><a href="https://doi.org/10.2337/diab.19.9.644">Service et al. (1970)</a></td>
+<td>No</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Mean</td>
 <td align="center">mean_glu</td>
 <td></td>
-</tr>
-<tr class="odd">
-<td>MODD (Mean Of Daily Differences)</td>
-<td align="center">modd</td>
-<td><a href="https://doi.org/10.2337/diacare.3.1.58">Nelson (1980)</a></td>
+<td>No</td>
 </tr>
 <tr class="even">
-<td>SD</td>
-<td align="center">sd_glu</td>
+<td>Median</td>
+<td align="center">median_glu</td>
 <td></td>
+<td>No</td>
 </tr>
 <tr class="odd">
+<td>MODD (Mean Of Daily Diffrences)</td>
+<td align="center">modd</td>
+<td><a href="https://doi.org/10.2337/diacare.3.1.58">Nelson (1980)</a></td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>Percent Above</td>
+<td align="center">above_percent</td>
+<td></td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>Percent Below</td>
+<td align="center">below_percent</td>
+<td></td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>Percent in range</td>
+<td align="center">in_range_percent</td>
+<td></td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>Quantiles</td>
+<td align="center">quantile_glu</td>
+<td></td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>Range</td>
+<td align="center">range_glu</td>
+<td></td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>Standard Deviation</td>
+<td align="center">sd_glu</td>
+<td></td>
+<td>No</td>
+</tr>
+<tr class="even">
 <td>SdB (between days, within timepoints)</td>
 <td align="center">sd_measures (SdB)</td>
 <td><a href="https://doi.org/10.1089/dia.2009.0015">Rodbard (2009)</a></td>
+<td>Yes</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>SdBDM (between days, within timepoints, corrected for changes in daily means)</td>
 <td align="center">sd_measures (SdBDM)</td>
 <td><a href="https://doi.org/10.1089/dia.2009.0015">Rodbard (2009)</a></td>
+<td>Yes</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>SdDM (horizontal sd)</td>
 <td align="center">sd_measures (SdDM)</td>
 <td><a href="https://doi.org/10.1089/dia.2009.0015">Rodbard (2009)</a></td>
+<td>Yes</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>SdHHMM (between time points)</td>
 <td align="center">sd_measures (SdHHMM)</td>
 <td><a href="https://doi.org/10.1089/dia.2009.0015">Rodbard (2009)</a></td>
+<td>Yes</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>SdW (vertical within days)</td>
 <td align="center">sd_measures (Sd)</td>
 <td><a href="https://doi.org/10.1089/dia.2009.0015">Rodbard (2009)</a></td>
+<td>Yes</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>SdWSH (within time series)</td>
 <td align="center">sd_measures (SdWSH)</td>
 <td><a href="https://doi.org/10.1089/dia.2009.0015">Rodbard (2009)</a></td>
+<td>Yes</td>
+</tr>
+<tr class="even">
+<td>Summary of several</td>
+<td align="center">summary_glu</td>
+<td></td>
+<td>No</td>
 </tr>
 </tbody>
 </table>
-</div>
+<p>======= |Metric Name | Corresponding function in iglu | Reference| |————|:——————————:|———-| |ADRR (Average Daily Risk Range) | adrr |<a href="https://doi.org/10.2337/dc06-1085">Kovatchev et al. (2006)</a>| |CONGA (continuous overall net glycemic action) | conga | <a href="https://doi.org/10.1089/dia.2005.7.253">McDonnell et al. (2005)</a>| |GRADE (Glycemic Risk Assessment Diabetes Equation) | grade | <a href="https://doi.org/10.1111/j.1464-5491.2007.02119.x">Hill et al. (2007)</a>| |GRADEeu | grade_eugly | <a href="https://doi.org/10.1111/j.1464-5491.2007.02119.x">Hill et al. (2007)</a>| |GRADEhyper | grade_hyper | <a href="https://doi.org/10.1111/j.1464-5491.2007.02119.x">Hill et al. (2007)</a>| |GRADEhypo | grade_hypo | <a href="https://doi.org/10.1111/j.1464-5491.2007.02119.x">Hill et al. (2007)</a>| |HBGI (High Blood Glucose Index) | hbgi | <a href="https://doi.org/10.2337/dc06-1085">Kovatchev et al. (2006)</a>| |LBGI (Low Blood Glucose Index) | lbgi | <a href="https://doi.org/10.2337/dc06-1085">Kovatchev et al. (2006)</a>| |Hyperglycemia Index parameters | hyper_index | <a href="https://doi.org/10.1089/dia.2008.0132">Rodbard (2009)</a>| |Hypoglycemia Index parameters | hypo_index | <a href="https://doi.org/10.1089/dia.2008.0132">Rodbard (2009)</a>| |IGC (Index of Glycemic Control)| igc | <a href="https://doi.org/10.1089/dia.2008.0132">Rodbard (2009)</a> | |IQR (Interquartile Range)| iqr_glu | | |J-Index| j_index | <a href="https://doi.org/10.1055/s-2007-979906">Wojcicki (1995)</a> | |M-value| m_value | <a href="https://doi.org/10.1111/j.0954-6820.1965.tb01810.x">Schlichtkrull et al. (1965)</a> |MAGE (Mean Amplitude of Glycemic Excursions)| mage | <a href="https://doi.org/10.2337/diab.19.9.644">Service et al. (1970)</a> | |Mean | mean_glu | | |MODD (Mean Of Daily Differences)| modd | <a href="https://doi.org/10.2337/diacare.3.1.58">Nelson (1980)</a> | |SD | sd_glu | | |SdB (between days, within timepoints)| sd_measures (SdB) |<a href="https://doi.org/10.1089/dia.2009.0015">Rodbard (2009)</a>| |SdBDM (between days, within timepoints, corrected for changes in daily means)| sd_measures (SdBDM) |<a href="https://doi.org/10.1089/dia.2009.0015">Rodbard (2009)</a>| |SdDM (horizontal sd)| sd_measures (SdDM) |<a href="https://doi.org/10.1089/dia.2009.0015">Rodbard (2009)</a>| |SdHHMM (between time points)| sd_measures (SdHHMM) |<a href="https://doi.org/10.1089/dia.2009.0015">Rodbard (2009)</a>| |SdW (vertical within days)| sd_measures (Sd)|<a href="https://doi.org/10.1089/dia.2009.0015">Rodbard (2009)</a>| |SdWSH (within time series)| sd_measures (SdWSH) |<a href="https://doi.org/10.1089/dia.2009.0015">Rodbard (2009)</a>|</p>
+  </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
