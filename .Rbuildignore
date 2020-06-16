@@ -12,3 +12,6 @@
 ^docs$
 ^pkgdown$
 ^iglu/vignettes/iglu_cache/.*
+^vignettes/.*_cache/.*
+^vignettes/iglu_cache/.*
+^data-raw$
