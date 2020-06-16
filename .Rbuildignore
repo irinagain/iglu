@@ -16,3 +16,4 @@
 ^vignettes/iglu_cache/.*
 ^data-raw$
 ^cran-comments\.md$
+^CRAN-RELEASE$
