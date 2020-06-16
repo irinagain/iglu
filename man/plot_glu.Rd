@@ -45,7 +45,7 @@ subject data.
 }
 \details{
 For the default option 'tsplot', a time series graph for each subject is
-produced with hypo- and hyperglycemia cuttoffs shown as horizontal red lines.
+produced with hypo- and hyperglycemia cutoffs shown as horizontal red lines.
 The time series plots for all subjects chosen (all by default) are displayed
 on a grid.
 

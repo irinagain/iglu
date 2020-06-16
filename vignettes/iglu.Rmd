@@ -131,11 +131,11 @@ The CGMS2DayByDay function also allows specification of the maximum allowable ga
 
 All functions for metrics requiring linear interpolation will accept the following three parameters that are passed on to `CGMS2DayByDay()`:
 
-* `"dt0"` - Time frequency (numeric) for interpolation. Default will automatically match the frequency of the data
-* `"inter_gap"` - Maximum allowable gap in minutes (numeric) for interpolation
-* `"tz"` - String corresponding to timezone where the data's measurements were recorded
+* "`dt0`" - Time frequency (numeric) for interpolation. Default will automatically match the frequency of the data
+* "`inter_gap`" - Maximum allowable gap in minutes (numeric) for interpolation
+* "`tz`" - String corresponding to timezone where the data's measurements were recorded
   
-In the example_data_5_subject dataset, it is important to specify tz = 'EST', because a Daylight Savings Time shift can cause miscalculations if the wrong timezone is used. A proper call for this dataset, being recorded in EST, would be: 
+In the example_data_5_subject dataset, it is important to specify `tz` = 'EST', because a Daylight Savings Time shift can cause miscalculations if the wrong timezone is used. A proper call for this dataset, being recorded in EST, would be: 
 
 ```{r, eval = F}
 CGMS2DayByDay(example_data_1_subject, tz = 'EST')

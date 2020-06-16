@@ -38,7 +38,7 @@ library(iglu)
 |MAGE (Mean Amplitude of Glycemic Excursions)| mage | [Service et al. (1970)](https://doi.org/10.2337/diab.19.9.644) | No |
 |Mean   | mean_glu | |  No |
 |Median | median_glu | | No |
-|MODD (Mean Of Daily Diffrences)| modd | [Nelson (1980)](https://doi.org/10.2337/diacare.3.1.58) | Yes |
+|MODD (Mean Of Daily Differences)| modd | [Nelson (1980)](https://doi.org/10.2337/diacare.3.1.58) | Yes |
 |Percent Above | above_percent | | No |
 |Percent Below | below_percent | | No |
 |Percent in range | in_range_percent | | No |
