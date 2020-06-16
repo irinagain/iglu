@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate the M-value — m_value • iglu</title>
+<title>Run IGLU Shiny App — iglu_shiny • iglu</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,8 @@
 
 
 
-<meta property="og:title" content="Calculate the M-value — m_value" />
-<meta property="og:description" content="Calculates the M-value of Schlichtkrull et al. (1965) for
-each subject in the data, where the M-value is the mean of the logarithmic
-transformation of the deviation from a reference value. Produces a tibble
-object with subject id and M-values." />
+<meta property="og:title" content="Run IGLU Shiny App — iglu_shiny" />
+<meta property="og:description" content="Run IGLU Shiny App" />
 
 
 
@@ -124,75 +121,19 @@ object with subject id and M-values." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate the M-value</h1>
+    <h1>Run IGLU Shiny App</h1>
     
-    <div class="hidden name"><code>m_value.Rd</code></div>
+    <div class="hidden name"><code>iglu_shiny.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Calculates the M-value of Schlichtkrull et al. (1965) for
-each subject in the data, where the M-value is the mean of the logarithmic
-transformation of the deviation from a reference value. Produces a tibble
-object with subject id and M-values.</p>
+    <p>Run IGLU Shiny App</p>
     </div>
 
-    <pre class="usage"><span class='fu'>m_value</span>(<span class='no'>data</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>90</span>)</pre>
+    <pre class="usage"><span class='fu'>iglu_shiny</span>()</pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>data</th>
-      <td><p>DataFrame object with column names "id", "time", and "gl",
-or numeric vector of glucose values.</p></td>
-    </tr>
-    <tr>
-      <th>r</th>
-      <td><p>A reference value corresponding to basal glycemia in normal
-subjects; default is 90 mg/dL.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If a data.frame object is passed, then a tibble object with
-two columns: subject id and corresponding M-value is returned. If a vector of glucose
-values is passed, then a tibble object with just the M-value is returned.
-as.numeric() can be wrapped around the latter to output just a numeric value.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>A tibble object with 1 row for each subject, a column for subject id and
-a column for the M-values is returned. NA glucose values are
-omitted from the calculation of the M-value.</p>
-<p>M-value is computed by averaging the transformed glucose values, where each
-transformed value is equal to \(|1000 * log_10(glucose/100)|^3\)</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Schlichtkrull J, Munck O, Jersild M. (1965) The M-value, an index of
-blood-sugar control in diabetics.
-<em>Acta Medica Scandinavica</em> <strong>177</strong> .95-102.
-doi: <a href='https://doi.org/10.1111/j.0954-6820.1965.tb01810.x'>10.1111/j.0954-6820.1965.tb01810.x</a>
-.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>example_data_5_subject</span>)
-
-<span class='fu'>m_value</span>(<span class='no'>example_data_5_subject</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 2
-#&gt;   id        m_value
-#&gt;   &lt;fct&gt;       &lt;dbl&gt;
-#&gt; 1 Subject 1    7.02
-#&gt; 2 Subject 2   63.7 
-#&gt; 3 Subject 3   19.9 
-#&gt; 4 Subject 4    7.39
-#&gt; 5 Subject 5   34.8 </div><div class='input'><span class='fu'>m_value</span>(<span class='no'>example_data_5_subject</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>100</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 2
-#&gt;   id        m_value
-#&gt;   &lt;fct&gt;       &lt;dbl&gt;
-#&gt; 1 Subject 1    4.10
-#&gt; 2 Subject 2   45.4 
-#&gt; 3 Subject 3   12.8 
-#&gt; 4 Subject 4    4.04
-#&gt; 5 Subject 5   24.0 </div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
