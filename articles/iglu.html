@@ -207,14 +207,11 @@
 <p>The CGMS2DayByDay function also allows specification of the maximum allowable gap to interpolate values across (default is 45 minutes) and a string corresponding to time zone (default is the timezone of the user’s system).</p>
 <p>All functions for metrics requiring linear interpolation will accept the following three parameters that are passed on to <code><a href="../reference/CGMS2DayByDay.html">CGMS2DayByDay()</a></code>:</p>
 <ul>
-<li>
-<code>"dt0"</code> - Time frequency (numeric) for interpolation. Default will automatically match the frequency of the data</li>
-<li>
-<code>"inter_gap"</code> - Maximum allowable gap in minutes (numeric) for interpolation</li>
-<li>
-<code>"tz"</code> - String corresponding to timezone where the data’s measurements were recorded</li>
+<li>“<code>dt0</code>” - Time frequency (numeric) for interpolation. Default will automatically match the frequency of the data</li>
+<li>“<code>inter_gap</code>” - Maximum allowable gap in minutes (numeric) for interpolation</li>
+<li>“<code>tz</code>” - String corresponding to timezone where the data’s measurements were recorded</li>
 </ul>
-<p>In the example_data_5_subject dataset, it is important to specify tz = ‘EST’, because a Daylight Savings Time shift can cause miscalculations if the wrong timezone is used. A proper call for this dataset, being recorded in EST, would be:</p>
+<p>In the example_data_5_subject dataset, it is important to specify <code>tz</code> = ‘EST’, because a Daylight Savings Time shift can cause miscalculations if the wrong timezone is used. A proper call for this dataset, being recorded in EST, would be:</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/CGMS2DayByDay.html">CGMS2DayByDay</a></span>(<span class="no">example_data_1_subject</span>, <span class="kw">tz</span> <span class="kw">=</span> <span class="st">'EST'</span>)</pre></body></html></div>
 <p>Examples of proper metric function calls will be shown in the next section.</p>
 </div>
