@@ -22,9 +22,9 @@ plot_lasagna_1subject(
 \item{lasagnatype}{String corresponding to plot type, currently supported
 options are 'unsorted' for an unsorted single-subject lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across days, and 'daysorted' for a lasagna plot with glucose values sorted within each day across time points.}
 
-\item{limits}{The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link[ggplot2]{scale_fill_gradient2}})}
+\item{limits}{The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link{scale_fill_gradient2}})}
 
-\item{midpoint}{The glucose value serving as midpoint (white) of the diverging gradient scale (see \code{\link[ggplot2]{scale_fill_gradient2}}). The default value is 125 mg/dL. The values above are colored in red, and below in blue.}
+\item{midpoint}{The glucose value serving as midpoint (white) of the diverging gradient scale (see \code{\link{scale_fill_gradient2}}). The default value is 125 mg/dL. The values above are colored in red, and below in blue.}
 
 \item{LLTR}{Lower Limit of Target Range, default value is 80 mg/dL.}
 
@@ -37,7 +37,7 @@ NA glucose values. The values will not be interpolated between
 the glucose measurements that are more than inter_gap minutes apart.
 The default value is 60 min.}
 
-\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link[base]{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 A ggplot object corresponding to lasagna plot
