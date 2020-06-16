@@ -37,7 +37,7 @@
 #' and taking the standard deviation of those mans. That is, for t time points
 #' we compute X_t means for each time point and then compute SD([X_1, X_2, ... X_t]).
 #'
-#' \item SdwSH - within series:
+#' \item SdWSH - within series:
 #'
 #' Calculated by taking the hour-long intervals starting at every point in the interpolated
 #' grid, computing the standard deviation of the points in each hour-long interval, and then
