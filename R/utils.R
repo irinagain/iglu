@@ -112,7 +112,7 @@ CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
 
   ### Automatically identify grid width dt0
   if (is.null(dt0)){
-    dt0 = as.double(round(median(timediff, na.rm = T)))
+    dt0 = as.double(round(median(timediff, na.rm = TRUE)))
   }
 
   if (dt0 > inter_gap){
@@ -163,7 +163,7 @@ CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
   new$y[missing] <- NA
 
   # Next, from ti remove all the ones that are more than dt0 min away from t0
-  gd2d = matrix(new$y, nrow = ndays, byrow = T)
+  gd2d = matrix(new$y, nrow = ndays, byrow = TRUE)
 
   # Assign rownames that correspond to actual dates
   actual_dates = as.Date(minD) + lubridate::days(0:(ndays - 1))

@@ -52,11 +52,11 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 
   lasagnatype = match.arg(lasagnatype)
   if (lasagnatype == 'timesorted'){
-    gl_by_id_ip = apply(gl_by_id_ip, 2, sort, decreasing = T, na.last = T)
+    gl_by_id_ip = apply(gl_by_id_ip, 2, sort, decreasing = TRUE, na.last = TRUE)
     title = ", sorted within each time point."
     ytitle = "Day (sorted)"
   }else if (lasagnatype == 'daysorted'){
-    gl_by_id_ip = t(apply(gl_by_id_ip, 1, sort, decreasing = T, na.last = T))
+    gl_by_id_ip = t(apply(gl_by_id_ip, 1, sort, decreasing = TRUE, na.last = TRUE))
     title = ", sorted within each day."
     xtitle = "Hour (sorted)"
   }
@@ -124,7 +124,7 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
 
   if (datatype == "average"){
     # Combine the list of averages into the matrix form
-    average24 = t(sapply(gdall, colMeans, na.rm = T))
+    average24 = t(sapply(gdall, colMeans, na.rm = TRUE))
     # Time grid for 24 hour period
     time_grid_hours = cumsum(rep(dt0, 24 * 60 /dt0)) / 60
 
@@ -133,11 +133,11 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
     ytitle = "Subject"
     xtitle = "Hour"
     if (lasagnatype == 'timesorted'){
-      average24 = apply(average24, 2, sort, decreasing = T, na.last = T)
+      average24 = apply(average24, 2, sort, decreasing = TRUE, na.last = TRUE)
       title = ", sorted within each time point."
       ytitle = "Subject (sorted)"
     }else if (lasagnatype == 'subjectsorted'){
-      average24 = t(apply(average24, 1, sort, decreasing = T, na.last = T))
+      average24 = t(apply(average24, 1, sort, decreasing = TRUE, na.last = TRUE))
       title = ", sorted within each subject."
       xtitle = "Hour (sorted)"
     }
@@ -177,11 +177,11 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
     ytitle = "Subject"
     xtitle = "Day"
     if (lasagnatype == 'timesorted'){
-      out = apply(out, 2, sort, decreasing = T, na.last = T)
+      out = apply(out, 2, sort, decreasing = TRUE, na.last = TRUE)
       title = ", sorted within each time point."
       ytitle = "Subject (sorted)"
     }else if (lasagnatype == 'subjectsorted'){
-      out = t(apply(out, 1, sort, decreasing = T, na.last = T))
+      out = t(apply(out, 1, sort, decreasing = TRUE, na.last = TRUE))
       title = ", sorted within each subject."
       xtitle = "Day (sorted)"
     }

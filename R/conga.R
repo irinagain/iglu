@@ -46,12 +46,12 @@ conga <- function(data, tz = ""){
     data_ip = CGMS2DayByDay(data, tz = tz)
     gl_by_id_ip = data_ip[[1]]
 
-    out = sd(diff(gl_by_id_ip), na.rm = T)
+    out = sd(diff(gl_by_id_ip), na.rm = TRUE)
     return(out)
   }
 
-  conga = gl = id = NULL
-  rm(list = c("conga", "gl", "id"))
+  gl = id = NULL
+  rm(list = c("gl", "id"))
   data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
 

@@ -108,28 +108,28 @@ sd_measures <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
     gdall,
     function(gd2d) {
       # SdW - vertical within days
-      out = tibble::tibble(id = NA, SdW = mean(apply(gd2d, 1, sd, na.rm = T), na.rm = T))
+      out = tibble::tibble(id = NA, SdW = mean(apply(gd2d, 1, sd, na.rm = TRUE), na.rm = TRUE))
       # SdHHMM - between time points
-      out$SdHHMM = sd(apply(gd2d, 2, mean, na.rm = T), na.rm = T)
+      out$SdHHMM = sd(apply(gd2d, 2, mean, na.rm = TRUE), na.rm = TRUE)
       # SdWSH - Within series - for 1 hour window
       win = round(60/dt0) # how many measurements are within 1 hour
       gs = as.vector(t(gd2d))
       #N = length(gs) # total # of measurements
       #ind = rep(1:ceiling(N/win), each = win)[1:N] # consecutive indexing
-      #out$SdWSH = mean(tapply(gs, ind, sd, na.rm = T), na.rm = T)
-      out$SdWSH = mean(caTools::runsd(gs, k = win, endrule = "trim"), na.rm = T)
+      #out$SdWSH = mean(tapply(gs, ind, sd, na.rm = TRUE), na.rm = TRUE)
+      out$SdWSH = mean(caTools::runsd(gs, k = win, endrule = "trim"), na.rm = TRUE)
 
       # SdDM - "Horizontal" sd
-      meanR = apply(gd2d, 1, mean, na.rm = T)
-      out$SdDM = sd(meanR, na.rm = T)
+      meanR = apply(gd2d, 1, mean, na.rm = TRUE)
+      out$SdDM = sd(meanR, na.rm = TRUE)
 
       # SdB - between days, within timepoints
-      out$SdB = mean(apply(gd2d, 2, sd, na.rm = T), na.rm = T)
+      out$SdB = mean(apply(gd2d, 2, sd, na.rm = TRUE), na.rm = TRUE)
 
       # SdBDM - between days, within timepoints, corrected for changes in daily means
-      med = matrix(rep(meanR, each = ncol(gd2d)), ncol = ncol(gd2d), byrow = T)
-      # out$SdBDM = mean(apply(sqrt((gd2d - med)^2), 1, mean, na.rm = T), na.rm = T)
-      out$SdBDM = mean(apply(gd2d - med, 2, sd, na.rm = T), na.rm = T)
+      med = matrix(rep(meanR, each = ncol(gd2d)), ncol = ncol(gd2d), byrow = TRUE)
+      # out$SdBDM = mean(apply(sqrt((gd2d - med)^2), 1, mean, na.rm = TRUE), na.rm = TRUE)
+      out$SdBDM = mean(apply(gd2d - med, 2, sd, na.rm = TRUE), na.rm = TRUE)
 
       out
     })
