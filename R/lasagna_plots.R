@@ -94,7 +94,6 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 #'
 #' @examples
 #'
-#' plot_lasagna(example_data_5_subject, maxd = 18, tz = "EST")
 #' plot_lasagna(example_data_5_subject, datatype = "average", lasagnatype = 'timesorted', tz = "EST")
 #' plot_lasagna(example_data_5_subject, lasagnatype = "subjectsorted", LLTR = 100, tz = "EST")
 #'

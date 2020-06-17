@@ -52,7 +52,6 @@ Lasagna plot of glucose values for multiple subjects
 }
 \examples{
 
-plot_lasagna(example_data_5_subject, maxd = 18, tz = "EST")
 plot_lasagna(example_data_5_subject, datatype = "average", lasagnatype = 'timesorted', tz = "EST")
 plot_lasagna(example_data_5_subject, lasagnatype = "subjectsorted", LLTR = 100, tz = "EST")
 

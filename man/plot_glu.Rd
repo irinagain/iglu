@@ -55,12 +55,10 @@ The 'lasagna' plot type works best when the datatype argument is set to average.
 
 data(example_data_1_subject)
 plot_glu(example_data_1_subject)
-plot_glu(example_data_1_subject, LLTR = 70)
 
 data(example_data_5_subject)
 plot_glu(example_data_5_subject, subjects = 'Subject 2')
 plot_glu(example_data_5_subject, plottype = 'tsplot', tz = 'EST', LLTR = 70, ULTR= 150)
 plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'timesorted')
-plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'unsorted')
 
 }
