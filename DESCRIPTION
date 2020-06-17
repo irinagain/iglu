@@ -1,7 +1,7 @@
 Package: iglu
 Type: Package
-Title: Interpreting GLUcose Data from CGMs
-Version: 1.0.0
+Title: Interpreting glucose data from continuous glucose monitors
+Version: 1.0.1
 Authors@R: c(person("Steve", "Broll",
             email = "stevebroll@tamu.edu",
             role = c("aut")),
@@ -14,7 +14,7 @@ Authors@R: c(person("Steve", "Broll",
             email = "muschellij2@gmail.com"), 
             person("Irina", "Gaynanova",
             email = "irinag@stat.tamu.edu",role = c("aut", "cre")))
-Description: This package implements a wide range of CGM-derived metrics for measuring glucose control and glucose variability. The package also allows to visualize CGM data using time-series and lasagna plots. 
+Description: Implements a wide range of metrics for measuring glucose control and glucose variability based on continuous glucose monitoring data. Also allows to visualize the data using time-series and lasagna plots. 
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
