@@ -36,6 +36,7 @@ shinyUI(fluidPage(
                                                                                `Interquartile Range` = 'iqr_glu',
                                                                                `J Index` = 'j_index',
                                                                                `Low Blood Glucose Index` = 'lbgi',
+                                                                               `M-Value` = 'm_value',
                                                                                `MAGE` = 'mage',
                                                                                `Mean` = 'mean_glu',
                                                                                `Median` = 'median_glu',
@@ -43,6 +44,7 @@ shinyUI(fluidPage(
                                                                                `Quantiles` = 'quantile_glu',
                                                                                `Range` = 'range_glu',
                                                                                `Standard Deviation` = 'sd_glu',
+                                                                               `Standard Deviation Subtypes` = 'sd_measures',
                                                                                `Summary Statistics` = 'summary_glu'
                )),
                uiOutput("select_parameter"),
@@ -54,12 +56,23 @@ shinyUI(fluidPage(
              sidebarLayout(
                sidebarPanel(
                  radioButtons("plottype",  "Plot Type",
-                              choices = c(`Time Series (1 subject)` = 'tsplot',
-                                          `Lasagna Unsorted` = 'unsorted',
-                                          `Lasagna Within-Row Sorted` = 'rowsorted'
-                                          #                        ,
-                                          #                        `Scatterplot of Metrics` = 'metric_scatter'
-                              ))
+                              choices = c(`Time Series` = 'tsplot',
+                                          `Lasagna Plot (Multiple Subject)` = 'lasagnamulti',
+                                          `Lasagna Plot (Single Subject)` = 'lasagnasingle'
+               )),
+               uiOutput("plot_lasagnatype"),
+               uiOutput("plot_subjects"),
+               uiOutput("plot_subjects_help_text"),
+               uiOutput("plot_maxd"),
+               uiOutput("plot_datatype"),
+               uiOutput("plot_datatype_help_text"),
+               #uiOutput("plot_tz"),
+               #uiOutput("plot_tz_help_text"),
+               uiOutput("plot_TR"),
+               #uiOutput("plot_TR_help_text"),
+               uiOutput("plot_midpoint"),
+               uiOutput('plot_limits'),
+               uiOutput('plot_colorbar_help_text')
                ),
                mainPanel(plotOutput("plot"))
              ))

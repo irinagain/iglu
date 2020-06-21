@@ -5,32 +5,30 @@
 \title{Calculate mean difference between glucose values obtained at the same time
 of day (MODD)}
 \usage{
-modd(data, lag = 1)
+modd(data, lag = 1, tz = "")
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl",
-or numeric vector of glucose values. Missing values will be linearly
-interpolated when close enough to non-missing values.}
+\item{data}{DataFrame object with column names "id", "time", and "gl".}
 
 \item{lag}{Integer indicating which lag (# days) to use. Default is 1.}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
-
+A tibble object with two columns: subject id and corresponding MODD value.
 }
 \description{
-The function modd produces MODD values in data.frame form
-with one column and one row per subject.
+The function modd produces MODD values in a tibble object.
 }
 \details{
-A dataframe structure with one column and a row for each subject.
+A tibble object with 1 row for each subject, a column for subject id and
+a column for the MODD values is returned.
+
+Missing values will be linearly interpolated when close enough to non-missing values.
 
 MODD is calculated by taking the mean of absolute differences between
 measurements at the same time 1 day away, or more if lag parameter
 is set to an integer > 1.
-
-Wrapping as.numeric() around the modd call on a dataset with
-a single subject will return a numeric value corresponding
-to the MODD value. This will not work for datasets with multiple subjects.
 }
 \examples{
 

@@ -1,29 +1,28 @@
 #' Calculate Coefficient of Variation (CV) of glucose levels
 #'
 #' @description
-#' The function cv_glu produces CV values in data.frame form
-#' with one column and one row per subject.
+#' The function cv_glu produces CV values in a tibble object.
 #'
 #' @usage
 #' cv_glu(data)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values. NA's will be omitted from the glucose
-#' values in calculation of CV.
+#' or numeric vector of glucose values.
 #'
-#' @return
+#' @return If a data.frame object is passed, then a tibble object with
+#' two columns: subject id and corresponding CV value is returned. If a vector of glucose
+#' values is passed, then a tibble object with just the CV value is returned.
+#' as.numeric() can be wrapped around the latter to output just a numeric value.
 #'
 #' @export
 #'
 #' @details
-#' A dataframe structure with one column and a row for each subject.
+#' A tibble object with 1 row for each subject, a column for subject id and
+#' a column for CV values is returned. NA glucose values are
+#' omitted from the calculation of the CV.
 #'
 #' CV (Coefficient of Variation) is calculated by \eqn{100 * sd(BG) / mean(BG)}
 #' Where BG is the list of all Blood Glucose measurements for a subject.
-#'
-#' Wrapping as.numeric() around the cv_glu call on a dataset with
-#' a single subject will return a numeric value corresponding
-#' to the CV value. This will not work for datasets with multiple subjects.
 #'
 #' @references
 #' Rodbard (2009) Interpretation of continuous glucose monitoring data:

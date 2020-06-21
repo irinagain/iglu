@@ -1,25 +1,23 @@
 #' Calculate sd glucose level
 #'
 #' @description The function sd_glu is a wrapper for the base function
-#' sd(). The output is in a data.frame form by default, with one column
-#' and a row corresponding to each subject.
+#' sd(). Output is a tibble object with subject id and sd values.
 #'
 #' @usage
 #' sd_glu(data)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values. NA's will be omitted from the glucose
-#' values in calculation of sd.
+#' or numeric vector of glucose values.
 #'
 #' @details
-#' A dataframe structure with 1 row for each subject and 1 column for the sd
-#' value is returned.
+#' A tibble object with 1 row for each subject, a column for subject id and
+#' a column for the sd values is returned. NA glucose values are
+#' omitted from the calculation of the sd.
 #'
-#' Wrapping as.numeric() around the sd_glu call on a dataset with
-#' a single subject will return a numeric value corresponding to the sd.
-#' This will not work for datasets with multiple subjects.
-#'
-#' @return
+#' @return If a data.frame object is passed, then a tibble object with
+#' two columns: subject id and corresponding sd value is returned. If a vector of glucose
+#' values is passed, then a tibble object with just the sd value is returned.
+#' as.numeric() can be wrapped around the latter to output just a numeric value.
 #'
 #' @export
 #'

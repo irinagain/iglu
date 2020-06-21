@@ -7,43 +7,37 @@
 above_percent(data, targets_above = c(140, 180, 200, 250))
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl".}
+\item{data}{DataFrame object with column names "id", "time", and "gl",
+or numeric vector of glucose values.}
 
 \item{targets_above}{Numeric vector of glucose thresholds. Glucose values from
 data argument will be compared to each value in the targets_above vector.
 Default list is (140, 180, 200, 250).}
 }
 \value{
-A data.frame with columns of the percentage of values above a
-threshold
+If a data.frame object is passed, then a tibble object with
+a column for subject id and then a column for each target value is returned. If a vector of glucose
+values is passed, then a tibble object without the subject id is returned.
+as.numeric() can be wrapped around the latter to output a numeric vector.
 }
 \description{
-The function above_percent produces a dataframe of values equal to
-the percentage of glucose measurements above target values. The output is in
-data.frame form by default, where the columns correspond to the target
-values and the output rows correspond to the subjects. The values will be
-between 0 (no measurements) and 100 (all measurements).
+The function above_percent produces a tibble object with values equal to
+the percentage of glucose measurements above target values. The output columns
+correspond to the subject id followed by the target values and the
+output rows correspond to the subjects. The values will be between 0
+(no measurements) and 100 (all measurements).
 }
 \details{
-A dataframe structure with 1 row for each subject and a
-column for each target value is returned.
-
-Wrapping as.numeric() around the above_percent call on a dataset with
-a single subject will return a numeric vector, where the values
-correspond to the percent of glucose values above each threshold
-in the order passed in the targets_above argument. This will not work for
-datasets with multiple subjects.
+A tibble object with 1 row for each subject, a column for subject id and
+column for each target value is returned. NA's will be omitted from the glucose
+values in calculation of percent.
 }
 \examples{
 
 data(example_data_1_subject)
 
 above_percent(example_data_1_subject)
-above_percent(example_data_1_subject$gl)
 above_percent(example_data_1_subject, targets_above = c(100, 150, 180))
-
-# output numeric vector instead of dataframe
-above_percent(example_data_1_subject)
 
 data(example_data_5_subject)
 

@@ -1,22 +1,28 @@
 Package: iglu
 Type: Package
-Title: Interpreting Glucose Data
-Version: 0.1.1
+Title: Interpreting glucose data from continuous glucose monitors
+Version: 1.0.1
 Authors@R: c(person("Steve", "Broll",
             email = "stevebroll@tamu.edu",
-            role = c("aut", "cre")),
-             person("Irina", "Gaynanova",
-             email = "irinag@stat.tamu.edu",
-             role = "aut"))
-Description: Reads and analyzes data from continuous
-    glucose monitors. Functions return metrics and relevant plots with a single
-    line of code.
+            role = c("aut")),
+            person("Jacek", "Urbanek",
+            role = c("aut")),
+            person("David", "Buchanan",
+            role = c("aut")),
+            person("John", "Muschelli",
+            role = c("aut"),
+            email = "muschellij2@gmail.com"), 
+            person("Irina", "Gaynanova",
+            email = "irinag@stat.tamu.edu",role = c("aut", "cre")))
+Description: Implements a wide range of metrics for measuring glucose control and glucose variability based on continuous glucose monitoring data. Also allows to visualize the data using time-series and lasagna plots. 
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0
 Depends: R (>= 3.1.0)
 Imports:
+    caTools,
+    scales,
     stats,
     ggplot2,
     lubridate,
@@ -24,6 +30,7 @@ Imports:
     DT,
     dplyr,
     magrittr,
+    tibble,
     tidyr
 Suggests:
     knitr,

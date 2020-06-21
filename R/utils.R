@@ -52,13 +52,13 @@ read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
 #' @inheritParams conga
 #' @param data DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.
 #' @param dt0 The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).
-#' @param inter_gap The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements thare are more than inter_gap minutes apart. The default value is 45 min.
+#' @param inter_gap The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.
 #'
 #'
 #' @return A list with
-#' @param gd2d - a matrix of glucose values with each row corresponding to a new day, and each column corresponding to time
-#' @param actual_dates - a vector of dates corresponding to the rows of \code{gd2d}
-#' @param dt0 - time frequency of the resulting frid, in minutes
+#' \item{gd2d}{A matrix of glucose values with each row corresponding to a new day, and each column corresponding to time}
+#' \item{actual_dates}{A vector of dates corresponding to the rows of \code{gd2d}}
+#' \item{dt0}{Time frequency of the resulting grid, in minutes}
 #'
 #' @export
 #'
@@ -73,6 +73,9 @@ CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
   ns = length(unique(data$id))
 
   if (ns > 1){
+    id = NULL
+    rm(list = c("id"))
+
     first = unique(data$id)[1]
     data = data %>% dplyr::filter(id == first)
     warning(paste("Data contains more than 1 subject. Only the first subject with id", first,  "is used for output."))
@@ -98,14 +101,18 @@ CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
   timeindex = 2:length(tr)
   timediff = difftime(tr[timeindex], tr[timeindex - 1], units = "mins")
 
-  ### Check for time soring
+  ### Check for time sorting
   if (min(timediff) < 0){
-    stop(paste("The times for subject", unique(data$id), "are not in increasing order!"))
+    warning(paste("The times for subject", unique(data$id), "are not in increasing order! The times will be sorted automatically."))
+    index = order(tr)
+    tr = tr[index]
+    g = g[index]
+    timediff = difftime(tr[timeindex], tr[timeindex - 1], units = "mins")
   }
 
   ### Automatically identify grid width dt0
   if (is.null(dt0)){
-    dt0 = as.double(round(median(timediff, na.rm = T)))
+    dt0 = as.double(round(median(timediff, na.rm = TRUE)))
   }
 
   if (dt0 > inter_gap){
@@ -156,7 +163,7 @@ CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
   new$y[missing] <- NA
 
   # Next, from ti remove all the ones that are more than dt0 min away from t0
-  gd2d = matrix(new$y, nrow = ndays, byrow = T)
+  gd2d = matrix(new$y, nrow = ndays, byrow = TRUE)
 
   # Assign rownames that correspond to actual dates
   actual_dates = as.Date(minD) + lubridate::days(0:(ndays - 1))

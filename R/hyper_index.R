@@ -1,31 +1,33 @@
 #' Calculate Hyperglycemia Index
 #'
 #' @description
-#' The function hyper_index produces Hyperglycemia index values in data.frame
-#' form with one column and one row per subject.
+#' The function hyper_index produces Hyperglycemia Index values in a tibble object.
 #'
 #' @usage
-#' hyper_index(data, ULTR = 140)
+#' hyper_index(data, ULTR = 140, a = 1.1, c = 30)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values. NA's will be omitted from the glucose
-#' values in calculation of Hyperglycemic Index.
+#' or numeric vector of glucose values.
 #'
 #' @param ULTR Upper Limit of Target Range, default value is 140 mg/dL.
 #'
-#' @param a Exponent, generally in the range from 1.0 to 2.0, efault value is 1.1.
+#' @param a Exponent, generally in the range from 1.0 to 2.0, default value is 1.1.
 #'
-#' @param c Scaling factor,to display Hyperglycemia Index, Hypoglycemia Index, and IGC on approximately the same numerical range as measurements of HBGI, LBGI and GRADE, default value is 30.
+#' @param c Scaling factor, to display Hyperglycemia Index, Hypoglycemia Index, and IGC on approximately the same numerical range as measurements of HBGI, LBGI and GRADE, default value is 30.
 #'
 #' @details
-#' A dataframe structure with one column and a row for each subject.
+#' A tibble object with 1 row for each subject, a column for subject id and
+#' a column for the Hyperglycemia Index values is returned. NA glucose values are
+#' omitted from the calculation of the Hyperglycemia Index values.
 #'
 #' Hyperglycemia Index is calculated by \eqn{n/c * \sum [(hyperBG_j-ULTR) ^{a}]}
 #' Here n is the total number of Blood Glucose measurements (excluding NA values), \eqn{hyperBG_j}
 #' is the jth Blood Glucose measurement above the ULTR cutoff, a is an exponent, and c is a scaling factor.
 #'
-#'
-#' @return
+#' @return If a data.frame object is passed, then a tibble object with
+#' two columns: subject id and corresponding Hyperglycemia Index value is returned. If a vector of glucose
+#' values is passed, then a tibble object with just the Hyperglycemia Index value is returned.
+#' as.numeric() can be wrapped around the latter to output just a numeric value.
 #'
 #' @export
 #'

@@ -8,30 +8,29 @@ mage(data, sd_multiplier = 1)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
-or numeric vector of glucose values. NA's will be omitted from the glucose
-values in calculation of MAGE.}
+or numeric vector of glucose values.}
 
 \item{sd_multiplier}{A numeric value that can change the sd value used
 to determine size of glycemic excursions used in the calculation.}
 }
 \value{
-
+If a data.frame object is passed, then a tibble object with
+two columns: subject id and corresponding MAGE value is returned. If a vector of glucose
+values is passed, then a tibble object with just the MAGE value is returned.
+as.numeric() can be wrapped around the latter to output just a numeric value.
 }
 \description{
-The function mage produces MAGE values in data.frame form
-with one column and one row per subject.
+The function mage produces MAGE values in a tibble object.
 }
 \details{
-A dataframe structure with one column and a row for each subject.
+A tibble object with 1 row for each subject, a column for subject id and
+a column for the MAGE values is returned. NA glucose values are
+omitted from the calculation of MAGE.
 
 MAGE is calculated by taking the mean of absolute differences (between
 each value and the mean) that are greater than the standard deviation.
 A multiplier can be added to the standard deviation by the sd_multiplier
 argument.
-
-Wrapping as.numeric() around the mage call on a dataset with
-a single subject will return a numeric value corresponding to the MAGE value.
-This will not work for datasets with multiple subjects.
 }
 \examples{
 

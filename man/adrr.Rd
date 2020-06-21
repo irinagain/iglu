@@ -7,17 +7,20 @@
 adrr(data)
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl",
-or numeric vector of glucose values.}
+\item{data}{DataFrame object with column names "id", "time", and "gl".}
 }
 \value{
-A data.frame of values of ADRR
+A tibble object with two columns: subject id and corresponding
+ADRR value.
 }
 \description{
-The function adrr produces ADRR values in data.frame form
-with one column and one row per subject.
+The function adrr produces ADRR values in a tibble object.
 }
 \details{
+A tibble object with 1 row for each subject, a column for subject id and
+a column for ADRR values is returned. NA glucose values are
+omitted from the calculation of the ADRR values.
+
 ADRR is the average sum of HBGI corresponding to the highest glucose
 value and LBGI corresponding to the lowest glucose value for each day,
 with the average taken over the daily sums. If there are no high glucose or

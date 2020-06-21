@@ -8,3 +8,12 @@
 ^README\.Rmd$
 ^\.travis\.yml$
 ^appveyor\.yml$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^iglu/vignettes/iglu_cache/.*
+^vignettes/.*_cache/.*
+^vignettes/iglu_cache/.*
+^data-raw$
+^cran-comments\.md$
+^CRAN-RELEASE$

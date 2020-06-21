@@ -8,24 +8,24 @@ median_glu(data)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
-or numeric vector of glucose values. NA's will be omitted from the glucose
-values in calculation of median.}
+or numeric vector of glucose values.}
 }
 \value{
+If a data.frame object is passed, then a tibble object with
+two columns: subject id and corresponding median value is returned. If a vector of glucose
+values is passed, then a tibble object with just the median value is returned.
+as.numeric() can be wrapped around the latter to output just a numeric value.
+
 
 }
 \description{
 The function median_glu is a wrapper for the base function
-median(). The output is in a data.frame form by default, with one column
-and a row corresponding to each subject.
+median(). Output is a tibble object with subject id and median values.
 }
 \details{
-A dataframe structure with 1 row for each subject and 1 column for the median
-value is returned.
-
-Wrapping as.numeric() around the median_glu call on a dataset with
-a single subject will return a numeric value corresponding to the median.
-This will not work for datasets with multiple subjects.
+A tibble object with 1 row for each subject, a column for subject id and
+a column for the median values is returned. NA glucose values are
+omitted from the  calculation of the median.
 }
 \examples{
 data(example_data_1_subject)

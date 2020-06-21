@@ -1,30 +1,28 @@
 #' Calculate J-index
 #'
 #' @description
-#' The function j_index produces J-index values in data.frame form
-#' with one column and one row per subject.
+#' The function j_index produces J-Index values a tibble object.
 #'
 #' @usage
 #' j_index(data)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values. NA's will be omitted from the glucose
-#' values in calculation of J-index score.
+#' or numeric vector of glucose values.
 #'
-#'
-#' @return
+#' @return If a data.frame object is passed, then a tibble object with
+#' two columns: subject id and corresponding J-Index value is returned. If a vector of glucose
+#' values is passed, then a tibble object with just the J-Index value is returned.
+#' as.numeric() can be wrapped around the latter to output just a numeric value.
 #'
 #' @export
 #'
 #' @details
-#' A dataframe structure with one column and a row for each subject.
+#' A tibble object with 1 row for each subject, a column for subject id and
+#' a column for J-Index values is returned. NA glucose values are
+#' omitted from the calculation of the J-Index.
 #'
-#' J-index score is calculated by \eqn{.001 * [mean(BG) + sd(BG)]^2}
+#' J-Index score is calculated by \eqn{.001 * [mean(BG) + sd(BG)]^2}
 #' where BG is the list of Blood Glucose Measurements.
-#'
-#' Wrapping as.numeric() around the j_index call on a dataset with
-#' a single subject will return a numeric value corresponding to the J-index
-#' score. This will not work for datasets with multiple subjects.
 #'
 #' @references
 #' Wojcicki (1995) "J"-index. A new proposition of the assessment

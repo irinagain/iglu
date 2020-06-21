@@ -1,44 +1,31 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-# iglu
+iglu
+====
 
 <!-- badges: start -->
+[![Travis build status](https://api.travis-ci.com/irinagain/iglu.svg?branch=master)](https://travis-ci.com/github/irinagain/iglu) [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/irinagain/iglu?branch=master&svg=true)](https://ci.appveyor.com/project/irinagain/iglu) <!-- badges: end -->
 
-[![Travis build
-status](https://travis-ci.com/muschellij2/iglu.svg?branch=master)](https://travis-ci.com/muschellij2/iglu)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/muschellij2/iglu?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/iglu)
-<!-- badges: end -->
+iglu: Interpreting data from Continuous Glucose Monitors (CGMs)
+===============================================================
 
-# iglu: Interpreting data from Continuous Glucose Monitors (CGMs)
+The R package 'iglu' provides functions for outputting relevant metrics for data collected from Continuous Glucose Monitors (CGM). For reference, see ["Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control." Rodbard (2009)](https://www.ncbi.nlm.nih.gov/pubmed/19469679).
 
-The R package ‘iglu’ provides functions for outputting relevant metrics
-for data collected from Continuous Glucose Monitors (CGM). For
-reference, see [“Interpretation of continuous glucose monitoring data:
-glycemic variability and quality of glycemic control.” Rodbard
-(2009)](https://www.ncbi.nlm.nih.gov/pubmed/19469679).
+iglu comes with two example datasets: example\_data\_1\_subject and example\_data\_5\_subject. These data are collected using Dexcom G4 CGM on subjects with Type II diabetes. Each dataset follows the structure iglu's functions are designed around. Note that the 1 subject data is a subset of the 5 subject data. See the examples below for loading and using the data.
 
-iglu comes with two example datasets: example\_data\_1\_subject and
-example\_data\_5\_subject. Each dataset follows the structure iglu’s
-functions are designed around. Note that the 1 subject data is a subset
-of the 5 subject data. See the examples below for loading and using the
-data.
-
-## Installation
+Installation
+------------
 
 ``` r
-# Plain installation with dependency 
-
-devtools::install_github('swihart/lasagnar') # for lasagna plots (multi subject)
-devtools::install_github("stevebroll/iglu") # iglu package
-
+# Plain installation
+devtools::install_github("irinagain/iglu") # iglu package
 
 # For installation with vignette
-devtools::install_github("stevebroll/iglu", build_vignettes = TRUE)
+devtools::install_github("irinagain/iglu", build_vignettes = TRUE)
 ```
 
-## Example
+Example
+-------
 
 ``` r
 library(iglu)
@@ -55,48 +42,73 @@ plot_glu(example_data_1_subject)
 
 # Summary statistics and some metrics
 summary_glu(example_data_1_subject)
-#>           Min. 1st Qu. Median     Mean 3rd Qu. Max.
-#> Subject 1   66      99    112 123.6655     143  276
+#> # A tibble: 1 x 7
+#> # Groups:   id [1]
+#>   id         Min. `1st Qu.` Median  Mean `3rd Qu.`  Max.
+#>   <fct>     <dbl>     <dbl>  <dbl> <dbl>     <dbl> <dbl>
+#> 1 Subject 1    66        99    112  124.       143   276
 
 in_range_percent(example_data_1_subject)
-#>           in_range_80_200 in_range_70_180 in_range_70_140
-#> Subject 1        96.02058        91.66381        73.72213
+#> # A tibble: 1 x 4
+#>   id        in_range_70_140 in_range_70_180 in_range_80_200
+#>   <fct>               <dbl>           <dbl>           <dbl>
+#> 1 Subject 1            73.7            91.7            96.0
 
 above_percent(example_data_1_subject, targets = c(80,140,200,250))
-#>           above_80 above_140 above_200 above_250
-#> Subject 1 99.41681  26.68954  3.704974 0.4459691
+#> # A tibble: 1 x 5
+#>   id        above_140 above_200 above_250 above_80
+#>   <fct>         <dbl>     <dbl>     <dbl>    <dbl>
+#> 1 Subject 1      26.7      3.70     0.446     99.4
 
 j_index(example_data_1_subject)
-#>            j_index
-#> Subject 1 24.62815
+#> # A tibble: 1 x 2
+#>   id        j_index
+#>   <fct>       <dbl>
+#> 1 Subject 1    24.6
 
 conga(example_data_1_subject)
-#>              conga
-#> Subject 1 36.86259
+#> # A tibble: 1 x 2
+#>   id        conga
+#>   <fct>     <dbl>
+#> 1 Subject 1  37.0
 
 # Load multiple subject data
 data(example_data_5_subject)
 
-below_percent(example_data_5_subject, targets = c(80,170,260))
-#>           below_80 below_170 below_260
-#> Subject 1 0.651801  89.57118  99.72556
-#> Subject 2 0.000000  17.74479  78.93248
-#> Subject 3 0.913242  73.51598  95.95564
-#> Subject 4 2.046943  91.81223 100.00000
-#> Subject 5 1.128205  55.28205  90.25641
-
-mage(example_data_5_subject)
-#>               mage
-#> Subject 1 53.36908
-#> Subject 2 78.16610
-#> Subject 3 76.64453
-#> Subject 4 42.91182
-#> Subject 5 89.97086
+plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average')
+#> Warning in CGMS2DayByDay(., tz = tz, dt0 = dt0, inter_gap = inter_gap):
+#> During time conversion, 12 values were set to NA. Check the correct time zone
+#> specification.
 ```
 
-## Shiny Demonstration
+<img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
 
-For a demonstration of the package in a point and click interface, click
-the link below.
+``` r
+
+below_percent(example_data_5_subject, targets = c(80,170,260))
+#> # A tibble: 5 x 4
+#>   id        below_170 below_260 below_80
+#>   <fct>         <dbl>     <dbl>    <dbl>
+#> 1 Subject 1      89.6      99.7    0.652
+#> 2 Subject 2      17.7      78.9    0    
+#> 3 Subject 3      73.5      96.0    0.913
+#> 4 Subject 4      91.8     100      2.05 
+#> 5 Subject 5      55.3      90.3    1.13
+
+mage(example_data_5_subject)
+#> # A tibble: 5 x 2
+#>   id         mage
+#>   <fct>     <dbl>
+#> 1 Subject 1  53.4
+#> 2 Subject 2  78.2
+#> 3 Subject 3  76.6
+#> 4 Subject 4  42.9
+#> 5 Subject 5  90.0
+```
+
+Shiny Demonstration
+-------------------
+
+For a demonstration of the package in a point and click interface, click the link below.
 
 <https://stevebroll.shinyapps.io/shinyigludemo/>

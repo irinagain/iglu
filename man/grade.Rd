@@ -8,27 +8,26 @@ grade(data)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
-or numeric vector of glucose values. NA's will be omitted from the glucose
-values in calculation of GRADE score.}
+or numeric vector of glucose values.}
 }
 \value{
-
+If a data.frame object is passed, then a tibble object with
+two columns: subject id and corresponding GRADE value is returned. If a vector of glucose
+values is passed, then a tibble object with just the GRADE value is returned.
+as.numeric() can be wrapped around the latter to output just a numeric value.
 }
 \description{
-The function grade produces GRADE score values in data.frame form
-with one column and one row per subject.
+The function grade produces GRADE score values in a tibble object.
 }
 \details{
-A dataframe structure with one column and a row for each subject.
+A tibble object with 1 row for each subject, a column for subject id and
+a column for GRADE values is returned. NA glucose values are
+omitted from the calculation of the GRADE.
 
 GRADE score is calculated by \eqn{1/n * \sum [425 *
 (log(log(BG_i / 18)) + .16)^2]}
 Where \eqn{BG_i} is the ith Blood Glucose measurement and n is the total
 number of measurements.
-
-Wrapping as.numeric() around the grade call on a dataset with
-a single subject will return a numeric value corresponding to the GRADE
-score. This will not work for datasets with multiple subjects.
 }
 \examples{
 

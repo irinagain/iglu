@@ -1,15 +1,13 @@
 #' Calculate Hypoglycemia Index
 #'
 #' @description
-#' The function hypo_index produces Hypoglycemia index values in data.frame
-#' form with one column and one row per subject.
+#' The function hypo_index produces Hypoglycemia index values in a tibble object.
 #'
 #' @usage
-#' hypo_index(data, LLTR = 70)
+#' hypo_index(data, LLTR = 80, b = 2, d = 30)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values. NA's will be omitted from the glucose
-#' values in calculation of Hypoglycemic Index.
+#' or numeric vector of glucose values.
 #'
 #' @param LLTR Lower Limit of Target Range, default value is 80 mg/dL.
 #'
@@ -18,12 +16,18 @@
 #' @param d Scaling factor,to display Hyperglycemia Index, Hypoglycemia Index, and IGC on approximately the same numerical range as measurements of HBGI, LBGI and GRADE, default value is 30.
 #'
 #' @details
-#' A dataframe structure with one column and a row for each subject.
+#' A tibble object with 1 row for each subject, a column for subject id and
+#' a column for the Hypoglycemia Index values is returned. NA glucose values are
+#' omitted from the calculation of the Hypoglycemia Index values.
 #'
 #' Hypoglycemia Index is calculated by \eqn{n/d * \sum [(LLTR-hypoBG_j)^{b}]}
-#' Here n is the total number of Blood Glucose measurements (excluding NA values), and \eqn{hypoBG_j} is the jth Blood Glucose measurement below the LLTR cutoff, b is an exponent, and d is a scaling factor.
+#' Here n is the total number of Blood Glucose measurements (excluding NA values),
+#' and \eqn{hypoBG_j} is the jth Blood Glucose measurement below the LLTR cutoff, b is an exponent, and d is a scaling factor.
 #'
-#' @return
+#' @return If a data.frame object is passed, then a tibble object with
+#' two columns: subject id and corresponding Hypoglycemia Index value is returned. If a vector of glucose
+#' values is passed, then a tibble object with just the Hypoglycemia Index value is returned.
+#' as.numeric() can be wrapped around the latter to output just a numeric value.
 #'
 #' @export
 #'

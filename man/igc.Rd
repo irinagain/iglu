@@ -7,32 +7,34 @@
 igc(data, LLTR = 80, ULTR = 140, a = 1.1, b = 2, c = 30, d = 30)
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl".}
+\item{data}{DataFrame object with column names "id", "time", and "gl",
+or numeric vector of glucose values.}
 
 \item{LLTR}{Lower Limit of Target Range, default value is 80 mg/dL.}
 
 \item{ULTR}{Upper Limit of Target Range, default value is 140 mg/dL.}
 
-\item{a}{Exponent, generally in the range from 1.0 to 2.0, efault value is 1.1.}
+\item{a}{Exponent, generally in the range from 1.0 to 2.0, default value is 1.1.}
 
 \item{b}{Exponent, generally in the range from 1.0 to 2.0, default value is 2.}
 
-\item{c}{Scaling factor,to display Hyperglycemia Index, Hypoglycemia Index, and IGC on approximately the same numerical range as measurements of HBGI, LBGI and GRADE, default value is 30.}
+\item{c}{Scaling factor, to display Hyperglycemia Index, Hypoglycemia Index, and IGC on approximately the same numerical range as measurements of HBGI, LBGI and GRADE, default value is 30.}
 
 \item{d}{Scaling factor,to display Hyperglycemia Index, Hypoglycemia Index, and IGC on approximately the same numerical range as measurements of HBGI, LBGI and GRADE, default value is 30.}
 }
 \value{
-
+A tibble object with two columns: subject id and corresponding IGC value.
 }
 \description{
-The function igc produces IGC values in data.frame
-form with one column and one row per subject.
+The function igc produces IGC values in a tibble object.
 }
 \details{
-A dataframe structure with one column and a row for each subject.
+A tibble object with 1 row for each subject, a column for subject id and
+a column for the IGC values is returned.
 
 IGC is calculated by taking the sum of the Hyperglycemia
-Index and the Hypoglycemia index. See hypo_index and hyper_index.
+Index and the Hypoglycemia index. See \code{\link{hypo_index}} and
+\code{\link{hyper_index}}.
 }
 \examples{
 data(example_data_1_subject)

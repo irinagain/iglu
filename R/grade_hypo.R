@@ -1,28 +1,28 @@
 #' Percentage of GRADE score attributable to hypoglycemia
 #'
 #' @description
-#' The function grade_hypo produces \%GRADE hypoglycemia values in data.frame
-#' form with one column and one row per subject.
+#' The function grade_hypo produces \%GRADE hypoglycemia values in a tibble object.
 #'
 #' @usage
-#' grade_hypo(data, lower = 70)
+#' grade_hypo(data, lower = 80)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values. NA's will be omitted from the glucose
-#' values in calculation of \%GRADE hypoglycemia.
+#' or numeric vector of glucose values.
 #'
-#' @param lower Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 70
+#' @param lower Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 80
+#'
+#' @return If a data.frame object is passed, then a tibble object with
+#' two columns: subject id and corresponding \%GRADE hypoglycemia value is returned. If a vector of glucose
+#' values is passed, then a tibble object with just the \%GRADE hypoglycemia value is returned.
+#' as.numeric() can be wrapped around the latter to output just a numeric value.
 #'
 #' @details
-#' A dataframe structure with one column and a row for each subject.
+#' A tibble object with 1 row for each subject, a column for subject id and
+#' a column for \%GRADE hypoglycemia values is returned. NA glucose values are
+#' omitted from the calculation of the \%GRADE hypoglycemia values.
 #'
 #' \%GRADE hypoglycemia is determined by calculating the percentage of
 #' GRADE score (see grade function) attributed to hypoglycemic glucose values.
-#'
-#' Wrapping as.numeric() around the grade_hypo call on a dataset with
-#' a single subject will return a numeric value corresponding to the \%GRADE
-#' hypoglycemia value. This will not work for datasets with multiple subjects.
-#'
 #'
 #' @return
 #'
@@ -38,14 +38,14 @@
 #'
 #' data(example_data_1_subject)
 #' grade_hypo(example_data_1_subject)
-#' grade_hypo(example_data_1_subject, lower = 80)
+#' grade_hypo(example_data_1_subject, lower = 70)
 #'
 #' data(example_data_5_subject)
 #' grade_hypo(example_data_5_subject)
 #' grade_hypo(example_data_5_subject, lower = 65)
 #'
 
-grade_hypo <- function(data, lower = 70){
+grade_hypo <- function(data, lower = 80){
 
   grade = gl = id = NULL
   rm(list = c("grade", "gl", "id"))
