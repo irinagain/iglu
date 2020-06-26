@@ -42,18 +42,19 @@
 
 
 active_percent <- function(data, freqCGM = 5) {
-  gl = id = NULL
-  rm(list = c("gl", "id"))
-  #data = check_data_columns(data)
+  active_percent = gl = id = NULL
+  rm(list = c("gl", "id", "active_percent"))
+  data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
-  
+
   out = data %>%
+    dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
       active_percent = (length(time)/as.integer((as.double(max(time, na.rm = TRUE)) - as.double(min(time, na.rm = TRUE)))/(freqCGM*60)))*100
     )
-  #if (is_vector) {
-  #  out$id = NULL
-  #}
+  if (is_vector) {
+    out$id = NULL
+  }
   return(out)
 }
