@@ -20,7 +20,7 @@ or numeric vector of glucose values.}
 If a data.frame object is passed, then a tibble object with
 two columns: subject id and corresponding Hypoglycemia Index value is returned. If a vector of glucose
 values is passed, then a tibble object with just the Hypoglycemia Index value is returned.
-as.numeric() can be wrapped around the latter to ouput just a numeric value.
+as.numeric() can be wrapped around the latter to output just a numeric value.
 }
 \description{
 The function hypo_index produces Hypoglycemia index values in a tibble object.

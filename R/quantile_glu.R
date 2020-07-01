@@ -26,7 +26,7 @@
 #' @return If a data.frame object is passed, then a tibble object with
 #' a column for subject id and then a column for each quantile value is returned. If a vector of glucose
 #' values is passed, then a tibble object without the subject id is returned.
-#' as.numeric() can be wrapped around the latter to ouput a numeric vector.
+#' as.numeric() can be wrapped around the latter to output a numeric vector.
 #'
 #' @export
 #'

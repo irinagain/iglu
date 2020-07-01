@@ -3,7 +3,7 @@
 \docType{data}
 \name{example_data_1_subject}
 \alias{example_data_1_subject}
-\title{Example Data from Subject 1}
+\title{Example CGM data for one subject with Type II diabetes}
 \format{
 A data.frame with 2915 rows and 3 columns, which are:
 \describe{
@@ -16,6 +16,6 @@ A data.frame with 2915 rows and 3 columns, which are:
 example_data_1_subject
 }
 \description{
-A data.frame of example data
+Dexcom G4 CGM measurements from 1 subject with Type II diabetes, this is a subset of \link{example_data_5_subject}.
 }
 \keyword{datasets}

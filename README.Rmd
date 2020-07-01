@@ -25,17 +25,17 @@ iglu: Interpreting data from Continuous Glucose Monitors (CGMs)
 
 The R package 'iglu' provides functions for outputting relevant metrics for data collected from Continuous Glucose Monitors (CGM). For reference, see ["Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control." Rodbard  (2009)](https://www.ncbi.nlm.nih.gov/pubmed/19469679).
 
-iglu comes with two example datasets: example_data_1_subject and example_data_5_subject. Each dataset follows the structure iglu's functions are designed around. Note that the 1 subject data is a subset of the 5 subject data. See the examples below for loading and using the data. 
+iglu comes with two example datasets: example_data_1_subject and example_data_5_subject. These data are collected using Dexcom G4 CGM on subjects with Type II diabetes. Each dataset follows the structure iglu's functions are designed around. Note that the 1 subject data is a subset of the 5 subject data. See the examples below for loading and using the data. 
 
 Installation
 ------------
 
 ```{r, eval = FALSE}
 # Plain installation
-devtools::install_github("stevebroll/iglu") # iglu package
+devtools::install_github("irinagain/iglu") # iglu package
 
 # For installation with vignette
-devtools::install_github("stevebroll/iglu", build_vignettes = TRUE)
+devtools::install_github("irinagain/iglu", build_vignettes = TRUE)
 ```
 
 Example

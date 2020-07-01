@@ -6,7 +6,10 @@
 #' @param limits The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link[ggplot2]{scale_fill_gradient2}})
 #' @param midpoint The glucose value serving as midpoint (white) of the diverging gradient scale (see \code{\link[ggplot2]{scale_fill_gradient2}}). The default value is 125 mg/dL. The values above are colored in red, and below in blue.
 #' @param dt0 The time frequency for interpolated aligned grid in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).
-#' @param inter_gap The maximum allowable gap (in minutes) for interpolation of NA glucose values. The values will not be interpolated between the glucose measurements thare are more than inter_gap minutes apart. The default value is 60 min.
+#' @param inter_gap The maximum allowable gap (in minutes) for interpolation of
+#' NA glucose values. The values will not be interpolated between
+#' the glucose measurements that are more than inter_gap minutes apart.
+#' The default value is 60 min.
 #' @param LLTR Lower Limit of Target Range, default value is 80 mg/dL.
 #' @param ULTR Upper Limit of Target Range, default value is 140 mg/dL.
 #'
@@ -78,7 +81,7 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 #'
 #' @inheritParams plot_lasagna_1subject
 #' @param datatype String corresponding to data aggregation used for plotting, currently supported options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject
-#' @param lasagnatype String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and 'subjectsorted' for a lasagna plot with glucose values sorted within each subject across time points.
+#' @param lasagnatype String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.
 #' @param maxd For datatype "all", maximal number of days to be plotted from the study. The default value is 14 days (2 weeks).
 #' @param LLTR Lower Limit of Target Range, default value is 80 mg/dL.
 #' @param ULTR Upper Limit of Target Range, default value is 140 mg/dL.
