@@ -41,7 +41,7 @@
 
 
 
-conga <- function(data, tz = "", n = 1){
+conga_n <- function(data, tz = "", n = 1){
   conga_single = function(data, tz = "", gap = 1){
     data_ip = CGMS2DayByDay(data, tz = tz)
     gl_by_id_ip = data_ip[[1]]
@@ -55,14 +55,12 @@ conga <- function(data, tz = "", n = 1){
   data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
 
-  data$date = as.Date(data$time,format="%Y-%m-%d")
   out = data %>%
     dplyr::filter(!is.na(gl)) %>%
-    dplyr::group_by(id, date) %>%
+    dplyr::group_by(id) %>%
     dplyr::summarise(
-      conga_day = conga_single(data.frame(id, time, gl), tz = tz, gap = n)
+      conga = conga_single(data.frame(id, time, gl), tz = tz, gap = n)
     ) %>%
-    dplyr::summarise(conga = mean(conga_day))
   if (is_vector) {
     out$id = NULL
   }
