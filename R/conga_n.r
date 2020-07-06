@@ -5,9 +5,11 @@
 #' This version is a prototype which allows setting the gap
 #'
 #' @usage
-#' conga(data, tz = "", gap = 1)
+#' conga_n(data, tz = "", n = 1)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl".
+#'
+#' @param n Integer specifying the number of hours apart glucose readings should be to be compared.
 #'
 #' @param tz A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
 #'
@@ -42,11 +44,13 @@
 
 
 conga_n <- function(data, tz = "", n = 1){
-  conga_single = function(data, tz = "", gap = 1){
+  conga_single = function(data, tz = "", hours = 1){
     data_ip = CGMS2DayByDay(data, tz = tz)
     gl_by_id_ip = data_ip[[1]]
+    dt0 = data_ip[[3]]
+    hourly_readings = 60/dt0
 
-    out = sd(diff(t(gl_by_id_ip), lag = 12*gap), na.rm = TRUE)
+    out = sd(diff(as.vector(t(gl_by_id_ip)), lag = hourly_readings*hours), na.rm = TRUE)
     return(out)
   }
 
@@ -59,8 +63,8 @@ conga_n <- function(data, tz = "", n = 1){
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      conga = conga_single(data.frame(id, time, gl), tz = tz, gap = n)
-    ) %>%
+      conga = conga_single(data.frame(id, time, gl), tz = tz, hours = n)
+    )
   if (is_vector) {
     out$id = NULL
   }
