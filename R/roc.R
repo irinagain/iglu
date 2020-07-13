@@ -59,7 +59,7 @@ roc <- function (data, timelag = 15, tz = "") {
     data_ip = CGMS2DayByDay(data, tz = tz)[[1]]
     data_vec = as.vector(t(data_ip))
     out = c(rep(NA, timelag/dt0),
-            round(diff(data_vec, lag = timelag/dt0)/timelag, 2))
+            diff(data_vec, lag = timelag/dt0)/timelag)
     return(out)
   }
 
