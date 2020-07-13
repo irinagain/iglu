@@ -19,7 +19,6 @@
 #' on some platforms with a warning.
 #'
 #' @return A tibble object with two columns: subject id and rate of change values
-#' for each time point that it is available.
 #'
 #' @export
 #'
@@ -28,12 +27,16 @@
 #' is returned for each recorded point for all the subjects. If the rate of change cannot be calculated,
 #' the function will return NA for that point.
 #'
-#' Missing values will be linearly interpolated when close enough to non-missing values.
+#' The glucose values are linearly interpolated over a time grid starting at the beginning of the
+#' first day of data and ending on the last day of data. Because of this, there may be many
+#' NAs at the beginning and the end of the roc values for each subject. These NAs
+#' are a result of interpolated time points that do not have recorded glucose values near them
+#' because recording had either not yet begun for the day or had already ended.
 #'
-#' The ROC is calculated as \eqn{{{BG(t_i) - BG(t_{i-1})}/{t_i - t_{i-1}}}}
+#' The ROC is calculated as \eqn{\frac{BG(t_i) - BG(t_{i-1})}{t_i - t_{i-1}}}
 #' where BG_i is the Blood Glucose measurement at time t_i and BG_{i-1} is the Blood Glucose
-#' measurement at time t_{i-1}. The time difference between the points, (t_i) - (t_{i-1}), is selectable
-#' as the parameter 'timelag' and set at a default of 15 minutes.
+#' measurement at time t_{i-1}. The time difference between the points, t_i - t_{i-1}, is selectable
+#' and set at a default of 15 minutes.
 #'
 #' @references
 #' Clarke et al. (2009) Statistical Tools to Analyze Continuous Glucose Monitor Data,
