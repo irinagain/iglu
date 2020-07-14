@@ -2,9 +2,11 @@
 #'
 #' @description
 #' The function active_percent produces a tibble object with values equal to the
-#' percentage of time, the cgm was active. The output columns correspond to the
-#' subject id and the precentage of time for which the cgm was active, and the output rows
-#' correspond to the subjects. The values will be between 0 (no measurements) and 100 (all measurements).
+#' percentage of time, the cgm was active. For example, if a cgm's (5 min frequency) times were 0, 5, 10, 15 and
+#' glucose values were missing at 5, then percentage of time, the cgm was active is 75%.
+#' The output columns correspond to the subject id and the precentage of time for which the cgm was active,
+#' and the output rows correspond to the subjects.
+#' The values will be between 0 (no measurements) and 100 (all measurements).
 #'
 #' @usage
 #' active_percent(data, freqCGM = 5)
