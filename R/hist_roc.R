@@ -6,29 +6,24 @@
 #' @usage
 #' hist_roc(data, subjects = NULL, timelag = 15, tz = "")
 #'
-#' @param data DataFrame object with column names "id", "time", and "gl"
+#' @inheritParams conga
 #'
 #' @param subjects String or list of strings corresponding to subject names
 #' in 'id' column of data. Default is all subjects.
 #'
-#' @param timelag Integer indicating the time period (# minutes) over which rate of change
-#' is calculated. Default is 15, e.g. rate of change is the change in glucose
-#' over the past 15 minutes divided by 15.
-#'
-#' @param tz A character string specifying the time zone to be used.
-#' System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone,
-#' and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC,
-#' on some platforms with a warning.
+#' @param timelag Integer indicating the time period (# minutes) over which rate
+#' of change is calculated. Default is 15, e.g. rate of change is the change in
+#' glucose over the past 15 minutes divided by 15.
 #'
 #' @return A histogram of ROC values per subject
 #'
 #' @export
 #'
 #' @details
-#' For the default, a histogram is produced for each subject displaying the ROC values
-#' colored by the following categories for ROC: breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf) where
-#' the glucose is in mg/dl and the ROC values are in mg/dl/min. A ROC of -5 mg/dl/min
-#' will thus be placed in category 1 and colored accordingly.
+#' For the default, a histogram is produced for each subject displaying ROC values
+#' categorized and colored as follows: breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf)
+#' where the glucose is in mg/dl and the ROC values are in mg/dl/min. A ROC of
+#' -5 mg/dl/min will thus be placed in category 1 and colored accordingly.
 #'
 #' @references
 #' Clarke et al. (2009) Statistical Tools to Analyze Continuous Glucose Monitor Data,
@@ -64,9 +59,8 @@ hist_roc <- function(data, subjects = NULL, timelag = 15, tz = "") {
                      labels = c("1", "2", "3","4", "5", "6", "7"))
     )
 
-  colours = c("1" = "purple", "2" = "blue", "3" = "cyan",
-              "4" = "darkolivegreen1", "5" = "darkgoldenrod1", "6" = "pink",
-              "7" = "red")
+  colours = c("1" = "purple", "2" = "blue", "3" = "cyan", "4" = "darkolivegreen1",
+              "5" = "darkgoldenrod1", "6" = "pink", "7" = "red")
   ggplot2::ggplot(data, ggplot2::aes(roc, fill = category)) +
     ggplot2::geom_histogram(binwidth = 0.1, alpha = 0.72, na.rm = T) +
     ggplot2::facet_wrap(~id, scales = "free_x") +

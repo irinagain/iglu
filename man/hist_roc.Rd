@@ -7,19 +7,16 @@
 hist_roc(data, subjects = NULL, timelag = 15, tz = "")
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl"}
+\item{data}{DataFrame object with column names "id", "time", and "gl".}
 
 \item{subjects}{String or list of strings corresponding to subject names
 in 'id' column of data. Default is all subjects.}
 
-\item{timelag}{Integer indicating the time period (# minutes) over which rate of change
-is calculated. Default is 15, e.g. rate of change is the change in glucose
-over the past 15 minutes divided by 15.}
+\item{timelag}{Integer indicating the time period (# minutes) over which rate
+of change is calculated. Default is 15, e.g. rate of change is the change in
+glucose over the past 15 minutes divided by 15.}
 
-\item{tz}{A character string specifying the time zone to be used.
-System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone,
-and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC,
-on some platforms with a warning.}
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 A histogram of ROC values per subject
@@ -28,10 +25,10 @@ A histogram of ROC values per subject
 The function hist_roc produces a histogram plot of ROC values
 }
 \details{
-For the default, a histogram is produced for each subject displaying the ROC values
-colored by the following categories for ROC: breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf) where
-the glucose is in mg/dl and the ROC values are in mg/dl/min. A ROC of -5 mg/dl/min
-will thus be placed in category 1 and colored accordingly.
+For the default, a histogram is produced for each subject displaying ROC values
+categorized and colored as follows: breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf)
+where the glucose is in mg/dl and the ROC values are in mg/dl/min. A ROC of
+-5 mg/dl/min will thus be placed in category 1 and colored accordingly.
 }
 \examples{
 

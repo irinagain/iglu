@@ -1,35 +1,31 @@
 #' Plot time series of glucose colored by rate of change
 #'
 #' @description
-#' The function plot_roc produces a time series plot of glucose values
-#' colored by categorized rate of change values
+#' The function plot_roc produces a time series plot of glucose values colored
+#' by categorized rate of change values
 #'
 #' @usage
 #' plot_roc(data, subjects = NULL, timelag = 15, tz = "")
 #'
-#' @param data DataFrame object with column names "id", "time", and "gl"
+#' @inheritParams conga
 #'
 #' @param subjects String or list of strings corresponding to subject names
 #' in 'id' column of data. Default is all subjects.
 #'
-#' @param timelag Integer indicating the time period (# minutes) over which rate of change
-#' is calculated. Default is 15, e.g. rate of change is the change in glucose
-#' over the past 15 minutes divided by 15.
-#'
-#' @param tz A character string specifying the time zone to be used.
-#' System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone,
-#' and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC,
-#' on some platforms with a warning.
+#' @param timelag Integer indicating the time period (# minutes) over which rate
+#' of change is calculated. Default is 15, e.g. rate of change is the change in
+#' glucose over the past 15 minutes divided by 15.
 #'
 #' @return A time series of glucose values colored by ROC categories per subject
 #'
 #' @export
 #'
 #' @details
-#' For the default, a time series is produced for each subject in which the glucose values are
-#' plotted and colored by the following categories for ROC: breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf)
-#' where the glucose is in mg/dl and the ROC values are in mg/dl/min. A ROC of -5 mg/dl/min
-#' will thus be placed in category 1 and colored accordingly.
+#' For the default, a time series plot is produced for each subject in which the
+#' glucose values are plotted and colored by the following categories for ROC:
+#' breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf) where the glucose is in mg/dl and
+#' the ROC values are in mg/dl/min. A ROC of -5 mg/dl/min will thus be placed in
+#' category 1 and colored accordingly.
 #'
 #' @examples
 #'
@@ -71,9 +67,8 @@ plot_roc <- function(data, subjects = NULL, timelag = 15, tz = ""){
         labels = c("1", "2", "3","4", "5", "6", "7"))
     )
 
-  colours = c("1" = "purple", "2" = "blue", "3" = "cyan",
-              "4" = "darkolivegreen1", "5" = "darkgoldenrod1", "6" = "pink",
-              "7" = "red")
+  colours = c("1" = "purple", "2" = "blue", "3" = "cyan", "4" = "darkolivegreen1",
+              "5" = "darkgoldenrod1", "6" = "pink", "7" = "red")
   ggplot2::ggplot(data = data[complete.cases(data$gl_ip), ],
                   ggplot2::aes(x = time_ip, y = gl_ip, color = category)) +
     ggplot2::geom_point() +

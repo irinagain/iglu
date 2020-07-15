@@ -7,16 +7,13 @@
 sd_roc(data, timelag = 15, tz = "")
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl"}
+\item{data}{DataFrame object with column names "id", "time", and "gl".}
 
-\item{timelag}{Integer indicating the time period (# minutes) over which rate of change
-is calculated. Default is 15, e.g. rate of change is the change in glucose
-over the past 15 minutes divided by 15.}
+\item{timelag}{Integer indicating the time period (# minutes) over which rate
+of change is calculated. Default is 15, e.g. rate of change is the change in
+glucose over the past 15 minutes divided by 15.}
 
-\item{tz}{A character string specifying the time zone to be used.
-System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone,
-and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC,
-on some platforms with a warning.}
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 A tibble object with two columns: subject id and standard deviation

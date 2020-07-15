@@ -7,39 +7,37 @@
 roc(data, timelag = 15, tz = "")
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl"}
+\item{data}{DataFrame object with column names "id", "time", and "gl".}
 
-\item{timelag}{Integer indicating the time period (# minutes) over which rate of change
-is calculated. Default is 15, e.g. rate of change is the change in glucose
-over the past 15 minutes divided by 15.}
+\item{timelag}{Integer indicating the time period (# minutes) over which rate
+of change is calculated. Default is 15, e.g. rate of change is the change in
+glucose over the past 15 minutes divided by 15.}
 
-\item{tz}{A character string specifying the time zone to be used.
-System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone,
-and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC,
-on some platforms with a warning.}
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 A tibble object with two columns: subject id and rate of change values
 }
 \description{
-The function roc produces rate of
-change values in a tibble object.
+The function roc produces rate of change values in a tibble object.
 }
 \details{
-A tibble object with a column for subject id and a column for ROC values is returned. A ROC value
-is returned for each recorded point for all the subjects. If the rate of change cannot be calculated,
-the function will return NA for that point.
+A tibble object with a column for subject id and a column for ROC values is
+returned. A ROC value is returned for each recorded point for all the subjects.
+If the rate of change cannot be calculated, the function will return NA for
+that point.
 
-The glucose values are linearly interpolated over a time grid starting at the beginning of the
-first day of data and ending on the last day of data. Because of this, there may be many
-NAs at the beginning and the end of the roc values for each subject. These NAs
-are a result of interpolated time points that do not have recorded glucose values near them
-because recording had either not yet begun for the day or had already ended.
+The glucose values are linearly interpolated over a time grid starting at the
+beginning of the first day of data and ending on the last day of data. Because
+of this, there may be many NAs at the beginning and the end of the roc values
+for each subject. These NAs are a result of interpolated time points that do
+not have recorded glucose values near them because recording had either not
+yet begun for the day or had already ended.
 
 The ROC is calculated as \eqn{\frac{BG(t_i) - BG(t_{i-1})}{t_i - t_{i-1}}}
-where BG_i is the Blood Glucose measurement at time t_i and BG_{i-1} is the Blood Glucose
-measurement at time t_{i-1}. The time difference between the points, t_i - t_{i-1}, is selectable
-and set at a default of 15 minutes.
+where BG_i is the Blood Glucose measurement at time t_i and BG_{i-1} is the
+Blood Glucose measurement at time t_{i-1}. The time difference between the points,
+t_i - t_{i-1}, is selectable and set at a default of 15 minutes.
 }
 \examples{
 
