@@ -6,8 +6,8 @@
 #' The function hbgi produces HBGI values in a tibble object.
 #'
 #' @usage
-#' (directions on how to use the function, include any optional parameters, should mirror
-#' the function declaration)
+#' (Meant to quickly show defualt values for parameters, list all parameters
+#' and default values where applicable)
 #' hbgi(data, example = "this is an optional parameter")
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
@@ -63,6 +63,7 @@ hbgi <- function(data, example = "this is an optional parameter"){
 
   data = check_data_columns(data) #This part sanitizies the input data
   is_vector = attr(data, "is_vector") #All non time-dependent metrics should accept vectors of gl
+  #Vectors are treated as values for a single subject
 
   #Define any helper functions here
   helper_function = function(one_subject_data) {
