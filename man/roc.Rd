@@ -23,9 +23,9 @@ The function roc produces rate of change values in a tibble object.
 }
 \details{
 A tibble object with a column for subject id and a column for ROC values is
-returned. A ROC value is returned for each recorded point for all the subjects.
-If the rate of change cannot be calculated, the function will return NA for
-that point.
+returned. A ROC value is returned for each time point for all the subjects. Thus
+multiple rows are returned for each subject. If the rate of change cannot be
+calculated, the function will return NA for that point.
 
 The glucose values are linearly interpolated over a time grid starting at the
 beginning of the first day of data and ending on the last day of data. Because
@@ -55,4 +55,7 @@ Clarke et al. (2009) Statistical Tools to Analyze Continuous Glucose Monitor Dat
 Diabetes
 \emph{Diabetes Technology and Therapeutics} \strong{11} S45-S54,
 \doi{10.1089/dia.2008.0138}.
+}
+\author{
+Elizabeth Chun, David Buchanan
 }

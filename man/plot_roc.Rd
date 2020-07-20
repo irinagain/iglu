@@ -42,3 +42,6 @@ plot_roc(example_data_5_subject)
 plot_roc(example_data_5_subject, subjects = 'Subject 5')
 
 }
+\author{
+Elizabeth Chun, David Buchanan
+}

@@ -27,6 +27,8 @@
 #' the ROC values are in mg/dl/min. A ROC of -5 mg/dl/min will thus be placed in
 #' category 1 and colored accordingly.
 #'
+#' @author Elizabeth Chun, David Buchanan
+#'
 #' @examples
 #'
 #' data(example_data_1_subject)

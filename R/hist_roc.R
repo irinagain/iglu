@@ -25,6 +25,8 @@
 #' where the glucose is in mg/dl and the ROC values are in mg/dl/min. A ROC of
 #' -5 mg/dl/min will thus be placed in category 1 and colored accordingly.
 #'
+#' @author Elizabeth Chun, David Buchanan
+#'
 #' @references
 #' Clarke et al. (2009) Statistical Tools to Analyze Continuous Glucose Monitor Data,
 #' Diabetes
@@ -62,7 +64,7 @@ hist_roc <- function(data, subjects = NULL, timelag = 15, tz = "") {
   colours = c("1" = "purple", "2" = "blue", "3" = "cyan", "4" = "darkolivegreen1",
               "5" = "darkgoldenrod1", "6" = "pink", "7" = "red")
   ggplot2::ggplot(data, ggplot2::aes(roc, fill = category)) +
-    ggplot2::geom_histogram(binwidth = 0.1, alpha = 0.72, na.rm = T) +
+    ggplot2::geom_histogram(binwidth = 0.1, alpha = 0.72, na.rm = TRUE) +
     ggplot2::facet_wrap(~id, scales = "free_x") +
     ggplot2::scale_fill_manual(values = colours) + ggplot2::theme_dark()
 }

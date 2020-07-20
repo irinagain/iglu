@@ -51,3 +51,6 @@ Diabetes
 \emph{Diabetes Technology and Therapeutics} \strong{11} S45-S54,
 \doi{10.1089/dia.2008.0138}.
 }
+\author{
+Elizabeth Chun, David Buchanan
+}

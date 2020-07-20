@@ -29,6 +29,8 @@
 #' individual subject. NA rate of change values are omitted from the
 #' standard deviation calculation.
 #'
+#' @author Elizabeth Chun, David Buchanan
+#'
 #' @references
 #' Clarke et al. (2009) Statistical Tools to Analyze Continuous Glucose Monitor Data,
 #' Diabetes
