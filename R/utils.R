@@ -1,4 +1,4 @@
-check_data_columns =  function(data, id = 'id', time = 'time', gl = 'gl', time_check = F, tz = ""){
+check_data_columns =  function(data, id = 'id', time = 'time', gl = 'gl', time_check = FALSE, tz = ""){
   if (is.vector(data)) {
     output = as.double(data)
     output = data.frame(gl = output,
@@ -14,9 +14,7 @@ check_data_columns =  function(data, id = 'id', time = 'time', gl = 'gl', time_c
       stop(msg)
     }
     if (time_check) {
-      if (lubridate::is.POSIXct(data$time)){ # Check if already in date format
-        #Do nothing
-      }else{
+      if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
         tr = as.character(data$time)
         data$time = as.POSIXct(tr, format='%Y-%m-%d %H:%M:%S', tz = tz)
       }
