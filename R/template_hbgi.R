@@ -23,7 +23,13 @@
 #' as.numeric() can be wrapped around the latter to output just a numeric value.
 #' (This section should give an explanation of what the function will return)
 #'
-#' @export (Always include this, it makes it part of the "user level" of the package)
+<<<<<<< HEAD
+#' (This is a test)
+=======
+#' (Always include the following, it makes it part of the "user level" of the package)
+>>>>>>> c98c6290443ed734f13423fb3fb5d211de284ddf
+#' @export
+#'
 #'
 #' @details (A longer explanation of what the function does, what it returns and
 #' what it's actually calculating, include formula and/or methodology of calculation)
