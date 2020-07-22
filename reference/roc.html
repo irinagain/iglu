@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate glucose level iqr — iqr_glu • iglu</title>
+<title>Calculate the Rate of Change at each time point (ROC) — roc • iglu</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Calculate glucose level iqr — iqr_glu" />
-<meta property="og:description" content="The function iqr_glu outputs the distance between the 25th
-percentile and the 25th percentile of the glucose values in a tibble object." />
+<meta property="og:title" content="Calculate the Rate of Change at each time point (ROC) — roc" />
+<meta property="og:description" content="The function roc produces rate of change values in a tibble object." />
 
 
 
@@ -122,55 +121,125 @@ percentile and the 25th percentile of the glucose values in a tibble object." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate glucose level iqr</h1>
+    <h1>Calculate the Rate of Change at each time point (ROC)</h1>
     
-    <div class="hidden name"><code>iqr_glu.Rd</code></div>
+    <div class="hidden name"><code>roc.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The function iqr_glu outputs the distance between the 25th
-percentile and the 25th percentile of the glucose values in a tibble object.</p>
+    <p>The function roc produces rate of change values in a tibble object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>iqr_glu</span>(<span class='no'>data</span>)</pre>
+    <pre class="usage"><span class='fu'>roc</span>(<span class='no'>data</span>, <span class='kw'>timelag</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>DataFrame object with column names "id", "time", and "gl",
-or numeric vector of glucose values.</p></td>
+      <td><p>DataFrame object with column names "id", "time", and "gl".</p></td>
+    </tr>
+    <tr>
+      <th>timelag</th>
+      <td><p>Integer indicating the time period (# minutes) over which rate
+of change is calculated. Default is 15, e.g. rate of change is the change in
+glucose over the past 15 minutes divided by 15.</p></td>
+    </tr>
+    <tr>
+      <th>tz</th>
+      <td><p>A character string specifying the time zone to be used. System-specific (see <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></code>), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If a data.frame object is passed, then a tibble object with
-two columns: subject id and corresponding IQR value is returned. If a vector of glucose
-values is passed, then a tibble object with just the IQR value is returned.
-as.numeric() can be wrapped around the latter to output just a numeric value.</p>
+    <p>A tibble object with two columns: subject id and rate of change values</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A tibble object with 1 row for each subject, a column for subject id and
-a column for the IQR values is returned. NA glucose values are
-omitted from the calculation of the IQR.</p>
+    <p>A tibble object with a column for subject id and a column for ROC values is
+returned. A ROC value is returned for each time point for all the subjects. Thus
+multiple rows are returned for each subject. If the rate of change cannot be
+calculated, the function will return NA for that point.</p>
+<p>The glucose values are linearly interpolated over a time grid starting at the
+beginning of the first day of data and ending on the last day of data. Because
+of this, there may be many NAs at the beginning and the end of the roc values
+for each subject. These NAs are a result of interpolated time points that do
+not have recorded glucose values near them because recording had either not
+yet begun for the day or had already ended.</p>
+<p>The ROC is calculated as \(\frac{BG(t_i) - BG(t_{i-1})}{t_i - t_{i-1}}\)
+where BG_i is the Blood Glucose measurement at time t_i and BG_i-1 is the
+Blood Glucose measurement at time t_i-1. The time difference between the points,
+t_i - t_i-1, is selectable and set at a default of 15 minutes.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Clarke et al. (2009) Statistical Tools to Analyze Continuous Glucose Monitor Data,
+Diabetes
+<em>Diabetes Technology and Therapeutics</em> <strong>11</strong> S45-S54,
+doi: <a href='https://doi.org/10.1089/dia.2008.0138'>10.1089/dia.2008.0138</a>
+.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>example_data_1_subject</span>)
-<span class='fu'>iqr_glu</span>(<span class='no'>example_data_1_subject</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 2
-#&gt;   id          iqr
-#&gt;   &lt;fct&gt;     &lt;dbl&gt;
-#&gt; 1 Subject 1    44</div><div class='input'>
+    <pre class="examples"><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>example_data_1_subject</span>)
+<span class='fu'>roc</span>(<span class='no'>example_data_1_subject</span>)</div><div class='output co'>#&gt; # A tibble: 4,032 x 2
+#&gt; # Groups:   id [1]
+#&gt;    id          roc
+#&gt;    &lt;fct&gt;     &lt;dbl&gt;
+#&gt;  1 Subject 1    NA
+#&gt;  2 Subject 1    NA
+#&gt;  3 Subject 1    NA
+#&gt;  4 Subject 1    NA
+#&gt;  5 Subject 1    NA
+#&gt;  6 Subject 1    NA
+#&gt;  7 Subject 1    NA
+#&gt;  8 Subject 1    NA
+#&gt;  9 Subject 1    NA
+#&gt; 10 Subject 1    NA
+#&gt; # … with 4,022 more rows</div><div class='input'><span class='fu'>roc</span>(<span class='no'>example_data_1_subject</span>, <span class='kw'>timelag</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; # A tibble: 4,032 x 2
+#&gt; # Groups:   id [1]
+#&gt;    id          roc
+#&gt;    &lt;fct&gt;     &lt;dbl&gt;
+#&gt;  1 Subject 1    NA
+#&gt;  2 Subject 1    NA
+#&gt;  3 Subject 1    NA
+#&gt;  4 Subject 1    NA
+#&gt;  5 Subject 1    NA
+#&gt;  6 Subject 1    NA
+#&gt;  7 Subject 1    NA
+#&gt;  8 Subject 1    NA
+#&gt;  9 Subject 1    NA
+#&gt; 10 Subject 1    NA
+#&gt; # … with 4,022 more rows</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>example_data_5_subject</span>)
-<span class='fu'>iqr_glu</span>(<span class='no'>example_data_5_subject</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 2
-#&gt;   id          iqr
-#&gt;   &lt;fct&gt;     &lt;dbl&gt;
-#&gt; 1 Subject 1    44
-#&gt; 2 Subject 2    74
-#&gt; 3 Subject 3    48
-#&gt; 4 Subject 4    40
-#&gt; 5 Subject 5    77</div><div class='input'>
+<span class='fu'>roc</span>(<span class='no'>example_data_5_subject</span>)</div><div class='output co'>#&gt; # A tibble: 18,720 x 2
+#&gt; # Groups:   id [5]
+#&gt;    id          roc
+#&gt;    &lt;fct&gt;     &lt;dbl&gt;
+#&gt;  1 Subject 1    NA
+#&gt;  2 Subject 1    NA
+#&gt;  3 Subject 1    NA
+#&gt;  4 Subject 1    NA
+#&gt;  5 Subject 1    NA
+#&gt;  6 Subject 1    NA
+#&gt;  7 Subject 1    NA
+#&gt;  8 Subject 1    NA
+#&gt;  9 Subject 1    NA
+#&gt; 10 Subject 1    NA
+#&gt; # … with 18,710 more rows</div><div class='input'><span class='fu'>roc</span>(<span class='no'>example_data_5_subject</span>, <span class='kw'>timelag</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; # A tibble: 18,720 x 2
+#&gt; # Groups:   id [5]
+#&gt;    id          roc
+#&gt;    &lt;fct&gt;     &lt;dbl&gt;
+#&gt;  1 Subject 1    NA
+#&gt;  2 Subject 1    NA
+#&gt;  3 Subject 1    NA
+#&gt;  4 Subject 1    NA
+#&gt;  5 Subject 1    NA
+#&gt;  6 Subject 1    NA
+#&gt;  7 Subject 1    NA
+#&gt;  8 Subject 1    NA
+#&gt;  9 Subject 1    NA
+#&gt; 10 Subject 1    NA
+#&gt; # … with 18,710 more rows</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
