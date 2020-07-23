@@ -29,16 +29,14 @@
 #' \emph{Diabetes care} \strong{29} .1631-1640,
 #' \doi{10.2337/dc06-1085}
 #'
+#'#'
 #' @examples
 #' data(example_data_1_subject)
 #' auc(example_data_1_subject)
 #'
 #' data(example_data_5_subject)
 #' auc(example_data_5_subject)
-
-
-library(iglu)
-library(dplyr)
+#'
 
 
 # Note about the iglu interpolation function CGMS2DayByDay:
