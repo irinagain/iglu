@@ -17,13 +17,15 @@ corresponding active_percent value is returned
 }
 \description{
 The function active_percent produces a tibble object with values equal to the
-percentage of time, the cgm was active. The output columns correspond to the
-subject id and the precentage of time for which the cgm was active, and the output rows
-correspond to the subjects. The values will be between 0 (no measurements) and 100 (all measurements).
+percentage of time the cgm was active. For example, if a cgm's (5 min frequency) times were 0, 5, 10, 15 and
+glucose values were missing at time 5, then percentage of time the cgm was active is 75%.
+The output columns correspond to the subject id and the precentage of time for which the cgm was active,
+and the output rows correspond to the subjects.
+The values will be between 0% (no measurements) and 100% (all measurements).
 }
 \details{
 A tibble object with 1 row for each subject, a column for subject id and
-a column for active_percent values returned is returned.
+a column for active_percent values is returned.
 }
 \examples{
 
@@ -43,4 +45,7 @@ Danne et al. (2017) International Consensus on Use of
 Continuous Glucose Monitoring
 \emph{Diabetes Care} \strong{40} .1631-1640,
 \doi{10.2337/dc17-1600}.
+}
+\author{
+Pratik Patel
 }
