@@ -1,7 +1,7 @@
 #' Calculate GMI
 #'
 #' @description
-#' The function gmi produces GMI values a tibble object.
+#' The function gmi produces GMI values in a tibble object.
 #'
 #' @usage
 #' gmi(data)
@@ -22,13 +22,13 @@
 #' omitted from the calculation of the GMI.
 #'
 #' GMI score is calculated by \eqn{3.31 + (.02392*mean(BG))}
-#' where BG is the list of Blood Glucose Measurements.
+#' where BG is the vector of Blood Glucose Measurements (mg/dL).
 #'
 #' @references
-#' Wojcicki (1995) "J"-index. A new proposition of the assessment
-#' of current glucose control in diabetic patients
-#' \emph{Hormone and Metabolic Research} \strong{27} .41-42,
-#' \doi{10.1055/s-2007-979906}.
+#' Bergenstal (2018) Glucose Management Indicator (GMI): A New Term for
+#' Estimating A1C From Continuous Glucose Monitoring
+#' \emph{Hormone and Metabolic Research} \strong{41} .2275-2280,
+#' \doi{10.2337/dc18-1581}.
 #'
 #' @examples
 #'
