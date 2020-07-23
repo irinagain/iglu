@@ -2,11 +2,11 @@
 #'
 #' @description
 #' The function active_percent produces a tibble object with values equal to the
-#' percentage of time, the cgm was active. For example, if a cgm's (5 min frequency) times were 0, 5, 10, 15 and
-#' glucose values were missing at 5, then percentage of time, the cgm was active is 75%.
+#' percentage of time the cgm was active. For example, if a cgm's (5 min frequency) times were 0, 5, 10, 15 and
+#' glucose values were missing at time 5, then percentage of time the cgm was active is 75%.
 #' The output columns correspond to the subject id and the precentage of time for which the cgm was active,
 #' and the output rows correspond to the subjects.
-#' The values will be between 0 (no measurements) and 100 (all measurements).
+#' The values will be between 0% (no measurements) and 100% (all measurements).
 #'
 #' @usage
 #' active_percent(data, freqCGM = 5)
@@ -16,12 +16,14 @@
 #'
 #' @details
 #' A tibble object with 1 row for each subject, a column for subject id and
-#' a column for active_percent values returned is returned.
+#' a column for active_percent values is returned.
 #'
 #' @return If a data.frame object is passed, then a tibble object with two columns: subject id and
 #' corresponding active_percent value is returned
 #'
 #' @export
+#'
+#' @author Pratik Patel
 #'
 #' @references
 #' Danne et al. (2017) International Consensus on Use of
@@ -46,7 +48,7 @@
 active_percent <- function(data, freqCGM = 5) {
   active_percent = gl = id = NULL
   rm(list = c("gl", "id", "active_percent"))
-  data = check_data_columns(data)
+  data = check_data_columns(data, time_check = TRUE)
   is_vector = attr(data, "is_vector")
 
   out = data %>%
