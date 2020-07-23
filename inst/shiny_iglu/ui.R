@@ -1,5 +1,5 @@
-library(shiny)
-library(DT)
+#library(shiny)
+#library(DT)
 
 shinyUI(fluidPage(
 
@@ -49,7 +49,7 @@ shinyUI(fluidPage(
                )),
                uiOutput("select_parameter"),
                uiOutput("help_text")),
-               mainPanel(dataTableOutput("metric"))
+               mainPanel(DT::dataTableOutput("metric"))
                )),
 
     tabPanel("Plots", fluid = TRUE,

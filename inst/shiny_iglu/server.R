@@ -1,5 +1,5 @@
-library(shiny)
-library(DT)
+#library(shiny)
+#library(DT)
 
 shinyServer(function(input, output) {
 
@@ -174,7 +174,7 @@ metric_table <- reactive({
   }
 })
 
-  output$metric <- renderDataTable(metric_table(), extensions = "Buttons",
+  output$metric <- DT::renderDataTable(metric_table(), extensions = "Buttons",
                                    options = list(dom = "Btip",
                                                   buttons = c("copy", "csv", "excel", "pdf", "print")))
 
