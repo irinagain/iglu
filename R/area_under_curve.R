@@ -4,7 +4,7 @@
 #' The function auc produces hourly average AUC for each subject.
 #'
 #' @usage
-#' auc_test(data)
+#' auc(data)
 #'
 #' @param
 #' DataFrame object with column names "id", "time", and "gl", or numeric vector of glucose values.
@@ -29,7 +29,7 @@
 #' \emph{Diabetes care} \strong{29} .1631-1640,
 #' \doi{10.2337/dc06-1085}
 #'
-#'#'
+#'
 #' @examples
 #' data(example_data_1_subject)
 #' auc(example_data_1_subject)
@@ -44,7 +44,7 @@
 # interpolated glucose values, the days of data, and the frequency of CGM measurements
 # To access each respectively we use [[]]
 
-auc_test <- function (data, tz = "") {
+auc <- function (data, tz = "") {
 
   # this is a helper function that runs on a single person's data
   auc_single <- function(data) {
