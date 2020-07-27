@@ -52,7 +52,7 @@ auc <- function (data, tz = "") {
     # this whole part gets our desired output from the data
     out = data %>%
       # this part tidies up the data into 2 columns: day and gl
-      summarise(
+      dplyr::summarise(
         # from the interpolation, we get the days of data
         day = rep(CGMS2DayByDay(data.frame(id, gl, time))[[2]],
                   # we replicate each day by the number of measurements for that day
@@ -63,15 +63,15 @@ auc <- function (data, tz = "") {
       ) %>%
       # this part finds the area under the curve
       # first we group by day
-      group_by(day) %>%
-      summarise(
+      dplyr::group_by(day) %>%
+      dplyr::summarise(
         # this returns the area measurements for each trapezoid
         # this is just the formula you were using
         each_area = (dt0/60) * ((gl[2:length(gl)] +
                                    gl[1:(length(gl)-1)])/2)
       ) %>%
       # here we summarise to daily area, then hourly average
-      summarise(daily_area = sum(each_area, na.rm = TRUE),
+      dplyr::summarise(daily_area = sum(each_area, na.rm = TRUE),
                 # we need the actual hours collected because some data has NA gaps
                 hours = dt0/60 * length(na.omit(each_area)),
                 # then we can find the hourly average for each day
@@ -81,9 +81,9 @@ auc <- function (data, tz = "") {
 
   # here we split the data by id then apply the helper function
   out = data %>%
-    group_by(id) %>%
+    dplyr::group_by(id) %>%
     # the overall average for each subject is the mean of their daily hourly avg
-    summarise(hourly_auc = mean(
+    dplyr::summarise(hourly_auc = mean(
       auc_single(data.frame(id, gl, time))$hourly_avg))
   # in the end, we return an overall hourly average for each subject
   return(out)
