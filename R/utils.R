@@ -1,4 +1,4 @@
-check_data_columns =  function(data, id = 'id', time = 'time', gl = 'gl'){
+check_data_columns =  function(data, id = 'id', time = 'time', gl = 'gl', time_check = FALSE, tz = ""){
   if (is.vector(data)) {
     output = as.double(data)
     output = data.frame(gl = output,
@@ -12,6 +12,12 @@ check_data_columns =  function(data, id = 'id', time = 'time', gl = 'gl'){
       msg = paste0("Columns: ", paste0(s, collapse = ", "),
                    " are not present in the data")
       stop(msg)
+    }
+    if (time_check) {
+      if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
+        tr = as.character(data$time)
+        data$time = as.POSIXct(tr, format='%Y-%m-%d %H:%M:%S', tz = tz)
+      }
     }
     output = data[, c(id, time, gl), drop = FALSE]
     colnames(output) = c("id", "time", "gl")
