@@ -4,7 +4,7 @@
 \alias{auc}
 \title{Calculate Area Under Curve AUC}
 \usage{
-auc_test(data)
+auc(data)
 }
 \arguments{
 \item{DataFrame}{object with column names "id", "time", and "gl", or numeric vector of glucose values.}

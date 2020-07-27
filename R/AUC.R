@@ -4,7 +4,7 @@
 #' The function auc produces hourly average AUC for each subject.
 #'
 #' @usage
-#' auc_test(data)
+#' auc(data)
 #'
 #' @param
 #' DataFrame object with column names "id", "time", and "gl", or numeric vector of glucose values.
