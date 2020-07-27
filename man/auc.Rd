@@ -4,10 +4,12 @@
 \alias{auc}
 \title{Calculate Area Under Curve AUC}
 \usage{
-auc(data)
+auc(data, tz="")
 }
 \arguments{
-\item{DataFrame}{object with column names "id", "time", and "gl", or numeric vector of glucose values.}
+\item{data}{DataFrame object with column names "id", "time", and "gl", or numeric vector of glucose values.}
+
+\item{tz}{String value of time zone}
 }
 \value{
 If a data.frame object is passed, then a tibble object with

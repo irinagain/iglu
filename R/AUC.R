@@ -4,10 +4,10 @@
 #' The function auc produces hourly average AUC for each subject.
 #'
 #' @usage
-#' auc(data)
+#' auc(data, tz="")
 #'
-#' @param
-#' DataFrame object with column names "id", "time", and "gl", or numeric vector of glucose values.
+#' @param data DataFrame object with column names "id", "time", and "gl", or numeric vector of glucose values.
+#' @param tz String value of time zone
 #'
 #' @return
 #' If a data.frame object is passed, then a tibble object with
