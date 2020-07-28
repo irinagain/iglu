@@ -20,9 +20,8 @@
 #' a column for hourly average AUC values is returned. NA glucose values are
 #' omitted from the calculation of the AUC.
 #'
-#' AUC is calculated by (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2),
-#' where dt0/60 is the frequency of the cgm measurements in hours and gl are the glucose values,
-#' using the original formula: time[n+1]-time[n] * (gl[n]+gl[n+1])/2
+#' AUC is calculated using the formula: (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2),
+#' where dt0/60 is the frequency of the cgm measurements in hours and gl are the glucose values.
 #'
 #' @references
 #' Danne et al. (2017) International Consensus on Use of Continuous Glucose Monitoring,
@@ -66,7 +65,8 @@ auc <- function (data, tz = "") {
       dplyr::group_by(day) %>%
       dplyr::summarise(
         # this returns the area measurements for each trapezoid
-        # this is just the formula you were using
+        # AUC is calculated using the formula:
+        # (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2)
         each_area = (dt0/60) * ((gl[2:length(gl)] +
                                    gl[1:(length(gl)-1)])/2)
       ) %>%
@@ -74,7 +74,7 @@ auc <- function (data, tz = "") {
       dplyr::summarise(daily_area = sum(each_area, na.rm = TRUE),
                 # we need the actual hours collected because some data has NA gaps
                 hours = dt0/60 * length(na.omit(each_area)),
-                # then we can find the hourly average for each day
+                # then we find the hourly average for each day
                 hourly_avg = daily_area/hours)
     return(out)
   }
