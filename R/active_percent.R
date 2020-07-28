@@ -62,22 +62,22 @@ active_percent <- function(data, freqCGM = 5) {
       dplyr::filter(id == subject[i]) %>%
       dplyr::arrange(time)
 
-    present_gl_vals <- nrow(subData)
-    theoretical_gl_vals <- 0
-    start_time <- subData$time[1]
+    present_gl_vals = nrow(subData)
+    theoretical_gl_vals = 0
+    start_time = subData$time[1]
     for(j in 1:(present_gl_vals-1)) {
       if(as.double(subData$time[j+1]) - as.double(subData$time[j]) >= (24*3600)) {
-        n_gl_vals <- round((as.double(subData$time[j]) - as.double(start_time))/(60*freqCGM)) + 1
+        n_gl_vals = round((as.double(subData$time[j]) - as.double(start_time))/(60*freqCGM)) + 1
         theoretical_gl_vals = theoretical_gl_vals + n_gl_vals
-        start_time <- subData$time[j+1]
+        start_time = subData$time[j+1]
       }
     }
-    n_gl_vals <- round(((as.double(subData$time[present_gl_vals]) - as.double(start_time))/(60*freqCGM))) + 1
+    n_gl_vals = round(((as.double(subData$time[present_gl_vals]) - as.double(start_time))/(60*freqCGM))) + 1
     theoretical_gl_vals = theoretical_gl_vals + n_gl_vals
     active_perc_data[[i]] <- c(present_gl_vals, theoretical_gl_vals)
   }
 
-  results <- lapply(
+  results = lapply(
     active_perc_data,
     function(d){
       out = tibble::tibble(id = NA, active_percent = (d[1]/d[2])*100)
