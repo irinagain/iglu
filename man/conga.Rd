@@ -4,7 +4,7 @@
 \alias{conga}
 \title{Continuous Overall Net Glycemic Action (CONGA)}
 \usage{
-conga(data, tz = "")
+conga(data, tz = "", n = 1)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}

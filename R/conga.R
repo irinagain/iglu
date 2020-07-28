@@ -5,7 +5,7 @@
 #' conga now supports calculation of any n hours apart.
 #'
 #' @usage
-#' conga(data, tz = "")
+#' conga(data, tz = "", n = 1)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl".
 #'
