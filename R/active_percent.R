@@ -46,14 +46,15 @@
 
 
 active_percent <- function(data, freqCGM = 5) {
-  active_percent = gl = id = ns = NULL
-  rm(list = c("gl", "id", "active_percent", "ns"))
+  active_percent = gl = id = NULL
+  rm(list = c("gl", "id", "active_percent"))
   data = check_data_columns(data, time_check = TRUE)
   is_vector = attr(data, "is_vector")
 
   subject = unique(data$id)
   ns = length(subject)
 
+  # Calculating present and theoretical number of gl values for each id
   active_perc_data = list()
   for(i in 1:ns) {
     subData <- data %>%
@@ -65,6 +66,7 @@ active_percent <- function(data, freqCGM = 5) {
     present_gl_vals = nrow(subData)
     theoretical_gl_vals = 0
     start_time = subData$time[1]
+
     for(j in 1:(present_gl_vals-1)) {
       if(as.double(subData$time[j+1]) - as.double(subData$time[j]) >= (24*3600)) {
         n_gl_vals = round((as.double(subData$time[j]) - as.double(start_time))/(60*freqCGM)) + 1
@@ -72,6 +74,7 @@ active_percent <- function(data, freqCGM = 5) {
         start_time = subData$time[j+1]
       }
     }
+
     n_gl_vals = round(((as.double(subData$time[present_gl_vals]) - as.double(start_time))/(60*freqCGM))) + 1
     theoretical_gl_vals = theoretical_gl_vals + n_gl_vals
     active_perc_data[[i]] <- c(present_gl_vals, theoretical_gl_vals)
