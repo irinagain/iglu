@@ -5,13 +5,13 @@
 #' conga now supports calculation of any n hours apart.
 #'
 #' @usage
-#' conga(data, tz = "", n = 1)
+#' conga(data, tz = "", n = 24)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl".
 #'
 #' @param tz A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
 #'
-#' @param n An integer specifying how many hours prior to an observation should be used in the CONGA calculation
+#' @param n An integer specifying how many hours prior to an observation should be used in the CONGA calculation. The default value is set to n = 24 hours
 #'
 #' @return  A tibble object with two columns: subject id and corresponding CONGA value.
 #'
@@ -42,7 +42,7 @@
 #'
 
 
-conga <- function(data, tz = "", n = 1){
+conga <- function(data, tz = "", n = 24){
   conga_single = function(data, tz = "", hours = 1){
     data_ip = CGMS2DayByDay(data, tz = tz)
     gl_by_id_ip = data_ip[[1]]
@@ -55,7 +55,7 @@ conga <- function(data, tz = "", n = 1){
 
   gl = id = NULL
   rm(list = c("gl", "id"))
-  data = check_data_columns(data)
+  data = iglu:::check_data_columns(data)
   is_vector = attr(data, "is_vector")
 
   out = data %>%
