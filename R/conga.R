@@ -45,7 +45,7 @@ conga <- function(data, tz = "", n = 1){
     data_ip = CGMS2DayByDay(data, tz = tz)
     gl_by_id_ip = data_ip[[1]]
     dt0 = data_ip[[3]]
-    hourly_readings = 60 / dt0
+    hourly_readings = round(60 / dt0, digits = 0)
 
     out = sd(diff(as.vector(t(gl_by_id_ip)), lag = hourly_readings * hours), na.rm = TRUE)
     return(out)
@@ -53,7 +53,7 @@ conga <- function(data, tz = "", n = 1){
 
   gl = id = NULL
   rm(list = c("gl", "id"))
-  data = iglu:::check_data_columns(data)
+  data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
 
   out = data %>%
