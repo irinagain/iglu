@@ -25,8 +25,8 @@
 #'
 #' @references
 #' Danne et al. (2017) International Consensus on Use of Continuous Glucose Monitoring,
-#' \emph{Diabetes care} \strong{29} .1631-1640,
-#' \doi{10.2337/dc06-1085}
+#' \emph{Diabetes Care} \strong{40} .1631-1640,
+#' \doi{10.2337/dc17-1600}.
 #'
 #' @examples
 #' data(example_data_1_subject)
