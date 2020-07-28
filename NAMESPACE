@@ -3,6 +3,7 @@
 export("%>%")
 export(CGMS2DayByDay)
 export(above_percent)
+export(active_percent)
 export(adrr)
 export(below_percent)
 export(conga)
