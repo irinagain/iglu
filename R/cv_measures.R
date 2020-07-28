@@ -71,11 +71,11 @@ cv_measures <- function(data, dt0 = NULL, inter_gap = 45, tz = "" ){
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      Mean=CGMS2DayByDay(data.frame(id,time,gl),dt0 = dt0, tz = tz, inter_gap = inter_gap)$gd2d %>%
+      CVmean=CGMS2DayByDay(data.frame(id,time,gl),dt0 = dt0, tz = tz, inter_gap = inter_gap)$gd2d %>%
         apply( 1, cv, na.rm = TRUE) %>%
         mean( na.rm = TRUE),
 
-      Sd=CGMS2DayByDay(data.frame(id,time,gl),dt0 = dt0, tz = tz, inter_gap = inter_gap)$gd2d %>%
+      CVsd=CGMS2DayByDay(data.frame(id,time,gl),dt0 = dt0, tz = tz, inter_gap = inter_gap)$gd2d %>%
         apply( 1, cv, na.rm = TRUE) %>%
         sd( na.rm = TRUE))
   if (is_vector) {
