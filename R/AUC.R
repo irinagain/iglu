@@ -7,11 +7,16 @@
 #' auc(data, tz="")
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl", or numeric vector of glucose values.
-#' @param tz String value of time zone
+#' @param tz String value of time zone.
 #'
 #' @return
 #' If a data.frame object is passed, then a tibble object with
 #' two columns: subject id and corresponding hourly average AUC value is returned.
+#'
+#' AUC is calculated for every hour using the trapezoidal rule,
+#' then hourly average AUC is calculated for each 24 hour period,
+#' then the mean of hourly average AUC across each 24 hour period
+#' is returned as overall hourly average AUC.
 #'
 #' @export
 #'
@@ -22,6 +27,8 @@
 #'
 #' AUC is calculated using the formula: (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2),
 #' where dt0/60 is the frequency of the cgm measurements in hours and gl are the glucose values.
+#'
+#' This formula is based off the Trapezoidal Rule: (time[2]-time[1] * ((glucose[1]+glucose[2])/2)).
 #'
 #' @references
 #' Danne et al. (2017) International Consensus on Use of Continuous Glucose Monitoring,
@@ -60,17 +67,15 @@ auc <- function (data, tz = "") {
         gl = as.vector(t(CGMS2DayByDay(data.frame(
           id, time, gl))[[1]]))
       ) %>%
-      # this part finds the area under the curve
+      # this part finds AUC
       # first we group by day
       dplyr::group_by(day) %>%
       dplyr::summarise(
-        # this returns the area measurements for each trapezoid
-        # AUC is calculated using the formula:
-        # (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2)
+        # this returns the AUC measurements for each trapezoid
         each_area = (dt0/60) * ((gl[2:length(gl)] +
                                    gl[1:(length(gl)-1)])/2)
       ) %>%
-      # here we summarise to daily area, then hourly average
+      # here we summarize to daily area, then hourly average
       dplyr::summarise(daily_area = sum(each_area, na.rm = TRUE),
                 # we need the actual hours collected because some data has NA gaps
                 hours = dt0/60 * length(na.omit(each_area)),
@@ -82,7 +87,7 @@ auc <- function (data, tz = "") {
   # here we split the data by id then apply the helper function
   out = data %>%
     dplyr::group_by(id) %>%
-    # the overall average for each subject is the mean of their daily hourly avg
+    # the overall average for each subject is the mean of their daily hourly average
     dplyr::summarise(hourly_auc = mean(
       auc_single(data.frame(id, gl, time))$hourly_avg))
   # in the end, we return an overall hourly average for each subject
