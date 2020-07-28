@@ -1,8 +1,8 @@
-#' Calculate continuous overall net glycemic action (CONGA)
+#' Continuous Overall Net Glycemic Action (CONGA)
 #'
 #' @description
 #' The function conga produces a CONGA values a tibble object.
-#' conga currently only supports calculation of CONGA24.
+#' conga now supports calculation of any n hours apart.
 #'
 #' @usage
 #' conga(data, tz = "")
@@ -21,7 +21,7 @@
 #'
 #' Missing values will be linearly interpolated when close enough to non-missing values.
 #'
-#' CONGA_n is the standard deviation of the difference between glucose values that are exactly n hours apart. CONGA_{24} is currently the only supported CONGA type (n = 24), and is computed by taking the standard deviation of differences in measurements separated by 24 hours.
+#' CONGA_n is the standard deviation of the difference between glucose values that are exactly n hours apart. CONGA is computed by taking the standard deviation of differences in measurements separated by n hours.
 #'
 #'
 #' @references
@@ -40,7 +40,6 @@
 #'
 
 
-
 conga <- function(data, tz = "", n = 1){
   conga_single = function(data, tz = "", hours = 1){
     data_ip = CGMS2DayByDay(data, tz = tz)
@@ -48,13 +47,13 @@ conga <- function(data, tz = "", n = 1){
     dt0 = data_ip[[3]]
     hourly_readings = 60 / dt0
 
-    out = sd(diff(as.vector(t(gl_by_id_ip)), leg = hourly_readings * hours), na.rm = TRUE)
+    out = sd(diff(as.vector(t(gl_by_id_ip)), lag = hourly_readings * hours), na.rm = TRUE)
     return(out)
   }
 
   gl = id = NULL
   rm(list = c("gl", "id"))
-  data = check_data_columns(data)
+  data = iglu:::check_data_columns(data)
   is_vector = attr(data, "is_vector")
 
   out = data %>%
