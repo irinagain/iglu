@@ -23,6 +23,7 @@ library(iglu)
 |ADRR (Average Daily Risk Range) | adrr |[Kovatchev et al. (2006)](https://doi.org/10.2337/dc06-1085)| Yes |
 |CONGA (Continuous Overall Net Glycemic Action) | conga | [McDonnell et al. (2005)](https://doi.org/10.1089/dia.2005.7.253)| Yes |
 |Coefficient of variation (CV) | cv_glu | [Rodbard (2009)](https://doi.org/10.1089/dia.2008.0132) | No |
+|Glucose Management Indicator (GMI) | gmi | [Bergenstal (2018)](https://doi.org/10.2337/dc18-1581)| No |
 |GRADE (Glycemic Risk Assessment Diabetes Equation) | grade | [Hill et al. (2007)](https://doi.org/10.1111/j.1464-5491.2007.02119.x)| No |
 |GRADEeu | grade_eugly | [Hill et al. (2007)](https://doi.org/10.1111/j.1464-5491.2007.02119.x)| No |
 |GRADEhyper | grade_hyper | [Hill et al. (2007)](https://doi.org/10.1111/j.1464-5491.2007.02119.x)| No |
@@ -44,6 +45,7 @@ library(iglu)
 |Percent in range | in_range_percent | | No |
 |Quantiles | quantile_glu | | No |
 |Range | range_glu | | No |
+|Rate of change (ROC) | roc |[Clarke et al. (2009)](https://doi.org/10.1089/dia.2008.0138) | Yes |
 |Standard Deviation | sd_glu | | No |
 |SdB (between days, within timepoints)| sd_measures (SdB) |[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)| Yes |
 |SdBDM (between days, within timepoints, corrected for changes in daily means)| sd_measures (SdBDM) |[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)| Yes |
