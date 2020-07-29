@@ -4,16 +4,12 @@
 #' The function hist_roc produces a histogram plot of ROC values
 #'
 #' @usage
-#' hist_roc(data, subjects = NULL, timelag = 15, tz = "")
+#' hist_roc(data, subjects = NULL, timelag = 15, dt0 = NULL, inter_gap = 45, tz = "")
 #'
-#' @inheritParams conga
+#' @inheritParams roc
 #'
 #' @param subjects String or list of strings corresponding to subject names
 #' in 'id' column of data. Default is all subjects.
-#'
-#' @param timelag Integer indicating the time period (# minutes) over which rate
-#' of change is calculated. Default is 15, e.g. rate of change is the change in
-#' glucose over the past 15 minutes divided by 15.
 #'
 #' @return A histogram of ROC values per subject
 #'
@@ -45,7 +41,7 @@
 #' hist_roc(example_data_5_subject, subjects = 'Subject 3')
 #'
 
-hist_roc <- function(data, subjects = NULL, timelag = 15, tz = "") {
+hist_roc <- function(data, subjects = NULL, timelag = 15, dt0 = NULL, inter_gap = 45, tz = "") {
 
   gl = id = roc = category = NULL
   rm(list = c("gl", "id", "roc", "category"))
@@ -58,7 +54,7 @@ hist_roc <- function(data, subjects = NULL, timelag = 15, tz = "") {
   data = data %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      roc = roc(data.frame(id, time, gl), timelag, tz)$roc,
+      roc = roc(data.frame(id, time, gl), timelag, dt0, inter_gap, tz)$roc,
       category = cut(roc, breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf),
                      labels = c("-Inf to -3", "-3 to -2", "-2 to -1",
                                 "-1 to 1", "1 to 2", "2 to 3", "3 to Inf"))

@@ -5,16 +5,12 @@
 #' by categorized rate of change values
 #'
 #' @usage
-#' plot_roc(data, subjects = NULL, timelag = 15, tz = "")
+#' plot_roc(data, subjects = NULL, timelag = 15, dt0 = NULL, inter_gap = 45, tz = "")
 #'
-#' @inheritParams conga
+#' @inheritParams roc
 #'
 #' @param subjects String or list of strings corresponding to subject names
 #' in 'id' column of data. Default is all subjects.
-#'
-#' @param timelag Integer indicating the time period (# minutes) over which rate
-#' of change is calculated. Default is 15, e.g. rate of change is the change in
-#' glucose over the past 15 minutes divided by 15.
 #'
 #' @return A time series of glucose values colored by ROC categories per subject
 #'
@@ -45,11 +41,12 @@
 #' plot_roc(example_data_5_subject, subjects = 'Subject 5')
 #'
 
-plot_roc <- function(data, subjects = NULL, timelag = 15, tz = ""){
+plot_roc <- function(data, subjects = NULL, timelag = 15, dt0 = NULL, inter_gap = 45, tz = ""){
   time_single <- function(data) {
-    dt0 = CGMS2DayByDay(data)[[3]]
-    day_one = lubridate::as_datetime(CGMS2DayByDay(data, tz = tz)[[2]][1])
-    ndays = length(CGMS2DayByDay(data, tz = tz)[[2]])
+    data_ip = CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
+    dt0 = data_ip[[3]]
+    day_one = lubridate::as_datetime(data_ip[[2]][1])
+    ndays = length(data_ip[[2]])
     dti = rep(dt0, ndays * 24 * 60 /dt0)
     time_out =  day_one + lubridate::minutes(cumsum(dti))
     return(time_out)
@@ -68,8 +65,8 @@ plot_roc <- function(data, subjects = NULL, timelag = 15, tz = ""){
     dplyr::summarise(
       time_ip = time_single(data.frame(id, time, gl)),
       gl_ip = as.vector(t(CGMS2DayByDay(
-        data.frame(id, time, gl), tz = tz)[[1]])),
-      roc = roc(data.frame(id, time, gl), timelag, tz)$roc,
+        data.frame(id, time, gl), dt0 = dt0, inter_gap = inter_gap, tz = tz)[[1]])),
+      roc = roc(data.frame(id, time, gl), timelag, dt0, inter_gap, tz)$roc,
       category = cut(
         roc, breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf),
         labels = c("-Inf to -3", "-3 to -2", "-2 to -1",
