@@ -1,6 +1,8 @@
 # iglu 1.3.0
 
 * Added active percent metric
+* Added cv_measures metrics
+* Added AUC metric
 
 # iglu 1.3.0
 
