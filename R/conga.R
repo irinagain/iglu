@@ -1,8 +1,7 @@
 #' Continuous Overall Net Glycemic Action (CONGA)
 #'
 #' @description
-#' The function conga produces a CONGA values a tibble object.
-#' conga now supports calculation of any n hours apart.
+#' The function conga produces CONGA values a tibble object for any n hours apart.
 #'
 #' @usage
 #' conga(data, tz = "", n = 24)
@@ -23,7 +22,7 @@
 #'
 #' Missing values will be linearly interpolated when close enough to non-missing values.
 #'
-#' CONGA_n is the standard deviation of the difference between glucose values that are exactly n hours apart. CONGA is computed by taking the standard deviation of differences in measurements separated by n hours.
+#' CONGA is the standard deviation of the difference between glucose values that are exactly n hours apart. CONGA is computed by taking the standard deviation of differences in measurements separated by n hours.
 #'
 #'
 #' @references

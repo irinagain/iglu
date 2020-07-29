@@ -17,8 +17,7 @@ conga(data, tz = "", n = 24)
 A tibble object with two columns: subject id and corresponding CONGA value.
 }
 \description{
-The function conga produces a CONGA values a tibble object.
-conga now supports calculation of any n hours apart.
+The function conga produces CONGA values a tibble object for any n hours apart.
 }
 \details{
 A tibble object with 1 row for each subject, a column for subject id and
@@ -26,7 +25,7 @@ a column for the CONGA values is returned.
 
 Missing values will be linearly interpolated when close enough to non-missing values.
 
-CONGA_n is the standard deviation of the difference between glucose values that are exactly n hours apart. CONGA is computed by taking the standard deviation of differences in measurements separated by n hours.
+CONGA is the standard deviation of the difference between glucose values that are exactly n hours apart. CONGA is computed by taking the standard deviation of differences in measurements separated by n hours.
 }
 \examples{
 
