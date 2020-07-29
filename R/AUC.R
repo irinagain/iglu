@@ -15,7 +15,7 @@
 #'
 #' AUC is calculated for every hour using the trapezoidal rule,
 #' then hourly average AUC is calculated for each 24 hour period,
-#' then the mean of hourly average AUC across each 24 hour period
+#' then the mean of hourly average AUC across all 24 hour periods
 #' is returned as overall hourly average AUC.
 #'
 #' @export
