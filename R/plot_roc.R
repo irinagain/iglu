@@ -49,8 +49,8 @@ plot_roc <- function(data, subjects = NULL, timelag = 15, tz = ""){
     return(time_out)
   }
 
-  gl = id = roc = category = NULL
-  rm(list = c("gl", "id", "roc", "category"))
+  gl = gl_ip = time_ip = id = roc = category = NULL
+  rm(list = c("gl", "id", "roc", "category", "gl_ip", "time_ip"))
   data = check_data_columns(data)
 
   if (!is.null(subjects)) {

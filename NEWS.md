@@ -1,5 +1,9 @@
 # iglu 1.3.0
 
+* Added active percent metric
+
+# iglu 1.3.0
+
 * Added glucose management indicator (GMI) and eA1c
 
 # iglu 1.2.0
