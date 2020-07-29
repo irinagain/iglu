@@ -132,7 +132,7 @@ values in a tibble object." />
 values in a tibble object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sd_roc</span>(<span class='no'>data</span>, <span class='kw'>timelag</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
+    <pre class="usage"><span class='fu'>sd_roc</span>(<span class='no'>data</span>, <span class='kw'>timelag</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>dt0</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>inter_gap</span> <span class='kw'>=</span> <span class='fl'>45</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,6 +146,14 @@ values in a tibble object.</p>
       <td><p>Integer indicating the time period (# minutes) over which rate
 of change is calculated. Default is 15, e.g. rate of change is the change in
 glucose over the past 15 minutes divided by 15.</p></td>
+    </tr>
+    <tr>
+      <th>dt0</th>
+      <td><p>The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).</p></td>
+    </tr>
+    <tr>
+      <th>inter_gap</th>
+      <td><p>The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.</p></td>
     </tr>
     <tr>
       <th>tz</th>
