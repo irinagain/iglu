@@ -25,10 +25,10 @@ A histogram of ROC values per subject
 The function hist_roc produces a histogram plot of ROC values
 }
 \details{
-For the default, a histogram is produced for each subject displaying ROC values
-categorized and colored as follows: breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf)
-where the glucose is in mg/dl and the ROC values are in mg/dl/min. A ROC of
--5 mg/dl/min will thus be placed in category 1 and colored accordingly.
+For the default, a histogram is produced for each subject displaying the ROC values
+colored by ROC categories defined as follows. The breaks for the categories are:
+c(-Inf, -3, -2, -1, 1, 2, 3, Inf) where the glucose is in mg/dl and the ROC values are in mg/dl/min.
+A ROC of -5 mg/dl/min will thus be placed in the first category and colored accordingly.
 }
 \examples{
 
@@ -45,6 +45,9 @@ Clarke et al. (2009) Statistical Tools to Analyze Continuous Glucose Monitor Dat
 Diabetes
 \emph{Diabetes Technology and Therapeutics} \strong{11} S45-S54,
 \doi{10.1089/dia.2008.0138}.
+}
+\seealso{
+\code{\link{plot_roc}} for reference paper on ROC categories.
 }
 \author{
 Elizabeth Chun, David Buchanan

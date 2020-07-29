@@ -26,11 +26,11 @@ The function plot_roc produces a time series plot of glucose values colored
 by categorized rate of change values
 }
 \details{
-For the default, a time series plot is produced for each subject in which the
-glucose values are plotted and colored by the following categories for ROC:
-breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf) where the glucose is in mg/dl and
-the ROC values are in mg/dl/min. A ROC of -5 mg/dl/min will thus be placed in
-category 1 and colored accordingly.
+For the default, a time series is produced for each subject in which the glucose values are
+plotted and colored by ROC categories defined as follows. The breaks for the categories are:
+c(-Inf, -3, -2, -1, 1, 2, 3, Inf) where the glucose is in mg/dl and the ROC values are in mg/dl/min.
+A ROC of -5 mg/dl/min will thus be placed in the first category and colored accordingly. The breaks
+for the categories come from the reference paper below.
 }
 \examples{
 
@@ -41,6 +41,12 @@ data(example_data_5_subject)
 plot_roc(example_data_5_subject)
 plot_roc(example_data_5_subject, subjects = 'Subject 5')
 
+}
+\references{
+Klonoff, D. C., & Kerr, D. (2017)  A Simplified Approach Using Rate of Change Arrows to
+Adjust Insulin With Real-Time Continuous Glucose Monitoring.
+\emph{Journal of Diabetes Science and Technology} \strong{11(6)} 1063-1069,
+\doi{10.1177/1932296817723260}.
 }
 \author{
 Elizabeth Chun, David Buchanan

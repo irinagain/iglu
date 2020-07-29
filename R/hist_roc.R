@@ -20,10 +20,12 @@
 #' @export
 #'
 #' @details
-#' For the default, a histogram is produced for each subject displaying ROC values
-#' categorized and colored as follows: breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf)
-#' where the glucose is in mg/dl and the ROC values are in mg/dl/min. A ROC of
-#' -5 mg/dl/min will thus be placed in category 1 and colored accordingly.
+#' For the default, a histogram is produced for each subject displaying the ROC values
+#' colored by ROC categories defined as follows. The breaks for the categories are:
+#' c(-Inf, -3, -2, -1, 1, 2, 3, Inf) where the glucose is in mg/dl and the ROC values are in mg/dl/min.
+#' A ROC of -5 mg/dl/min will thus be placed in the first category and colored accordingly.
+#'
+#' @seealso \code{\link{plot_roc}} for reference paper on ROC categories.
 #'
 #' @author Elizabeth Chun, David Buchanan
 #'
@@ -58,13 +60,16 @@ hist_roc <- function(data, subjects = NULL, timelag = 15, tz = "") {
     dplyr::summarise(
       roc = roc(data.frame(id, time, gl), timelag, tz)$roc,
       category = cut(roc, breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf),
-                     labels = c("1", "2", "3","4", "5", "6", "7"))
+                     labels = c("-Inf to -3", "-3 to -2", "-2 to -1",
+                                "-1 to 1", "1 to 2", "2 to 3", "3 to Inf"))
     )
 
-  colours = c("1" = "purple", "2" = "blue", "3" = "cyan", "4" = "darkolivegreen1",
-              "5" = "darkgoldenrod1", "6" = "pink", "7" = "red")
+  colours = c("-Inf to -3" = "#0025FA", "-3 to -2" = "#197DE3",
+              "-2 to -1" = "#B3FFF8", "-1 to 1" = "white",
+              "1 to 2" = "#FEC7B6", "2 to 3" = "#FB5454",
+              "3 to Inf" = "#9F0909")
   ggplot2::ggplot(data, ggplot2::aes(roc, fill = category)) +
     ggplot2::geom_histogram(binwidth = 0.1, alpha = 0.72, na.rm = TRUE) +
     ggplot2::facet_wrap(~id, scales = "free_x") +
-    ggplot2::scale_fill_manual(values = colours) + ggplot2::theme_dark()
+    ggplot2::scale_fill_manual(values = colours, name = "Category (mg/dl/min)")
 }

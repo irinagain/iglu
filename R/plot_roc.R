@@ -21,13 +21,19 @@
 #' @export
 #'
 #' @details
-#' For the default, a time series plot is produced for each subject in which the
-#' glucose values are plotted and colored by the following categories for ROC:
-#' breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf) where the glucose is in mg/dl and
-#' the ROC values are in mg/dl/min. A ROC of -5 mg/dl/min will thus be placed in
-#' category 1 and colored accordingly.
+#' For the default, a time series is produced for each subject in which the glucose values are
+#' plotted and colored by ROC categories defined as follows. The breaks for the categories are:
+#' c(-Inf, -3, -2, -1, 1, 2, 3, Inf) where the glucose is in mg/dl and the ROC values are in mg/dl/min.
+#' A ROC of -5 mg/dl/min will thus be placed in the first category and colored accordingly. The breaks
+#' for the categories come from the reference paper below.
 #'
 #' @author Elizabeth Chun, David Buchanan
+#'
+#' @references
+#' Klonoff, D. C., & Kerr, D. (2017)  A Simplified Approach Using Rate of Change Arrows to
+#' Adjust Insulin With Real-Time Continuous Glucose Monitoring.
+#' \emph{Journal of Diabetes Science and Technology} \strong{11(6)} 1063-1069,
+#' \doi{10.1177/1932296817723260}.
 #'
 #' @examples
 #'
@@ -66,17 +72,20 @@ plot_roc <- function(data, subjects = NULL, timelag = 15, tz = ""){
       roc = roc(data.frame(id, time, gl), timelag, tz)$roc,
       category = cut(
         roc, breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf),
-        labels = c("1", "2", "3","4", "5", "6", "7"))
+        labels = c("-Inf to -3", "-3 to -2", "-2 to -1",
+                   "-1 to 1", "1 to 2", "2 to 3", "3 to Inf"))
     )
 
-  colours = c("1" = "purple", "2" = "blue", "3" = "cyan", "4" = "darkolivegreen1",
-              "5" = "darkgoldenrod1", "6" = "pink", "7" = "red")
+  colours = c("-Inf to -3" = "#0025FA", "-3 to -2" = "#197DE3",
+              "-2 to -1" = "#B3FFF8", "-1 to 1" = "white",
+              "1 to 2" = "#FEC7B6", "2 to 3" = "#FB5454",
+              "3 to Inf" = "#9F0909")
   ggplot2::ggplot(data = data[complete.cases(data$gl_ip), ],
                   ggplot2::aes(x = time_ip, y = gl_ip, color = category)) +
     ggplot2::geom_point() +
     ggplot2::scale_x_datetime(name = 'Date') +
     ggplot2::scale_y_continuous(name = 'Blood Glucose') +
     ggplot2::facet_wrap(~id, scales = "free_x") +
-    ggplot2::scale_color_manual(values = colours, na.value = "gray") +
-    ggplot2::theme_dark()
+    ggplot2::scale_color_manual(values = colours, na.value = "gray",
+                                name = "Category (mg/dl/min)")
 }
