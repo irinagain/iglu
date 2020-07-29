@@ -163,12 +163,12 @@ three columns: subject id and corresponding CV subtype values is returned.</p>
 a column for each cv subtype values is returned.</p>
 <p>Missing values will be linearly interpolated when close enough to non-missing values.</p>
 <ol>
-<li><p>Mean:</p>
+<li><p>CVmean:</p>
 <p>Calculated by first taking the coefficient of variation of each day's glucose measurements,
 then taking the mean of all the coefficient of variation. That is, for x
 days we compute cv_1 ... cv_x daily coefficient of variations and calculate
 \(1/x * \sum [(cv_i)]\)</p></li>
-<li><p>Sd:</p>
+<li><p>CVsd:</p>
 <p>Calculated by first taking the coefficient of variation of each day's glucose measurements,
 then taking the standard deviation of all the coefficient of variations. That is, for d
 days we compute cv_1 ... cv_d daily coefficient of variations and calculate SD([cv_1, cv_2, ... cv_d])</p></li>
