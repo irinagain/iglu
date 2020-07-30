@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate continuous overall net glycemic action (CONGA) — conga • iglu</title>
+<title>Continuous Overall Net Glycemic Action (CONGA) — conga • iglu</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Calculate continuous overall net glycemic action (CONGA) — conga" />
-<meta property="og:description" content="The function conga produces a CONGA values a tibble object.
-conga currently only supports calculation of CONGA24." />
+<meta property="og:title" content="Continuous Overall Net Glycemic Action (CONGA) — conga" />
+<meta property="og:description" content="The function conga produces CONGA values a tibble object for any n hours apart." />
 
 
 
@@ -122,17 +121,16 @@ conga currently only supports calculation of CONGA24." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate continuous overall net glycemic action (CONGA)</h1>
+    <h1>Continuous Overall Net Glycemic Action (CONGA)</h1>
     
     <div class="hidden name"><code>conga.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The function conga produces a CONGA values a tibble object.
-conga currently only supports calculation of CONGA24.</p>
+    <p>The function conga produces CONGA values a tibble object for any n hours apart.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>conga</span>(<span class='no'>data</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
+    <pre class="usage"><span class='fu'>conga</span>(<span class='no'>data</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>24</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,6 +143,10 @@ conga currently only supports calculation of CONGA24.</p>
       <th>tz</th>
       <td><p>A character string specifying the time zone to be used. System-specific (see <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></code>), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.</p></td>
     </tr>
+    <tr>
+      <th>n</th>
+      <td><p>An integer specifying how many hours prior to an observation should be used in the CONGA calculation. The default value is set to n = 24 hours</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -155,7 +157,7 @@ conga currently only supports calculation of CONGA24.</p>
     <p>A tibble object with 1 row for each subject, a column for subject id and
 a column for the CONGA values is returned.</p>
 <p>Missing values will be linearly interpolated when close enough to non-missing values.</p>
-<p>CONGA_n is the standard deviation of the difference between glucose values that are exactly n hours apart. CONGA_24 is currently the only supported CONGA type (n = 24), and is computed by taking the standard deviation of differences in measurements separated by 24 hours.</p>
+<p>CONGA is the standard deviation of the difference between glucose values that are exactly n hours apart. CONGA is computed by taking the standard deviation of differences in measurements separated by n hours.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>McDonnell et al. (2005) : A novel approach to continuous glucose analysis
