@@ -54,7 +54,7 @@ conga <- function(data, tz = "", n = 24){
 
   gl = id = NULL
   rm(list = c("gl", "id"))
-  data = iglu:::check_data_columns(data)
+  data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
 
   out = data %>%
