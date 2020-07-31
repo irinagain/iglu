@@ -62,11 +62,7 @@ output$select_parameter <- renderUI({
   }
 
   else if(parameter_type == "value"){
-    if(input$metric == "active_percent"){
-      textInput("parameter", "Specify Parameter", value = "5")
-    }
-
-    else if(input$metric == "grade_hyper"){
+    if(input$metric == "grade_hyper"){
       textInput("parameter", "Specify Parameter", value = "140")
     }
 
@@ -92,6 +88,10 @@ output$select_parameter <- renderUI({
 
     else if(input$metric == "modd"){
       textInput("parameter", "Specify Parameter", value = "1")
+    }
+
+    else if(input$metric == "active_percent"){
+      textInput("parameter", "Specify Parameter", value = "5")
     }
   }
 
