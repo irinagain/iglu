@@ -32,7 +32,8 @@ parameter_type <- reactive({
     return("list")
   }
 
-  else if(input$metric %in% c("active_percent", "grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value", "mage", "modd")){
+  else if(input$metric %in% c("grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
+                              "mage", "modd", "roc", "sd_roc", "active_percent")){
     return("value")
   }
 
@@ -92,6 +93,14 @@ output$select_parameter <- renderUI({
 
     else if(input$metric == "active_percent"){
       textInput("parameter", "Specify Parameter", value = "5")
+    }
+      
+    else if(input$metric == "roc"){
+      textInput("parameter", "Specify Parameter", value = "15")
+    }
+      
+    else if(input$metric == "sd_roc"){
+      textInput("parameter", "Specify Parameter", value = "15")
     }
   }
 
@@ -195,6 +204,12 @@ metric_table <- reactive({
     else if(input$plottype == "lasagnasingle"){
       return("lasagnasingle")
     }
+    else if(input$plottype == "plot_roc"){
+      return("plot_roc")
+    }
+    else if(input$plottype == "hist_roc"){
+      return("hist_roc")
+    }
   })
 
 ### Get Lasagna Type (lasagnatype)
@@ -216,6 +231,12 @@ metric_table <- reactive({
                    choices = c(`Unsorted` = "unsorted",
                                `Time-sorted` = "timesorted"))
     }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
+    }
   })
 
 ### Get desired subjects
@@ -229,6 +250,18 @@ metric_table <- reactive({
       NULL
     }
     else if(plottype == "lasagnasingle"){
+      subject = unique(data$id)[1]
+      textInput("plot_subjects", "Enter Subject ID", value = subject)
+    }
+    else if(plottype == "lasagnasingle"){
+      subject = unique(data$id)[1]
+      textInput("plot_subjects", "Enter Subject ID", value = subject)
+    }
+    else if(plottype == "plot_roc"){
+      subject = unique(data$id)[1]
+      textInput("plot_subjects", "Enter Subject ID", value = subject)
+    }
+    else if(plottype == "hist_roc"){
       subject = unique(data$id)[1]
       textInput("plot_subjects", "Enter Subject ID", value = subject)
     }
@@ -246,6 +279,12 @@ metric_table <- reactive({
     else if(plottype == "lasagnasingle"){
       helpText("Enter the ID of a subject to display their individualized lasagna plot")
     }
+    else if(plottype == "plot_roc"){
+      helpText("Enter the ID of a subject to display their individualized ROC time series plot")
+    }
+    else if(plottype == "hist_roc"){
+      helpText("Enter the ID of a subject to display their individualized SD of ROC histogram")
+    }
 
   })
 
@@ -255,6 +294,26 @@ metric_table <- reactive({
     data = transform_data()
     data = data[data$id == input$plot_subjects,] # reactively subset data when subjects input is modified
     return(data)
+  })
+
+### Get time lag for Rate of Change plots
+  output$plot_timelag <- renderUI({
+    plottype = plottype() # bring reactive input variable into this renderUI call
+    if(plottype == "tsplot"){
+      NULL # time lag is only for ROC plots
+    }
+    else if(plottype == "lasagnamulti"){
+      NULL
+    }
+    else if(plottype == "lasagnasingle"){
+      NULL
+    }
+    else if(plottype == "plot_roc"){
+      textInput("plot_timelag", "Enter Timelag for ROC calculation", value = 15)
+    }
+    else if(plottype == "hist_roc"){
+      textInput("plot_timelag", "Enter Timelag for ROC calculation", value = 15)
+    }
   })
 
 ### Get max days to plot (maxd)
@@ -268,6 +327,12 @@ metric_table <- reactive({
       textInput("plot_maxd", "Enter Maximum # of Days to Plot", value = 14)
     }
     else if(plottype == "lasagnasingle"){
+      NULL
+    }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
       NULL
     }
   })
@@ -288,6 +353,12 @@ metric_table <- reactive({
     else if(plottype == "lasagnasingle"){
       NULL  # datatype doesn"t matter for single subject lasagna plots, so no input is necessary
     }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
+    }
   })
 
   output$plot_datatype_help_text <- renderUI({  # Request input parameters depending on type of plot
@@ -301,6 +372,12 @@ metric_table <- reactive({
     }
     else if(plottype == "lasagnasingle"){
       NULL # datatype doesn"t matter for single lasagna plot, so no input is necessary
+    }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
     }
   })
 
@@ -324,7 +401,13 @@ metric_table <- reactive({
 
   output$plot_TR <- renderUI({  # Request input parameters depending on type of plot
     plottype = plottype() # bring reactive input variable into this renderUI call
+    if(plottype %in% c("tsplot", "lasagnamulti", "lasagnasingle")){
       textInput("plot_TR", "Specify Lower and Upper Target Values, separated by a Comma", value = "80, 140")
+    }
+    else if(plottype %in% c("plot_roc", "hist_roc")){
+      NULL # ROC plots don't need TR
+    }
+
   })
 
   # output$plot_TR_help_text <- renderUI({ # Display help text related to target range parameters
@@ -347,6 +430,12 @@ metric_table <- reactive({
     else if(plottype == "lasagnasingle"){
       textInput("plot_midpoint", "Enter Midpoint Glucose Value for Color Scale", value = 105)
     }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
+    }
   })
 
 ### Get color bar limits (limits)
@@ -361,6 +450,12 @@ metric_table <- reactive({
     }
     else if(plottype == "lasagnasingle"){
       textInput("plot_limits", "Enter Limit Glucose Values for Color Scale Separated by a Comma", value = "50, 500")
+    }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
     }
   })
 
@@ -378,6 +473,12 @@ metric_table <- reactive({
     else if(plottype == "lasagnasingle"){
       helpText("The color bar can be modified by changing the values of the target range, the midpoint,
                and the color bar limits")
+    }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
     }
   })
 ### Render Plot
@@ -408,6 +509,18 @@ output$plot <- renderPlot({
                    input$plot_lasagnatype, '", limits = c(', input$plot_limits, '), ',
                    midpoint = input$plot_midpoint, ', ',
                    input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = "")
+    eval(parse(text = string))
+  }
+  else if(plottype == "plot_roc"){
+    data = subset_data() # subset data to only user-specified subject
+    string = paste('iglu::plot_roc(data = data',
+                   ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
+    eval(parse(text = string))
+  }
+  else if(plottype == "hist_roc"){
+    data = subset_data() # subset data to only user-specified subject
+    string = paste('iglu::hist_roc(data = data',
+                   ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
     eval(parse(text = string))
   }
 

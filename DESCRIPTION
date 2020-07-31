@@ -1,7 +1,7 @@
 Package: iglu
 Type: Package
 Title: Interpreting Glucose Data from Continuous Glucose Monitors
-Version: 1.3.0
+Version: 1.4.0
 Authors@R: c(person("Steve", "Broll",
             email = "stevebroll@tamu.edu",
             role = c("aut")),
@@ -13,10 +13,19 @@ Authors@R: c(person("Steve", "Broll",
             role = c("aut")),
             person("John", "Muschelli",
             role = c("aut"),
-            email = "muschellij2@gmail.com"), 
+            email = "muschellij2@gmail.com"),
+            person("Mary", "Martin",
+            role = c("aut"),
+            email = "marymartin16@tamu.edu"),
+            person("Pratik", "Patel",
+            role = c("aut"),
+            email = "p.pratik99@tamu.edu"),
             person("Marielle", "Hicban",
             role = c("aut"),
             email = "marbhic@tamu.edu"),
+            person("Nhan", "Nguyen",
+            role = c("aut"),
+            email = "nhannguyen993@tamu.edu"),
             person("Irina", "Gaynanova",
             email = "irinag@stat.tamu.edu",role = c("aut", "cre")))
 Description: Implements a wide range of metrics for measuring glucose control and glucose variability based on continuous glucose monitoring data. The list of implemented metrics is summarized in Rodbard (2009) <doi:10.1089/dia.2009.0015>. Additional visualization tools include time-series and lasagna plots. 
