@@ -4,7 +4,7 @@
 #' The function conga produces CONGA values a tibble object for any n hours apart.
 #'
 #' @usage
-#' conga(data, tz = "", n = 24)
+#' conga(data, n = 24, tz = "")
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl".
 #'
