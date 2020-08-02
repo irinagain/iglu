@@ -20,6 +20,7 @@ shinyUI(fluidPage(
     tabPanel("Metrics", fluid = TRUE,
              sidebarLayout(
                sidebarPanel(selectInput('metric', 'Choose Metric', choices = c(`Above Percent` = 'above_percent',
+                                                                               `Active Percent` = 'active_percent',
                                                                                `ADRR` = 'adrr',
                                                                                `Below Percent` = 'below_percent',
                                                                                `CONGA` = 'conga',

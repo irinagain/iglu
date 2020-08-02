@@ -33,7 +33,7 @@ parameter_type <- reactive({
   }
 
   else if(input$metric %in% c("grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
-                              "mage", "modd", "roc", "sd_roc")){
+                              "mage", "modd", "roc", "sd_roc", "active_percent")){
     return("value")
   }
 
@@ -90,9 +90,15 @@ output$select_parameter <- renderUI({
     else if(input$metric == "modd"){
       textInput("parameter", "Specify Parameter", value = "1")
     }
+
+    else if(input$metric == "active_percent"){
+      textInput("parameter", "Specify Parameter", value = "5")
+    }
+      
     else if(input$metric == "roc"){
       textInput("parameter", "Specify Parameter", value = "15")
     }
+      
     else if(input$metric == "sd_roc"){
       textInput("parameter", "Specify Parameter", value = "15")
     }
