@@ -130,7 +130,7 @@
     <p>The function conga produces CONGA values a tibble object for any n hours apart.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>conga</span>(<span class='no'>data</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>24</span>)</pre>
+    <pre class="usage"><span class='fu'>conga</span>(<span class='no'>data</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>24</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -140,12 +140,12 @@
       <td><p>DataFrame object with column names "id", "time", and "gl".</p></td>
     </tr>
     <tr>
-      <th>tz</th>
-      <td><p>A character string specifying the time zone to be used. System-specific (see <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></code>), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.</p></td>
-    </tr>
-    <tr>
       <th>n</th>
       <td><p>An integer specifying how many hours prior to an observation should be used in the CONGA calculation. The default value is set to n = 24 hours</p></td>
+    </tr>
+    <tr>
+      <th>tz</th>
+      <td><p>A character string specifying the time zone to be used. System-specific (see <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></code>), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.</p></td>
     </tr>
     </table>
 
