@@ -23,7 +23,7 @@ shinyServer(function(input, output) {
 ############################# METRIC SECTION ######################################################
 
 parameter_type <- reactive({
-  if(input$metric %in% c("adrr", "conga", "cv_glu", "grade", "hbgi", "iqr_glu", "j_index", "lbgi",
+  if(input$metric %in% c("adrr", "cv_glu", "grade", "hbgi", "iqr_glu", "j_index", "lbgi",
                          "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu")){
     return("none")
   }
@@ -32,7 +32,7 @@ parameter_type <- reactive({
     return("list")
   }
 
-  else if(input$metric %in% c("grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
+  else if(input$metric %in% c("conga", "grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
                               "mage", "modd", "roc", "sd_roc", "active_percent")){
     return("value")
   }
@@ -63,7 +63,11 @@ output$select_parameter <- renderUI({
   }
 
   else if(parameter_type == "value"){
-    if(input$metric == "grade_hyper"){
+    if(input$metric == "conga"){
+      textInput("parameter", "Specify n", value = "24")
+    }
+
+    else if(input$metric == "grade_hyper"){
       textInput("parameter", "Specify Parameter", value = "140")
     }
 
