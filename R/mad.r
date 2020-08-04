@@ -1,4 +1,3 @@
-#' Put what the function does here, ex:
 #' Calculate Mean Absolute Deviation (MAD)
 #'
 #' @description
@@ -28,7 +27,7 @@
 #' \eqn{median(|gl-median(gl))|}, where gl is the list of Blood Glucose measurements
 #' This is calculated for each day and then the mean across all days is taken
 #'
-#' @references https://github.com/MRCIEU/GLU
+#' @author David Buchanan, Marielle Hicban
 #'
 #' @examples
 #'

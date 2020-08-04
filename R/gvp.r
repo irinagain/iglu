@@ -1,4 +1,3 @@
-#' Put what the function does here, ex:
 #' Calculate Glucose Variability Percentage (GVP)
 #'
 #' @description
@@ -20,11 +19,13 @@
 #' a column for GVP values is returned. NA glucose values are
 #' omitted from the calculation of the GVP.
 #'
-#' GVP is calculated by taking the length of the line of the glucose trace,
-#' then dividing it by the length of a perfectly flat trace. The formula for this is
-#' \eqn{sqrt(diff^2+dt0^2)/n*dt0}, where diff is the change in
+#' GVP is calculated by dividing the total length of the line of the glucose trace
+#' by the length of a perfectly flat trace. The formula for this is
+#' \eqn{sqrt(diff^2+dt0^2)/(n*dt0)}, where diff is the change in
 #' Blood Glucose measurements from one reading to the next,
 #' dt0 is the time gap between measurements and n is the number of glucose readings
+#'
+#' @author David Buchanan, Mary Martin
 #'
 #' @references
 #' Peyser et al. (2017) Glycemic Variability Percentage: A Novel Method for Assessing
@@ -32,7 +33,7 @@
 #' \emph{Diabetes Technol Ther} \strong{20}(1):6–16,
 #' \doi{10.1089/dia.2017.0187}.
 #'
-#'  @examples
+#' @examples
 #'
 #' data(example_data_1_subject)
 #' gvp(example_data_1_subject)
@@ -46,7 +47,7 @@ gvp = function(data) {
   time = gl = id = NULL
   rm(list = c("time", "gl", "id"))
 
-  data = check_data_columns(data, time_check = TRUE)
+  data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
 
 
