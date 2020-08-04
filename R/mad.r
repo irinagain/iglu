@@ -40,8 +40,8 @@
 
 mad = function(data) {
 
-  med = gl = id = NULL
-  rm(list = c("med", "gl", "id"))
+  time = gl = id = NULL
+  rm(list = c("time", "gl", "id"))
 
   data = check_data_columns(data, time_check = TRUE)
   is_vector = attr(data, "is_vector")
