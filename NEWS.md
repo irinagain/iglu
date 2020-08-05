@@ -1,4 +1,7 @@
-# iglu 1.3.0
+# iglu 1.5.0
+* Added GVP and MAD metrics
+
+# iglu 1.4.0
 
 * Added active percent metric
 * Added cv_measures metrics
