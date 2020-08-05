@@ -2,12 +2,14 @@
 % Please edit documentation in R/conga.R
 \name{conga}
 \alias{conga}
-\title{Calculate continuous overall net glycemic action (CONGA)}
+\title{Continuous Overall Net Glycemic Action (CONGA)}
 \usage{
-conga(data, tz = "")
+conga(data, n = 24, tz = "")
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
+
+\item{n}{An integer specifying how many hours prior to an observation should be used in the CONGA calculation. The default value is set to n = 24 hours}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
@@ -15,8 +17,7 @@ conga(data, tz = "")
 A tibble object with two columns: subject id and corresponding CONGA value.
 }
 \description{
-The function conga produces a CONGA values a tibble object.
-conga currently only supports calculation of CONGA24.
+The function conga produces CONGA values a tibble object for any n hours apart.
 }
 \details{
 A tibble object with 1 row for each subject, a column for subject id and
@@ -24,7 +25,7 @@ a column for the CONGA values is returned.
 
 Missing values will be linearly interpolated when close enough to non-missing values.
 
-CONGA_n is the standard deviation of the difference between glucose values that are exactly n hours apart. CONGA_{24} is currently the only supported CONGA type (n = 24), and is computed by taking the standard deviation of differences in measurements separated by 24 hours.
+CONGA is the standard deviation of the difference between glucose values that are exactly n hours apart. CONGA is computed by taking the standard deviation of differences in measurements separated by n hours.
 }
 \examples{
 

@@ -4,7 +4,7 @@
 \alias{hist_roc}
 \title{Plot histogram of Rate of Change values (ROC)}
 \usage{
-hist_roc(data, subjects = NULL, timelag = 15, tz = "")
+hist_roc(data, subjects = NULL, timelag = 15, dt0 = NULL, inter_gap = 45, tz = "")
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
@@ -16,6 +16,10 @@ in 'id' column of data. Default is all subjects.}
 of change is calculated. Default is 15, e.g. rate of change is the change in
 glucose over the past 15 minutes divided by 15.}
 
+\item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
+
+\item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
+
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
@@ -25,10 +29,10 @@ A histogram of ROC values per subject
 The function hist_roc produces a histogram plot of ROC values
 }
 \details{
-For the default, a histogram is produced for each subject displaying ROC values
-categorized and colored as follows: breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf)
-where the glucose is in mg/dl and the ROC values are in mg/dl/min. A ROC of
--5 mg/dl/min will thus be placed in category 1 and colored accordingly.
+For the default, a histogram is produced for each subject displaying the ROC values
+colored by ROC categories defined as follows. The breaks for the categories are:
+c(-Inf, -3, -2, -1, 1, 2, 3, Inf) where the glucose is in mg/dl and the ROC values are in mg/dl/min.
+A ROC of -5 mg/dl/min will thus be placed in the first category and colored accordingly.
 }
 \examples{
 
@@ -45,6 +49,9 @@ Clarke et al. (2009) Statistical Tools to Analyze Continuous Glucose Monitor Dat
 Diabetes
 \emph{Diabetes Technology and Therapeutics} \strong{11} S45-S54,
 \doi{10.1089/dia.2008.0138}.
+}
+\seealso{
+\code{\link{plot_roc}} for reference paper on ROC categories.
 }
 \author{
 Elizabeth Chun, David Buchanan
