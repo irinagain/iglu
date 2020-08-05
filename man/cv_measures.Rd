@@ -29,14 +29,14 @@ a column for each cv subtype values is returned.
 Missing values will be linearly interpolated when close enough to non-missing values.
 
 \enumerate{
-\item Mean:
+\item CVmean:
 
 Calculated by first taking the coefficient of variation of each day's glucose measurements,
 then taking the mean of all the coefficient of variation. That is, for x
 days we compute cv_1 ... cv_x daily coefficient of variations and calculate
 \eqn{1/x * \sum [(cv_i)]}
 
-\item Sd:
+\item CVsd:
 
 Calculated by first taking the coefficient of variation of each day's glucose measurements,
 then taking the standard deviation of all the coefficient of variations. That is, for d
