@@ -24,14 +24,14 @@
 #' Missing values will be linearly interpolated when close enough to non-missing values.
 #'
 #' \enumerate{
-#' \item Mean:
+#' \item CVmean:
 #'
 #' Calculated by first taking the coefficient of variation of each day's glucose measurements,
 #' then taking the mean of all the coefficient of variation. That is, for x
 #' days we compute cv_1 ... cv_x daily coefficient of variations and calculate
 #' \eqn{1/x * \sum [(cv_i)]}
 #'
-#' \item Sd:
+#' \item CVsd:
 #'
 #' Calculated by first taking the coefficient of variation of each day's glucose measurements,
 #' then taking the standard deviation of all the coefficient of variations. That is, for d
@@ -71,11 +71,11 @@ cv_measures <- function(data, dt0 = NULL, inter_gap = 45, tz = "" ){
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      Mean=CGMS2DayByDay(data.frame(id,time,gl),dt0 = dt0, tz = tz, inter_gap = inter_gap)$gd2d %>%
+      CVmean=CGMS2DayByDay(data.frame(id,time,gl),dt0 = dt0, tz = tz, inter_gap = inter_gap)$gd2d %>%
         apply( 1, cv, na.rm = TRUE) %>%
         mean( na.rm = TRUE),
 
-      Sd=CGMS2DayByDay(data.frame(id,time,gl),dt0 = dt0, tz = tz, inter_gap = inter_gap)$gd2d %>%
+      CVsd=CGMS2DayByDay(data.frame(id,time,gl),dt0 = dt0, tz = tz, inter_gap = inter_gap)$gd2d %>%
         apply( 1, cv, na.rm = TRUE) %>%
         sd( na.rm = TRUE))
   if (is_vector) {

@@ -4,9 +4,10 @@
 #' The function roc produces rate of change values in a tibble object.
 #'
 #' @usage
-#' roc(data, timelag = 15, tz = "")
+#' roc(data, timelag = 15, dt0 = NULL, inter_gap = 45, tz = "")
 #'
 #' @inheritParams conga
+#' @inheritParams CGMS2DayByDay
 #'
 #' @param timelag Integer indicating the time period (# minutes) over which rate
 #' of change is calculated. Default is 15, e.g. rate of change is the change in
@@ -53,14 +54,14 @@
 #' roc(example_data_5_subject, timelag = 10)
 #'
 
-roc <- function (data, timelag = 15, tz = "") {
+roc <- function (data, timelag = 15, dt0 = NULL, inter_gap = 45, tz = "") {
 
   roc_single = function (data, timelag = 15) {
-    dt0 = CGMS2DayByDay(data, tz = tz)[[3]]
-    data_ip = CGMS2DayByDay(data, tz = tz)[[1]]
-    data_vec = as.vector(t(data_ip))
+    data_ip = CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
+    gl_ip_vec = as.vector(t(data_ip[[1]]))
+    dt0 = data_ip[[3]]
     out = c(rep(NA, timelag/dt0),
-            diff(data_vec, lag = timelag/dt0)/timelag)
+            diff(gl_ip_vec, lag = timelag/dt0)/timelag)
     return(out)
   }
 
