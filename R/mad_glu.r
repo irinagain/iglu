@@ -51,5 +51,9 @@ mad_glu = function(data) {
     dplyr::group_by(id) %>%
     dplyr::summarise(MAD = mad(gl))
 
+  if (is_vector) {
+    out$id = NULL
+  }
+
   return(out)
 }
