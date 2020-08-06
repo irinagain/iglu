@@ -5,13 +5,9 @@
 #' values in a tibble object.
 #'
 #' @usage
-#' sd_roc(data, timelag = 15, tz = "")
+#' sd_roc(data, timelag = 15, dt0 = NULL, inter_gap = 45, tz = "")
 #'
-#' @inheritParams conga
-#'
-#' @param timelag Integer indicating the time period (# minutes) over which rate
-#' of change is calculated. Default is 15, e.g. rate of change is the change in
-#' glucose over the past 15 minutes divided by 15.
+#' @inheritParams roc
 #'
 #' @return A tibble object with two columns: subject id and standard deviation
 #' of the rate of change values for each subject.
@@ -48,14 +44,14 @@
 #' sd_roc(example_data_5_subject, timelag = 10)
 #'
 
-sd_roc <- function(data, timelag = 15, tz = ""){
+sd_roc <- function(data, timelag = 15, dt0 = NULL, inter_gap = 45, tz = ""){
   gl = id = sd_roc = NULL
   rm(list = c("gl", "id", "sd_roc"))
   data = check_data_columns(data)
 
-  out = roc(data, timelag, tz) %>%
+  out = roc(data, timelag, dt0, inter_gap, tz) %>%
     dplyr::summarise(
-      sd_roc = sd(na.omit(roc))
+      sd_roc = sd(roc, na.rm = TRUE)
     )
   return(out)
 }
