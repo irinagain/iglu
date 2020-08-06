@@ -25,6 +25,7 @@ shinyUI(fluidPage(
                                                                                `Below Percent` = 'below_percent',
                                                                                `CONGA` = 'conga',
                                                                                `CV` = 'cv_glu',
+                                                                               `CV Subtypes` = 'cv_measures',
                                                                                `GRADE` = 'grade',
                                                                                `GRADE Euglycemia` = 'grade_eugly',
                                                                                `GRADE Hyperglycemia` = 'grade_hyper',
