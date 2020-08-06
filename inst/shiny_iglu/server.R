@@ -24,7 +24,7 @@ shinyServer(function(input, output) {
 
 parameter_type <- reactive({
 
-  if(input$metric %in% c("adrr", "cv_glu", "cv_measures", "grade", "hbgi", "iqr_glu", "j_index", "lbgi",
+  if(input$metric %in% c("adrr", "cv_glu", "cv_measures", "grade", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
                          "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu")){
     return("none")
   }
@@ -99,11 +99,11 @@ output$select_parameter <- renderUI({
     else if(input$metric == "active_percent"){
       textInput("parameter", "Specify Parameter", value = "5")
     }
-      
+
     else if(input$metric == "roc"){
       textInput("parameter", "Specify Parameter", value = "15")
     }
-      
+
     else if(input$metric == "sd_roc"){
       textInput("parameter", "Specify Parameter", value = "15")
     }

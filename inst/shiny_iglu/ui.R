@@ -39,6 +39,7 @@ shinyUI(fluidPage(
                                                                                `J Index` = 'j_index',
                                                                                `Low Blood Glucose Index` = 'lbgi',
                                                                                `M-Value` = 'm_value',
+                                                                               `MAD` = 'mad_glu',
                                                                                `MAGE` = 'mage',
                                                                                `Mean` = 'mean_glu',
                                                                                `Median` = 'median_glu',
