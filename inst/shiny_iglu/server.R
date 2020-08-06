@@ -22,19 +22,23 @@ shinyServer(function(input, output) {
 
   ############################# METRIC SECTION ######################################################
 
-  parameter_type <- reactive({
-    if(input$metric %in% c("adrr", "conga", "cv_glu", "ea1c", "gmi", "grade", "hbgi", "iqr_glu", "j_index", "lbgi",
-                           "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu")){
-      return("none")
-    }
+
+parameter_type <- reactive({
+
+  if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
+                         "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu")){
+    return("none")
+  }
 
     else if(input$metric %in% c("above_percent", "below_percent", "quantile_glu")){
       return("list")
     }
 
-    else if(input$metric %in% c("grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value", "mage", "modd")){
-      return("value")
-    }
+
+  else if(input$metric %in% c("conga", "grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
+                              "mage", "modd", "roc", "sd_roc", "active_percent")){
+    return("value")
+  }
 
     else if(input$metric %in% c("grade_eugly", "igc")){
       return("lwrupr")
@@ -61,10 +65,14 @@ shinyServer(function(input, output) {
       }
     }
 
-    else if(parameter_type == "value"){
-      if(input$metric == "grade_hyper"){
-        textInput("parameter", "Specify Parameter", value = "140")
-      }
+  else if(parameter_type == "value"){
+    if(input$metric == "conga"){
+      textInput("parameter", "Specify n", value = "24")
+    }
+
+    else if(input$metric == "grade_hyper"){
+      textInput("parameter", "Specify Parameter", value = "140")
+    }
 
       else if(input$metric == "grade_hypo"){
         textInput("parameter", "Specify Parameter", value = "80")
@@ -107,7 +115,18 @@ shinyServer(function(input, output) {
         textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
       }
     }
+    else if(input$metric == "active_percent"){
+      textInput("parameter", "Specify Parameter", value = "5")
+    }
 
+    else if(input$metric == "roc"){
+      textInput("parameter", "Specify Parameter", value = "15")
+    }
+
+    else if(input$metric == "sd_roc"){
+      textInput("parameter", "Specify Parameter", value = "15")
+    }
+  }
   })
 
   output$help_text <- renderUI({
@@ -191,6 +210,12 @@ shinyServer(function(input, output) {
     else if(input$plottype == "lasagnasingle"){
       return("lasagnasingle")
     }
+    else if(input$plottype == "plot_roc"){
+      return("plot_roc")
+    }
+    else if(input$plottype == "hist_roc"){
+      return("hist_roc")
+    }
   })
 
   ### Get Lasagna Type (lasagnatype)
@@ -212,6 +237,12 @@ shinyServer(function(input, output) {
                    choices = c(`Unsorted` = "unsorted",
                                `Time-sorted` = "timesorted"))
     }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
+    }
   })
 
   ### Get desired subjects
@@ -225,6 +256,18 @@ shinyServer(function(input, output) {
       NULL
     }
     else if(plottype == "lasagnasingle"){
+      subject = unique(data$id)[1]
+      textInput("plot_subjects", "Enter Subject ID", value = subject)
+    }
+    else if(plottype == "lasagnasingle"){
+      subject = unique(data$id)[1]
+      textInput("plot_subjects", "Enter Subject ID", value = subject)
+    }
+    else if(plottype == "plot_roc"){
+      subject = unique(data$id)[1]
+      textInput("plot_subjects", "Enter Subject ID", value = subject)
+    }
+    else if(plottype == "hist_roc"){
       subject = unique(data$id)[1]
       textInput("plot_subjects", "Enter Subject ID", value = subject)
     }
@@ -242,6 +285,12 @@ shinyServer(function(input, output) {
     else if(plottype == "lasagnasingle"){
       helpText("Enter the ID of a subject to display their individualized lasagna plot")
     }
+    else if(plottype == "plot_roc"){
+      helpText("Enter the ID of a subject to display their individualized ROC time series plot")
+    }
+    else if(plottype == "hist_roc"){
+      helpText("Enter the ID of a subject to display their individualized SD of ROC histogram")
+    }
 
   })
 
@@ -253,8 +302,28 @@ shinyServer(function(input, output) {
     return(data)
   })
 
-  ### Get max days to plot (maxd)
 
+### Get time lag for Rate of Change plots
+  output$plot_timelag <- renderUI({
+    plottype = plottype() # bring reactive input variable into this renderUI call
+    if(plottype == "tsplot"){
+      NULL # time lag is only for ROC plots
+    }
+    else if(plottype == "lasagnamulti"){
+      NULL
+    }
+    else if(plottype == "lasagnasingle"){
+      NULL
+    }
+    else if(plottype == "plot_roc"){
+      textInput("plot_timelag", "Enter Timelag for ROC calculation", value = 15)
+    }
+    else if(plottype == "hist_roc"){
+      textInput("plot_timelag", "Enter Timelag for ROC calculation", value = 15)
+    }
+  })
+
+### Get max days to plot (maxd)
   output$plot_maxd <- renderUI({
     plottype = plottype() # bring reactive input variable into this renderUI call
     if(plottype == "tsplot"){
@@ -264,6 +333,12 @@ shinyServer(function(input, output) {
       textInput("plot_maxd", "Enter Maximum # of Days to Plot", value = 14)
     }
     else if(plottype == "lasagnasingle"){
+      NULL
+    }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
       NULL
     }
   })
@@ -284,6 +359,12 @@ shinyServer(function(input, output) {
     else if(plottype == "lasagnasingle"){
       NULL  # datatype doesn"t matter for single subject lasagna plots, so no input is necessary
     }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
+    }
   })
 
   output$plot_datatype_help_text <- renderUI({  # Request input parameters depending on type of plot
@@ -297,6 +378,12 @@ shinyServer(function(input, output) {
     }
     else if(plottype == "lasagnasingle"){
       NULL # datatype doesn"t matter for single lasagna plot, so no input is necessary
+    }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
     }
   })
 
@@ -320,7 +407,13 @@ shinyServer(function(input, output) {
 
   output$plot_TR <- renderUI({  # Request input parameters depending on type of plot
     plottype = plottype() # bring reactive input variable into this renderUI call
-    textInput("plot_TR", "Specify Lower and Upper Target Values, separated by a Comma", value = "80, 140")
+    if(plottype %in% c("tsplot", "lasagnamulti", "lasagnasingle")){
+      textInput("plot_TR", "Specify Lower and Upper Target Values, separated by a Comma", value = "80, 140")
+    }
+    else if(plottype %in% c("plot_roc", "hist_roc")){
+      NULL # ROC plots don't need TR
+    }
+
   })
 
   # output$plot_TR_help_text <- renderUI({ # Display help text related to target range parameters
@@ -343,6 +436,12 @@ shinyServer(function(input, output) {
     else if(plottype == "lasagnasingle"){
       textInput("plot_midpoint", "Enter Midpoint Glucose Value for Color Scale", value = 105)
     }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
+    }
   })
 
   ### Get color bar limits (limits)
@@ -357,6 +456,12 @@ shinyServer(function(input, output) {
     }
     else if(plottype == "lasagnasingle"){
       textInput("plot_limits", "Enter Limit Glucose Values for Color Scale Separated by a Comma", value = "50, 500")
+    }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
     }
   })
 
@@ -375,6 +480,12 @@ shinyServer(function(input, output) {
       helpText("The color bar can be modified by changing the values of the target range, the midpoint,
                and the color bar limits")
     }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
+    }
   })
   ### Render Plot
 
@@ -383,29 +494,41 @@ shinyServer(function(input, output) {
     plottype = plottype() # bring reactive input variable into this renderPlot call
     library(iglu)
 
-    if(plottype == "tsplot"){
-      #plot_glu(data, plottype = "tsplot")
-      data = transform_data()
-      string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
-                     input$plot_TR, ', subjects = NULL, tz = "")', sep = "")
-      eval(parse(text = string))
-    }
-    else if(plottype == "lasagnamulti"){
-      data = transform_data()
-      string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
-                     input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(', input$plot_limits, '), ',
-                     midpoint = input$plot_midpoint, ', ',
-                     input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = "")
-      eval(parse(text = string))
-    }
-    else if(plottype == "lasagnasingle"){
-      data = subset_data() # subset data to only user-specified subject
-      string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
-                     input$plot_lasagnatype, '", limits = c(', input$plot_limits, '), ',
-                     midpoint = input$plot_midpoint, ', ',
-                     input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = "")
-      eval(parse(text = string))
-    }
+  if(plottype == "tsplot"){
+    #plot_glu(data, plottype = "tsplot")
+    data = transform_data()
+    string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
+                   input$plot_TR, ', subjects = NULL, tz = "")', sep = "")
+    eval(parse(text = string))
+  }
+  else if(plottype == "lasagnamulti"){
+    data = transform_data()
+    string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
+                   input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(', input$plot_limits, '), ',
+                   midpoint = input$plot_midpoint, ', ',
+                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = "")
+    eval(parse(text = string))
+  }
+  else if(plottype == "lasagnasingle"){
+    data = subset_data() # subset data to only user-specified subject
+    string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
+                   input$plot_lasagnatype, '", limits = c(', input$plot_limits, '), ',
+                   midpoint = input$plot_midpoint, ', ',
+                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = "")
+    eval(parse(text = string))
+  }
+  else if(plottype == "plot_roc"){
+    data = subset_data() # subset data to only user-specified subject
+    string = paste('iglu::plot_roc(data = data',
+                   ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
+    eval(parse(text = string))
+  }
+  else if(plottype == "hist_roc"){
+    data = subset_data() # subset data to only user-specified subject
+    string = paste('iglu::hist_roc(data = data',
+                   ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
+    eval(parse(text = string))
+  }
 
   })
 
