@@ -14,7 +14,7 @@ shinyUI(fluidPage(
                             textInput('id', 'Enter column name corresponding to subject ID', value = 'id'),
                             textInput('time', 'Enter column name corresponding to timestamp', value = 'time'),
                             textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl')
-                            ),
+               ),
                mainPanel(tableOutput("data"))
              )),
     tabPanel("Metrics", fluid = TRUE,
@@ -24,6 +24,8 @@ shinyUI(fluidPage(
                                                                                `Below Percent` = 'below_percent',
                                                                                `CONGA` = 'conga',
                                                                                `CV` = 'cv_glu',
+                                                                               `eA1C` = 'ea1c',
+                                                                               `GMI` = 'gmi',
                                                                                `GRADE` = 'grade',
                                                                                `GRADE Euglycemia` = 'grade_eugly',
                                                                                `GRADE Hyperglycemia` = 'grade_hyper',
@@ -50,7 +52,7 @@ shinyUI(fluidPage(
                uiOutput("select_parameter"),
                uiOutput("help_text")),
                mainPanel(DT::dataTableOutput("metric"))
-               )),
+             )),
 
     tabPanel("Plots", fluid = TRUE,
              sidebarLayout(
@@ -59,26 +61,26 @@ shinyUI(fluidPage(
                               choices = c(`Time Series` = 'tsplot',
                                           `Lasagna Plot (Multiple Subject)` = 'lasagnamulti',
                                           `Lasagna Plot (Single Subject)` = 'lasagnasingle'
-               )),
-               uiOutput("plot_lasagnatype"),
-               uiOutput("plot_subjects"),
-               uiOutput("plot_subjects_help_text"),
-               uiOutput("plot_maxd"),
-               uiOutput("plot_datatype"),
-               uiOutput("plot_datatype_help_text"),
-               #uiOutput("plot_tz"),
-               #uiOutput("plot_tz_help_text"),
-               uiOutput("plot_TR"),
-               #uiOutput("plot_TR_help_text"),
-               uiOutput("plot_midpoint"),
-               uiOutput('plot_limits'),
-               uiOutput('plot_colorbar_help_text')
+                              )),
+                 uiOutput("plot_lasagnatype"),
+                 uiOutput("plot_subjects"),
+                 uiOutput("plot_subjects_help_text"),
+                 uiOutput("plot_maxd"),
+                 uiOutput("plot_datatype"),
+                 uiOutput("plot_datatype_help_text"),
+                 #uiOutput("plot_tz"),
+                 #uiOutput("plot_tz_help_text"),
+                 uiOutput("plot_TR"),
+                 #uiOutput("plot_TR_help_text"),
+                 uiOutput("plot_midpoint"),
+                 uiOutput('plot_limits'),
+                 uiOutput('plot_colorbar_help_text')
                ),
                mainPanel(plotOutput("plot"))
              ))
 
 
-       )
+  )
 
 
 ))
