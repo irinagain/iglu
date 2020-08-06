@@ -24,8 +24,8 @@
 #'
 #' MAD is calculated by taking the median of the difference of the
 #' glucose readings from their median
-#' \eqn{median(|gl-median(gl))|}, where gl is the list of Blood Glucose measurements
-#' This is calculated for each day and then the mean across all days is taken
+#' \eqn{mean(|gl-median(gl)|)}, where gl is the list of Blood Glucose measurements
+#'
 #'
 #' @author David Buchanan, Marielle Hicban
 #'
@@ -38,26 +38,18 @@
 #' mad(example_data_5_subject)
 #'
 
-mad = function(data) {
+mad_glu = function(data) {
 
-  time = gl = id = NULL
-  rm(list = c("time", "gl", "id"))
+  gl = id = NULL
+  rm(list = c("gl", "id"))
 
-  data = check_data_columns(data, time_check = TRUE)
+  data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
-
-  mad_single = function(subject) {
-    subject$date = as.Date(subject$time)
-    out = subject %>%
-      dplyr::group_by(date) %>%
-      dplyr::summarise(mad_day = median(abs(gl-median(gl)), na.rm = TRUE))
-    return(mean(out$mad_day))
-  }
 
   out = data %>%
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
-    dplyr::summarise(MAD = mad_single(data.frame(gl, time)))
+    dplyr::summarise(MAD = mad(gl))
 
   return(out)
 }
