@@ -31,10 +31,10 @@ glucose readings from their median
 \examples{
 
 data(example_data_1_subject)
-mad(example_data_1_subject)
+mad_glu(example_data_1_subject)
 
 data(example_data_5_subject)
-mad(example_data_5_subject)
+mad_glu(example_data_5_subject)
 
 }
 \author{
