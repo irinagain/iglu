@@ -4,7 +4,7 @@
 \alias{mad_glu}
 \title{Calculate Mean Absolute Deviation (MAD)}
 \usage{
-mad(data)
+mad_glu(data)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",

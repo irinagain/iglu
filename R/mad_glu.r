@@ -4,7 +4,7 @@
 #' The function mad produces MAD values in a tibble object.
 #'
 #' @usage
-#' mad(data)
+#' mad_glu(data)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl",
 #' or numeric vector of glucose values.
