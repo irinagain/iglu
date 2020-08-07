@@ -14,7 +14,7 @@ shinyUI(fluidPage(
                             textInput('id', 'Enter column name corresponding to subject ID', value = 'id'),
                             textInput('time', 'Enter column name corresponding to timestamp', value = 'time'),
                             textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl')
-                            ),
+               ),
                mainPanel(tableOutput("data"))
              )),
     tabPanel("Metrics", fluid = TRUE,
@@ -26,6 +26,8 @@ shinyUI(fluidPage(
                                                                                `CONGA` = 'conga',
                                                                                `CV` = 'cv_glu',
                                                                                `CV Subtypes` = 'cv_measures',
+                                                                               `eA1C` = 'ea1c',
+                                                                               `GMI` = 'gmi',
                                                                                `GRADE` = 'grade',
                                                                                `GRADE Euglycemia` = 'grade_eugly',
                                                                                `GRADE Hyperglycemia` = 'grade_hyper',
@@ -39,6 +41,7 @@ shinyUI(fluidPage(
                                                                                `J Index` = 'j_index',
                                                                                `Low Blood Glucose Index` = 'lbgi',
                                                                                `M-Value` = 'm_value',
+                                                                               `MAD` = 'mad_glu',
                                                                                `MAGE` = 'mage',
                                                                                `Mean` = 'mean_glu',
                                                                                `Median` = 'median_glu',
@@ -54,7 +57,7 @@ shinyUI(fluidPage(
                uiOutput("select_parameter"),
                uiOutput("help_text")),
                mainPanel(DT::dataTableOutput("metric"))
-               )),
+             )),
 
     tabPanel("Plots", fluid = TRUE,
              sidebarLayout(
@@ -85,7 +88,7 @@ shinyUI(fluidPage(
              ))
 
 
-       )
+  )
 
 
 ))
