@@ -25,7 +25,7 @@ shinyServer(function(input, output) {
 
 parameter_type <- reactive({
 
-  if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
+  if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
                          "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu")){
     return("none")
   }
