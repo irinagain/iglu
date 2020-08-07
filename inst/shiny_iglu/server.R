@@ -126,7 +126,6 @@ parameter_type <- reactive({
     else if(input$metric == "sd_roc"){
       textInput("parameter", "Specify Parameter", value = "15")
     }
-  }
   })
 
   output$help_text <- renderUI({
