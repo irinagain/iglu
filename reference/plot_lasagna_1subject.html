@@ -131,15 +131,15 @@
     </div>
 
     <pre class="usage"><span class='fu'>plot_lasagna_1subject</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>lasagnatype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"unsorted"</span>, <span class='st'>"timesorted"</span>, <span class='st'>"daysorted"</span>),
-  <span class='kw'>limits</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>50</span>, <span class='fl'>500</span>),
-  <span class='kw'>midpoint</span> <span class='kw'>=</span> <span class='fl'>105</span>,
-  <span class='kw'>LLTR</span> <span class='kw'>=</span> <span class='fl'>80</span>,
-  <span class='kw'>ULTR</span> <span class='kw'>=</span> <span class='fl'>140</span>,
-  <span class='kw'>dt0</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>inter_gap</span> <span class='kw'>=</span> <span class='fl'>60</span>,
-  <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>""</span>
+  <span class='kw'>data</span>,
+  lasagnatype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"unsorted"</span>, <span class='st'>"timesorted"</span>, <span class='st'>"daysorted"</span>),
+  limits = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>50</span>, <span class='fl'>500</span>),
+  midpoint = <span class='fl'>105</span>,
+  LLTR = <span class='fl'>80</span>,
+  ULTR = <span class='fl'>140</span>,
+  dt0 = <span class='kw'>NULL</span>,
+  inter_gap = <span class='fl'>60</span>,
+  tz = <span class='st'>""</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -196,7 +196,10 @@ The default value is 60 min.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>plot_lasagna_1subject</span>(<span class='no'>example_data_1_subject</span>)</div><div class='img'><img src='plot_lasagna_1subject-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_lasagna_1subject</span>(<span class='no'>example_data_1_subject</span>, <span class='kw'>lasagnatype</span> <span class='kw'>=</span> <span class='st'>'timesorted'</span>)</div><div class='img'><img src='plot_lasagna_1subject-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_lasagna_1subject</span>(<span class='no'>example_data_1_subject</span>, <span class='kw'>lasagnatype</span> <span class='kw'>=</span> <span class='st'>'daysorted'</span>)</div><div class='img'><img src='plot_lasagna_1subject-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>plot_lasagna_1subject</span>(<span class='kw'>example_data_1_subject</span>)
+</div><div class='img'><img src='plot_lasagna_1subject-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_lasagna_1subject</span>(<span class='kw'>example_data_1_subject</span>, lasagnatype = <span class='st'>'timesorted'</span>)
+</div><div class='img'><img src='plot_lasagna_1subject-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_lasagna_1subject</span>(<span class='kw'>example_data_1_subject</span>, lasagnatype = <span class='st'>'daysorted'</span>)
+</div><div class='img'><img src='plot_lasagna_1subject-3.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -213,7 +216,7 @@ The default value is 60 min.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

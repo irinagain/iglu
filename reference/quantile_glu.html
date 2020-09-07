@@ -132,7 +132,7 @@ is a tibble object with columns for subject id and each of the quantiles." />
 is a tibble object with columns for subject id and each of the quantiles.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>quantile_glu</span>(<span class='no'>data</span>, <span class='kw'>quantiles</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>25</span>, <span class='fl'>50</span>, <span class='fl'>75</span>, <span class='fl'>100</span>))</pre>
+    <pre class="usage"><span class='fu'>quantile_glu</span>(<span class='kw'>data</span>, quantiles = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>25</span>, <span class='fl'>50</span>, <span class='fl'>75</span>, <span class='fl'>100</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -165,36 +165,40 @@ above_percent, below_percent, and in_range_percent.</p>
 to 0-1.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>example_data_1_subject</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>example_data_1_subject</span>)
 
-<span class='fu'>quantile_glu</span>(<span class='no'>example_data_1_subject</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 6
-#&gt; # Groups:   id [1]
+<span class='fu'>quantile_glu</span>(<span class='kw'>example_data_1_subject</span>)
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 6</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   id [1]</span><span>
 #&gt;   id          `0`  `25`  `50`  `75` `100`
-#&gt;   &lt;fct&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1 Subject 1    66    99   112   143   276</div><div class='input'><span class='fu'>quantile_glu</span>(<span class='no'>example_data_1_subject</span>, <span class='kw'>quantiles</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>33</span>, <span class='fl'>66</span>, <span class='fl'>100</span>))</div><div class='output co'>#&gt; # A tibble: 1 x 5
-#&gt; # Groups:   id [1]
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1    66    99   112   143   276</div><div class='input'><span class='fu'>quantile_glu</span>(<span class='kw'>example_data_1_subject</span>, quantiles = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>33</span>, <span class='fl'>66</span>, <span class='fl'>100</span>))
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 5</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   id [1]</span><span>
 #&gt;   id          `0`  `33`  `66` `100`
-#&gt;   &lt;fct&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1 Subject 1    66   104   128   276</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>example_data_5_subject</span>)
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1    66   104   128   276</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>example_data_5_subject</span>)
 
-<span class='fu'>quantile_glu</span>(<span class='no'>example_data_5_subject</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 6
-#&gt; # Groups:   id [5]
+<span class='fu'>quantile_glu</span>(<span class='kw'>example_data_5_subject</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 6</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   id [5]</span><span>
 #&gt;   id          `0`  `25`  `50`  `75` `100`
-#&gt;   &lt;fct&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1 Subject 1    66    99   112   143   276
-#&gt; 2 Subject 2    90   179   211   253   400
-#&gt; 3 Subject 3    60   125   140   173   304
-#&gt; 4 Subject 4    50   109   126   149   232
-#&gt; 5 Subject 5    66   134   164   211   398</div><div class='input'><span class='fu'>quantile_glu</span>(<span class='no'>example_data_5_subject</span>, <span class='kw'>quantiles</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>90</span>, <span class='fl'>100</span>))</div><div class='output co'>#&gt; # A tibble: 5 x 5
-#&gt; # Groups:   id [5]
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1    66    99   112   143   276
+#&gt; </span><span style='color: #555555;'>2</span><span> Subject 2    90   179   211   253   400
+#&gt; </span><span style='color: #555555;'>3</span><span> Subject 3    60   125   140   173   304
+#&gt; </span><span style='color: #555555;'>4</span><span> Subject 4    50   109   126   149   232
+#&gt; </span><span style='color: #555555;'>5</span><span> Subject 5    66   134   164   211   398</div><div class='input'><span class='fu'>quantile_glu</span>(<span class='kw'>example_data_5_subject</span>, quantiles = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>90</span>, <span class='fl'>100</span>))
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 5</span><span>
+#&gt; </span><span style='color: #555555;'># Groups:   id [5]</span><span>
 #&gt;   id          `0`  `10`  `90` `100`
-#&gt;   &lt;fct&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1 Subject 1    66    92  172    276
-#&gt; 2 Subject 2    90   160  293    400
-#&gt; 3 Subject 3    60   110  226.   304
-#&gt; 4 Subject 4    50    94  167    232
-#&gt; 5 Subject 5    66   104  259    398</div></pre>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1    66    92  172    276
+#&gt; </span><span style='color: #555555;'>2</span><span> Subject 2    90   160  293    400
+#&gt; </span><span style='color: #555555;'>3</span><span> Subject 3    60   110  226.   304
+#&gt; </span><span style='color: #555555;'>4</span><span> Subject 4    50    94  167    232
+#&gt; </span><span style='color: #555555;'>5</span><span> Subject 5    66   104  259    398</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -210,7 +214,7 @@ to 0-1.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

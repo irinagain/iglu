@@ -130,7 +130,7 @@
     <p>The function grade_eugly produces %GRADE euglycemia values in a tibble object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>grade_eugly</span>(<span class='no'>data</span>, <span class='kw'>lower</span> <span class='kw'>=</span> <span class='fl'>70</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>140</span>)</pre>
+    <pre class="usage"><span class='fu'>grade_eugly</span>(<span class='kw'>data</span>, lower = <span class='fl'>70</span>, upper = <span class='fl'>140</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,31 +176,35 @@ doi: <a href='https://doi.org/10.1111/j.1464-5491.2007.02119.x'>10.1111/j.1464-5
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>example_data_1_subject</span>)
-<span class='fu'>grade_eugly</span>(<span class='no'>example_data_1_subject</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 2
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>example_data_1_subject</span>)
+<span class='fu'>grade_eugly</span>(<span class='kw'>example_data_1_subject</span>)
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 2</span><span>
 #&gt;   id        grade_eugly
-#&gt;   &lt;fct&gt;           &lt;dbl&gt;
-#&gt; 1 Subject 1        28.2</div><div class='input'><span class='fu'>grade_eugly</span>(<span class='no'>example_data_1_subject</span>, <span class='kw'>lower</span> <span class='kw'>=</span> <span class='fl'>80</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>180</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 2
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1        28.2</div><div class='input'><span class='fu'>grade_eugly</span>(<span class='kw'>example_data_1_subject</span>, lower = <span class='fl'>80</span>, upper = <span class='fl'>180</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 2</span><span>
 #&gt;   id        grade_eugly
-#&gt;   &lt;fct&gt;           &lt;dbl&gt;
-#&gt; 1 Subject 1        66.7</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>example_data_5_subject</span>)
-<span class='fu'>grade_eugly</span>(<span class='no'>example_data_5_subject</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 2
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1        66.7</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>example_data_5_subject</span>)
+<span class='fu'>grade_eugly</span>(<span class='kw'>example_data_5_subject</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 2</span><span>
 #&gt;   id        grade_eugly
-#&gt;   &lt;fct&gt;           &lt;dbl&gt;
-#&gt; 1 Subject 1      28.2  
-#&gt; 2 Subject 2       0.645
-#&gt; 3 Subject 3      20.2  
-#&gt; 4 Subject 4      34.1  
-#&gt; 5 Subject 5       6.68 </div><div class='input'><span class='fu'>grade_eugly</span>(<span class='no'>example_data_5_subject</span>, <span class='kw'>lower</span> <span class='kw'>=</span> <span class='fl'>80</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>160</span>)</div><div class='output co'>#&gt; # A tibble: 5 x 2
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1      28.2  
+#&gt; </span><span style='color: #555555;'>2</span><span> Subject 2       0.645
+#&gt; </span><span style='color: #555555;'>3</span><span> Subject 3      20.2  
+#&gt; </span><span style='color: #555555;'>4</span><span> Subject 4      34.1  
+#&gt; </span><span style='color: #555555;'>5</span><span> Subject 5       6.68 </div><div class='input'><span class='fu'>grade_eugly</span>(<span class='kw'>example_data_5_subject</span>, lower = <span class='fl'>80</span>, upper = <span class='fl'>160</span>)
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 2</span><span>
 #&gt;   id        grade_eugly
-#&gt;   &lt;fct&gt;           &lt;dbl&gt;
-#&gt; 1 Subject 1       51.3 
-#&gt; 2 Subject 2        3.69
-#&gt; 3 Subject 3       34.0 
-#&gt; 4 Subject 4       60.0 
-#&gt; 5 Subject 5       17.9 </div><div class='input'>
-</div></pre>
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1       51.3 
+#&gt; </span><span style='color: #555555;'>2</span><span> Subject 2        3.69
+#&gt; </span><span style='color: #555555;'>3</span><span> Subject 3       34.0 
+#&gt; </span><span style='color: #555555;'>4</span><span> Subject 4       60.0 
+#&gt; </span><span style='color: #555555;'>5</span><span> Subject 5       17.9 </div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -216,7 +220,7 @@ doi: <a href='https://doi.org/10.1111/j.1464-5491.2007.02119.x'>10.1111/j.1464-5
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

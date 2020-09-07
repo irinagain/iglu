@@ -130,7 +130,7 @@
     <p>Interpolate glucose value on an equally spaced grid from day to day</p>
     </div>
 
-    <pre class="usage"><span class='fu'>CGMS2DayByDay</span>(<span class='no'>data</span>, <span class='kw'>dt0</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>inter_gap</span> <span class='kw'>=</span> <span class='fl'>45</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
+    <pre class="usage"><span class='fu'>CGMS2DayByDay</span>(<span class='kw'>data</span>, dt0 = <span class='kw'>NULL</span>, inter_gap = <span class='fl'>45</span>, tz = <span class='st'>""</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,7 +163,8 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>CGMS2DayByDay</span>(<span class='no'>example_data_1_subject</span>)</div><div class='output co'>#&gt; $gd2d
+<span class='fu'>CGMS2DayByDay</span>(<span class='kw'>example_data_1_subject</span>)
+</div><div class='output co'>#&gt; $gd2d
 #&gt;            [,1]      [,2]      [,3]      [,4]      [,5]      [,6]      [,7]
 #&gt;  [1,]        NA        NA        NA        NA        NA        NA        NA
 #&gt;  [2,] 112.17940 111.08696 110.08667 106.34667 106.00000 105.08667 102.26000
@@ -789,7 +790,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

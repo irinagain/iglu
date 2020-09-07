@@ -133,14 +133,14 @@ subject data.</p>
     </div>
 
     <pre class="usage"><span class='fu'>plot_glu</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>plottype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"tsplot"</span>, <span class='st'>"lasagna"</span>),
-  <span class='kw'>datatype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"all"</span>, <span class='st'>"average"</span>, <span class='st'>"single"</span>),
-  <span class='kw'>lasagnatype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"unsorted"</span>, <span class='st'>"timesorted"</span>),
-  <span class='kw'>LLTR</span> <span class='kw'>=</span> <span class='fl'>80</span>,
-  <span class='kw'>ULTR</span> <span class='kw'>=</span> <span class='fl'>140</span>,
-  <span class='kw'>subjects</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>""</span>
+  <span class='kw'>data</span>,
+  plottype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"tsplot"</span>, <span class='st'>"lasagna"</span>),
+  datatype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"all"</span>, <span class='st'>"average"</span>, <span class='st'>"single"</span>),
+  lasagnatype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"unsorted"</span>, <span class='st'>"timesorted"</span>),
+  LLTR = <span class='fl'>80</span>,
+  ULTR = <span class='fl'>140</span>,
+  subjects = <span class='kw'>NULL</span>,
+  tz = <span class='st'>""</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -197,10 +197,14 @@ on a grid.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>example_data_1_subject</span>)
-<span class='fu'>plot_glu</span>(<span class='no'>example_data_1_subject</span>)</div><div class='img'><img src='plot_glu-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>example_data_5_subject</span>)
-<span class='fu'>plot_glu</span>(<span class='no'>example_data_5_subject</span>, <span class='kw'>subjects</span> <span class='kw'>=</span> <span class='st'>'Subject 2'</span>)</div><div class='img'><img src='plot_glu-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_glu</span>(<span class='no'>example_data_5_subject</span>, <span class='kw'>plottype</span> <span class='kw'>=</span> <span class='st'>'tsplot'</span>, <span class='kw'>tz</span> <span class='kw'>=</span> <span class='st'>'EST'</span>, <span class='kw'>LLTR</span> <span class='kw'>=</span> <span class='fl'>70</span>, <span class='kw'>ULTR</span><span class='kw'>=</span> <span class='fl'>150</span>)</div><div class='img'><img src='plot_glu-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_glu</span>(<span class='no'>example_data_5_subject</span>, <span class='kw'>plottype</span> <span class='kw'>=</span> <span class='st'>'lasagna'</span>, <span class='kw'>lasagnatype</span> <span class='kw'>=</span> <span class='st'>'timesorted'</span>)</div><div class='img'><img src='plot_glu-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>example_data_1_subject</span>)
+<span class='fu'>plot_glu</span>(<span class='kw'>example_data_1_subject</span>)
+</div><div class='img'><img src='plot_glu-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>example_data_5_subject</span>)
+<span class='fu'>plot_glu</span>(<span class='kw'>example_data_5_subject</span>, subjects = <span class='st'>'Subject 2'</span>)
+</div><div class='img'><img src='plot_glu-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_glu</span>(<span class='kw'>example_data_5_subject</span>, plottype = <span class='st'>'tsplot'</span>, tz = <span class='st'>'EST'</span>, LLTR = <span class='fl'>70</span>, ULTR= <span class='fl'>150</span>)
+</div><div class='img'><img src='plot_glu-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_glu</span>(<span class='kw'>example_data_5_subject</span>, plottype = <span class='st'>'lasagna'</span>, lasagnatype = <span class='st'>'timesorted'</span>)
+</div><div class='img'><img src='plot_glu-4.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -217,7 +221,7 @@ on a grid.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
