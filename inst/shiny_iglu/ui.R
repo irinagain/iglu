@@ -14,7 +14,7 @@ shinyUI(fluidPage(
                             textInput('id', 'Enter column name corresponding to subject ID', value = 'id'),
                             textInput('time', 'Enter column name corresponding to timestamp', value = 'time'),
                             textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl')
-                            ),
+               ),
                mainPanel(tableOutput("data"))
              )),
     tabPanel("Metrics", fluid = TRUE,
@@ -25,19 +25,24 @@ shinyUI(fluidPage(
                                                                                `Below Percent` = 'below_percent',
                                                                                `CONGA` = 'conga',
                                                                                `CV` = 'cv_glu',
+                                                                               `CV Subtypes` = 'cv_measures',
+                                                                               `eA1C` = 'ea1c',
+                                                                               `GMI` = 'gmi',
                                                                                `GRADE` = 'grade',
                                                                                `GRADE Euglycemia` = 'grade_eugly',
                                                                                `GRADE Hyperglycemia` = 'grade_hyper',
                                                                                `GRADE Hypoglycemia` = 'grade_hypo',
+                                                                               `Glucose Variability Percentage` = 'gvp',
                                                                                `High Blood Glucose Index` = 'hbgi',
-                                                                               `Hyperglycaemia Index` = 'hyper_index',
-                                                                               `Hypoglycaemia Index` = 'hypo_index',
+                                                                               `Hyperglycemia Index` = 'hyper_index',
+                                                                               `Hypoglycemia Index` = 'hypo_index',
                                                                                `Index of Glycemic Control` = 'igc',
                                                                                `In Range Percent` = 'in_range_percent',
                                                                                `Interquartile Range` = 'iqr_glu',
                                                                                `J Index` = 'j_index',
                                                                                `Low Blood Glucose Index` = 'lbgi',
                                                                                `M-Value` = 'm_value',
+                                                                               `MAD` = 'mad_glu',
                                                                                `MAGE` = 'mage',
                                                                                `Mean` = 'mean_glu',
                                                                                `Median` = 'median_glu',
@@ -53,7 +58,7 @@ shinyUI(fluidPage(
                uiOutput("select_parameter"),
                uiOutput("help_text")),
                mainPanel(DT::dataTableOutput("metric"))
-               )),
+             )),
 
     tabPanel("Plots", fluid = TRUE,
              sidebarLayout(
@@ -84,7 +89,7 @@ shinyUI(fluidPage(
              ))
 
 
-       )
+  )
 
 
 ))

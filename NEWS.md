@@ -1,3 +1,6 @@
+# iglu 2.0.0
+* Version 2 - Version 1 + all new metrics (rate of change, GMI, cv measures, AUC, GVP and MAD)
+
 # iglu 1.5.0
 * Added GVP and MAD metrics
 
