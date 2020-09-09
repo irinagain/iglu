@@ -41,7 +41,7 @@ modd(example_data_5_subject, lag = 2)
 
 }
 \references{
-Service, Nelson (1980) Characteristics of glycemic stability.
+Service, F. J. & Nelson, R. L. (1980) Characteristics of glycemic stability.
 \emph{Diabetes care} \strong{3} .58-62,
 \doi{10.2337/diacare.3.1.58}.
 }
