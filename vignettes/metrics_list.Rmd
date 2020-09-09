@@ -22,7 +22,7 @@ library(iglu)
 |:------------|:------------------------------:|:----------|:------------|
 |Active Percent | active_percent | [Danne et al. (2017)](https://doi.org/10.2337/dc17-1600)| Yes |
 |ADRR (Average Daily Risk Range) | adrr | [Kovatchev et al. (2006)](https://doi.org/10.2337/dc06-1085)| Yes |
-|AUC (Area Under the Curve) | AUC | [Danne et al. (2017)](https://doi.org/10.2337/dc17-1600)| Yes |
+|AUC (Area Under the Curve) | auc | [Danne et al. (2017)](https://doi.org/10.2337/dc17-1600)| Yes |
 |CONGA (Continuous Overall Net Glycemic Action) | conga | [McDonnell et al. (2005)](https://doi.org/10.1089/dia.2005.7.253)| Yes |
 |Coefficient of variation (CV) | cv_glu | [Rodbard (2009)](https://doi.org/10.1089/dia.2008.0132) | No |
 |CVmean (mean of daily CV) | cv_measures (CVmean) | [Umpierrez et al. (2018)](https://doi.org/10.1016/j.amjms.2018.09.010) | Yes |
