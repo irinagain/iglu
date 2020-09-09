@@ -10,7 +10,7 @@ status](https://api.travis-ci.com/irinagain/iglu.svg?branch=master)](https://tra
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/irinagain/iglu?branch=master&svg=true)](https://ci.appveyor.com/project/irinagain/iglu)
 
-[![](http://cranlogs.r-pkg.org/badges/iglu)](http://cran.rstudio.com/web/packages/iglu/index.html)
+[![](https://cranlogs.r-pkg.org/badges/iglu)](https://cran.rstudio.com/web/packages/iglu/index.html)
 <!-- badges: end -->
 
 # iglu: Interpreting data from Continuous Glucose Monitors (CGMs)
