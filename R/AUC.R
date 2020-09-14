@@ -39,8 +39,6 @@
 #' data(example_data_1_subject)
 #' auc(example_data_1_subject)
 #'
-#' data(example_data_5_subject)
-#' auc(example_data_5_subject)
 
 
 
