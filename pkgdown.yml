@@ -1,6 +1,8 @@
 pandoc: '2.2'
-pkgdown: 1.6.0
+pkgdown: 1.6.1
 pkgdown_sha: ~
-articles: []
-last_built: 2020-09-09T22:30Z
+articles:
+  iglu: iglu.html
+  metrics_list: metrics_list.html
+last_built: 2020-09-14T17:25Z
 

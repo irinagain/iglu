@@ -79,7 +79,7 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Working in iglu</h1>
-                        <h4 class="author">Steve Broll, Irina Gaynanova</h4>
+                        <h4 class="author">Steve Broll, Elizabeth Chun, Irina Gaynanova</h4>
             
       
       
@@ -91,13 +91,13 @@
     
 <p>The iglu package is developed to assist the analyses of data from Continuous Glucose Monitors (CGMs). CGMs are small wearable devices that measure the glucose levels continuously throughout the day, with some monitors taking measurements as often as every 5 minutes. Data from these monitors provide a detailed quantification of the variation in blood glucose levels during the course of the day, and thus CGMs play an increasing role in clinical practice. For more on CGMs, see <a href="https://doi.org/10.1089/dia.2015.0417">Rodbard (2016) “Continuous Glucose Monitoring: A Review of Successes, Challenges, and Opportunities.”</a>.</p>
 <p>Multiple CGM-derived metrics have been developed to assess the quality of glycemic control and glycemic variability, many of which are summarized in <a href="https://www.ncbi.nlm.nih.gov/pubmed/19469679">Rodbard (2009) “Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control.”</a>. The iglu package streamlines the calculation of these metrics by providing clearly named functions that output metrics values with one line of code.</p>
-<p>The iglu package is designed with the following three components of Continuous Glucose Monitor (CGM) data in mind:</p>
+<p>The iglu package is designed to work with Continuous Glucose Monitor (CGM) data in the form of a data frame with the following three columns present:</p>
 <ul>
-<li><p>Blood glucose level measurement [in mg/dL]</p></li>
-<li><p>Timestamp for glucose measurement</p></li>
-<li><p>Subject identification</p></li>
+<li><p>Blood glucose level measurement [in mg/dL] (<code>"gl"</code>)</p></li>
+<li><p>Timestamp for glucose measurement (<code>"time"</code>)</p></li>
+<li><p>Subject identification (<code>"id"</code>)</p></li>
 </ul>
-<p>The iglu package comes with example data from 5 subjects with Type II diabetes whose glucose levels were measured using Dexcom G4 CGM.</p>
+<p>The iglu package comes with example data from 5 subjects with Type II diabetes whose glucose levels were measured using Dexcom G4 CGM. These data are part of a larger study analyzed in <a href="https://doi.org/10.1093/biostatistics/kxaa023">Gaynanova et al. (2020)</a>.</p>
 <div id="example-data-for-1-subject" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-data-for-1-subject" class="anchor"></a>Example data for 1 subject</h2>
@@ -154,7 +154,7 @@
 <div id="calculating-time-independent-metrics" class="section level1">
 <h1 class="hasAnchor">
 <a href="#calculating-time-independent-metrics" class="anchor"></a>Calculating time-independent metrics</h1>
-<p>Time-independent metrics do not use any linear interpolation because the time component of the data is not used in their calculations. Because the time component is not necessary, when working with a single subject only a glucose vector is required. If a glucose vector for multiple subjects is supplied, or if a dataframe that doesn’t have all three columns is supplied, these functions will treat all glucose values as though they are from the same subject.</p>
+<p>All the metrics implemented in the package can be divided into two categories: time-independent and time-dependent. Time-independent metrics do not use any linear interpolation because the time component of the data is not used in their calculations. Because the time component is not necessary, when working with a single subject only a glucose vector is required. If a glucose vector for multiple subjects is supplied, or if a data frame that doesn’t have all three columns is supplied, these functions will treat all glucose values as though they are from the same subject.</p>
 <div id="example-metrics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-metrics" class="anchor"></a>Example metrics</h2>
@@ -167,7 +167,7 @@
 <span class="co">#&gt;   &lt;fct&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 Subject 1      26.7      8.40      3.70     0.446</span>
 </pre></div>
-<p>When a dataframe is passed, subject id will always be printed in the id column, and metrics will be printed in the following columns.</p>
+<p>When a data frame is passed, subject id will always be printed in the id column, and metrics will be printed in the following columns.</p>
 <p>As discussed above, just the glucose vector can be supplied for the single subject case.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="fu"><a href="../reference/above_percent.html">above_percent</a></span>(<span class="kw">example_data_1_subject</span><span class="op">$</span><span class="kw">gl</span>)
@@ -198,6 +198,19 @@
 <span class="co">#&gt; 4 Subject 4  42.9</span>
 <span class="co">#&gt; 5 Subject 5  90.0</span>
 </pre></div>
+<p>Another example of a time-independent metric is Hyperglycemia index , the corresponding <code>hyper_index</code> function returns a single value for each subject</p>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="fu"><a href="../reference/hyper_index.html">hyper_index</a></span>(<span class="kw">example_data_5_subject</span>)
+<span class="co">#&gt; # A tibble: 5 x 2</span>
+<span class="co">#&gt;   id        hyper_index</span>
+<span class="co">#&gt;   &lt;fct&gt;           &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Subject 1       0.391</span>
+<span class="co">#&gt; 2 Subject 2       4.17 </span>
+<span class="co">#&gt; 3 Subject 3       1.18 </span>
+<span class="co">#&gt; 4 Subject 4       0.358</span>
+<span class="co">#&gt; 5 Subject 5       2.21</span>
+</pre></div>
+<p>In this example, Subject 2 has the largest Hyperglycemia index, indicating the worst hyperglycemia. This is reflected in percent of times Subject 2 spends above fixed glucose target (see results of <code>above_percent</code>).</p>
 </div>
 </div>
 <div id="calculating-time-dependent-metrics" class="section level1">
@@ -206,17 +219,16 @@
 <div id="cgms2daybyday" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cgms2daybyday" class="anchor"></a>CGMS2DayByDay()</h2>
-<p>Observe that the timestamps in the first rows are not evenly spaced. Linear interpolation is used where appropriate for computation of metrics that require a time component with equally spaced measurements. Time intervals within large gaps between variables will not be interpolated, but instead will be treated as missing values.</p>
-<p>Functions requiring linear interpolation call the <code><a href="../reference/CGMS2DayByDay.html">CGMS2DayByDay()</a></code> function on the data automatically. This function can be explicitly called by the user to test on their datasets. Note that this function is only designed for one subject at a time. Below we will look at the structure of this functions output.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
+<p>Observe that the timestamps in the first rows are not evenly due to missing measurements. To address this challenge, we developed <code>CGMS2DayByDay</code> function that linearly interpolates glucose measures for each subject on an equally spaced time grid from day to day. To prevent extrapolation, missing values are inserted between the two measurements that are more than <code>intergap</code> minutes apart (default value is 45 minutes, can be changed by the user). This function is automatically called by all metrics that require such interpolation, however it is also available to the user directly. The function is designed to work with one subject data at a time, the structure of function output is shown below.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="fu"><a href="../reference/CGMS2DayByDay.html">CGMS2DayByDay</a></span>(<span class="kw">example_data_1_subject</span>))
 <span class="co">#&gt; List of 3</span>
 <span class="co">#&gt;  $ gd2d        : num [1:14, 1:288] NA 112.2 92 90.1 143.1 ...</span>
 <span class="co">#&gt;  $ actual_dates: Date[1:14], format: "2015-06-06" "2015-06-07" ...</span>
 <span class="co">#&gt;  $ dt0         : num 5</span>
 </pre></div>
-<p>The first part of the output, gd2d, is the interpolated grid of values. The function determined that the frequency of the measurements for this sensor was 5 minutes, so for each of the 14 days (the rows) there are 288 columns (the 5 minute intervals). The second part of the output, actual_dates, is a vector of dates corresponding to the ros in the gd2d output. The final part is just the dt0, parameter, which is detected automatically but can also be specified.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
+<p>The first part of the output, <code>gd2d</code>, is the interpolated grid of values. Each row correspond to one day of measurements, and the columns correspond to equi-distant time grid covering 24 hour time span. The grid is chosen to match the frequency of the sensor (5 minutes in this example leading to <span class="math inline">\((24 * 60)/ 5 = 288\)</span> columns), which is returned as <code>dt0</code>. The returned <code>actual_dates</code> allow to map the rows in <code>gd2d</code> back to the original dates. The achieved alignment of glucose measurement times across the days enables both the calculation of corresponding metrics, and the creation of lasagna plots. The default frequency can be adjusted as follows.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="fu"><a href="../reference/CGMS2DayByDay.html">CGMS2DayByDay</a></span>(<span class="kw">example_data_1_subject</span>, dt0 = <span class="fl">10</span>))
 <span class="co">#&gt; List of 3</span>
 <span class="co">#&gt;  $ gd2d        : num [1:14, 1:144] NA 111.1 92.9 89.1 138.2 ...</span>
@@ -232,7 +244,7 @@
 <li>“<code>tz</code>” - String corresponding to timezone where the data’s measurements were recorded</li>
 </ul>
 <p>In the example_data_5_subject dataset, it is important to specify <code>tz</code> = ‘EST’, because a Daylight Savings Time shift can cause miscalculations if the wrong timezone is used. A proper call for this dataset, being recorded in EST, would be:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
+<div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="fu"><a href="../reference/CGMS2DayByDay.html">CGMS2DayByDay</a></span>(<span class="kw">example_data_1_subject</span>, tz = <span class="st">'EST'</span>)
 </pre></div>
 <p>Examples of proper metric function calls will be shown in the next section.</p>
@@ -240,9 +252,8 @@
 <div id="example-metrics-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-metrics-1" class="anchor"></a>Example metrics</h2>
-<p>Need to add references to ‘tz’ in these examples.</p>
 <p>Some metric functions, like <code><a href="../reference/conga.html">conga()</a></code> (Continuous Overlapping Net Glycemic Action), will return just a single value for each subject, resulting in a 2 column tibble (1 column for id and 1 for the single value).</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
+<div class="sourceCode" id="cb13"><pre class="downlit">
 <span class="fu"><a href="../reference/conga.html">conga</a></span>(<span class="kw">example_data_1_subject</span>, tz = <span class="st">'EST'</span>)
 <span class="co">#&gt; # A tibble: 1 x 2</span>
 <span class="co">#&gt;   id        conga</span>
@@ -251,7 +262,7 @@
 </pre></div>
 <p>Note that even though we are working with a single subject, a dataframe with glucose values, time, and subject id’s must be passed. Functions for metrics requiring the time component for calculation can not be passed a vector of glucose values.</p>
 <p><code><a href="../reference/sd_measures.html">sd_measures()</a></code>, which computes 6 unique standard deviation subtypes, requires linear interpolation and returns multiple values for each subject.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
+<div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="fu"><a href="../reference/sd_measures.html">sd_measures</a></span>(<span class="kw">example_data_5_subject</span>)
 <span class="co">#&gt; # A tibble: 5 x 7</span>
 <span class="co">#&gt;   id          SdW SdHHMM SdWSH  SdDM   SdB SdBDM</span>
@@ -262,87 +273,135 @@
 <span class="co">#&gt; 4 Subject 4  24.5   12.9  6.72  16.9  25.5  22.0</span>
 <span class="co">#&gt; 5 Subject 5  50.0   29.6 12.8   23.3  50.3  45.9</span>
 </pre></div>
+<p>Notice the high fluctuations in Subject 5, with all but one subtypes of standard deviation being the largest for Subject 5. This provides additional level of CGM data interpretation, since frequent or large glucose fluctuations may contribute to diabetes-related complications independently from chronic hyperglycemia.</p>
 </div>
 </div>
 <div id="visualizations" class="section level1">
 <h1 class="hasAnchor">
 <a href="#visualizations" class="anchor"></a>Visualizations</h1>
-<p>The iglu package currently supports 3 plot types:</p>
-<ul>
-<li>Time series plot</li>
-<li>Unsorted lasagna plot</li>
-<li>Row sorted lasagna plot</li>
-</ul>
+<p>The iglu package supports multiple plot types, that are summarized below</p>
+<table class="table">
+<colgroup>
+<col width="23%">
+<col width="56%">
+<col width="20%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Function call</th>
+<th align="left">Visualization description</th>
+<th align="left">Main parameters</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>plot_glu</code></td>
+<td align="left">Multiple plot types: time series and lasagna</td>
+<td align="left"><code>plottype, lasagnatype</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>plot_lasagna</code></td>
+<td align="left">Lasagna plot of glucose values for multiple subjects</td>
+<td align="left">
+<code>datatype</code>, <code>lasagnatype</code>
+</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>plot_lasagna_1subject</code></td>
+<td align="left">Lasagna plot of glucose values for a single subject</td>
+<td align="left"><code>lasagnatype</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code>plot_roc</code></td>
+<td align="left">Time series of glucose values colored by rate of change (ROC)</td>
+<td align="left">
+<code>subjects</code>, <code>timelag</code>
+</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>hist_roc</code></td>
+<td align="left">Histogram of rate of change (ROC) values</td>
+<td align="left">
+<code>subjects</code>, <code>timelag</code>
+</td>
+</tr>
+</tbody>
+</table>
+<div id="time-series-plots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#time-series-plots" class="anchor"></a>Time-series plots</h2>
 <p>The time series plot is the default type for the function <code>plot_glu</code>. This plot type can support both single and multiple subjects.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
+<div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span>(<span class="kw">example_data_1_subject</span>, plottype = <span class="st">'tsplot'</span>, tz = <span class="st">"EST"</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
+<p><img src="iglu_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
+<div class="sourceCode" id="cb16"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span>(<span class="kw">example_data_5_subject</span>, plottype = <span class="st">'tsplot'</span>, tz = <span class="st">"EST"</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-14-2.png" width="700"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-15-2.png" width="672"></p>
 <p>We set the ‘tz’ (timezone) parameter to be EST because the data was collected in the eastern time zone. If left blank, the time zone used for plotting will be the system’s time zone. Time zone is mainly an issue in cases where daylight savings time might make it appear as though there were duplicate values at some time points.</p>
 <p>To just plot a single subject of interest from the grid of time series plots, set the ‘subjects’ parameter to be that subject’s ID.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
+<div class="sourceCode" id="cb17"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span>(<span class="kw">example_data_5_subject</span>, plottype = <span class="st">'tsplot'</span>, subjects = <span class="st">'Subject 3'</span>, tz = <span class="st">"EST"</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
 <p>The red lines can be shifted to any Lower and Upper Target Range Limits with the ‘LLTR’ and ‘ULTR’ arguments.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
+<div class="sourceCode" id="cb18"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span>(<span class="kw">example_data_5_subject</span>, plottype = <span class="st">'tsplot'</span>, subjects = <span class="st">'Subject 3'</span>, LLTR = <span class="fl">80</span>, ULTR = <span class="fl">150</span>, tz = <span class="st">"EST"</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
+</div>
+<div id="lasagna-plots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#lasagna-plots" class="anchor"></a>Lasagna plots</h2>
 <p>The <code>plot_glu</code> function also supports lasagna plots by changing the ‘plottype’ parameter. For more on lasagna plots, see <a href="https://doi.org/10.1097/ede.0b013e3181e5b06a">Swihart et al. (2010) “Lasagna Plots: A Saucy Alternative to Spaghetti Plots.”</a></p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
+<div class="sourceCode" id="cb19"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span>(<span class="kw">example_data_5_subject</span>, plottype = <span class="st">'lasagna'</span>, tz = <span class="st">'EST'</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
 <p>By default, this will produce an unsorted lasagna plot using up to 14 days worth of data displayed separately. To average across days at each time point, we can use <code>datatype = 'average'</code>:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
+<div class="sourceCode" id="cb20"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span>(<span class="kw">example_data_5_subject</span>, plottype = <span class="st">'lasagna'</span>, datatype = <span class="st">'average'</span>, tz = <span class="st">'EST'</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
 <p>We can additionally sort the values at each time point across the five subjects by setting <code>lasagnatype = 'timesorted'</code></p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
+<div class="sourceCode" id="cb21"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span>(<span class="kw">example_data_5_subject</span>, plottype = <span class="st">'lasagna'</span>, datatype = <span class="st">'average'</span>, lasagnatype = <span class="st">'timesorted'</span>, tz = <span class="st">'EST'</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
 <p>When working with a single subject, setting <code>datatype = single</code> will produce plots where rows represent days instead of subjects.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
+<div class="sourceCode" id="cb22"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span>(<span class="kw">example_data_1_subject</span>, plottype = <span class="st">'lasagna'</span>, datatype = <span class="st">'single'</span>, lasagnatype = <span class="st">'unsorted'</span>, tz = <span class="st">'EST'</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-20-1.png" width="700"></p>
-<div class="sourceCode" id="cb22"><pre class="downlit">
+<p><img src="iglu_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
+<div class="sourceCode" id="cb23"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span>(<span class="kw">example_data_1_subject</span>, plottype = <span class="st">'lasagna'</span>, datatype = <span class="st">'single'</span>, lasagnatype = <span class="st">'timesorted'</span>, tz = <span class="st">'EST'</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-21-1.png" width="700"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
 <p>For further customization of lasagna plots, use the <code>plot_lasagna</code> and <code>plot_lasagna_1subject</code> functions.</p>
 <p><code>plot_lasagna</code> allows for multi-subject lasagna plots with the additional options of sorting the hours by glucose values for each subject, i.e. horizontal sorting, by setting <code>lasagnatype = 'subjectsorted'</code>.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit">
+<div class="sourceCode" id="cb24"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_lasagna.html">plot_lasagna</a></span>(<span class="kw">example_data_5_subject</span>, datatype = <span class="st">'average'</span>, lasagnatype = <span class="st">'subjectsorted'</span>, tz = <span class="st">'EST'</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-22-1.png" width="700"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 <p><code>plot_lasagna</code> also supports changing the maximum number of days to display, as well as the upper and lower target range limits (LLTR and ULTR), midpoint, and minimum and maximum values to display, all of which will affect the colorbar.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit">
+<div class="sourceCode" id="cb25"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_lasagna.html">plot_lasagna</a></span>(<span class="kw">example_data_5_subject</span>, datatype = <span class="st">'average'</span>, lasagnatype = <span class="st">'subjectsorted'</span>, LLTR = <span class="fl">100</span>, ULTR = <span class="fl">180</span>, midpoint = <span class="fl">150</span>, limits = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">80</span>, <span class="fl">500</span>), tz = <span class="st">'EST'</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-23-1.png" width="700"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
 <p><code>plot_lasagna_1subject</code> allows for customization of the more detailed single subject lasagna plots. There is no datatype parameter for <code>plot_lasagna_1subject</code>, but there are three types of plots available, accessed with the <code>lasagnatype</code> parameter.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit">
+<div class="sourceCode" id="cb26"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span>(<span class="kw">example_data_1_subject</span>, lasagnatype = <span class="st">'unsorted'</span>, tz = <span class="st">'EST'</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-24-1.png" width="700"></p>
-<div class="sourceCode" id="cb26"><pre class="downlit">
+<p><img src="iglu_files/figure-html/unnamed-chunk-25-1.png" width="672"></p>
+<div class="sourceCode" id="cb27"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span>(<span class="kw">example_data_1_subject</span>, lasagnatype = <span class="st">'timesorted'</span>, tz = <span class="st">'EST'</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-25-1.png" width="700"></p>
-<div class="sourceCode" id="cb27"><pre class="downlit">
+<p><img src="iglu_files/figure-html/unnamed-chunk-26-1.png" width="672"></p>
+<div class="sourceCode" id="cb28"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span>(<span class="kw">example_data_1_subject</span>, lasagnatype = <span class="st">'daysorted'</span>, tz = <span class="st">'EST'</span>)
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-26-1.png" width="700"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 <p>As with the <code>lasagna_plot</code> function, changing the LLTR, ULTR, midpoint, and limits parameters will affect the colorbar.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit">
+<div class="sourceCode" id="cb29"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span>(<span class="kw">example_data_1_subject</span>, lasagnatype = <span class="st">'daysorted'</span>, midpoint = <span class="fl">150</span>, limits = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">80</span>,<span class="fl">500</span>), tz = <span class="st">'EST'</span>)
 <span class="co">#&gt; Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):</span>
 <span class="co">#&gt; collapsing to unique 'x' values</span>
@@ -353,7 +412,22 @@
 <span class="co">#&gt; Warning in regularize.values(x, y, ties, missing(ties), na.rm = na.rm):</span>
 <span class="co">#&gt; collapsing to unique 'x' values</span>
 </pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-27-1.png" width="700"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-28-1.png" width="672"></p>
+</div>
+<div id="rate-of-change-plots" class="section level2">
+<h2 class="hasAnchor">
+<a href="#rate-of-change-plots" class="anchor"></a>Rate of change plots</h2>
+<p>In addition to visualizing absolute glucose values, <code>iglu</code> also allows to visualize local changes in glucose variability as measured by rate of change <a href="https://doi.org/10.1089/dia.2008.0138">Clarke et al. (2009)</a>. There are two types of visualizations associated with rate of change. The first is a time series plot of glucose values where each point is colored by the rate of change at that given time. Points colored in white have a stable rate of change, meaning the glucose is neither significantly increasing nor decreasing at that time point. Points colored red or blue represent times at which the glucose is significantly rising or falling, respectively. Thus colored points represent times of glucose variability, while white points represent glucose stability. The below figure shows a side by side comparison of rate of change time-series plots for two subjects. Subject 1 shows significantly less glucose variability than Subject 5.</p>
+<div class="sourceCode" id="cb30"><pre class="downlit">
+<span class="fu"><a href="../reference/plot_roc.html">plot_roc</a></span>(<span class="kw">example_data_5_subject</span>, subjects = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Subject 1"</span>, <span class="st">"Subject 5"</span>))
+</pre></div>
+<p><img src="iglu_files/figure-html/unnamed-chunk-29-1.png" width="672"></p>
+<p>The next figure shows a side by side comparison of rate of change histogram plots for the same subjects. Once again, the colors show in what direction and how quickly the glucose is changing. The histogram plots allow to immediately assess the variation in rate of change. Extreme values on either end of the histogram indicate very rapid rises or drops in glucose - a high degree of local variability. Here, Subject 1 once again shows lower glucose variability by having a narrower histogram with most values falling between -2 mg/dl/min and 2 mg/dl/min. Subject 5 has a shorter, more widely distributed histogram indicating greater glucose variability.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit">
+<span class="fu"><a href="../reference/hist_roc.html">hist_roc</a></span>(<span class="kw">example_data_5_subject</span>, subjects = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Subject 1"</span>, <span class="st">"Subject 5"</span>))
+</pre></div>
+<p><img src="iglu_files/figure-html/unnamed-chunk-30-1.png" width="672"></p>
+</div>
 </div>
 <div id="shiny-app" class="section level1">
 <h1 class="hasAnchor">
@@ -379,7 +453,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
