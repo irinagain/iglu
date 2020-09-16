@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">iglu</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.0.1</span>
       </span>
     </div>
 
@@ -83,16 +83,18 @@
 <a href="#iglu" class="anchor"></a>iglu</h1></div>
 <!-- badges: start -->
 
-<p><a href="https://cran.rstudio.com/web/packages/iglu/index.html"><img src="https://cranlogs.r-pkg.org/badges/iglu"></a> <!-- badges: end --></p>
+
+<!-- badges: end -->
 </div>
 <div id="iglu-interpreting-data-from-continuous-glucose-monitors-cgms" class="section level1">
 <h1 class="hasAnchor">
 <a href="#iglu-interpreting-data-from-continuous-glucose-monitors-cgms" class="anchor"></a>iglu: Interpreting data from Continuous Glucose Monitors (CGMs)</h1>
-<p>The R package ‘iglu’ provides functions for outputting relevant metrics for data collected from Continuous Glucose Monitors (CGM). For reference, see <a href="https://www.ncbi.nlm.nih.gov/pubmed/19469679">“Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control.” Rodbard (2009)</a>.</p>
+<p>The R package ‘iglu’ provides functions for outputting relevant metrics for data collected from Continuous Glucose Monitors (CGM). For reference, see <a href="https://doi.org/10.1089/dia.2008.0132">“Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control.” Rodbard (2009)</a>. For more information on the package, see <a href="https://irinagain.github.io/iglu/">package website</a>.</p>
 <p>iglu comes with two example datasets: example_data_1_subject and example_data_5_subject. These data are collected using Dexcom G4 CGM on subjects with Type II diabetes. Each dataset follows the structure iglu’s functions are designed around. Note that the 1 subject data is a subset of the 5 subject data. See the examples below for loading and using the data.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
+<p>The R package ‘iglu’ is available from CRAN, use the commands below to install the most recent Github version.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="co"># Plain installation</span>
 <span class="kw">devtools</span>::<span class="fu">install_github</span>(<span class="st">"irinagain/iglu"</span>) <span class="co"># iglu package</span>
@@ -180,7 +182,7 @@
 <h2 class="hasAnchor">
 <a href="#shiny-demonstration" class="anchor"></a>Shiny Demonstration</h2>
 <p>For a demonstration of the package in a point and click interface, click the link below.</p>
-<p><a href="https://stevebroll.shinyapps.io/shinyigludemo/" class="uri">https://stevebroll.shinyapps.io/shinyigludemo/</a></p>
+<p><a href="https://doi.org/10.1089/dia.2008.0132">https://stevebroll.shinyapps.io/shinyigludemo/</a></p>
 </div>
 </div>
 
@@ -222,6 +224,7 @@
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.com/github/irinagain/iglu"><img src="https://api.travis-ci.com/irinagain/iglu.svg?branch=master" alt="Travis build status"></a></li>
 <li><a href="https://ci.appveyor.com/project/irinagain/iglu"><img src="https://ci.appveyor.com/api/projects/status/github/irinagain/iglu?branch=master&amp;svg=true" alt="AppVeyor build status"></a></li>
+<li><a href="https://cran.rstudio.com/web/packages/iglu/index.html"><img src="https://cranlogs.r-pkg.org/badges/iglu"></a></li>
 </ul>
 </div>
 </div>
