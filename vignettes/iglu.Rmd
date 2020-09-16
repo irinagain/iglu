@@ -20,7 +20,7 @@ library(iglu)
 
 The iglu package is developed to assist the analyses of data from Continuous Glucose Monitors (CGMs). CGMs are small wearable devices that measure the glucose levels continuously throughout the day, with some monitors taking measurements as often as every 5 minutes. Data from these monitors provide a detailed quantification of the variation in blood glucose levels during the course of the day, and thus CGMs play an increasing role in clinical practice. For more on CGMs, see [Rodbard (2016) "Continuous Glucose Monitoring: A Review of Successes, Challenges, and Opportunities."](https://doi.org/10.1089/dia.2015.0417).
 
-Multiple CGM-derived metrics have been developed to assess the quality of glycemic control and glycemic variability, many of which are summarized in [Rodbard (2009) "Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control."](https://www.ncbi.nlm.nih.gov/pubmed/19469679). The iglu package streamlines the calculation of these metrics by providing clearly named functions that output metrics values with one line of code. 
+Multiple CGM-derived metrics have been developed to assess the quality of glycemic control and glycemic variability, many of which are summarized in [Rodbard (2009) "Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control."](https://doi.org/10.1089/dia.2008.0132). The iglu package streamlines the calculation of these metrics by providing clearly named functions that output metrics values with one line of code. 
 
 The iglu package is designed to work with Continuous Glucose Monitor (CGM) data in the form of a data frame with the following three columns present:
 
