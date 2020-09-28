@@ -140,7 +140,7 @@ and the output rows correspond to the subjects.
 The values will be between 0<!-- % (no measurements) and 100% (all measurements). --></p>
     </div>
 
-    <pre class="usage"><span class='fu'>active_percent</span>(<span class='kw'>data</span>, freqCGM = <span class='fl'>5</span>)</pre>
+    <pre class="usage"><span class='fu'>active_percent</span><span class='op'>(</span><span class='va'>data</span>, freqCGM <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -176,20 +176,20 @@ doi: <a href='https://doi.org/10.2337/dc17-1600'>10.2337/dc17-1600</a>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>example_data_1_subject</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 
-<span class='fu'>active_percent</span>(<span class='kw'>example_data_1_subject</span>)
+<span class='fu'>active_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 2</span><span>
 #&gt;   id        active_percent
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1           79.8</div><div class='input'><span class='fu'>active_percent</span>(<span class='kw'>example_data_1_subject</span>, freqCGM = <span class='fl'>15</span>)
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1           79.8</div><div class='input'><span class='fu'>active_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, freqCGM <span class='op'>=</span> <span class='fl'>15</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 2</span><span>
 #&gt;   id        active_percent
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> Subject 1           239.</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>example_data_5_subject</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
 
-<span class='fu'>active_percent</span>(<span class='kw'>example_data_5_subject</span>)
+<span class='fu'>active_percent</span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 2</span><span>
 #&gt;   id        active_percent
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -197,7 +197,7 @@ doi: <a href='https://doi.org/10.2337/dc17-1600'>10.2337/dc17-1600</a>
 #&gt; </span><span style='color: #555555;'>2</span><span> Subject 2           98.2
 #&gt; </span><span style='color: #555555;'>3</span><span> Subject 3           92.1
 #&gt; </span><span style='color: #555555;'>4</span><span> Subject 4           98.7
-#&gt; </span><span style='color: #555555;'>5</span><span> Subject 5           95.8</div><div class='input'><span class='fu'>active_percent</span>(<span class='kw'>example_data_5_subject</span>, freqCGM = <span class='fl'>5</span>)
+#&gt; </span><span style='color: #555555;'>5</span><span> Subject 5           95.8</div><div class='input'><span class='fu'>active_percent</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, freqCGM <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 2</span><span>
 #&gt;   id        active_percent
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
