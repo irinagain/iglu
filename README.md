@@ -126,4 +126,4 @@ mage(example_data_5_subject)
 For a demonstration of the package in a point and click interface, click
 the link below.
 
-[https://stevebroll.shinyapps.io/shinyigludemo/](https://doi.org/10.1089/dia.2008.0132)
+<https://stevebroll.shinyapps.io/shinyigludemo/>
