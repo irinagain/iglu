@@ -83,7 +83,10 @@ shinyUI(fluidPage(
                #uiOutput("plot_TR_help_text"),
                uiOutput("plot_midpoint"),
                uiOutput('plot_limits'),
-               uiOutput('plot_colorbar_help_text')
+               uiOutput('plot_colorbar_help_text'),
+               downloadButton(outputId = "pdfButton", label = "PDF"),
+               downloadButton(outputId = "pngButton", label = "PNG"),
+               downloadButton(outputId = "epsButton", label = "EPS")
                ),
                mainPanel(plotOutput("plot"))
              ))
@@ -93,3 +96,4 @@ shinyUI(fluidPage(
 
 
 ))
+
