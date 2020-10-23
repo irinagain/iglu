@@ -14,8 +14,8 @@
 #'
 
 ## Needed Packages
-library(dplyr)
-library(tidyverse)
+#library(dplyr)
+#library(tidyverse)
 
 optimized_iglu_functions <- function(data) {
   ## Passes CGMS2DayByDay data to individual functions
