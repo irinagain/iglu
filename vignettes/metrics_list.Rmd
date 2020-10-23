@@ -22,7 +22,7 @@ library(iglu)
 |:------------|:------------------------------:|:----------|:------------|
 |Active Percent | active_percent | [Danne et al. (2017)](https://doi.org/10.2337/dc17-1600)| Yes |
 |ADRR (Average Daily Risk Range) | adrr | [Kovatchev et al. (2006)](https://doi.org/10.2337/dc06-1085)| Yes |
-|AUC (Area Under the Curve) | AUC | [Danne et al. (2017)](https://doi.org/10.2337/dc17-1600)| Yes |
+|AUC (Area Under the Curve) | auc | [Danne et al. (2017)](https://doi.org/10.2337/dc17-1600)| Yes |
 |CONGA (Continuous Overall Net Glycemic Action) | conga | [McDonnell et al. (2005)](https://doi.org/10.1089/dia.2005.7.253)| Yes |
 |Coefficient of variation (CV) | cv_glu | [Rodbard (2009)](https://doi.org/10.1089/dia.2008.0132) | No |
 |CVmean (mean of daily CV) | cv_measures (CVmean) | [Umpierrez et al. (2018)](https://doi.org/10.1016/j.amjms.2018.09.010) | Yes |
@@ -43,10 +43,10 @@ library(iglu)
 |J-Index| j_index | [Wojcicki (1995)](https://doi.org/10.1055/s-2007-979906) | No |
 |M-value| m_value | [Schlichtkrull et al. (1965)](https://doi.org/10.1111/j.0954-6820.1965.tb01810.x) |  No |
 |MAD (Mean Absolute Deviation) | mad_glu | | No |
-|MAGE (Mean Amplitude of Glycemic Excursions)| mage | [Service et al. (1970)](https://doi.org/10.2337/diab.19.9.644) | No |
+|MAGE (Mean Amplitude of Glycemic Excursions)| mage | [Service & Nelson (1980)](https://doi.org/10.2337/diacare.3.1.58) | No |
 |Mean   | mean_glu | |  No |
 |Median | median_glu | | No |
-|MODD (Mean Of Daily Differences)| modd | [Nelson (1980)](https://doi.org/10.2337/diacare.3.1.58) | Yes |
+|MODD (Mean Of Daily Differences)| modd | [Service & Nelson (1980)](https://doi.org/10.2337/diacare.3.1.58) | Yes |
 |Percent Above | above_percent | | No |
 |Percent Below | below_percent | | No |
 |Percent in range | in_range_percent | | No |

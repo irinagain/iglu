@@ -488,7 +488,7 @@ parameter_type <- reactive({
   })
   ### Render Plot
 
-  output$plot <- renderPlot({
+  plotFunc <- reactive({
 
     plottype = plottype() # bring reactive input variable into this renderPlot call
     library(iglu)
@@ -531,5 +531,48 @@ parameter_type <- reactive({
 
   })
 
+  output$plot <- renderPlot({
+    plotFunc()
+  })
+
+  options(shiny.usecairo = T)
+
+  output$pdfButton <- downloadHandler(
+    filename = function() {
+      plottype = plottype()
+      paste(plottype, '.pdf', sep = '')
+    },
+    content = function(file) {
+      cairo_pdf(filename = file, width = 20, height = 18, bg = "transparent")
+      plot(plotFunc())
+      dev.off()
+    }
+  )
+
+  output$pngButton <- downloadHandler(
+    filename = function() {
+      plottype = plottype()
+      paste(plottype, '.png', sep = '')
+    },
+    content = function(file) {
+      png(file)
+      plot(plotFunc())
+      dev.off()
+    }
+  )
+
+  output$epsButton <- downloadHandler(
+    filename = function() {
+      plottype = plottype()
+      paste(plottype, '.eps', sep = '')
+    },
+    content = function(file) {
+      postscript(file)
+      plot(plotFunc())
+      dev.off()
+    }
+  )
+
 })
+
 
