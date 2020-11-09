@@ -143,17 +143,13 @@
 all_metrics <- function(data){
   # Mean, Median, and Quantile Metrics not included. Summary covers all
   out = list("ADRR" = adrr(data),
-             "AUC" = auc(data),
-             "CONGA" = conga(data),
              "CV_GLU" = cv_glu(data),
-             "CV_Measures" = cv_measures(data),
              "eA1C" = ea1c(data),
              "GMI" = gmi(data),
              "GRADE" = grade(data),
              "GRADE_Euglycemia" = grade_eugly(data),
              "GRADE_Hyperglycemia" = grade_hyper(data),
              "GRADE_Hypoglycemia" = grade_hypo(data),
-             "GVP" = gvp(data),
              "HBGI" = hbgi(data),
              "LBGI" = lbgi(data),
              "Hyper_Index" = hyper_index(data),
@@ -164,18 +160,15 @@ all_metrics <- function(data){
              "M_Value" = m_value(data),
              "Mad_GLU" = mad_glu(data),
              "MAGE" = mage(data),
-             "MODD" = modd(data),
              "Percent_Above" = above_percent(data),
              "Percent_Below" = below_percent(data),
              "Percent_In_Range" = in_range_percent(data),
              "Range" = range_glu(data),
              "SD_GLU" = sd_glu(data),
-             "SD_Measures" = sd_measures(data),
-             "SD_ROC" = sd_roc(data),
-             "Summary" = summary_glu(data))
+             "Summary" = summary_glu(data),
+             optimized_iglu_functions(data))   #// HERE IS OPTIMIZED IGLU FUNCTIONS
   outTable <- out %>%
-        Reduce(function(dtf1,dtf2) dplyr::left_join(dtf1,dtf2,by="id"), .)
-
+    Reduce(function(dtf1,dtf2) left_join(dtf1,dtf2,by="id"), .)
   return(outTable)
 }
 
