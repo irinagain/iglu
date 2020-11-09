@@ -134,10 +134,6 @@
 #'
 
 
-# needed packages
-#library(dplyr)
-#library(iglu)
-
 # function calls all metrics on a dataset.
 # returns a list
 all_metrics <- function(data){
@@ -166,9 +162,9 @@ all_metrics <- function(data){
              "Range" = range_glu(data),
              "SD_GLU" = sd_glu(data),
              "Summary" = summary_glu(data),
-             optimized_iglu_functions(data))   #// HERE IS OPTIMIZED IGLU FUNCTIONS
+             optimized_iglu_functions(data))
   outTable <- out %>%
-    Reduce(function(dtf1,dtf2) left_join(dtf1,dtf2,by="id"), .)
+    Reduce(function(dtf1,dtf2) dplyr::left_join(dtf1,dtf2,by="id"), .)
   return(outTable)
 }
 
