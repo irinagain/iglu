@@ -123,6 +123,9 @@ optimized_iglu_functions <- function(data) {
 
     auc_single_O <- function(.data_ip, tz = "") {
 
+      each_area = daily_area = NULL
+      rm(list = c("each_area", "daily_area"))
+
       dt0 = .data_ip$dt0
 
       day <- rep(.data_ip$actual_dates, 1440/dt0)
@@ -217,6 +220,9 @@ optimized_iglu_functions <- function(data) {
 
     return(out)
   }
+
+  id = NULL
+  rm(id)
 
   ## Creates the tibble and calls the funtion above
   out = data %>%

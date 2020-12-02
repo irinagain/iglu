@@ -173,6 +173,8 @@ all_metrics <- function(data){
              "SD_Measures" = sd_measures(data),
              "SD_ROC" = sd_roc(data),
              "Summary" = summary_glu(data))
+
+
   outTable <- out %>%
         Reduce(function(dtf1,dtf2) dplyr::left_join(dtf1,dtf2,by="id"), .)
 
