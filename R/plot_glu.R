@@ -44,8 +44,8 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = ""){
 #' `lasagnatype` parameter for further options corresponding to the 'lasagna' `plottype`.
 #' Default is 'tsplot'.
 #'
-#' @param LLTR Lower Limit of Target Range, default value is 80 mg/dL.
-#' @param ULTR Upper Limit of Target Range, default value is 140 mg/dL.
+#' @param LLTR Lower Limit of Target Range, default value is 70 mg/dL.
+#' @param ULTR Upper Limit of Target Range, default value is 180 mg/dL.
 #'
 #' @param subjects String or list of strings corresponding to subject names
 #' in 'id' column of data. Default is all subjects.
@@ -76,7 +76,7 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = ""){
 #' plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'timesorted')
 #'
 
-plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 80, ULTR = 140, subjects = NULL, inter_gap = 45, tz = ""){
+plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 70, ULTR = 180, subjects = NULL, inter_gap = 45, tz = ""){
 
   plottype = match.arg(plottype)
   datatype = match.arg(datatype)
