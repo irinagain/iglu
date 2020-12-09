@@ -37,8 +37,6 @@ This formula is based off the Trapezoidal Rule: (time[2]-time[1] * ((glucose[1]+
 data(example_data_1_subject)
 auc(example_data_1_subject)
 
-data(example_data_5_subject)
-auc(example_data_5_subject)
 }
 \references{
 Danne et al. (2017) International Consensus on Use of Continuous Glucose Monitoring,

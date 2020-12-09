@@ -37,7 +37,6 @@
 #' plot_roc(example_data_1_subject)
 #'
 #' data(example_data_5_subject)
-#' plot_roc(example_data_5_subject)
 #' plot_roc(example_data_5_subject, subjects = 'Subject 5')
 #'
 
