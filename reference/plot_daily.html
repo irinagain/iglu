@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot time series and lasagna plots of glucose measurements — plot_glu • iglu</title>
+<title>Plot daily glucose profiles — plot_daily • iglu</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Plot time series and lasagna plots of glucose measurements — plot_glu" />
-<meta property="og:description" content="The function plot_glu supports several plotting methods for both single and multiple
-subject data." />
+<meta property="og:title" content="Plot daily glucose profiles — plot_daily" />
+<meta property="og:description" content="The function plot_daily plots daily glucose time series profiles for a single subject." />
 
 
 
@@ -122,27 +121,16 @@ subject data." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot time series and lasagna plots of glucose measurements</h1>
+    <h1>Plot daily glucose profiles</h1>
     
-    <div class="hidden name"><code>plot_glu.Rd</code></div>
+    <div class="hidden name"><code>plot_daily.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The function plot_glu supports several plotting methods for both single and multiple
-subject data.</p>
+    <p>The function plot_daily plots daily glucose time series profiles for a single subject.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_glu</span><span class='op'>(</span>
-  <span class='va'>data</span>,
-  plottype <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"tsplot"</span>, <span class='st'>"lasagna"</span><span class='op'>)</span>,
-  datatype <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"all"</span>, <span class='st'>"average"</span>, <span class='st'>"single"</span><span class='op'>)</span>,
-  lasagnatype <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"unsorted"</span>, <span class='st'>"timesorted"</span><span class='op'>)</span>,
-  LLTR <span class='op'>=</span> <span class='fl'>70</span>,
-  ULTR <span class='op'>=</span> <span class='fl'>180</span>,
-  subjects <span class='op'>=</span> <span class='cn'>NULL</span>,
-  inter_gap <span class='op'>=</span> <span class='fl'>45</span>,
-  tz <span class='op'>=</span> <span class='st'>""</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>plot_daily</span><span class='op'>(</span><span class='va'>data</span>, LLTR <span class='op'>=</span> <span class='fl'>70</span>, ULTR <span class='op'>=</span> <span class='fl'>180</span>, inter_gap <span class='op'>=</span> <span class='fl'>45</span>, tz <span class='op'>=</span> <span class='st'>""</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,32 +140,12 @@ subject data.</p>
       <td><p>DataFrame with column names ("id", "time", and "gl").</p></td>
     </tr>
     <tr>
-      <th>plottype</th>
-      <td><p>String corresponding to the desired plot type. Options are
-'tsplot' for a time series plot and 'lasagna' for a lasagna plot. See the
-`lasagnatype` parameter for further options corresponding to the 'lasagna' `plottype`.
-Default is 'tsplot'.</p></td>
-    </tr>
-    <tr>
-      <th>datatype</th>
-      <td><p>String corresponding to data aggregation used for plotting, currently supported options are 'all' which plots all glucose measurements within the first <code>maxd</code> days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject</p></td>
-    </tr>
-    <tr>
-      <th>lasagnatype</th>
-      <td><p>String corresponding to plot type when using<code>datatype = "average"</code>, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.</p></td>
-    </tr>
-    <tr>
       <th>LLTR</th>
       <td><p>Lower Limit of Target Range, default value is 70 mg/dL.</p></td>
     </tr>
     <tr>
       <th>ULTR</th>
       <td><p>Upper Limit of Target Range, default value is 180 mg/dL.</p></td>
-    </tr>
-    <tr>
-      <th>subjects</th>
-      <td><p>String or list of strings corresponding to subject names
-in 'id' column of data. Default is all subjects.</p></td>
     </tr>
     <tr>
       <th>inter_gap</th>
@@ -192,25 +160,29 @@ this will not be connected in the time series plot</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Any output from the plot object</p>
+    <p>Daily glucose time series plots for a single subject</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For the default option 'tsplot', a time series graph for each subject is
-produced with hypo- and hyperglycemia cutoffs shown as horizontal red lines.
-The time series plots for all subjects chosen (all by default) are displayed
-on a grid.</p>
-<p>The 'lasagna' plot type works best when the datatype argument is set to average.</p>
+    <p>Only a single subject's data may be plotted. The black line shows the glucose values.
+The shaded gray area shows the target range, default 70-180 mg/dL. Areas of the curve
+above the ULTR are shaded yellow, while areas below the LLTR are shaded red.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Johnson et al. (2019) Utilizing the Ambulatory Glucose Profile to Standardize and
+Implement Continuous Glucose Monitoring in Clinical Practice,
+<em>Diabetes Technology and Therapeutics</em> <strong>21:S2</strong> S2-17-S2-25,
+doi: <a href='https://doi.org/10.1089/dia.2019.0034'>10.1089/dia.2019.0034</a>
+.</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Elizabeth Chun</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-<span class='fu'>plot_glu</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_glu-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-<span class='fu'>plot_glu</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, subjects <span class='op'>=</span> <span class='st'>'Subject 2'</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_glu-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_glu</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, plottype <span class='op'>=</span> <span class='st'>'tsplot'</span>, tz <span class='op'>=</span> <span class='st'>'EST'</span>, LLTR <span class='op'>=</span> <span class='fl'>70</span>, ULTR<span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_glu-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_glu</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, plottype <span class='op'>=</span> <span class='st'>'lasagna'</span>, lasagnatype <span class='op'>=</span> <span class='st'>'timesorted'</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_glu-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>plot_daily</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_daily-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_daily</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, LLTR <span class='op'>=</span> <span class='fl'>100</span>, ULTR <span class='op'>=</span> <span class='fl'>140</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_daily-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

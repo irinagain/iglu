@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Lasagna plot of glucose values for 1 subject aligned across times of day — plot_lasagna_1subject • iglu</title>
+<title>Calculate metrics for the Ambulatory Glucose Profile (AGP) — agp_metrics • iglu</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Lasagna plot of glucose values for 1 subject aligned across times of day — plot_lasagna_1subject" />
-<meta property="og:description" content="Lasagna plot of glucose values for 1 subject aligned across times of day" />
+<meta property="og:title" content="Calculate metrics for the Ambulatory Glucose Profile (AGP) — agp_metrics" />
+<meta property="og:description" content="The function agp_metrics runs the following functions
+and combines them into a tibble object: active_percent, mean_glu, gmi,
+cv_glu, below_percent, in_range_percent, above_percent." />
 
 
 
@@ -121,26 +123,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Lasagna plot of glucose values for 1 subject aligned across times of day</h1>
+    <h1>Calculate metrics for the Ambulatory Glucose Profile (AGP)</h1>
     
-    <div class="hidden name"><code>plot_lasagna_1subject.Rd</code></div>
+    <div class="hidden name"><code>agp_metrics.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Lasagna plot of glucose values for 1 subject aligned across times of day</p>
+    <p>The function agp_metrics runs the following functions
+and combines them into a tibble object: active_percent, mean_glu, gmi,
+cv_glu, below_percent, in_range_percent, above_percent.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_lasagna_1subject</span><span class='op'>(</span>
-  <span class='va'>data</span>,
-  lasagnatype <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"unsorted"</span>, <span class='st'>"timesorted"</span>, <span class='st'>"daysorted"</span><span class='op'>)</span>,
-  limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>50</span>, <span class='fl'>500</span><span class='op'>)</span>,
-  midpoint <span class='op'>=</span> <span class='fl'>105</span>,
-  LLTR <span class='op'>=</span> <span class='fl'>70</span>,
-  ULTR <span class='op'>=</span> <span class='fl'>180</span>,
-  dt0 <span class='op'>=</span> <span class='cn'>NULL</span>,
-  inter_gap <span class='op'>=</span> <span class='fl'>60</span>,
-  tz <span class='op'>=</span> <span class='st'>""</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>agp_metrics</span><span class='op'>(</span><span class='va'>data</span>, shinyformat <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,57 +144,57 @@
       <td><p>DataFrame object with column names "id", "time", and "gl".</p></td>
     </tr>
     <tr>
-      <th>lasagnatype</th>
-      <td><p>String corresponding to plot type, currently supported
-options are 'unsorted' for an unsorted single-subject lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across days, and 'daysorted' for a lasagna plot with glucose values sorted within each day across time points.</p></td>
-    </tr>
-    <tr>
-      <th>limits</th>
-      <td><p>The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see <code>scale_fill_gradient2</code>)</p></td>
-    </tr>
-    <tr>
-      <th>midpoint</th>
-      <td><p>The glucose value serving as midpoint (white) of the diverging gradient scale (see <code>scale_fill_gradient2</code>). The default value is 105 mg/dL. The values above are colored in red, and below in blue.</p></td>
-    </tr>
-    <tr>
-      <th>LLTR</th>
-      <td><p>Lower Limit of Target Range, default value is 70 mg/dL.</p></td>
-    </tr>
-    <tr>
-      <th>ULTR</th>
-      <td><p>Upper Limit of Target Range, default value is 180 mg/dL.</p></td>
-    </tr>
-    <tr>
-      <th>dt0</th>
-      <td><p>The time frequency for interpolated aligned grid in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).</p></td>
-    </tr>
-    <tr>
-      <th>inter_gap</th>
-      <td><p>The maximum allowable gap (in minutes) for interpolation of
-NA glucose values. The values will not be interpolated between
-the glucose measurements that are more than inter_gap minutes apart.
-The default value is 60 min.</p></td>
-    </tr>
-    <tr>
-      <th>tz</th>
-      <td><p>A character string specifying the time zone to be used. System-specific (see <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></code>), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.</p></td>
+      <th>shinyformat</th>
+      <td><p>Logical indicating whether the output should be formatted for the single subject
+AGP page in shiny. Defaults to FALSE.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object corresponding to lasagna plot</p>
+    <p>By default, a tibble object with 1 row for each subject, and 10 columns is returned:
+a column for subject id,
+a column for active_percent,
+a column for Mean value,
+a column for gmi value,
+a column for cv value,
+a column for below_54 value,
+a column for below_70 value,
+a column for in_range_70_180 value,
+a column for above_180 value,
+a column for above_250 value,</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>If shinyformat = FALSE (default), returns a tibble object with 1 row for each subject, and 12 columns:
+a column for subject id,
+a column for active_percent,
+a column for Mean value,
+a column for gmi value,
+a column for cv value,
+a column for below_54 value,
+a column for below_70 value,
+a column for in_range_70_180 value,
+a column for above_180 value,
+a column for above_250 value.
+If shinyformat = TRUE, a tibble with 3 columns: id, metric, and value, is returned.
+This output is used when generating the single subject AGP shiny page.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Swihart et al. (2010) Lasagna Plots: A Saucy Alternative to Spaghetti Plots, <em>Epidemiology</em> <strong>21</strong>(5), 621-625, doi: <a href='https://doi.org/10.1097/EDE.0b013e3181e5b06a'>10.1097/EDE.0b013e3181e5b06a</a></p>
+    <p>Johnson et al. (2019) Utilizing the Ambulatory Glucose Profile to Standardize and
+Implement Continuous Glucose Monitoring in Clinical Practice,
+<em>Diabetes Technology and Therapeutics</em> <strong>21:S2</strong> S2-17-S2-25,
+doi: <a href='https://doi.org/10.1089/dia.2019.0034'>10.1089/dia.2019.0034</a>
+.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'>plot_lasagna_1subject</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_lasagna_1subject-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_lasagna_1subject</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, lasagnatype <span class='op'>=</span> <span class='st'>'timesorted'</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_lasagna_1subject-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_lasagna_1subject</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, lasagnatype <span class='op'>=</span> <span class='st'>'daysorted'</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_lasagna_1subject-3.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
+<span class='fu'>agp_metrics</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 10</span><span>
+#&gt;   id    active_percent  mean   gmi    cv below_54 below_70 in_range_70_180
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Subj…           79.8  124.  6.27  26.9        0    0.137            91.7
+#&gt; </span><span style='color: #555555;'># … with 2 more variables: above_180 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, above_250 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
