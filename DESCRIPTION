@@ -47,7 +47,8 @@ Imports:
     dplyr,
     magrittr,
     tibble,
-    tidyr
+    tidyr,
+    hms
 Suggests:
     knitr,
     rmarkdown,
