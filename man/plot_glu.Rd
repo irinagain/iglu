@@ -9,8 +9,8 @@ plot_glu(
   plottype = c("tsplot", "lasagna"),
   datatype = c("all", "average", "single"),
   lasagnatype = c("unsorted", "timesorted"),
-  LLTR = 80,
-  ULTR = 140,
+  LLTR = 70,
+  ULTR = 180,
   subjects = NULL,
   inter_gap = 45,
   tz = ""
@@ -28,9 +28,9 @@ Default is 'tsplot'.}
 
 \item{lasagnatype}{String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.}
 
-\item{LLTR}{Lower Limit of Target Range, default value is 80 mg/dL.}
+\item{LLTR}{Lower Limit of Target Range, default value is 70 mg/dL.}
 
-\item{ULTR}{Upper Limit of Target Range, default value is 140 mg/dL.}
+\item{ULTR}{Upper Limit of Target Range, default value is 180 mg/dL.}
 
 \item{subjects}{String or list of strings corresponding to subject names
 in 'id' column of data. Default is all subjects.}

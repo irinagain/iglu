@@ -11,8 +11,8 @@ plot_lasagna(
   maxd = 14,
   limits = c(50, 500),
   midpoint = 105,
-  LLTR = 80,
-  ULTR = 140,
+  LLTR = 70,
+  ULTR = 180,
   dt0 = NULL,
   inter_gap = 60,
   tz = ""
@@ -29,11 +29,11 @@ plot_lasagna(
 
 \item{limits}{The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link{scale_fill_gradient2}})}
 
-\item{midpoint}{The glucose value serving as midpoint (white) of the diverging gradient scale (see \code{\link{scale_fill_gradient2}}). The default value is 125 mg/dL. The values above are colored in red, and below in blue.}
+\item{midpoint}{The glucose value serving as midpoint (white) of the diverging gradient scale (see \code{\link{scale_fill_gradient2}}). The default value is 105 mg/dL. The values above are colored in red, and below in blue.}
 
-\item{LLTR}{Lower Limit of Target Range, default value is 80 mg/dL.}
+\item{LLTR}{Lower Limit of Target Range, default value is 70 mg/dL.}
 
-\item{ULTR}{Upper Limit of Target Range, default value is 140 mg/dL.}
+\item{ULTR}{Upper Limit of Target Range, default value is 180 mg/dL.}
 
 \item{dt0}{The time frequency for interpolated aligned grid in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
