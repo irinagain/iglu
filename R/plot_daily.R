@@ -45,6 +45,7 @@ plot_daily <- function (data, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "") {
       warning(paste("During time conversion,", sum(is.na(data$time)), "values were set to NA. Check the correct time zone specification."))
     }
   }
+  data = data[complete.cases(data), ] # prevent downstream warnings for NA time values
 
   subject = unique(data$id)
   ns = length(subject)
