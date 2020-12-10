@@ -572,6 +572,96 @@ parameter_type <- reactive({
     }
   )
 
+  ############################ AGP SECTION #####################################################
+
+  ### Get desired subject
+  output$agp_subject <- renderUI({
+    data = transform_data() # bring reactive data input into this renderUI call to default to all subjects
+    subject = unique(data$id)[1]
+    textInput("agp_subject", "Enter Subject ID", value = subject)
+  })
+
+  output$agp_subject_help_text <- renderUI({
+    helpText("Enter the ID of a subject to display their AGP Report")
+  })
+
+  agp_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
+
+    data = transform_data()
+    data = data[data$id == input$agp_subject,] # reactively subset data when subjects input is modified
+    return(data)
+  })
+
+  ### Rendering Sections
+
+  agpMetrics <- reactive({
+
+    library(iglu)
+    data = agp_data()
+    string = paste("iglu::agp_metrics(data = data, shinyformat = TRUE)")
+    eval(parse(text = string))
+  })
+
+  output$agp_metrics <- DT::renderDataTable({
+
+    validate(
+      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
+    )
+
+    DT::datatable(agpMetrics(), options = list(dom = 't'), rownames = FALSE)
+    })
+
+  plotRanges <- reactive({
+
+    library(iglu)
+    data = agp_data()
+    string = paste('iglu::plot_ranges(data = data)')
+    eval(parse(text = string))
+  })
+
+  output$plot_ranges <- renderPlot({
+
+    validate(
+      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
+    )
+
+    plotRanges()
+  })
+
+  plotAGP <- reactive({
+
+    library(iglu)
+    data = agp_data()
+    string = paste('iglu::plot_agp(data = data)')
+    eval(parse(text = string))
+  })
+
+  output$plot_agp <- renderPlot({
+
+    validate(
+      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
+    )
+
+    plotAGP()
+  })
+
+  plotDaily <- reactive({
+
+    library(iglu)
+    data = agp_data()
+    string = paste('iglu::plot_daily(data = data)')
+    eval(parse(text = string))
+  })
+
+  output$plot_daily <- renderPlot({
+
+    validate(
+      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
+    )
+
+    plotDaily()
+  })
+
 })
 
 

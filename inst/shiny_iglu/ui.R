@@ -89,9 +89,36 @@ shinyUI(fluidPage(
                downloadButton(outputId = "epsButton", label = "EPS")
                ),
                mainPanel(plotOutput("plot"))
+             )),
+
+    tabPanel("AGP", fluid = TRUE,
+             sidebarLayout(
+               sidebarPanel(
+                 uiOutput("agp_subject"),
+                 uiOutput("agp_subject_help_text"),
+               ),
+               mainPanel(
+                 fluidRow(
+                   column(6, wellPanel("Glucose Statistics")),
+                   column(6, wellPanel("Time in Ranges"))),
+                 fluidRow(
+                   column(6, DT::dataTableOutput("agp_metrics")),
+                   column(6, plotOutput("plot_ranges"))
+                 ),
+                 fluidRow(
+                   column(12, wellPanel("Ambulatory Glucose Profile (AGP)"))
+                 ),
+                 fluidRow(
+                   column(12,  plotOutput("plot_agp"))
+                 ),
+                 fluidRow(
+                   column(12, wellPanel("Daily Glucose Profiles"))
+                 ),
+                 fluidRow(
+                   column(12, plotOutput("plot_daily"))
+                 )
+               )
              ))
-
-
   )
 
 

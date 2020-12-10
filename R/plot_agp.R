@@ -40,14 +40,6 @@ plot_agp <- function (data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, t
 
   gl = id = NULL
   rm(list = c("gl",  "id"))
-  if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
-    data$time = as.character(data$time)
-    data$time = as.POSIXct(data$time, format='%Y-%m-%d %H:%M:%S', tz = tz)
-    # Check if any NAs from conversion, this happens if wrong time format (e.g. 25:00:00) or wrong time zone which will affect daylight savings time
-    if (any(is.na(data$time))){
-      warning(paste("During time conversion,", sum(is.na(data$time)), "values were set to NA. Check the correct time zone specification."))
-    }
-  }
 
   subject = unique(data$id)
   ns = length(subject)
