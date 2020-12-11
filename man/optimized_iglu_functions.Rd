@@ -2,17 +2,17 @@
 % Please edit documentation in R/optimized_iglu_functions.R
 \name{optimized_iglu_functions}
 \alias{optimized_iglu_functions}
-\title{Optomized Calculations of the iglu Functions: AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, & SD_MEASURES}
+\title{Optimized Calculations of the iglu Functions: AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, & SD_MEASURES}
 \usage{
 optimized_iglu_functions(data)
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl", or numeric vector of glucose values.}
+\item{data}{DataFrame object with column names "id", "time", and "gl".}
 }
 \value{
 If a data.frame object is passed, then a tibble object with 1 row for each subject, and fourteen columns is returned:
 a column for subject id,
-a column for Continuous Overall Net Glycemic Action (Conga) value,
+a column for CONGA(24) value,
 a column for Glucose Variability Percentage (GVP) value,
 a column for mean difference between glucose values obtained at the same time of day (MODD) value,
 a column for area under curve (AUC) value,
@@ -31,12 +31,11 @@ corrected for changes in daily means (SdBDM) value.
 The function all_metrics_optomized optimizes the functions
 AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, & SD_MEASURES iglu functions
 by extracting the CGMS2DayByDay calculation and passing the result into each function.
-Tests with microbenchmark show the optimization is 9x faster.
 }
 \details{
-Retruns a tibble object with 1 row for each subject, and fourteen columns:
+Returns a tibble object with 1 row for each subject, and fourteen columns:
 a column for subject id,
-a column for Continuous Overall Net Glycemic Action (Conga) value,
+a column for CONGA(24) value,
 a column for Glucose Variability Percentage (GVP) value,
 a column for mean difference between glucose values obtained at the same time of day (MODD) value,
 a column for area under curve (AUC) value,
