@@ -131,7 +131,7 @@ optimized_iglu_functions <- function(data) {
 
       temp_df = cbind.data.frame(day, gl) %>%
         dplyr::group_by(day) %>%
-        dplyr::summarise(each_area = (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2), .groups = "drop") %>%
+        dplyr::summarise(each_area = (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2)) %>%
         dplyr::summarise(daily_area = sum(each_area, na.rm = TRUE),
                          hours = dt0/60 * length(na.omit(each_area)),
                          hourly_avg = daily_area/hours, .groups = 'drop')

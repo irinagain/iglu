@@ -41,12 +41,6 @@
 #'
 
 
-
-# Note about the iglu interpolation function CGMS2DayByDay:
-# This function returns a list with three items:
-# interpolated glucose values, the days of data, and the frequency of CGM measurements
-# To access each respectively we use [[]]
-
 auc <- function (data, tz = "") {
 
   # this is a helper function that runs on a single person's data
@@ -55,19 +49,16 @@ auc <- function (data, tz = "") {
     gl = id = each_area = daily_area = hours = day = NULL
     rm(list = c("gl", "id", "each_area", "daily_area", "hours", "day"))
 
+    data_ip = CGMS2DayByDay(data, tz = tz)
     # dt0 is the frequency of the cgm measurements, typically 5 min but could be different
-    dt0 = CGMS2DayByDay(data, tz = tz)[[3]]
+    dt0 = data_ip[[3]]
     # this whole part gets our desired output from the data
     out = data %>%
       # this part tidies up the data into 2 columns: day and gl
       dplyr::summarise(
-        # from the interpolation, we get the days of data
-        day = rep(CGMS2DayByDay(data.frame(id, gl, time))[[2]],
-                  # we replicate each day by the number of measurements for that day
-                  1440/dt0),
+        day = rep(data_ip[[2]], 1440/dt0),
         # the interpolated glucose is input as a vector
-        gl = as.vector(t(CGMS2DayByDay(data.frame(
-          id, time, gl))[[1]]))
+        gl = as.vector(t(data_ip[[1]]))
       ) %>%
       # this part finds AUC
       # first we group by day
@@ -79,10 +70,10 @@ auc <- function (data, tz = "") {
       ) %>%
       # here we summarize to daily area, then hourly average
       dplyr::summarise(daily_area = sum(each_area, na.rm = TRUE),
-                # we need the actual hours collected because some data has NA gaps
-                hours = dt0/60 * length(na.omit(each_area)),
-                # then we find the hourly average for each day
-                hourly_avg = daily_area/hours)
+                       # we need the actual hours collected because some data has NA gaps
+                       hours = dt0/60 * length(na.omit(each_area)),
+                       # then we find the hourly average for each day
+                       hourly_avg = daily_area/hours, .groups = "drop")
     return(out)
   }
 
