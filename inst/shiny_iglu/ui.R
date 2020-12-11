@@ -53,7 +53,8 @@ shinyUI(fluidPage(
                                                                                `Standard Deviation` = 'sd_glu',
                                                                                `Standard Deviation Subtypes` = 'sd_measures',
                                                                                `Standard Deviation ROC` = 'sd_roc',
-                                                                               `Summary Statistics` = 'summary_glu'
+                                                                               `Summary Statistics` = 'summary_glu',
+                                                                               `All Metrics` = 'all_metrics'
                )),
                uiOutput("select_parameter"),
                uiOutput("help_text")),
