@@ -34,11 +34,10 @@ parameter_type <- reactive({
       return("list")
     }
 
-
-  else if(input$metric %in% c("conga", "grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
-                              "mage", "modd", "roc", "sd_roc", "active_percent")){
-    return("value")
-  }
+    else if(input$metric %in% c("conga", "grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
+                                "mage", "modd", "roc", "sd_roc", "active_percent")){
+      return("value")
+    }
 
     else if(input$metric %in% c("grade_eugly", "igc")){
       return("lwrupr")
@@ -61,7 +60,6 @@ parameter_type <- reactive({
       }
       else if(input$metric == "quantile_glu"){
         textInput("parameter", "Specify Parameter", value = "0, 25, 50, 75, 100")
-
       }
     }
 
@@ -70,9 +68,9 @@ parameter_type <- reactive({
       textInput("parameter", "Specify n", value = "24")
     }
 
-    else if(input$metric == "grade_hyper"){
-      textInput("parameter", "Specify Parameter", value = "140")
-    }
+      else if(input$metric == "grade_hyper"){
+        textInput("parameter", "Specify Parameter", value = "140")
+      }
 
       else if(input$metric == "grade_hypo"){
         textInput("parameter", "Specify Parameter", value = "80")
@@ -97,35 +95,36 @@ parameter_type <- reactive({
       else if(input$metric == "modd"){
         textInput("parameter", "Specify Parameter", value = "1")
       }
+
+      else if(input$metric == "active_percent"){
+        textInput("parameter", "Specify Parameter", value = "5")
+      }
+
+      else if(input$metric == "roc"){
+        textInput("parameter", "Specify Parameter", value = "15")
+      }
+
+      else if(input$metric == "sd_roc"){
+        textInput("parameter", "Specify Parameter", value = "15")
+      }
     }
 
-    else if(parameter_type == "lwrupr"){
-
-      if(input$metric == "grade_eugly"){
-        textInput("parameter", "Specify Parameter", value = "80, 140")
-      }
+   else if(parameter_type == "lwrupr"){
+    if(input$metric == "grade_eugly"){
+      textInput("parameter", "Specify Parameter", value = "80, 140")
+    }
 
       else if(input$metric == "igc"){
         textInput("parameter", "Specify Parameter", value = "80, 140")
       }
     }
 
-    else if(parameter_type == "nested"){
-      if(input$metric == "in_range_percent"){
-        textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
-      }
+   else if(parameter_type == "nested"){
+    if(input$metric == "in_range_percent"){
+      textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
     }
-    else if(input$metric == "active_percent"){
-      textInput("parameter", "Specify Parameter", value = "5")
     }
 
-    else if(input$metric == "roc"){
-      textInput("parameter", "Specify Parameter", value = "15")
-    }
-
-    else if(input$metric == "sd_roc"){
-      textInput("parameter", "Specify Parameter", value = "15")
-    }
   })
 
   output$help_text <- renderUI({
@@ -572,6 +571,96 @@ parameter_type <- reactive({
       dev.off()
     }
   )
+
+  ############################ AGP SECTION #####################################################
+
+  ### Get desired subject
+  output$agp_subject <- renderUI({
+    data = transform_data() # bring reactive data input into this renderUI call to default to all subjects
+    subject = unique(data$id)[1]
+    textInput("agp_subject", "Enter Subject ID", value = subject)
+  })
+
+  output$agp_subject_help_text <- renderUI({
+    helpText("Enter the ID of a subject to display their AGP Report")
+  })
+
+  agp_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
+
+    data = transform_data()
+    data = data[data$id == input$agp_subject,] # reactively subset data when subjects input is modified
+    return(data)
+  })
+
+  ### Rendering Sections
+
+  agpMetrics <- reactive({
+
+    library(iglu)
+    data = agp_data()
+    string = paste("iglu::agp_metrics(data = data, shinyformat = TRUE)")
+    eval(parse(text = string))
+  })
+
+  output$agp_metrics <- DT::renderDataTable({
+
+    validate(
+      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
+    )
+
+    DT::datatable(agpMetrics(), options = list(dom = 't'), rownames = FALSE)
+    })
+
+  plotRanges <- reactive({
+
+    library(iglu)
+    data = agp_data()
+    string = paste('iglu::plot_ranges(data = data)')
+    eval(parse(text = string))
+  })
+
+  output$plot_ranges <- renderPlot({
+
+    validate(
+      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
+    )
+
+    plotRanges()
+  })
+
+  plotAGP <- reactive({
+
+    library(iglu)
+    data = agp_data()
+    string = paste('iglu::plot_agp(data = data)')
+    eval(parse(text = string))
+  })
+
+  output$plot_agp <- renderPlot({
+
+    validate(
+      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
+    )
+
+    plotAGP()
+  })
+
+  plotDaily <- reactive({
+
+    library(iglu)
+    data = agp_data()
+    string = paste('iglu::plot_daily(data = data)')
+    eval(parse(text = string))
+  })
+
+  output$plot_daily <- renderPlot({
+
+    validate(
+      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
+    )
+
+    plotDaily()
+  })
 
 })
 
