@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -75,8 +75,7 @@
 
       
 
-      </header><link href="iglu_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="iglu_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Working in iglu</h1>
@@ -159,18 +158,18 @@
 <p>Some metric functions, like <code><a href="../reference/above_percent.html">above_percent()</a></code>, will return multiple values for a single subject.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="fu"><a href="../reference/above_percent.html">above_percent</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 5</span>
-<span class="co">#&gt;   id        above_140 above_180 above_200 above_250</span>
-<span class="co">#&gt;   &lt;fct&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Subject 1      26.7      8.40      3.70     0.446</span></pre></div>
+<span class="co">#&gt; # A tibble: 1 x 4</span>
+<span class="co">#&gt;   id        above_140 above_180 above_250</span>
+<span class="co">#&gt;   &lt;fct&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Subject 1      26.7      8.40     0.446</span></pre></div>
 <p>When a data frame is passed, subject id will always be printed in the id column, and metrics will be printed in the following columns.</p>
 <p>As discussed above, just the glucose vector can be supplied for the single subject case.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="fu"><a href="../reference/above_percent.html">above_percent</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">$</span><span class="va">gl</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 4</span>
-<span class="co">#&gt;   above_140 above_180 above_200 above_250</span>
-<span class="co">#&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span>
-<span class="co">#&gt; 1      26.7      8.40      3.70     0.446</span></pre></div>
+<span class="co">#&gt; # A tibble: 1 x 3</span>
+<span class="co">#&gt;   above_140 above_180 above_250</span>
+<span class="co">#&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; 1      26.7      8.40     0.446</span></pre></div>
 <p>However, it is not recommended to pass just glucose values whenever the time and subject are also available, because this output will not contain the subject ID.</p>
 <p>The list of target values for the above_percent metric is a parameter that can be changed:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">

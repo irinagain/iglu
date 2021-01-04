@@ -84,7 +84,7 @@ and the rows correspond to the subjects. The values will be between 0
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -138,7 +138,7 @@ and the rows correspond to the subjects. The values will be between 0
 (no measurements) and 100 (all measurements).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>in_range_percent</span><span class='op'>(</span><span class='va'>data</span>, target_ranges <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>80</span>, <span class='fl'>200</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>70</span>, <span class='fl'>180</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>70</span>, <span class='fl'>140</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>in_range_percent</span><span class='op'>(</span><span class='va'>data</span>, target_ranges <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>70</span>, <span class='fl'>180</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>63</span>, <span class='fl'>140</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,7 +151,7 @@ or numeric vector of glucose values.</p></td>
     <tr>
       <th>target_ranges</th>
       <td><p>List of target value ranges wrapped in an r 'list' structure.
-Default list of ranges is ((80, 200), (70, 180), (70, 140)).</p></td>
+Default list of ranges is ((70, 180), (63, 140)) mg/dL, where the range (70, 180) is recommended to assess glycemic control for subjects with type 1 or type 2 diabetes, and (63, 140) is recommended for assessment of glycemic control during pregnancy; see Battelino et al. (2019)</p></td>
     </tr>
     </table>
 
@@ -177,16 +177,17 @@ glycemic variability and quality of glycemic control,
 <em>Diabetes Technology and Therapeutics</em> <strong>11</strong> .55-67,
 doi: <a href='https://doi.org/10.1089/dia.2008.0132'>10.1089/dia.2008.0132</a>
 .</p>
+<p>Battelino et al. (2019) Clinical targets for continuous glucose monitoring data interpretation: recommendations from the international consensus on time in range. <em>Diabetes Care</em>  <strong>42</strong>(8):1593-603, doi: <a href='https://doi.org/10.2337/dci19-0028'>10.2337/dci19-0028</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 
 <span class='fu'>in_range_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 4</span><span>
-#&gt;   id        in_range_70_140 in_range_70_180 in_range_80_200
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1            73.7            91.7            96.0</div><div class='input'><span class='fu'>in_range_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, target_ranges <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>50</span>, <span class='fl'>100</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>200</span>,
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 3</span><span>
+#&gt;   id        in_range_63_140 in_range_70_180
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1            73.9            91.7</div><div class='input'><span class='fu'>in_range_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, target_ranges <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>50</span>, <span class='fl'>100</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>200</span>,
 <span class='fl'>300</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>80</span>, <span class='fl'>140</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 4</span><span>
 #&gt;   id        in_range_200_300 in_range_50_100 in_range_80_140
@@ -195,14 +196,14 @@ doi: <a href='https://doi.org/10.1089/dia.2008.0132'>10.1089/dia.2008.0132</a>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
 
 <span class='fu'>in_range_percent</span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 4</span><span>
-#&gt;   id        in_range_70_140 in_range_70_180 in_range_80_200
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1           73.7             91.7            96.0
-#&gt; </span><span style='color: #555555;'>2</span><span> Subject 2            3.36            26.4            42.6
-#&gt; </span><span style='color: #555555;'>3</span><span> Subject 3           49.8             81.3            85.2
-#&gt; </span><span style='color: #555555;'>4</span><span> Subject 4           67.7             95.1            96.5
-#&gt; </span><span style='color: #555555;'>5</span><span> Subject 5           30.1             62.1            69.6</div><div class='input'><span class='fu'>in_range_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, target_ranges <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>60</span>, <span class='fl'>120</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>140</span>,
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 3</span><span>
+#&gt;   id        in_range_63_140 in_range_70_180
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>               </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>           </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1           73.9             91.7
+#&gt; </span><span style='color: #555555;'>2</span><span> Subject 2            3.36            26.4
+#&gt; </span><span style='color: #555555;'>3</span><span> Subject 3           50.0             81.3
+#&gt; </span><span style='color: #555555;'>4</span><span> Subject 4           67.9             95.1
+#&gt; </span><span style='color: #555555;'>5</span><span> Subject 5           30.2             62.1</div><div class='input'><span class='fu'>in_range_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, target_ranges <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>60</span>, <span class='fl'>120</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>140</span>,
 <span class='fl'>250</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 3</span><span>
 #&gt;   id        in_range_140_250 in_range_60_120
