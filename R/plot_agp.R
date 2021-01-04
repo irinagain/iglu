@@ -38,8 +38,8 @@
 
 plot_agp <- function (data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "") {
 
-  gl = id = NULL
-  rm(list = c("gl",  "id"))
+  gl = id = five = twentyfive = seventyfive = ninetyfive = NULL
+  rm(list = c("gl",  "id", "five", "twentyfive", "seventyfive", "ninetyfive"))
 
   subject = unique(data$id)
   ns = length(subject)
