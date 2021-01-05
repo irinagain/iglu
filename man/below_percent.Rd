@@ -4,7 +4,7 @@
 \alias{below_percent}
 \title{Calculate percentage below targeted values}
 \usage{
-below_percent(data, targets_below = c(50, 80))
+below_percent(data, targets_below = c(54, 70))
 }
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl"),
@@ -12,7 +12,7 @@ or numeric vector of glucose values.}
 
 \item{targets_below}{Numeric vector of glucose thresholds. Glucose values from
 data argument will be compared to each value in the targets_below vector.
-Default list is (50, 80).}
+Default list is (54, 70).}
 }
 \value{
 If a data.frame object is passed, then a tibble object with
@@ -21,7 +21,6 @@ values is passed, then a tibble object without the subject id is returned.
 as.numeric() can be wrapped around the latter to output a numeric vector.
 }
 \description{
-#' @description
 The function below_percent produces a tibble object with values equal to
 the percentage of glucose measurements below target values. The output columns
 correspond to the subject id followed by the target values and the output rows

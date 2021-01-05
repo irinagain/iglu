@@ -4,14 +4,14 @@
 \alias{conga}
 \title{Continuous Overall Net Glycemic Action (CONGA)}
 \usage{
-conga(data, tz = "", n = 24)
+conga(data, n = 24, tz = "")
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
 
-\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
-
 \item{n}{An integer specifying how many hours prior to an observation should be used in the CONGA calculation. The default value is set to n = 24 hours}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 A tibble object with two columns: subject id and corresponding CONGA value.

@@ -1,7 +1,7 @@
 Package: iglu
 Type: Package
 Title: Interpreting Glucose Data from Continuous Glucose Monitors
-Version: 1.4.0
+Version: 2.0.1
 Authors@R: c(person("Steve", "Broll",
             email = "stevebroll@tamu.edu",
             role = c("aut")),
@@ -14,17 +14,20 @@ Authors@R: c(person("Steve", "Broll",
             person("John", "Muschelli",
             role = c("aut"),
             email = "muschellij2@gmail.com"),
+            person("John", "Schwenck",
+            role = c("ctb"),
+            email = "jschwenck@stat.tamu.edu"),
             person("Mary", "Martin",
-            role = c("aut"),
+            role = c("ctb"),
             email = "marymartin16@tamu.edu"),
             person("Pratik", "Patel",
-            role = c("aut"),
+            role = c("ctb"),
             email = "p.pratik99@tamu.edu"),
             person("Marielle", "Hicban",
-            role = c("aut"),
+            role = c("ctb"),
             email = "marbhic@tamu.edu"),
             person("Nhan", "Nguyen",
-            role = c("aut"),
+            role = c("ctb"),
             email = "nhannguyen993@tamu.edu"),
             person("Irina", "Gaynanova",
             email = "irinag@stat.tamu.edu",role = c("aut", "cre")))
@@ -44,7 +47,8 @@ Imports:
     dplyr,
     magrittr,
     tibble,
-    tidyr
+    tidyr,
+    hms
 Suggests:
     knitr,
     rmarkdown,

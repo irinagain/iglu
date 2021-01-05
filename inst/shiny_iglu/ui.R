@@ -14,7 +14,7 @@ shinyUI(fluidPage(
                             textInput('id', 'Enter column name corresponding to subject ID', value = 'id'),
                             textInput('time', 'Enter column name corresponding to timestamp', value = 'time'),
                             textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl')
-                            ),
+               ),
                mainPanel(tableOutput("data"))
              )),
     tabPanel("Metrics", fluid = TRUE,
@@ -25,19 +25,24 @@ shinyUI(fluidPage(
                                                                                `Below Percent` = 'below_percent',
                                                                                `CONGA` = 'conga',
                                                                                `CV` = 'cv_glu',
+                                                                               `CV Subtypes` = 'cv_measures',
+                                                                               `eA1C` = 'ea1c',
+                                                                               `GMI` = 'gmi',
                                                                                `GRADE` = 'grade',
                                                                                `GRADE Euglycemia` = 'grade_eugly',
                                                                                `GRADE Hyperglycemia` = 'grade_hyper',
                                                                                `GRADE Hypoglycemia` = 'grade_hypo',
+                                                                               `Glucose Variability Percentage` = 'gvp',
                                                                                `High Blood Glucose Index` = 'hbgi',
-                                                                               `Hyperglycaemia Index` = 'hyper_index',
-                                                                               `Hypoglycaemia Index` = 'hypo_index',
+                                                                               `Hyperglycemia Index` = 'hyper_index',
+                                                                               `Hypoglycemia Index` = 'hypo_index',
                                                                                `Index of Glycemic Control` = 'igc',
                                                                                `In Range Percent` = 'in_range_percent',
                                                                                `Interquartile Range` = 'iqr_glu',
                                                                                `J Index` = 'j_index',
                                                                                `Low Blood Glucose Index` = 'lbgi',
                                                                                `M-Value` = 'm_value',
+                                                                               `MAD` = 'mad_glu',
                                                                                `MAGE` = 'mage',
                                                                                `Mean` = 'mean_glu',
                                                                                `Median` = 'median_glu',
@@ -53,7 +58,7 @@ shinyUI(fluidPage(
                uiOutput("select_parameter"),
                uiOutput("help_text")),
                mainPanel(DT::dataTableOutput("metric"))
-               )),
+             )),
 
     tabPanel("Plots", fluid = TRUE,
              sidebarLayout(
@@ -78,13 +83,44 @@ shinyUI(fluidPage(
                #uiOutput("plot_TR_help_text"),
                uiOutput("plot_midpoint"),
                uiOutput('plot_limits'),
-               uiOutput('plot_colorbar_help_text')
+               uiOutput('plot_colorbar_help_text'),
+               downloadButton(outputId = "pdfButton", label = "PDF"),
+               downloadButton(outputId = "pngButton", label = "PNG"),
+               downloadButton(outputId = "epsButton", label = "EPS")
                ),
                mainPanel(plotOutput("plot"))
+             )),
+
+    tabPanel("AGP", fluid = TRUE,
+             sidebarLayout(
+               sidebarPanel(
+                 uiOutput("agp_subject"),
+                 uiOutput("agp_subject_help_text"),
+               ),
+               mainPanel(
+                 fluidRow(
+                   column(6, wellPanel("Glucose Statistics")),
+                   column(6, wellPanel("Time in Ranges"))),
+                 fluidRow(
+                   column(6, DT::dataTableOutput("agp_metrics")),
+                   column(6, plotOutput("plot_ranges"))
+                 ),
+                 fluidRow(
+                   column(12, wellPanel("Ambulatory Glucose Profile (AGP)"))
+                 ),
+                 fluidRow(
+                   column(12,  plotOutput("plot_agp"))
+                 ),
+                 fluidRow(
+                   column(12, wellPanel("Daily Glucose Profiles"))
+                 ),
+                 fluidRow(
+                   column(12, plotOutput("plot_daily"))
+                 )
+               )
              ))
-
-
-       )
+  )
 
 
 ))
+

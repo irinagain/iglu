@@ -39,8 +39,6 @@
 #' data(example_data_1_subject)
 #' auc(example_data_1_subject)
 #'
-#' data(example_data_5_subject)
-#' auc(example_data_5_subject)
 
 
 
@@ -53,6 +51,10 @@ auc <- function (data, tz = "") {
 
   # this is a helper function that runs on a single person's data
   auc_single <- function(data) {
+
+    gl = id = each_area = daily_area = hours = day = NULL
+    rm(list = c("gl", "id", "each_area", "daily_area", "hours", "day"))
+
     # dt0 is the frequency of the cgm measurements, typically 5 min but could be different
     dt0 = CGMS2DayByDay(data, tz = tz)[[3]]
     # this whole part gets our desired output from the data
@@ -83,6 +85,9 @@ auc <- function (data, tz = "") {
                 hourly_avg = daily_area/hours)
     return(out)
   }
+
+  gl = id = NULL
+  rm(list = c("gl", "id"))
 
   # here we split the data by id then apply the helper function
   out = data %>%

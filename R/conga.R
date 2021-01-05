@@ -4,7 +4,7 @@
 #' The function conga produces CONGA values a tibble object for any n hours apart.
 #'
 #' @usage
-#' conga(data, tz = "", n = 24)
+#' conga(data, n = 24, tz = "")
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl".
 #'
@@ -41,8 +41,8 @@
 #'
 
 
-conga <- function(data, tz = "", n = 24){
-  conga_single = function(data, tz = "", hours = 1){
+conga <- function(data, n = 24, tz = ""){
+  conga_single = function(data, hours = 1, tz = ""){
     data_ip = CGMS2DayByDay(data, tz = tz)
     gl_by_id_ip = data_ip[[1]]
     dt0 = data_ip[[3]]
@@ -61,7 +61,7 @@ conga <- function(data, tz = "", n = 24){
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      conga = conga_single(data.frame(id, time, gl), tz = tz, hours = n)
+      conga = conga_single(data.frame(id, time, gl), hours = n, tz = tz)
     )
   if (is_vector) {
     out$id = NULL

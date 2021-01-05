@@ -1,4 +1,4 @@
-tsplot = function(data, LLTR, ULTR, tz = ""){
+tsplot = function(data, LLTR, ULTR, inter_gap, tz = ""){
   gl = date_by_id = id = NULL
   rm(list = c("gl", "date_by_id", "id"))
   if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
@@ -9,7 +9,20 @@ tsplot = function(data, LLTR, ULTR, tz = ""){
       warning(paste("During time conversion,", sum(is.na(data$time)), "values were set to NA. Check the correct time zone specification."))
     }
   }
-  ggplot2::ggplot(data = data, ggplot2::aes(x = time, y = gl, group = id)) +
+
+  data <- data[complete.cases(data), ] %>%
+    dplyr::group_by(id) %>%
+    dplyr::arrange(data.frame(id, time, gl), time) %>%
+    dplyr::ungroup() # ensure ascending time by subject
+  gaps <- data %>%
+    dplyr::mutate(gap = ifelse(difftime(time, dplyr::lag(time), units = "mins") > inter_gap,
+                               TRUE, FALSE), row = 1:length(time)) %>%
+    dplyr::slice(1, which(gap))
+  gaps <- c(gaps$row, nrow(data) + 1)
+  data <- data %>%
+    dplyr::mutate(time_group = rep(1:(length(gaps) - 1), diff(gaps))) # group by consecutive times to avoid artifacts
+
+  ggplot2::ggplot(data = data, ggplot2::aes(x = time, y = gl, group = time_group)) +
     ggplot2::geom_line() +
     ggplot2::scale_x_datetime(name = 'Date') +
     ggplot2::scale_y_continuous(name = 'Blood Glucose') +
@@ -31,11 +44,14 @@ tsplot = function(data, LLTR, ULTR, tz = ""){
 #' `lasagnatype` parameter for further options corresponding to the 'lasagna' `plottype`.
 #' Default is 'tsplot'.
 #'
-#' @param LLTR Lower Limit of Target Range, default value is 80 mg/dL.
-#' @param ULTR Upper Limit of Target Range, default value is 140 mg/dL.
+#' @param LLTR Lower Limit of Target Range, default value is 70 mg/dL.
+#' @param ULTR Upper Limit of Target Range, default value is 180 mg/dL.
 #'
 #' @param subjects String or list of strings corresponding to subject names
 #' in 'id' column of data. Default is all subjects.
+#'
+#' @param inter_gap The maximum allowable gap (in minutes). Gaps larger than
+#' this will not be connected in the time series plot
 #'
 #' @details
 #' For the default option 'tsplot', a time series graph for each subject is
@@ -60,7 +76,7 @@ tsplot = function(data, LLTR, ULTR, tz = ""){
 #' plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'timesorted')
 #'
 
-plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 80, ULTR = 140, subjects = NULL, tz = ""){
+plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 70, ULTR = 180, subjects = NULL, inter_gap = 45, tz = ""){
 
   plottype = match.arg(plottype)
   datatype = match.arg(datatype)
@@ -75,7 +91,7 @@ plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all"
   }
 
   if (plottype == 'tsplot'){
-    tsplot(data, LLTR = LLTR, ULTR = ULTR, tz = tz)
+    tsplot(data, LLTR = LLTR, ULTR = ULTR, tz = tz, inter_gap = inter_gap)
   }else if (datatype == "single"){
       subject = unique(data$id)
       ns = length(subject)

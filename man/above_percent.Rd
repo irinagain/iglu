@@ -4,7 +4,7 @@
 \alias{above_percent}
 \title{Calculate percentage of values above target thresholds}
 \usage{
-above_percent(data, targets_above = c(140, 180, 200, 250))
+above_percent(data, targets_above = c(140, 180, 250))
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
@@ -12,7 +12,7 @@ or numeric vector of glucose values.}
 
 \item{targets_above}{Numeric vector of glucose thresholds. Glucose values from
 data argument will be compared to each value in the targets_above vector.
-Default list is (140, 180, 200, 250).}
+Default list is (140, 180, 250).}
 }
 \value{
 If a data.frame object is passed, then a tibble object with
