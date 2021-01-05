@@ -1,6 +1,10 @@
-tsplot = function(data, LLTR, ULTR, inter_gap, tz = ""){
+tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
   gl = date_by_id = id = NULL
   rm(list = c("gl", "date_by_id", "id"))
+  # Optionally convert data to log scale
+  if (log){
+    data$gl = log(data$gl)
+  }
   if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
     data$time = as.character(data$time)
     data$time = as.POSIXct(data$time, format='%Y-%m-%d %H:%M:%S', tz = tz)
@@ -22,12 +26,22 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = ""){
   data <- data %>%
     dplyr::mutate(time_group = rep(1:(length(gaps) - 1), diff(gaps))) # group by consecutive times to avoid artifacts
 
-  ggplot2::ggplot(data = data, ggplot2::aes(x = time, y = gl, group = time_group)) +
-    ggplot2::geom_line() +
-    ggplot2::scale_x_datetime(name = 'Date') +
-    ggplot2::scale_y_continuous(name = 'Blood Glucose') +
-    ggplot2::geom_hline(yintercept = LLTR, color = 'red') +
-    ggplot2::geom_hline(yintercept = ULTR, color = 'red') + ggplot2::facet_wrap(~id, scales = "free_x")
+  if(log){
+    ggplot2::ggplot(data = data, ggplot2::aes(x = time, y = gl, group = time_group)) +
+      ggplot2::geom_line() +
+      ggplot2::scale_x_datetime(name = 'Date') +
+      ggplot2::scale_y_continuous(name = 'log(Blood Glucose)') +
+      ggplot2::geom_hline(yintercept = LLTR, color = 'red') +
+      ggplot2::geom_hline(yintercept = ULTR, color = 'red') + ggplot2::facet_wrap(~id, scales = "free_x")
+  }
+  else{
+    ggplot2::ggplot(data = data, ggplot2::aes(x = time, y = gl, group = time_group)) +
+      ggplot2::geom_line() +
+      ggplot2::scale_x_datetime(name = 'Date') +
+      ggplot2::scale_y_continuous(name = 'Blood Glucose') +
+      ggplot2::geom_hline(yintercept = LLTR, color = 'red') +
+      ggplot2::geom_hline(yintercept = ULTR, color = 'red') + ggplot2::facet_wrap(~id, scales = "free_x")
+  }
 }
 
 
@@ -76,7 +90,7 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = ""){
 #' plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'timesorted')
 #'
 
-plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 70, ULTR = 180, subjects = NULL, inter_gap = 45, tz = ""){
+plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 70, ULTR = 180, subjects = NULL, inter_gap = 45, tz = "", log = F){
 
   plottype = match.arg(plottype)
   datatype = match.arg(datatype)
@@ -91,17 +105,27 @@ plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all"
   }
 
   if (plottype == 'tsplot'){
-    tsplot(data, LLTR = LLTR, ULTR = ULTR, tz = tz, inter_gap = inter_gap)
+    tsplot(data, LLTR = LLTR, ULTR = ULTR, tz = tz, inter_gap = inter_gap, log = log)
   }else if (datatype == "single"){
-      subject = unique(data$id)
-      ns = length(subject)
-      if (ns > 1){
-        subject = subject[1]
-        warning(paste("The provided data have", ns, "subjects. The plot will only be created for subject", subject))
-        data = data[which(data$id == subject)]
-      }
-    plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz)
+    subject = unique(data$id)
+    ns = length(subject)
+    if (ns > 1){
+      subject = subject[1]
+      warning(paste("The provided data have", ns, "subjects. The plot will only be created for subject", subject))
+      data = data[which(data$id == subject)]
+    }
+    if(log){
+      plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, log = T, limits = log(c(50,500)), midpoint = log(105))
+    }
+    else{
+      plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, log = F)
+    }
   }else{
-    plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz)
+    if(log){
+      plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, log = T, limits = log(c(50,500)), midpoint = log(105))
+    }
+    else{
+      plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, log = F)
+    }
   }
 }

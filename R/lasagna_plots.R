@@ -25,10 +25,15 @@
 #' plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'timesorted')
 #' plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted')
 #'
-plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted', 'daysorted'), limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 60, tz = ""){
+plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted', 'daysorted'), limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 60, tz = "", log = F){
 
   id = glucose = day = NULL
   rm(list = c("id", "glucose", "day"))
+
+  # Optionally convert data to log scale
+  if (log){
+    data$gl = log(data$gl)
+  }
 
   subject = unique(data$id)
   ns = length(subject)
@@ -66,7 +71,13 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 
   # Make a plot
   p = data_l%>%
-    ggplot(aes(x = hour, y = as.character(day), fill = glucose)) + geom_tile()  + ylab(ytitle) + ggtitle(paste0(subject, title, "")) + xlab(xtitle) + xlim(c(0, 24)) + scale_fill_gradientn(colors = c("#3182bd", "#deebf7", "white", "#fee0d2", "#de2d26"), na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits)
+    ggplot2::ggplot(ggplot2::aes(x = hour, y = as.character(day), fill = glucose)) + ggplot2::geom_tile()  +
+    ggplot2::ylab(ytitle) + ggplot2::ggtitle(paste0(subject, title, "")) + ggplot2::xlab(xtitle) +
+    ggplot2::xlim(c(0, 24)) + ggplot2::scale_fill_gradientn(colors = c("#3182bd", "#deebf7", "white", "#fee0d2", "#de2d26"), na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits)
+
+  if(log){
+    p = p + ggplot2::labs(fill = 'log(glucose)')
+  }
 
   # Take out days if sorted within time since each subject changes
   if (lasagnatype == 'timesorted'){
@@ -97,13 +108,18 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 #' plot_lasagna(example_data_5_subject, datatype = "average", lasagnatype = 'timesorted', tz = "EST")
 #' plot_lasagna(example_data_5_subject, lasagnatype = "subjectsorted", LLTR = 100, tz = "EST")
 #'
-plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('unsorted', 'timesorted', 'subjectsorted'), maxd = 14, limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 60, tz = ""){
+plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('unsorted', 'timesorted', 'subjectsorted'), maxd = 14, limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 60, tz = "", log = F){
 
   lasagnatype = match.arg(lasagnatype)
   datatype = match.arg(datatype)
 
   id = glucose = day = NULL
   rm(list = c("id", "glucose", "day"))
+
+  # Optionally convert data to log scale
+  if (log){
+    data$gl = log(data$gl)
+  }
 
   subject = unique(data$id)
   ns = length(subject)
@@ -141,7 +157,7 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
       xtitle = "Hour (sorted)"
     }
 
-    # Melt the measurements for lasanga plot
+    # Melt the measurements for lasagna plot
     data_l = data.frame(subject = rep(subject, each = length(time_grid_hours)), hour = rep(time_grid_hours, ns), glucose = as.vector(t(average24)))
 
     p = data_l%>%
@@ -189,7 +205,14 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
     data_l = data.frame(subject = rep(subject, each = nt * max_days), day = rep(time_grid_days, ns), glucose = as.vector(t(out)))
 
     p = data_l%>%
-      ggplot(aes(x = day + 1, y = subject, fill = glucose)) + geom_tile() + ylab(ytitle) + ggtitle(paste0("All subjects", title)) + xlab(xtitle) + geom_vline(xintercept = c(1:max_days)) + scale_x_continuous(breaks = seq(1, max_days, by = 2)) + scale_fill_gradientn(colors = c("#3182bd", "#deebf7", "white", "#fee0d2", "#de2d26"), na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits)
+      ggplot2::ggplot(ggplot2::aes(x = day + 1, y = subject, fill = glucose)) +
+      ggplot2::geom_tile() + ggplot2::ylab(ytitle) + ggplot2::ggtitle(paste0("All subjects", title)) +
+      ggplot2::xlab(xtitle) + ggplot2::geom_vline(xintercept = c(1:max_days)) + ggplot2::scale_x_continuous(breaks = seq(1, max_days, by = 2)) +
+      ggplot2::scale_fill_gradientn(colors = c("#3182bd", "#deebf7", "white", "#fee0d2", "#de2d26"), na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits)
+
+    if(log){
+      p = p + ggplot2::labs(fill = 'log(glucose)')
+    }
 
     # Take out subject names if sorted within time since each subject changes
     if (lasagnatype == 'timesorted'){
