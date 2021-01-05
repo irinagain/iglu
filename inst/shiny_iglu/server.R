@@ -53,7 +53,7 @@ parameter_type <- reactive({
 
     if(parameter_type == "list"){
       if(input$metric == "above_percent"){
-        textInput("parameter", "Specify Parameter", value = "140, 180, 200, 250")
+        textInput("parameter", "Specify Parameter", value = "140, 180, 250")
       }
       else if(input$metric == "below_percent"){
         textInput("parameter", "Specify Parameter", value = "50, 80")
