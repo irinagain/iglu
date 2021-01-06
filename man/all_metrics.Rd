@@ -78,7 +78,7 @@ SD_Measures, SD_ROC, Summary
 and combines them into a tibble object.
 }
 \details{
-Returns a tibble object with 1 row for each subject, and 49 columns:
+Returns a tibble object with 1 row for each subject, and 47 columns:
 a column for subject id,
 a column for adrr value,
 a column for hourly_auc value,
@@ -106,13 +106,11 @@ a column for mage value,
 a column for modd value,
 a column for above_140 value,
 a column for above_180 value,
-a column for above_200 value,
 a column for above_250 value,
 a column for below_54 value,
 a column for below_70 value,
-a column for in_range_70_140 value,
+a column for in_range_63_140 value,
 a column for in_range_70_180 value,
-a column for in_range_80_200 value,
 a column for range value,
 a column for sd value,
 a column for SdW value,
