@@ -15,7 +15,8 @@ plot_lasagna(
   ULTR = 180,
   dt0 = NULL,
   inter_gap = 60,
-  tz = ""
+  tz = "",
+  log = F
 )
 }
 \arguments{
@@ -43,6 +44,9 @@ the glucose measurements that are more than inter_gap minutes apart.
 The default value is 60 min.}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
+
+\item{log}{Logical value indicating whether log of glucose values should be taken, default values is FALSE.
+Only the glucose values will be log transformed, so the user is able to set any desired target range, limits, and midpoint.}
 }
 \value{
 A ggplot object corresponding to lasagna plot
