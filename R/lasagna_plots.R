@@ -12,7 +12,9 @@
 #' The default value is 60 min.
 #' @param LLTR Lower Limit of Target Range, default value is 70 mg/dL.
 #' @param ULTR Upper Limit of Target Range, default value is 180 mg/dL.
-#'
+#' @param log Logical value indicating whether log of glucose values should be taken, default values is FALSE.
+#' Only the glucose values will be log transformed, so the user is able to set any desired target range, limits, and midpoint.
+
 #' @return A ggplot object corresponding to lasagna plot
 #' @export
 #'
@@ -96,6 +98,8 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 #' @param maxd For datatype "all", maximal number of days to be plotted from the study. The default value is 14 days (2 weeks).
 #' @param LLTR Lower Limit of Target Range, default value is 70 mg/dL.
 #' @param ULTR Upper Limit of Target Range, default value is 180 mg/dL.
+#' @param log Logical value indicating whether log of glucose values should be taken, default values is FALSE.
+#' Only the glucose values will be log transformed, so the user is able to set any desired target range, limits, and midpoint.
 #'
 #' @return A ggplot object corresponding to lasagna plot
 #' @export

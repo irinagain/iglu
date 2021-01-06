@@ -60,6 +60,8 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
 #'
 #' @param LLTR Lower Limit of Target Range, default value is 70 mg/dL.
 #' @param ULTR Upper Limit of Target Range, default value is 180 mg/dL.
+#' @param log Logical value indicating whether log of glucose values should be taken, default values is FALSE.
+#' Only the glucose values will be log transformed, so the user is able to set any desired target range.
 #'
 #' @param subjects String or list of strings corresponding to subject names
 #' in 'id' column of data. Default is all subjects.
