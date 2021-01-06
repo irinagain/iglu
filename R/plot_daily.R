@@ -35,8 +35,8 @@
 
 plot_daily <- function (data, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "") {
 
-  gl =  id = NULL
-  rm(list = c("gl", "id"))
+  gl =  id = level_group = reltime = day_of_week = each_day = gap = time_group = NULL
+  rm(list = c("gl", "id", "level_group", "reltime", "day_of_week", "each_day", "gap", "time_group"))
   if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
     data$time = as.character(data$time)
     data$time = as.POSIXct(data$time, format='%Y-%m-%d %H:%M:%S', tz = tz)

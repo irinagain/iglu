@@ -31,6 +31,8 @@ and combines them into a tibble object: active_percent, mean_glu, gmi,
 cv_glu, below_percent, in_range_percent, above_percent.
 }
 \details{
+The function uses recommended cutoffs of 54, 70, 180, and 250 mg/dL for calculation.
+
 If shinyformat = FALSE (default), returns a tibble object with 1 row for each subject, and 12 columns:
 a column for subject id,
 a column for active_percent,

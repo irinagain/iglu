@@ -1,6 +1,6 @@
 tsplot = function(data, LLTR, ULTR, inter_gap, tz = ""){
-  gl = date_by_id = id = NULL
-  rm(list = c("gl", "date_by_id", "id"))
+  gl = date_by_id = id = gap = time_group = NULL
+  rm(list = c("gl", "date_by_id", "id", "gap", "time_group"))
   if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
     data$time = as.character(data$time)
     data$time = as.POSIXct(data$time, format='%Y-%m-%d %H:%M:%S', tz = tz)

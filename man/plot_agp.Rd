@@ -26,11 +26,10 @@ Plot of a 24 hr modal day collapsing all data to a single day.
 The function plot_agp produces an AGP plot that collapses all data into a single 24 hr "modal day".
 }
 \details{
-Only a single subject's data may be plotted. The black line is the median glucose value for each time of day. The dark blue shaded area
+Only a single subject's data may be plotted. The horizontal green lines represent the target range, default is 70-180 mg/dL. The black line is the median glucose value for each time of day. The dark blue shaded area
 represents 50\% of glucose values - those between the 25th and 75 quartiles. The light
 blue shaded area shows 90\% of the glucose values - those between the 5th and 95th quartiles.
-The horizontal green lines represent the target range, default is 70-180 mg/dL. Additionally,
-the percents shown on the right hand side of the plot show which quartile each line refers to -
+Additionally, the percents shown on the right hand side of the plot show which quartile each line refers to -
 e.g. the line ending at 95\% is the line corresponding to the 95th quartile of glucose values.
 }
 \examples{
