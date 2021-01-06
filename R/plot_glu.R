@@ -1,6 +1,6 @@
 tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
-  gl = date_by_id = id = NULL
-  rm(list = c("gl", "date_by_id", "id"))
+  gl = date_by_id = id = gap = time_group = NULL
+  rm(list = c("gl", "date_by_id", "id", "gap", "time_group"))
   # Optionally convert data to log scale
   if (log){
     data$gl = log(data$gl)

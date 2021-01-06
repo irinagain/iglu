@@ -29,6 +29,8 @@
 #' @export
 #'
 #' @details
+#' The function uses recommended cutoffs of 54, 70, 180, and 250 mg/dL for calculation.
+#'
 #' If shinyformat = FALSE (default), returns a tibble object with 1 row for each subject, and 12 columns:
 #' a column for subject id,
 #' a column for active_percent,
@@ -58,6 +60,10 @@
 
 
 agp_metrics <- function (data, shinyformat = FALSE) {
+
+  id = . = NULL
+  rm(list = c("id", "."))
+
   out = list("Percent_Active" = active_percent(data),
              "Mean_Glu" = mean_glu(data),
              "GMI" = gmi(data),

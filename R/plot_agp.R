@@ -16,11 +16,10 @@
 #' @author Elizabeth Chun
 #'
 #' @details
-#' Only a single subject's data may be plotted. The black line is the median glucose value for each time of day. The dark blue shaded area
+#' Only a single subject's data may be plotted. The horizontal green lines represent the target range, default is 70-180 mg/dL. The black line is the median glucose value for each time of day. The dark blue shaded area
 #' represents 50\% of glucose values - those between the 25th and 75 quartiles. The light
 #' blue shaded area shows 90\% of the glucose values - those between the 5th and 95th quartiles.
-#' The horizontal green lines represent the target range, default is 70-180 mg/dL. Additionally,
-#' the percents shown on the right hand side of the plot show which quartile each line refers to -
+#'Additionally, the percents shown on the right hand side of the plot show which quartile each line refers to -
 #' e.g. the line ending at 95\% is the line corresponding to the 95th quartile of glucose values.
 #'
 #' @references
@@ -38,8 +37,8 @@
 
 plot_agp <- function (data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "") {
 
-  gl = id = five = twentyfive = seventyfive = ninetyfive = NULL
-  rm(list = c("gl",  "id", "five", "twentyfive", "seventyfive", "ninetyfive"))
+  gl = id = five = twentyfive = seventyfive = ninetyfive = times = value = NULL
+  rm(list = c("gl",  "id", "five", "twentyfive", "seventyfive", "ninetyfive", "times", "value"))
 
   subject = unique(data$id)
   ns = length(subject)
@@ -76,12 +75,13 @@ plot_agp <- function (data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, t
                                                    '15:00:00', '18:00:00', '21:00:00', '24:00:00'))),
                           labels = c('12 am', '3 am', '6 am', '9 am', '12 pm',
                                      '3 pm', '6 pm', '9 pm', '12 am')) +
-    ggplot2::ylab("Glucose mg/dL") + ggplot2::xlab(NULL) +
+    ggplot2::ylab("Glucose [mg/dL]") + ggplot2::xlab(NULL) +
     ggplot2::theme(plot.margin = ggplot2::unit(c(1,3,1,1), "lines")) +
     ggplot2::geom_text(data = q_labels,
                        ggplot2::aes(label = c("5%", "25%", "50%", "75%", "95%"), y = value),
                        x = 90700, hjust = 0, size = 3.25) +
     ggplot2::coord_cartesian(clip = "off") +
-    ggplot2::theme(plot.margin = ggplot2::unit(c(1,3,1,1), units = "line"))
+    ggplot2::theme(plot.margin = ggplot2::unit(c(1,3,1,1), units = "line")) +
+    ggplot2::ggtitle(subject)
 
 }
