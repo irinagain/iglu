@@ -139,7 +139,8 @@
   ULTR <span class='op'>=</span> <span class='fl'>180</span>,
   dt0 <span class='op'>=</span> <span class='cn'>NULL</span>,
   inter_gap <span class='op'>=</span> <span class='fl'>60</span>,
-  tz <span class='op'>=</span> <span class='st'>""</span>
+  tz <span class='op'>=</span> <span class='st'>""</span>,
+  log <span class='op'>=</span> <span class='cn'>F</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -184,6 +185,11 @@ The default value is 60 min.</p></td>
     <tr>
       <th>tz</th>
       <td><p>A character string specifying the time zone to be used. System-specific (see <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></code>), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.</p></td>
+    </tr>
+    <tr>
+      <th>log</th>
+      <td><p>Logical value indicating whether log of glucose values should be taken, default values is FALSE.
+Only the glucose values will be log transformed, so the user is able to set any desired target range, limits, and midpoint.</p></td>
     </tr>
     </table>
 
