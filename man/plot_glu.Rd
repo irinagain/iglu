@@ -13,8 +13,7 @@ plot_glu(
   ULTR = 180,
   subjects = NULL,
   inter_gap = 45,
-  tz = "",
-  log = F
+  tz = ""
 )
 }
 \arguments{
@@ -40,9 +39,6 @@ in 'id' column of data. Default is all subjects.}
 this will not be connected in the time series plot}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
-
-\item{log}{Logical value indicating whether log of glucose values should be taken, default values is FALSE.
-Only the glucose values will be log transformed, so the user is able to set any desired target range.}
 }
 \value{
 Any output from the plot object
