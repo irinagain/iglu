@@ -2,7 +2,7 @@
 #' Display Ambulatory Glucose Profile (AGP) statistics for selected subject
 #'
 #' @usage
-#' agp_profile(data, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE)
+#' agp(data, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE)
 #'
 #' @inheritParams CGMS2DayByDay
 #' @param daily Logical indicator whether AGP should include separate daily plots. The default value is TRUE
@@ -19,9 +19,9 @@
 #'
 #' @examples
 #' data(example_data_1_subject)
-#' agp_profile(example_data_1_subject)
-#' agp_profile(example_data_1_subject, daily = FALSE)
-agp_profile <- function(data, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE){
+#' agp(example_data_1_subject)
+#' agp(example_data_1_subject, daily = FALSE)
+agp <- function(data, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE){
 
   id = NULL
   rm(list = c("id"))
