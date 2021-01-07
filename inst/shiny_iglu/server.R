@@ -609,7 +609,7 @@ parameter_type <- reactive({
       need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
     )
 
-    DT::datatable(agpMetrics(), options = list(dom = 't'), rownames = FALSE)
+    DT::datatable(agpMetrics(), options = list(dom = 't'), rownames = FALSE, colnames = "")
     })
 
   plotRanges <- reactive({
@@ -662,6 +662,48 @@ parameter_type <- reactive({
 
     plotDaily()
   })
+
+  options(shiny.usecairo = T)
+
+  output$pdfAGP<- downloadHandler(
+    filename = function() {
+      paste("AGP", '.pdf', sep = '')
+    },
+    content = function(file) {
+      cairo_pdf(filename = file, width = 20, height = 18, bg = "transparent")
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
+
+  output$pngAGP <- downloadHandler(
+
+    filename = function() {
+      paste("AGP", '.png', sep = '')
+    },
+    content = function(file) {
+      png(file)
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
+
+  output$epsAGP <- downloadHandler(
+    filename = function() {
+      paste("AGP", '.eps', sep = '')
+    },
+    content = function(file) {
+      postscript(file)
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
 
 })
 
