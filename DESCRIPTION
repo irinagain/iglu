@@ -39,16 +39,18 @@ RoxygenNote: 7.1.1
 Depends: R (>= 3.1.0)
 Imports:
     caTools,
-    scales,
-    stats,
-    ggplot2,
-    lubridate,
-    shiny,
     dplyr,
+    ggplot2,
+    gridExtra,
+    hms,
+    lubridate,
     magrittr,
+    patchwork,
+    scales,
+    shiny,
+    stats,
     tibble,
-    tidyr,
-    hms
+    tidyr
 Suggests:
     knitr,
     rmarkdown,
