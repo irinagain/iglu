@@ -13,8 +13,11 @@ agp_metrics(data, shinyformat = FALSE)
 AGP page in shiny. Defaults to FALSE.}
 }
 \value{
-By default, a tibble object with 1 row for each subject, and 10 columns is returned:
+By default, a tibble object with 1 row for each subject, and 13 columns is returned:
 a column for subject id,
+a column for start date,
+a column for end date,
+a column for number of days,
 a column for active_percent,
 a column for Mean value,
 a column for gmi value,
@@ -35,6 +38,9 @@ The function uses recommended cutoffs of 54, 70, 180, and 250 mg/dL for calculat
 
 If shinyformat = FALSE (default), returns a tibble object with 1 row for each subject, and 12 columns:
 a column for subject id,
+a column for start date,
+a column for end date,
+a column for number of days,
 a column for active_percent,
 a column for Mean value,
 a column for gmi value,
@@ -44,7 +50,7 @@ a column for below_70 value,
 a column for in_range_70_180 value,
 a column for above_180 value,
 a column for above_250 value.
-If shinyformat = TRUE, a tibble with 3 columns: id, metric, and value, is returned.
+If shinyformat = TRUE, a tibble with 2 columns: metric and value, is returned.
 This output is used when generating the single subject AGP shiny page.
 }
 \examples{
