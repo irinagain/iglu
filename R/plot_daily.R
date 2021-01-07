@@ -4,9 +4,11 @@
 #' The function plot_daily plots daily glucose time series profiles for a single subject.
 #'
 #' @usage
-#' plot_daily(data, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "")
+#' plot_daily(data, maxd = 14, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "")
 #'
 #' @inheritParams plot_glu
+#' @param maxd Number of days to plot, default is the last 14 days, or if
+#' less than 14 days of data are available, all days are plotted.
 #'
 #' @return Daily glucose time series plots for a single subject
 #'
@@ -33,7 +35,7 @@
 #' plot_daily(example_data_1_subject, LLTR = 100, ULTR = 140)
 #'
 
-plot_daily <- function (data, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "") {
+plot_daily <- function (data, maxd = 14, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "") {
 
   gl =  id = level_group = reltime = day_of_week = each_day = gap = time_group = NULL
   rm(list = c("gl", "id", "level_group", "reltime", "day_of_week", "each_day", "gap", "time_group"))
@@ -55,9 +57,15 @@ plot_daily <- function (data, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "") {
     data = data %>% dplyr::filter(id == subject)
   }
 
+  days = sort(unique(lubridate::date(data$time)))
+  max_days = min(length(days), maxd)
+  start_day = ifelse(max_days == maxd, length(days) - maxd + 1, 1)
+  kdays = days[start_day:length(days)]
+
   plot_data <- data %>%
+    dplyr::mutate(each_day = lubridate::date(time)) %>%
+    dplyr::filter(each_day %in% kdays) %>% # select only maxd
     dplyr::mutate(day_of_week = as.character(lubridate::wday(time, label = TRUE, abbr = FALSE)),
-                  each_day = lubridate::date(time),
                   reltime = hms::as_hms(paste(lubridate::hour(time), lubridate::minute(time), lubridate::second(time), sep = ":")),
                   gl_level = dplyr::case_when(gl > ULTR ~ "hyper", gl < LLTR ~ "hypo", TRUE ~ "normal"))
 
