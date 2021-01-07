@@ -40,12 +40,7 @@
 
 
 <meta property="og:title" content="Calculate percentage of time CGM was active — active_percent" />
-<meta property="og:description" content="The function active_percent produces a tibble object with values equal to the
-percentage of time the cgm was active. For example, if a cgm's (5 min frequency) times were 0, 5, 10, 15 and
-glucose values were missing at time 5, then percentage of time the cgm was active is 75
-The output columns correspond to the subject id and the precentage of time for which the cgm was active,
-and the output rows correspond to the subjects.
-The values will be between 0" />
+<meta property="og:description" content="The function active_percent produces " />
 
 
 
@@ -132,37 +127,36 @@ The values will be between 0" />
     </div>
 
     <div class="ref-description">
-    <p>The function active_percent produces a tibble object with values equal to the
-percentage of time the cgm was active. For example, if a cgm's (5 min frequency) times were 0, 5, 10, 15 and
-glucose values were missing at time 5, then percentage of time the cgm was active is 75<!-- %. -->
-The output columns correspond to the subject id and the precentage of time for which the cgm was active,
-and the output rows correspond to the subjects.
-The values will be between 0<!-- % (no measurements) and 100% (all measurements). --></p>
+    <p>The function active_percent produces <!-- % of time CGM is active together with the length of the measurement period --></p>
     </div>
 
-    <pre class="usage"><span class='fu'>active_percent</span><span class='op'>(</span><span class='va'>data</span>, freqCGM <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>active_percent</span><span class='op'>(</span><span class='va'>data</span>, dt0 <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>DataFrame object with column names "id", "time", and "gl"</p></td>
+      <td><p>DataFrame object with column names "id", "time", and "gl".</p></td>
     </tr>
     <tr>
-      <th>freqCGM</th>
-      <td><p>Numeric value of CGM Frequency(In minutes). Default value is 5.</p></td>
+      <th>dt0</th>
+      <td><p>The time frequency for interpolated aligned grid in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If a data.frame object is passed, then a tibble object with two columns: subject id and
-corresponding active_percent value is returned</p>
+    <p>If a data.frame object is passed, then a tibble object with five columns: subject id,
+corresponding active_percent value, duration of measurement period in days, start date, and end date.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A tibble object with 1 row for each subject, a column for subject id and
-a column for active_percent values is returned.</p>
+    <p>The function active_percent produces a tibble object with values equal to the
+percentage of time the CGM was active, the total number of observed days, the start date and the end date. For example, if a CGM's (5 min frequency) times were 0, 5, 10, 15 and
+glucose values were missing at time 5, then percentage of time the CGM was active is 75<!-- %. -->
+The output columns correspond to the subject id, the percentage of time for which the CGM was active, the number of days of measurements, the start date and the end date of measurements.
+The output rows correspond to the subjects.
+The values of above_percent are always between 0<!-- % (no measurements) and 100% (all measurements). --></p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Danne et al. (2017) International Consensus on Use of
@@ -172,40 +166,36 @@ doi: <a href='https://doi.org/10.2337/dc17-1600'>10.2337/dc17-1600</a>
 .</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p>Pratik Patel</p>
+    <p>Pratik Patel, Irina Gaynanova</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 
 <span class='fu'>active_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 2</span><span>
-#&gt;   id        active_percent
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1           79.8</div><div class='input'><span class='fu'>active_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, freqCGM <span class='op'>=</span> <span class='fl'>15</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 2</span><span>
-#&gt;   id        active_percent
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1           239.</div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 5</span><span>
+#&gt;   id        active_percent ndays     start_date          end_date           
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;drtn&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>             
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1           79.8 12.7 days 2015-06-06 </span><span style='color: #555555;'>16:50:27</span><span> 2015-06-19 </span><span style='color: #555555;'>08:59:36</span><span></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
 
 <span class='fu'>active_percent</span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 2</span><span>
-#&gt;   id        active_percent
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1           79.8
-#&gt; </span><span style='color: #555555;'>2</span><span> Subject 2           98.2
-#&gt; </span><span style='color: #555555;'>3</span><span> Subject 3           92.1
-#&gt; </span><span style='color: #555555;'>4</span><span> Subject 4           98.7
-#&gt; </span><span style='color: #555555;'>5</span><span> Subject 5           95.8</div><div class='input'><span class='fu'>active_percent</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, freqCGM <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 2</span><span>
-#&gt;   id        active_percent
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1           79.8
-#&gt; </span><span style='color: #555555;'>2</span><span> Subject 2           98.2
-#&gt; </span><span style='color: #555555;'>3</span><span> Subject 3           92.1
-#&gt; </span><span style='color: #555555;'>4</span><span> Subject 4           98.7
-#&gt; </span><span style='color: #555555;'>5</span><span> Subject 5           95.8</div><div class='input'>
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 5</span><span>
+#&gt;   id        active_percent ndays     start_date          end_date           
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;drtn&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>             
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1           79.8 12.7 days 2015-06-06 </span><span style='color: #555555;'>16:50:27</span><span> 2015-06-19 </span><span style='color: #555555;'>08:59:36</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span> Subject 2           58.9 16.7 days 2015-02-24 </span><span style='color: #555555;'>17:31:29</span><span> 2015-03-13 </span><span style='color: #555555;'>09:38:01</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span> Subject 3           92.1  5.8 days 2015-03-10 </span><span style='color: #555555;'>15:36:26</span><span> 2015-03-16 </span><span style='color: #555555;'>10:11:05</span><span>
+#&gt; </span><span style='color: #555555;'>4</span><span> Subject 4           98.7 12.9 days 2015-03-13 </span><span style='color: #555555;'>12:44:09</span><span> 2015-03-26 </span><span style='color: #555555;'>10:01:58</span><span>
+#&gt; </span><span style='color: #555555;'>5</span><span> Subject 5           95.8 10.6 days 2015-02-28 </span><span style='color: #555555;'>17:40:06</span><span> 2015-03-11 </span><span style='color: #555555;'>08:04:28</span><span></div><div class='input'><span class='fu'>active_percent</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, dt0 <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 5 x 5</span><span>
+#&gt;   id        active_percent ndays     start_date          end_date           
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;drtn&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>             
+#&gt; </span><span style='color: #555555;'>1</span><span> Subject 1           79.8 12.7 days 2015-06-06 </span><span style='color: #555555;'>16:50:27</span><span> 2015-06-19 </span><span style='color: #555555;'>08:59:36</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span> Subject 2           58.9 16.7 days 2015-02-24 </span><span style='color: #555555;'>17:31:29</span><span> 2015-03-13 </span><span style='color: #555555;'>09:38:01</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span> Subject 3           92.1  5.8 days 2015-03-10 </span><span style='color: #555555;'>15:36:26</span><span> 2015-03-16 </span><span style='color: #555555;'>10:11:05</span><span>
+#&gt; </span><span style='color: #555555;'>4</span><span> Subject 4           98.7 12.9 days 2015-03-13 </span><span style='color: #555555;'>12:44:09</span><span> 2015-03-26 </span><span style='color: #555555;'>10:01:58</span><span>
+#&gt; </span><span style='color: #555555;'>5</span><span> Subject 5           95.8 10.6 days 2015-02-28 </span><span style='color: #555555;'>17:40:06</span><span> 2015-03-11 </span><span style='color: #555555;'>08:04:28</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
