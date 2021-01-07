@@ -95,21 +95,21 @@ plot_daily <- function (data, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "") {
   plot_data <- plot_data %>%
     dplyr::mutate(time_group = rep(1:(length(gaps) - 1), diff(gaps))) # group by consecutive times to avoid artifacts
 
-  ggplot2::ggplot(plot_data) +
-    ggplot2::geom_line(ggplot2::aes(reltime, gl, group = time_group)) +
-    ggplot2::geom_ribbon(ggplot2::aes(reltime, ymin = LLTR, ymax = ULTR),
+  ggplot(plot_data) +
+    geom_line(aes(reltime, gl, group = time_group)) +
+    geom_ribbon(aes(reltime, ymin = LLTR, ymax = ULTR),
                          fill = "lightgrey", alpha = 0.5) +
-    ggplot2::geom_ribbon(data = gl_level[gl_level$class == "hyper", ],
-                         ggplot2::aes(reltime, ymin = ULTR, ymax = gl),
+    geom_ribbon(data = gl_level[gl_level$class == "hyper", ],
+                         aes(reltime, ymin = ULTR, ymax = gl),
                          fill = "yellow", alpha = 0.5) +
-    ggplot2::geom_ribbon(data = gl_level[gl_level$class == "hypo", ],
-                         ggplot2::aes(reltime, ymin = LLTR, ymax = gl),
+    geom_ribbon(data = gl_level[gl_level$class == "hypo", ],
+                         aes(reltime, ymin = LLTR, ymax = gl),
                          fill = "red", alpha = 0.5) +
-    ggplot2::scale_x_time(breaks = c(hms::as_hms(c('00:00:00', '12:00:00', '24:00:00'))),
+    scale_x_time(breaks = c(hms::as_hms(c('00:00:00', '12:00:00', '24:00:00'))),
                           labels = c('12 am', '12 pm', '12 am')) +
-    ggplot2::facet_wrap(~each_day + day_of_week, ncol = 7, ) +
-    ggplot2::ylab("Glucose mg/dL") + ggplot2::xlab(NULL) +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, vjust = 0.5),
-                   panel.background = ggplot2::element_rect(fill = "transparent", colour = NA))
+    facet_wrap(~each_day + day_of_week, ncol = 7, ) +
+    ylab("Glucose [mg/dL]") + xlab(NULL) +
+    theme(axis.text.x = element_text(angle = 45, vjust = 0.5),
+                   panel.background = element_rect(fill = "transparent", colour = NA))
 
 }

@@ -22,12 +22,14 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = ""){
   data <- data %>%
     dplyr::mutate(time_group = rep(1:(length(gaps) - 1), diff(gaps))) # group by consecutive times to avoid artifacts
 
-  ggplot2::ggplot(data = data, ggplot2::aes(x = time, y = gl, group = time_group)) +
-    ggplot2::geom_line() +
-    ggplot2::scale_x_datetime(name = 'Date') +
-    ggplot2::scale_y_continuous(name = 'Blood Glucose') +
-    ggplot2::geom_hline(yintercept = LLTR, color = 'red') +
-    ggplot2::geom_hline(yintercept = ULTR, color = 'red') + ggplot2::facet_wrap(~id, scales = "free_x")
+  ggplot(data = data, aes(x = time, y = gl, group = time_group)) +
+    geom_line(size = 1) +
+    scale_x_datetime(name = 'Date') +
+    scale_y_continuous(name = 'Blood Glucose') +
+    geom_hline(yintercept = LLTR, color = 'red') +
+    geom_hline(yintercept = ULTR, color = 'red') +
+    facet_wrap(~id, scales = "free_x") +
+    geom_point(size = 0.3)
 }
 
 
