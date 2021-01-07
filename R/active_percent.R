@@ -1,29 +1,27 @@
 #' Calculate percentage of time CGM was active
 #'
 #' @description
-#' The function active_percent produces a tibble object with values equal to the
-#' percentage of time the cgm was active. For example, if a cgm's (5 min frequency) times were 0, 5, 10, 15 and
-#' glucose values were missing at time 5, then percentage of time the cgm was active is 75%.
-#' The output columns correspond to the subject id and the precentage of time for which the cgm was active,
-#' and the output rows correspond to the subjects.
-#' The values will be between 0% (no measurements) and 100% (all measurements).
+#' The function active_percent produces % of time CGM is active together with the length of the measurement period
 #'
 #' @usage
-#' active_percent(data, freqCGM = 5)
+#' active_percent(data, dt0 = NULL)
 #'
-#' @param data DataFrame object with column names "id", "time", and "gl"
-#' @param freqCGM Numeric value of CGM Frequency(In minutes). Default value is 5.
+#' @inheritParams plot_lasagna
 #'
 #' @details
-#' A tibble object with 1 row for each subject, a column for subject id and
-#' a column for active_percent values is returned.
+#'The function active_percent produces a tibble object with values equal to the
+#' percentage of time the CGM was active, the total number of observed days, the start date and the end date. For example, if a CGM's (5 min frequency) times were 0, 5, 10, 15 and
+#' glucose values were missing at time 5, then percentage of time the CGM was active is 75%.
+#' The output columns correspond to the subject id, the percentage of time for which the CGM was active, the number of days of measurements, the start date and the end date of measurements.
+#' The output rows correspond to the subjects.
+#' The values of above_percent are always between 0% (no measurements) and 100% (all measurements).
 #'
-#' @return If a data.frame object is passed, then a tibble object with two columns: subject id and
-#' corresponding active_percent value is returned
+#' @return If a data.frame object is passed, then a tibble object with five columns: subject id,
+#' corresponding active_percent value, duration of measurement period in days, start date, and end date.
 #'
 #' @export
 #'
-#' @author Pratik Patel
+#' @author Pratik Patel, Irina Gaynanova
 #'
 #' @references
 #' Danne et al. (2017) International Consensus on Use of
@@ -36,16 +34,15 @@
 #' data(example_data_1_subject)
 #'
 #' active_percent(example_data_1_subject)
-#' active_percent(example_data_1_subject, freqCGM = 15)
 #'
 #' data(example_data_5_subject)
 #'
 #' active_percent(example_data_5_subject)
-#' active_percent(example_data_5_subject, freqCGM = 5)
+#' active_percent(example_data_5_subject, dt0 = 5)
 #'
 
 
-active_percent <- function(data, freqCGM = 5) {
+active_percent <- function(data, dt0 = NULL) {
   active_percent = gl = id = NULL
   rm(list = c("gl", "id", "active_percent"))
   data = check_data_columns(data, time_check = TRUE)
@@ -56,6 +53,7 @@ active_percent <- function(data, freqCGM = 5) {
 
   # Calculating present and theoretical number of gl values for each id
   active_perc_data = list()
+  # Loop over the subjects
   for(i in 1:ns) {
     subData <- data %>%
       dplyr::filter(!is.na(gl)) %>%
@@ -63,33 +61,47 @@ active_percent <- function(data, freqCGM = 5) {
       dplyr::filter(id == subject[i]) %>%
       dplyr::arrange(time)
 
-    present_gl_vals = nrow(subData)
-    theoretical_gl_vals = 0
-    start_time = subData$time[1]
+    #present_gl_vals = nrow(subData)
+    #theoretical_gl_vals = 0
+    #start_time = subData$time[1]
 
-    for(j in 1:(present_gl_vals-1)) {
-      if(as.double(subData$time[j+1]) - as.double(subData$time[j]) >= (24*3600)) {
-        n_gl_vals = round((as.double(subData$time[j]) - as.double(start_time))/(60*freqCGM)) + 1
-        theoretical_gl_vals = theoretical_gl_vals + n_gl_vals
-        start_time = subData$time[j+1]
-      }
+    timeindex = 2:nrow(subData)
+    timediff = difftime(subData$time[timeindex], subData$time[timeindex - 1], units = "mins")
+
+    ### Automatically identify grid width dt0
+    if (is.null(dt0)){
+      dt0 = as.double(round(median(timediff, na.rm = TRUE)))
     }
 
-    n_gl_vals = round(((as.double(subData$time[present_gl_vals]) - as.double(start_time))/(60*freqCGM))) + 1
-    theoretical_gl_vals = theoretical_gl_vals + n_gl_vals
-    active_perc_data[[i]] <- c(present_gl_vals, theoretical_gl_vals)
+    # Determine range of observed data
+    mintime = min(subData$time)
+    maxtime = max(subData$time)
+    ndays = difftime(maxtime, mintime, units = "days")
+
+    # Determine the overall length in minutes of the observed period
+    theoretical_gl_vals = round(as.numeric(round(difftime(maxtime, mintime, units = "mins")))/dt0) + 1
+    # Determine the overall length in minutes of all the gaps longer than dt0 min apart
+    gap_minutes = sum(as.numeric(timediff[round(timediff) > dt0]))
+    ngaps = sum(round(timediff) > dt0)
+    missing_gl_vals = round((gap_minutes - ngaps * dt0)/dt0)
+    # Determine proportion observed
+    active_perc_data[[i]] <- list()
+    active_perc_data[[i]]$id <- subject[i]
+    active_perc_data[[i]]$percent <- (theoretical_gl_vals - missing_gl_vals)/theoretical_gl_vals
+    active_perc_data[[i]]$ndays <- ndays
+    active_perc_data[[i]]$mintime <- mintime
+    active_perc_data[[i]]$maxtime <- maxtime
   }
 
   results = lapply(
     active_perc_data,
     function(d){
-      out = tibble::tibble(id = NA, active_percent = (d[1]/d[2])*100)
+      out = tibble::tibble(id = d$id, active_percent = d$percent*100, ndays = round(d$ndays, 1), start_date = d$mintime, end_date = d$maxtime)
       out
     }
   )
 
   results = dplyr::bind_rows(results)
-  results$id = subject
 
   if (is_vector) {
     results$id = NULL
