@@ -2,25 +2,19 @@
 % Please edit documentation in R/all_metrics.R
 \name{all_metrics}
 \alias{all_metrics}
-\title{Combination of all iglu functions:
-ADRR, AUC, CONGA, CV_GLU, CV_Measures, eA1C, GMI, GRADE,
-GRADE_Euglycemia, GRADE_Hyperglycemia, GRADE_Hypoglycemia,
-GVP, HBGI, LBGI, Hyper_Index, Hypo_Index, IGC, IQR_GLU,
-J_Index, M_Value, Mad_GLU, MAGE, MODD, Percent_Above,
-Percent_Below, Percent_In_Range, Range, SD_GLU,
-SD_Measures, SD_ROC, Summary}
+\title{Calculate all metrics in iglu}
 \usage{
 all_metrics(data)
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl", or numeric vector of glucose values.}
+\item{data}{DataFrame object with column names "id", "time", and "gl".}
 }
 \value{
 If a data.frame object is passed, then a tibble object with 1 row for each subject, and 49 columns is returned:
 a column for subject id,
 a column for adrr value,
 a column for hourly_auc value,
-a column for conga value,
+a column for CONGA(24) value,
 a column for cv value,
 a column for CVmean value,
 a column for CVsd value,
@@ -82,7 +76,7 @@ Returns a tibble object with 1 row for each subject, and 47 columns:
 a column for subject id,
 a column for adrr value,
 a column for hourly_auc value,
-a column for conga value,
+a column for CONGA(24) value,
 a column for cv value,
 a column for CVmean value,
 a column for CVsd value,

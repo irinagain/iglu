@@ -1,21 +1,19 @@
-
-#'  Optomized Calculations of the iglu Functions: AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, & SD_MEASURES
+#' Optimized Calculations of the iglu Functions: AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, & SD_MEASURES
 #'
 #' @description
 #' The function all_metrics_optomized optimizes the functions
 #' AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, & SD_MEASURES iglu functions
 #' by extracting the CGMS2DayByDay calculation and passing the result into each function.
-#' Tests with microbenchmark show the optimization is 9x faster.
 #'
 #' @usage
 #' optimized_iglu_functions(data)
 #'
-#' @param data DataFrame object with column names "id", "time", and "gl", or numeric vector of glucose values.
+#' @param data DataFrame object with column names "id", "time", and "gl".
 #'
 #' @return
 #' If a data.frame object is passed, then a tibble object with 1 row for each subject, and fourteen columns is returned:
 #' a column for subject id,
-#' a column for Continuous Overall Net Glycemic Action (Conga) value,
+#' a column for CONGA(24) value,
 #' a column for Glucose Variability Percentage (GVP) value,
 #' a column for mean difference between glucose values obtained at the same time of day (MODD) value,
 #' a column for area under curve (AUC) value,
@@ -33,9 +31,9 @@
 #' @export
 #'
 #' @details
-#' Retruns a tibble object with 1 row for each subject, and fourteen columns:
+#' Returns a tibble object with 1 row for each subject, and fourteen columns:
 #' a column for subject id,
-#' a column for Continuous Overall Net Glycemic Action (Conga) value,
+#' a column for CONGA(24) value,
 #' a column for Glucose Variability Percentage (GVP) value,
 #' a column for mean difference between glucose values obtained at the same time of day (MODD) value,
 #' a column for area under curve (AUC) value,
@@ -50,7 +48,7 @@
 #' a column for Standard Deviation between days, within timepoints value,
 #' corrected for changes in daily means (SdBDM) value.
 #'
-#'@examples
+#' @examples
 #' data(example_data_1_subject)
 #' optimized_iglu_functions(example_data_1_subject)
 #'
@@ -59,15 +57,15 @@
 #'
 
 
-## Needed Packages
-#library(dplyr)
-#library(tidyverse)
-
 optimized_iglu_functions <- function(data) {
+
+  gl = id = NULL
+  rm(list = c("gl", "id"))
+  data = check_data_columns(data)
+
   ## Passes CGMS2DayByDay data to individual functions
   function_call <- function(data, hours) {
     conga_single_O <- function(.data_ip, hours = 24, tz = "") {
-      ## conga stuff
       gl_by_id_ip = .data_ip[[1]]
       dt0 = .data_ip[[3]]
       hourly_readings = round(60 / dt0, digits = 0)
@@ -133,7 +131,7 @@ optimized_iglu_functions <- function(data) {
 
       temp_df = cbind.data.frame(day, gl) %>%
         dplyr::group_by(day) %>%
-        dplyr::summarise(each_area = (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2), .groups = "drop") %>%
+        dplyr::summarise(each_area = (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2)) %>%
         dplyr::summarise(daily_area = sum(each_area, na.rm = TRUE),
                          hours = dt0/60 * length(na.omit(each_area)),
                          hourly_avg = daily_area/hours, .groups = 'drop')
@@ -224,7 +222,7 @@ optimized_iglu_functions <- function(data) {
   id = NULL
   rm(id)
 
-  ## Creates the tibble and calls the funtion above
+  ## Creates the tibble and calls the function above
   out = data %>%
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
