@@ -588,6 +588,11 @@ parameter_type <- reactive({
 
   agp_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
 
+    validate (
+      need(!is.null(input$agp_subject), ""),
+      need(input$agp_subject %in% transform_data()$id, "Check Subject ID")
+    )
+
     data = transform_data()
     data = data[data$id == input$agp_subject,] # reactively subset data when subjects input is modified
     return(data)
@@ -605,10 +610,6 @@ parameter_type <- reactive({
 
   output$agp_metrics <- DT::renderDataTable({
 
-    validate(
-      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
-    )
-
     DT::datatable(agpMetrics(), options = list(dom = 't'), rownames = FALSE, colnames = "")
     })
 
@@ -621,10 +622,6 @@ parameter_type <- reactive({
   })
 
   output$plot_ranges <- renderPlot({
-
-    validate(
-      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
-    )
 
     plotRanges()
   })
@@ -639,10 +636,6 @@ parameter_type <- reactive({
 
   output$plot_agp <- renderPlot({
 
-    validate(
-      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
-    )
-
     plotAGP()
   })
 
@@ -655,10 +648,6 @@ parameter_type <- reactive({
   })
 
   output$plot_daily <- renderPlot({
-
-    validate(
-      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
-    )
 
     plotDaily()
   })
