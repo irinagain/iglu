@@ -6,13 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Combination of all iglu functions:
-ADRR, AUC, CONGA, CV_GLU, CV_Measures, eA1C, GMI, GRADE,
-GRADE_Euglycemia, GRADE_Hyperglycemia, GRADE_Hypoglycemia,
-GVP, HBGI, LBGI, Hyper_Index, Hypo_Index, IGC, IQR_GLU,
-J_Index, M_Value, Mad_GLU, MAGE, MODD, Percent_Above,
-Percent_Below, Percent_In_Range, Range, SD_GLU,
-SD_Measures, SD_ROC, Summary — all_metrics • iglu</title>
+<title>Calculate all metrics in iglu — all_metrics • iglu</title>
 
 
 <!-- jquery -->
@@ -45,13 +39,7 @@ SD_Measures, SD_ROC, Summary — all_metrics • iglu</title>
 
 
 
-<meta property="og:title" content="Combination of all iglu functions:
-ADRR, AUC, CONGA, CV_GLU, CV_Measures, eA1C, GMI, GRADE,
-GRADE_Euglycemia, GRADE_Hyperglycemia, GRADE_Hypoglycemia,
-GVP, HBGI, LBGI, Hyper_Index, Hypo_Index, IGC, IQR_GLU,
-J_Index, M_Value, Mad_GLU, MAGE, MODD, Percent_Above,
-Percent_Below, Percent_In_Range, Range, SD_GLU,
-SD_Measures, SD_ROC, Summary — all_metrics" />
+<meta property="og:title" content="Calculate all metrics in iglu — all_metrics" />
 <meta property="og:description" content="The function all_metrics runs all of the iglu functions:
 ADRR, AUC, CONGA, CV_GLU, CV_Measures, eA1C, GMI, GRADE,
 GRADE_Euglycemia, GRADE_Hyperglycemia, GRADE_Hypoglycemia,
@@ -140,13 +128,7 @@ and combines them into a tibble object." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Combination of all iglu functions:
-ADRR, AUC, CONGA, CV_GLU, CV_Measures, eA1C, GMI, GRADE,
-GRADE_Euglycemia, GRADE_Hyperglycemia, GRADE_Hypoglycemia,
-GVP, HBGI, LBGI, Hyper_Index, Hypo_Index, IGC, IQR_GLU,
-J_Index, M_Value, Mad_GLU, MAGE, MODD, Percent_Above,
-Percent_Below, Percent_In_Range, Range, SD_GLU,
-SD_Measures, SD_ROC, Summary</h1>
+    <h1>Calculate all metrics in iglu</h1>
     
     <div class="hidden name"><code>all_metrics.Rd</code></div>
     </div>
@@ -169,7 +151,7 @@ and combines them into a tibble object.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>DataFrame object with column names "id", "time", and "gl", or numeric vector of glucose values.</p></td>
+      <td><p>DataFrame object with column names "id", "time", and "gl".</p></td>
     </tr>
     </table>
 
@@ -179,7 +161,7 @@ and combines them into a tibble object.</p>
 a column for subject id,
 a column for adrr value,
 a column for hourly_auc value,
-a column for conga value,
+a column for CONGA(24) value,
 a column for cv value,
 a column for CVmean value,
 a column for CVsd value,
@@ -231,7 +213,7 @@ a column for Max. value.</p>
 a column for subject id,
 a column for adrr value,
 a column for hourly_auc value,
-a column for conga value,
+a column for CONGA(24) value,
 a column for cv value,
 a column for CVmean value,
 a column for CVsd value,
