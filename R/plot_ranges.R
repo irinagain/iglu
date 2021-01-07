@@ -52,26 +52,14 @@ plot_ranges <- function (data) {
 
   ranges = ranges %>%
     dplyr::mutate(range = factor(range, levels = c("very_high", 'high', 'target', 'low', 'very_low')))
-  # %>%
-  #  dplyr::mutate(percent = round((round(percent, 1)/sum(round(percent, 1))) * 100, 1))
-
-  #plot_data <- dplyr::tibble(range = rep(ranges$range, round(ranges$percent*100)), count = 1) %>%
-  #  dplyr::mutate(range = factor(range, levels = c("very_high", 'high', 'target', 'low', 'very_low')))
 
   colors <- c("#F9B500", "#F9F000", "#48BA3C", "#F92D00", "#8E1B1B")
-  ggplot2::ggplot(data = ranges, mapping = aes(x = 1, fill = range, y = percent)) +
-    ggplot2::geom_bar(stat = "identity") +
-    ggplot2::scale_fill_manual(values = colors, drop = FALSE, labels = c("Very High (>250 mg/dL)", "High (181-250 mg/dL)", "Target Range (70-180 mg/dL)", "Low (54-69 mg/dL)", "Very Low (<54 mg/dL)")) +
-    ggplot2::scale_y_continuous(breaks = seq(0, 100, 10)) +
-    ggplot2::labs(y = "Percentage")+ ggplot2::theme(axis.ticks.x = ggplot2::element_blank(), axis.text.x = ggplot2::element_blank(),
-                                           axis.title.x = ggplot2::element_blank(), panel.background = ggplot2::element_blank())
+  ggplot(data = ranges, mapping = aes(x = 1, fill = range, y = percent)) +
+    geom_bar(stat = "identity") +
+    scale_fill_manual(values = colors, drop = FALSE, labels = c("Very High (>250 mg/dL)", "High (181-250 mg/dL)", "Target Range (70-180 mg/dL)", "Low (54-69 mg/dL)", "Very Low (<54 mg/dL)")) +
+    scale_y_continuous(breaks = seq(0, 100, 10)) +
+    labs(y = "Percentage") +
+    theme(axis.ticks.x = element_blank(), axis.text.x = element_blank(),
+          axis.title.x = element_blank(), panel.background = element_blank())
 
-  #ggplot2::ggplot(plot_data, ggplot2::aes(fill = range, x = count)) +
-  #  ggplot2::geom_bar(width = 0.1, position = "fill") +
-  #  ggplot2::coord_fixed(ratio = 0.75) +
-  #  ggplot2::scale_fill_manual(values = colors, drop = FALSE,
-  #                             labels = c("Very High (>250 mg/dL)", "High (181-250 mg/dL)",
-  #                                        "Target Range (70-180 mg/dL)", "Low (54-69 mg/dL)", "Very Low (<54 mg/dL)")) +
-  #  ggplot2::theme(axis.ticks = ggplot2::element_blank(), axis.text = ggplot2::element_blank(),
-  #                 axis.title = ggplot2::element_blank(), panel.background = ggplot2::element_blank())
 }
