@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot Ambulatory Glucose Profile (AGP) modal day — plot_agp • iglu</title>
+<title>Display Ambulatory Glucose Profile (AGP) statistics for selected subject — agp_profile • iglu</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Plot Ambulatory Glucose Profile (AGP) modal day — plot_agp" />
-<meta property="og:description" content="The function plot_agp produces an AGP plot that collapses all data into a single 24 hr &quot;modal day&quot;." />
+<meta property="og:title" content="Display Ambulatory Glucose Profile (AGP) statistics for selected subject — agp_profile" />
+<meta property="og:description" content="Display Ambulatory Glucose Profile (AGP) statistics for selected subject" />
 
 
 
@@ -121,16 +121,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot Ambulatory Glucose Profile (AGP) modal day</h1>
+    <h1>Display Ambulatory Glucose Profile (AGP) statistics for selected subject</h1>
     
-    <div class="hidden name"><code>plot_agp.Rd</code></div>
+    <div class="hidden name"><code>agp_profile.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The function plot_agp produces an AGP plot that collapses all data into a single 24 hr "modal day".</p>
+    <p>Display Ambulatory Glucose Profile (AGP) statistics for selected subject</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_agp</span><span class='op'>(</span><span class='va'>data</span>, LLTR <span class='op'>=</span> <span class='fl'>70</span>, ULTR <span class='op'>=</span> <span class='fl'>180</span>, dt0 <span class='op'>=</span> <span class='cn'>NULL</span>, inter_gap <span class='op'>=</span> <span class='fl'>45</span>, tz <span class='op'>=</span> <span class='st'>""</span>, title <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>agp_profile</span><span class='op'>(</span><span class='va'>data</span>, inter_gap <span class='op'>=</span> <span class='fl'>45</span>, dt0 <span class='op'>=</span> <span class='cn'>NULL</span>, tz <span class='op'>=</span> <span class='st'>""</span>, daily <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -140,41 +140,26 @@
       <td><p>DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.</p></td>
     </tr>
     <tr>
-      <th>LLTR</th>
-      <td><p>Lower Limit of Target Range, default value is 70 mg/dL.</p></td>
-    </tr>
-    <tr>
-      <th>ULTR</th>
-      <td><p>Upper Limit of Target Range, default value is 180 mg/dL.</p></td>
+      <th>inter_gap</th>
+      <td><p>The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.</p></td>
     </tr>
     <tr>
       <th>dt0</th>
       <td><p>The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).</p></td>
     </tr>
     <tr>
-      <th>inter_gap</th>
-      <td><p>The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.</p></td>
-    </tr>
-    <tr>
       <th>tz</th>
       <td><p>A character string specifying the time zone to be used. System-specific (see <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></code>), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.</p></td>
     </tr>
     <tr>
-      <th>title</th>
-      <td><p>Indicator whether the title of the plot should display the subject ID. The default is FALSE (no title).</p></td>
+      <th>daily</th>
+      <td><p>Logical indicator whether AGP should include separate daily plots. The default value is TRUE</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Plot of a 24 hr modal day collapsing all data to a single day.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Only a single subject's data may be plotted. The horizontal green lines represent the target range, default is 70-180 mg/dL. The black line is the median glucose value for each time of day. The dark blue shaded area
-represents 50% of glucose values - those between the 25th and 75 quartiles. The light
-blue shaded area shows 90% of the glucose values - those between the 5th and 95th quartiles.
-Additionally, the percents shown on the right hand side of the plot show which quartile each line refers to -
-e.g. the line ending at 95% is the line corresponding to the 95th quartile of glucose values.</p>
+    <p>A plot displaying glucose measurements range, selected glucose statistics (average glucose, Glucose Management Indicator, <!-- %CV), percentage spent in target ranges and quantiles of 24 hour profile. --></p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Johnson et al. (2019) Utilizing the Ambulatory Glucose Profile to Standardize and
@@ -182,16 +167,12 @@ Implement Continuous Glucose Monitoring in Clinical Practice,
 <em>Diabetes Technology and Therapeutics</em> <strong>21:S2</strong> S2-17-S2-25,
 doi: <a href='https://doi.org/10.1089/dia.2019.0034'>10.1089/dia.2019.0034</a>
 .</p>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p>Elizabeth Chun</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-<span class='fu'>plot_agp</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_agp-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
+<span class='fu'>agp_profile</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
+</div><div class='img'><img src='agp_profile-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>agp_profile</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, daily <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='img'><img src='agp_profile-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
