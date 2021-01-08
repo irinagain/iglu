@@ -72,9 +72,9 @@ agp <- function(data, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE){
     p3 = plot_daily(data, inter_gap = inter_gap, tz = tz)
 
     # Combine metrics and plot in one display
-    pFinal = (wrap_elements(t1) +  p1 + guide_area() + plot_layout(widths = c(3, 1, 1))) / p2 / p3
+    pFinal = (wrap_elements(t1) +  p1 + guide_area() + plot_layout(widths = c(4, 1, 1))) / p2 / p3
   }else{
-    pFinal = (wrap_elements(t1) +  p1 + guide_area() + plot_layout(widths = c(3, 1, 1))) / p2
+    pFinal = (wrap_elements(t1) +  p1 + guide_area() + plot_layout(widths = c(4, 1, 1))) / p2
   }
   pFinal
 }
