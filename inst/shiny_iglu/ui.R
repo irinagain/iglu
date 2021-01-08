@@ -97,6 +97,9 @@ shinyUI(fluidPage(
                sidebarPanel(
                  uiOutput("agp_subject"),
                  uiOutput("agp_subject_help_text"),
+                 downloadButton(outputId = "pdfAGP", label = "pdf"),
+                 downloadButton(outputId = "pngAGP", label = "png"),
+                 downloadButton(outputId = "epsAGP", label = "eps")
                ),
                mainPanel(
                  fluidRow(

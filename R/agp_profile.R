@@ -2,9 +2,10 @@
 #' Display Ambulatory Glucose Profile (AGP) statistics for selected subject
 #'
 #' @usage
-#' agp(data, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE)
+#' agp(data, maxd = 14, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE)
 #'
 #' @inheritParams CGMS2DayByDay
+#' @inheritParams plot_daily
 #' @param daily Logical indicator whether AGP should include separate daily plots. The default value is TRUE
 #'
 #' @return A plot displaying glucose measurements range, selected glucose statistics (average glucose, Glucose Management Indicator, %CV), percentage spent in target ranges and quantiles of 24 hour profile.
@@ -21,7 +22,7 @@
 #' data(example_data_1_subject)
 #' agp(example_data_1_subject)
 #' agp(example_data_1_subject, daily = FALSE)
-agp <- function(data, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE){
+agp <- function(data, maxd = 14, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE){
 
   id = NULL
   rm(list = c("id"))
@@ -69,7 +70,7 @@ agp <- function(data, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE){
 
   if (daily){
     # Create daily plots
-    p3 = plot_daily(data, inter_gap = inter_gap, tz = tz)
+    p3 = plot_daily(data, maxd = maxd, inter_gap = inter_gap, tz = tz)
 
     # Combine metrics and plot in one display
     pFinal = (wrap_elements(t1) +  p1 + guide_area() + plot_layout(widths = c(3, 1, 1))) / p2 / p3
