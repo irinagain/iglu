@@ -152,8 +152,11 @@ AGP page in shiny. Defaults to FALSE.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>By default, a tibble object with 1 row for each subject, and 10 columns is returned:
+    <p>By default, a tibble object with 1 row for each subject, and 13 columns is returned:
 a column for subject id,
+a column for start date,
+a column for end date,
+a column for number of days,
 a column for active_percent,
 a column for Mean value,
 a column for gmi value,
@@ -168,6 +171,9 @@ a column for above_250 value,</p>
     <p>The function uses recommended cutoffs of 54, 70, 180, and 250 mg/dL for calculation.</p>
 <p>If shinyformat = FALSE (default), returns a tibble object with 1 row for each subject, and 12 columns:
 a column for subject id,
+a column for start date,
+a column for end date,
+a column for number of days,
 a column for active_percent,
 a column for Mean value,
 a column for gmi value,
@@ -177,7 +183,7 @@ a column for below_70 value,
 a column for in_range_70_180 value,
 a column for above_180 value,
 a column for above_250 value.
-If shinyformat = TRUE, a tibble with 3 columns: id, metric, and value, is returned.
+If shinyformat = TRUE, a tibble with 2 columns: metric and value, is returned.
 This output is used when generating the single subject AGP shiny page.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -191,9 +197,9 @@ doi: <a href='https://doi.org/10.1089/dia.2019.0034'>10.1089/dia.2019.0034</a>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 <span class='fu'>agp_metrics</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 13</span><span>
-#&gt;   id    active_percent ndays start_date          end_date             mean   gmi
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;drt&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Subj…           79.8 12.7… 2015-06-06 </span><span style='color: #555555;'>16:50:27</span><span> 2015-06-19 </span><span style='color: #555555;'>08:59:36</span><span>  124.  6.27
+#&gt;   id    start_date          end_date            ndays active_percent  mean   gmi
+#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;dttm&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;drt&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> Subj… 2015-06-06 </span><span style='color: #555555;'>16:50:27</span><span> 2015-06-19 </span><span style='color: #555555;'>08:59:36</span><span> 12.7…           79.8  124.  6.27
 #&gt; </span><span style='color: #555555;'># … with 6 more variables: cv </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, below_54 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, below_70 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
 #&gt; </span><span style='color: #555555;'>#   in_range_70_180 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, above_180 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, above_250 </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
 </div></span></pre>

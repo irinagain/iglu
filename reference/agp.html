@@ -130,7 +130,7 @@
     <p>Display Ambulatory Glucose Profile (AGP) statistics for selected subject</p>
     </div>
 
-    <pre class="usage"><span class='fu'>agp</span><span class='op'>(</span><span class='va'>data</span>, inter_gap <span class='op'>=</span> <span class='fl'>45</span>, dt0 <span class='op'>=</span> <span class='cn'>NULL</span>, tz <span class='op'>=</span> <span class='st'>""</span>, daily <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>agp</span><span class='op'>(</span><span class='va'>data</span>, maxd <span class='op'>=</span> <span class='fl'>14</span>, inter_gap <span class='op'>=</span> <span class='fl'>45</span>, dt0 <span class='op'>=</span> <span class='cn'>NULL</span>, tz <span class='op'>=</span> <span class='st'>""</span>, daily <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -138,6 +138,11 @@
     <tr>
       <th>data</th>
       <td><p>DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.</p></td>
+    </tr>
+    <tr>
+      <th>maxd</th>
+      <td><p>Number of days to plot, default is the last 14 days, or if
+less than 14 days of data are available, all days are plotted.</p></td>
     </tr>
     <tr>
       <th>inter_gap</th>
