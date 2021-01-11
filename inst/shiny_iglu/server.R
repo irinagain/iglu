@@ -149,6 +149,31 @@ parameter_type <- reactive({
   metric_table <- reactive({
     parameter_type = parameter_type()
     data = transform_data()
+
+    if (is.null(input$parameter)) {
+      validate(
+        need(!is.null(input$parameter), "Please wait - Rendering")
+      )
+    } else if (grepl(',', input$parameter) & !grepl("\\(", input$parameter)) {
+      if (length(strsplit(input$parameter, split = ",")[[1]]) != 2) {
+        validate (
+          need(parameter_type %in% c("list", "none"), "Please wait - Rendering")
+        )
+      } else {
+        validate(
+          need(parameter_type %in% c("list", "lwrupr", "none"), "Please wait - Rendering")
+        )
+      }
+    } else if (grepl("\\(", input$parameter)) {
+      validate(
+        need(parameter_type %in% c("nested", "none"), "Please wait - Rendering")
+      )
+    } else if (!grepl(',', input$parameter)) {
+      validate(
+        need(parameter_type %in% c("value", "none"), "Please wait - Rendering")
+      )
+    }
+
     library(iglu)
     if(is.null(input$parameter) | parameter_type == "none"){
       string = paste("iglu::", input$metric, "(data)", sep = "")
@@ -407,7 +432,7 @@ parameter_type <- reactive({
   output$plot_TR <- renderUI({  # Request input parameters depending on type of plot
     plottype = plottype() # bring reactive input variable into this renderUI call
     if(plottype %in% c("tsplot", "lasagnamulti", "lasagnasingle")){
-      textInput("plot_TR", "Specify Lower and Upper Target Values, separated by a Comma", value = "80, 140")
+      textInput("plot_TR", "Specify Lower and Upper Target Values, separated by a Comma", value = "70, 180")
     }
     else if(plottype %in% c("plot_roc", "hist_roc")){
       NULL # ROC plots don't need TR
@@ -501,6 +526,12 @@ parameter_type <- reactive({
     eval(parse(text = string))
   }
   else if(plottype == "lasagnamulti"){
+
+    validate (
+      need(all(!is.null(input$plot_lasagnatype) & !is.null(input$plot_datatype)),
+           "Please wait - Rendering")
+    )
+
     data = transform_data()
     string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
                    input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(', input$plot_limits, '), ',
@@ -509,6 +540,11 @@ parameter_type <- reactive({
     eval(parse(text = string))
   }
   else if(plottype == "lasagnasingle"){
+
+    validate (
+      need(!is.null(input$plot_subjects), "Please wait - Rendering")
+    )
+
     data = subset_data() # subset data to only user-specified subject
     string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
                    input$plot_lasagnatype, '", limits = c(', input$plot_limits, '), ',
@@ -589,8 +625,11 @@ parameter_type <- reactive({
   agp_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
 
     validate (
-      need(!is.null(input$agp_subject), ""),
-      need(input$agp_subject %in% transform_data()$id, "Check Subject ID")
+      if (is.null(input$agp_subject)) {
+        need(!is.null(input$agp_subject), "Please wait - Rendering")
+      } else {
+        need(input$agp_subject %in% transform_data()$id, "Please check Subject ID")
+      }
     )
 
     data = transform_data()
