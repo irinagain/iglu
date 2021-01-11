@@ -141,7 +141,9 @@
   ULTR <span class='op'>=</span> <span class='fl'>180</span>,
   dt0 <span class='op'>=</span> <span class='cn'>NULL</span>,
   inter_gap <span class='op'>=</span> <span class='fl'>60</span>,
-  tz <span class='op'>=</span> <span class='st'>""</span>
+  tz <span class='op'>=</span> <span class='st'>""</span>,
+  color_scheme <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"blue-red"</span>, <span class='st'>"red-orange"</span><span class='op'>)</span>,
+  log <span class='op'>=</span> <span class='cn'>F</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -157,7 +159,7 @@
     </tr>
     <tr>
       <th>lasagnatype</th>
-      <td><p>String corresponding to plot type when using<code>datatype = "average"</code>, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.</p></td>
+      <td><p>String corresponding to plot type when using <code>datatype = "average"</code>, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.</p></td>
     </tr>
     <tr>
       <th>maxd</th>
@@ -169,7 +171,7 @@
     </tr>
     <tr>
       <th>midpoint</th>
-      <td><p>The glucose value serving as midpoint (white) of the diverging gradient scale (see <code>scale_fill_gradient2</code>). The default value is 105 mg/dL. The values above are colored in red, and below in blue.</p></td>
+      <td><p>The glucose value serving as midpoint of the diverging gradient scale (see <code>scale_fill_gradient2</code>). The default value is 105 mg/dL. The values above are colored in red, and below in blue in the default color_scheme, which can be adjusted.</p></td>
     </tr>
     <tr>
       <th>LLTR</th>
@@ -194,6 +196,15 @@ The default value is 60 min.</p></td>
       <th>tz</th>
       <td><p>A character string specifying the time zone to be used. System-specific (see <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></code>), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.</p></td>
     </tr>
+    <tr>
+      <th>color_scheme</th>
+      <td><p>String corresponding to the chosen color scheme. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from <code><a href='agp.html'>agp</a></code> with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.</p></td>
+    </tr>
+    <tr>
+      <th>log</th>
+      <td><p>Logical value indicating whether log10 of glucose values should be taken, default value is FALSE.
+When log = TRUE the glucose values, limits, midpoint, LLTR, and ULTR will all be log transformed.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -207,7 +218,8 @@ The default value is 60 min.</p></td>
     <pre class="examples"><div class='input'>
 <span class='fu'>plot_lasagna</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, datatype <span class='op'>=</span> <span class='st'>"average"</span>, lasagnatype <span class='op'>=</span> <span class='st'>'timesorted'</span>, tz <span class='op'>=</span> <span class='st'>"EST"</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_lasagna-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_lasagna</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, lasagnatype <span class='op'>=</span> <span class='st'>"subjectsorted"</span>, LLTR <span class='op'>=</span> <span class='fl'>100</span>, tz <span class='op'>=</span> <span class='st'>"EST"</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_lasagna-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='plot_lasagna-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_lasagna</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, log <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_lasagna-3.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

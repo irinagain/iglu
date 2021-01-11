@@ -141,7 +141,9 @@ subject data.</p>
   ULTR <span class='op'>=</span> <span class='fl'>180</span>,
   subjects <span class='op'>=</span> <span class='cn'>NULL</span>,
   inter_gap <span class='op'>=</span> <span class='fl'>45</span>,
-  tz <span class='op'>=</span> <span class='st'>""</span>
+  tz <span class='op'>=</span> <span class='st'>""</span>,
+  color_scheme <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"blue-red"</span>, <span class='st'>"red-orange"</span><span class='op'>)</span>,
+  log <span class='op'>=</span> <span class='cn'>F</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -164,7 +166,7 @@ Default is 'tsplot'.</p></td>
     </tr>
     <tr>
       <th>lasagnatype</th>
-      <td><p>String corresponding to plot type when using<code>datatype = "average"</code>, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.</p></td>
+      <td><p>String corresponding to plot type when using <code>datatype = "average"</code>, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.</p></td>
     </tr>
     <tr>
       <th>LLTR</th>
@@ -188,6 +190,16 @@ this will not be connected in the time series plot</p></td>
       <th>tz</th>
       <td><p>A character string specifying the time zone to be used. System-specific (see <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct</a></code>), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.</p></td>
     </tr>
+    <tr>
+      <th>color_scheme</th>
+      <td><p>String corresponding to the chosen color scheme when the `plottype` is 'lasagna'. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from <code><a href='agp.html'>agp</a></code> with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.</p></td>
+    </tr>
+    <tr>
+      <th>log</th>
+      <td><p>Logical value indicating whether log10 of glucose values should be taken, default value is FALSE.
+When log = TRUE, the glucose values, LLTR, and ULTR will all be log transformed, and time series plots will
+be on a semilogarithmic scale.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -208,7 +220,7 @@ on a grid.</p>
 </div><div class='img'><img src='plot_glu-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
 <span class='fu'>plot_glu</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, subjects <span class='op'>=</span> <span class='st'>'Subject 2'</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_glu-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_glu</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, plottype <span class='op'>=</span> <span class='st'>'tsplot'</span>, tz <span class='op'>=</span> <span class='st'>'EST'</span>, LLTR <span class='op'>=</span> <span class='fl'>70</span>, ULTR<span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_glu-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_glu</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, plottype <span class='op'>=</span> <span class='st'>'tsplot'</span>, tz <span class='op'>=</span> <span class='st'>'EST'</span>, LLTR <span class='op'>=</span> <span class='fl'>70</span>, ULTR <span class='op'>=</span> <span class='fl'>150</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_glu-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_glu</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, plottype <span class='op'>=</span> <span class='st'>'lasagna'</span>, lasagnatype <span class='op'>=</span> <span class='st'>'timesorted'</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_glu-4.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
