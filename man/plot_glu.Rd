@@ -13,7 +13,8 @@ plot_glu(
   ULTR = 180,
   subjects = NULL,
   inter_gap = 45,
-  tz = ""
+  tz = "",
+  color_scheme = c("blue-red", "red-orange")
 )
 }
 \arguments{
@@ -39,6 +40,8 @@ in 'id' column of data. Default is all subjects.}
 this will not be connected in the time series plot}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
+
+\item{color_scheme}{String corresponding to the chosen color scheme when the `plottype` is 'lasagna'. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.}
 }
 \value{
 Any output from the plot object
@@ -62,7 +65,7 @@ plot_glu(example_data_1_subject)
 
 data(example_data_5_subject)
 plot_glu(example_data_5_subject, subjects = 'Subject 2')
-plot_glu(example_data_5_subject, plottype = 'tsplot', tz = 'EST', LLTR = 70, ULTR= 150)
+plot_glu(example_data_5_subject, plottype = 'tsplot', tz = 'EST', LLTR = 70, ULTR = 150)
 plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'timesorted')
 
 }

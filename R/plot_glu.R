@@ -55,6 +55,8 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = ""){
 #' @param inter_gap The maximum allowable gap (in minutes). Gaps larger than
 #' this will not be connected in the time series plot
 #'
+#' @param color_scheme String corresponding to the chosen color scheme when the `plottype` is 'lasagna'. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.
+#'
 #' @details
 #' For the default option 'tsplot', a time series graph for each subject is
 #' produced with hypo- and hyperglycemia cutoffs shown as horizontal red lines.
@@ -74,11 +76,11 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = ""){
 #'
 #' data(example_data_5_subject)
 #' plot_glu(example_data_5_subject, subjects = 'Subject 2')
-#' plot_glu(example_data_5_subject, plottype = 'tsplot', tz = 'EST', LLTR = 70, ULTR= 150)
+#' plot_glu(example_data_5_subject, plottype = 'tsplot', tz = 'EST', LLTR = 70, ULTR = 150)
 #' plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'timesorted')
 #'
 
-plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 70, ULTR = 180, subjects = NULL, inter_gap = 45, tz = ""){
+plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 70, ULTR = 180, subjects = NULL, inter_gap = 45, tz = "", color_scheme = c("blue-red", "red-orange")){
 
   plottype = match.arg(plottype)
   datatype = match.arg(datatype)
@@ -102,8 +104,8 @@ plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all"
         warning(paste("The provided data have", ns, "subjects. The plot will only be created for subject", subject))
         data = data[which(data$id == subject)]
       }
-    plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz)
+    plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme)
   }else{
-    plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz)
+    plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme)
   }
 }
