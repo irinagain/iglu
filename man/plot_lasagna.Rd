@@ -16,7 +16,8 @@ plot_lasagna(
   dt0 = NULL,
   inter_gap = 60,
   tz = "",
-  log = F
+  log = F,
+  color_scheme = c("blue-red", "red-orange")
 )
 }
 \arguments{
@@ -30,7 +31,7 @@ plot_lasagna(
 
 \item{limits}{The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link{scale_fill_gradient2}})}
 
-\item{midpoint}{The glucose value serving as midpoint (white) of the diverging gradient scale (see \code{\link{scale_fill_gradient2}}). The default value is 105 mg/dL. The values above are colored in red, and below in blue.}
+\item{midpoint}{The glucose value serving as midpoint of the diverging gradient scale (see \code{\link{scale_fill_gradient2}}). The default value is 105 mg/dL. The values above are colored in red, and below in blue in the default color_scheme, which can be adjusted.}
 
 \item{LLTR}{Lower Limit of Target Range, default value is 70 mg/dL.}
 
@@ -47,6 +48,8 @@ The default value is 60 min.}
 
 \item{log}{Logical value indicating whether log of glucose values should be taken, default values is FALSE.
 Only the glucose values will be log transformed, so the user is able to set any desired target range, limits, and midpoint.}
+
+\item{color_scheme}{String corresponding to the chosen color scheme. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.}
 }
 \value{
 A ggplot object corresponding to lasagna plot

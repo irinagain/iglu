@@ -14,7 +14,8 @@ plot_glu(
   subjects = NULL,
   inter_gap = 45,
   tz = "",
-  log = F
+  log = F,
+  color_scheme = c("blue-red", "red-orange")
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ this will not be connected in the time series plot}
 
 \item{log}{Logical value indicating whether log of glucose values should be taken, default values is FALSE.
 Only the glucose values will be log transformed, so the user is able to set any desired target range.}
+
+\item{color_scheme}{String corresponding to the chosen color scheme when the `plottype` is 'lasagna'. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.}
 }
 \value{
 Any output from the plot object
@@ -66,7 +69,7 @@ plot_glu(example_data_1_subject)
 
 data(example_data_5_subject)
 plot_glu(example_data_5_subject, subjects = 'Subject 2')
-plot_glu(example_data_5_subject, plottype = 'tsplot', tz = 'EST', LLTR = 70, ULTR= 150)
+plot_glu(example_data_5_subject, plottype = 'tsplot', tz = 'EST', LLTR = 70, ULTR = 150)
 plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'timesorted')
 
 }

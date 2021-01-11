@@ -71,6 +71,8 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
 #' @param inter_gap The maximum allowable gap (in minutes). Gaps larger than
 #' this will not be connected in the time series plot
 #'
+#' @param color_scheme String corresponding to the chosen color scheme when the `plottype` is 'lasagna'. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.
+#'
 #' @details
 #' For the default option 'tsplot', a time series graph for each subject is
 #' produced with hypo- and hyperglycemia cutoffs shown as horizontal red lines.
@@ -90,11 +92,12 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
 #'
 #' data(example_data_5_subject)
 #' plot_glu(example_data_5_subject, subjects = 'Subject 2')
-#' plot_glu(example_data_5_subject, plottype = 'tsplot', tz = 'EST', LLTR = 70, ULTR= 150)
+#' plot_glu(example_data_5_subject, plottype = 'tsplot', tz = 'EST', LLTR = 70, ULTR = 150)
 #' plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'timesorted')
 #'
 
-plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 70, ULTR = 180, subjects = NULL, inter_gap = 45, tz = "", log = F){
+
+plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 70, ULTR = 180, subjects = NULL, inter_gap = 45, tz = "",  color_scheme = c("blue-red", "red-orange"), log = F){
 
   plottype = match.arg(plottype)
   datatype = match.arg(datatype)
@@ -119,18 +122,18 @@ plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all"
         data = data[which(data$id == subject)]
       }
       if(log){
-        plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, log = T, limits = log(c(50,500)), midpoint = log(105))
+        plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme, log = T, limits = log(c(50,500)), midpoint = log(105))
       }
       else{
-        plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, log = F)
+        plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme, log = F)
       }
   }
   else{
       if(log){
-        plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, log = T, limits = log(c(50,500)), midpoint = log(105))
+        plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme, log = T, limits = log(c(50,500)), midpoint = log(105))
     }
       else{
-        plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, log = F)
+        plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme, log = F)
     }
   }
 }
