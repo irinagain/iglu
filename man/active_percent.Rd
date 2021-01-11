@@ -4,40 +4,38 @@
 \alias{active_percent}
 \title{Calculate percentage of time CGM was active}
 \usage{
-active_percent(data, freqCGM = 5)
+active_percent(data, dt0 = NULL)
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl"}
+\item{data}{DataFrame object with column names "id", "time", and "gl".}
 
-\item{freqCGM}{Numeric value of CGM Frequency(In minutes). Default value is 5.}
+\item{dt0}{The time frequency for interpolated aligned grid in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 }
 \value{
-If a data.frame object is passed, then a tibble object with two columns: subject id and
-corresponding active_percent value is returned
+If a data.frame object is passed, then a tibble object with five columns: subject id,
+corresponding active_percent value, duration of measurement period in days, start date, and end date.
 }
 \description{
-The function active_percent produces a tibble object with values equal to the
-percentage of time the cgm was active. For example, if a cgm's (5 min frequency) times were 0, 5, 10, 15 and
-glucose values were missing at time 5, then percentage of time the cgm was active is 75%.
-The output columns correspond to the subject id and the precentage of time for which the cgm was active,
-and the output rows correspond to the subjects.
-The values will be between 0% (no measurements) and 100% (all measurements).
+The function active_percent produces % of time CGM is active together with the length of the measurement period
 }
 \details{
-A tibble object with 1 row for each subject, a column for subject id and
-a column for active_percent values is returned.
+The function active_percent produces a tibble object with values equal to the
+percentage of time the CGM was active, the total number of observed days, the start date and the end date. For example, if a CGM's (5 min frequency) times were 0, 5, 10, 15 and
+glucose values were missing at time 5, then percentage of time the CGM was active is 75%.
+The output columns correspond to the subject id, the percentage of time for which the CGM was active, the number of days of measurements, the start date and the end date of measurements.
+The output rows correspond to the subjects.
+The values of above_percent are always between 0% (no measurements) and 100% (all measurements).
 }
 \examples{
 
 data(example_data_1_subject)
 
 active_percent(example_data_1_subject)
-active_percent(example_data_1_subject, freqCGM = 15)
 
 data(example_data_5_subject)
 
 active_percent(example_data_5_subject)
-active_percent(example_data_5_subject, freqCGM = 5)
+active_percent(example_data_5_subject, dt0 = 5)
 
 }
 \references{
@@ -47,5 +45,5 @@ Continuous Glucose Monitoring
 \doi{10.2337/dc17-1600}.
 }
 \author{
-Pratik Patel
+Pratik Patel, Irina Gaynanova
 }

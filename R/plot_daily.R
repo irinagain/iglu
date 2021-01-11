@@ -4,9 +4,11 @@
 #' The function plot_daily plots daily glucose time series profiles for a single subject.
 #'
 #' @usage
-#' plot_daily(data, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "")
+#' plot_daily(data, maxd = 14, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "")
 #'
 #' @inheritParams plot_glu
+#' @param maxd Number of days to plot, default is the last 14 days, or if
+#' less than 14 days of data are available, all days are plotted.
 #'
 #' @return Daily glucose time series plots for a single subject
 #'
@@ -33,7 +35,7 @@
 #' plot_daily(example_data_1_subject, LLTR = 100, ULTR = 140)
 #'
 
-plot_daily <- function (data, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "") {
+plot_daily <- function (data, maxd = 14, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "") {
 
   gl =  id = level_group = reltime = day_of_week = each_day = gap = time_group = NULL
   rm(list = c("gl", "id", "level_group", "reltime", "day_of_week", "each_day", "gap", "time_group"))
@@ -55,9 +57,15 @@ plot_daily <- function (data, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "") {
     data = data %>% dplyr::filter(id == subject)
   }
 
+  days = sort(unique(lubridate::date(data$time)))
+  max_days = min(length(days), maxd)
+  start_day = ifelse(max_days == maxd, length(days) - maxd + 1, 1)
+  kdays = days[start_day:length(days)]
+
   plot_data <- data %>%
+    dplyr::mutate(each_day = lubridate::date(time)) %>%
+    dplyr::filter(each_day %in% kdays) %>% # select only maxd
     dplyr::mutate(day_of_week = as.character(lubridate::wday(time, label = TRUE, abbr = FALSE)),
-                  each_day = lubridate::date(time),
                   reltime = hms::as_hms(paste(lubridate::hour(time), lubridate::minute(time), lubridate::second(time), sep = ":")),
                   gl_level = dplyr::case_when(gl > ULTR ~ "hyper", gl < LLTR ~ "hypo", TRUE ~ "normal"))
 
@@ -95,21 +103,21 @@ plot_daily <- function (data, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "") {
   plot_data <- plot_data %>%
     dplyr::mutate(time_group = rep(1:(length(gaps) - 1), diff(gaps))) # group by consecutive times to avoid artifacts
 
-  ggplot2::ggplot(plot_data) +
-    ggplot2::geom_line(ggplot2::aes(reltime, gl, group = time_group)) +
-    ggplot2::geom_ribbon(ggplot2::aes(reltime, ymin = LLTR, ymax = ULTR),
+  ggplot(plot_data) +
+    geom_line(aes(reltime, gl, group = time_group)) +
+    geom_ribbon(aes(reltime, ymin = LLTR, ymax = ULTR),
                          fill = "lightgrey", alpha = 0.5) +
-    ggplot2::geom_ribbon(data = gl_level[gl_level$class == "hyper", ],
-                         ggplot2::aes(reltime, ymin = ULTR, ymax = gl),
+    geom_ribbon(data = gl_level[gl_level$class == "hyper", ],
+                         aes(reltime, ymin = ULTR, ymax = gl),
                          fill = "yellow", alpha = 0.5) +
-    ggplot2::geom_ribbon(data = gl_level[gl_level$class == "hypo", ],
-                         ggplot2::aes(reltime, ymin = LLTR, ymax = gl),
+    geom_ribbon(data = gl_level[gl_level$class == "hypo", ],
+                         aes(reltime, ymin = LLTR, ymax = gl),
                          fill = "red", alpha = 0.5) +
-    ggplot2::scale_x_time(breaks = c(hms::as_hms(c('00:00:00', '12:00:00', '24:00:00'))),
+    scale_x_time(breaks = c(hms::as_hms(c('00:00:00', '12:00:00', '24:00:00'))),
                           labels = c('12 am', '12 pm', '12 am')) +
-    ggplot2::facet_wrap(~each_day + day_of_week, ncol = 7, ) +
-    ggplot2::ylab("Glucose mg/dL") + ggplot2::xlab(NULL) +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, vjust = 0.5),
-                   panel.background = ggplot2::element_rect(fill = "transparent", colour = NA))
+    facet_wrap(~each_day + day_of_week, ncol = 7, ) +
+    ylab("Glucose [mg/dL]") + xlab(NULL) +
+    theme(axis.text.x = element_text(angle = 45, vjust = 0.5),
+                   panel.background = element_rect(fill = "transparent", colour = NA))
 
 }

@@ -4,10 +4,13 @@
 \alias{plot_daily}
 \title{Plot daily glucose profiles}
 \usage{
-plot_daily(data, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "")
+plot_daily(data, maxd = 14, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "")
 }
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl").}
+
+\item{maxd}{Number of days to plot, default is the last 14 days, or if
+less than 14 days of data are available, all days are plotted.}
 
 \item{LLTR}{Lower Limit of Target Range, default value is 70 mg/dL.}
 

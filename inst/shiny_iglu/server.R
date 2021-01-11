@@ -26,7 +26,7 @@ shinyServer(function(input, output) {
 parameter_type <- reactive({
 
   if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
-                         "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu")){
+                         "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
     return("none")
   }
 
@@ -193,7 +193,8 @@ parameter_type <- reactive({
 
   output$metric <- DT::renderDataTable(metric_table(), extensions = "Buttons",
                                        options = list(dom = "Btip",
-                                                      buttons = c("copy", "csv", "excel", "pdf", "print")))
+                                                      buttons = c("copy", "csv", "excel", "pdf", "print"),
+                                                      scrollX = TRUE))
 
 
   ############################ PLOTTING SECTION #####################################################
@@ -587,6 +588,11 @@ parameter_type <- reactive({
 
   agp_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
 
+    validate (
+      need(!is.null(input$agp_subject), ""),
+      need(input$agp_subject %in% transform_data()$id, "Check Subject ID")
+    )
+
     data = transform_data()
     data = data[data$id == input$agp_subject,] # reactively subset data when subjects input is modified
     return(data)
@@ -604,11 +610,7 @@ parameter_type <- reactive({
 
   output$agp_metrics <- DT::renderDataTable({
 
-    validate(
-      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
-    )
-
-    DT::datatable(agpMetrics(), options = list(dom = 't'), rownames = FALSE)
+    DT::datatable(agpMetrics(), options = list(dom = 't'), rownames = FALSE, colnames = "")
     })
 
   plotRanges <- reactive({
@@ -620,10 +622,6 @@ parameter_type <- reactive({
   })
 
   output$plot_ranges <- renderPlot({
-
-    validate(
-      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
-    )
 
     plotRanges()
   })
@@ -638,10 +636,6 @@ parameter_type <- reactive({
 
   output$plot_agp <- renderPlot({
 
-    validate(
-      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
-    )
-
     plotAGP()
   })
 
@@ -655,12 +649,50 @@ parameter_type <- reactive({
 
   output$plot_daily <- renderPlot({
 
-    validate(
-      need(input$agp_subject != "", "Please wait - Rendering") # display custom message in need
-    )
-
     plotDaily()
   })
+
+  options(shiny.usecairo = T)
+
+  output$pdfAGP<- downloadHandler(
+    filename = function() {
+      paste("AGP", '.pdf', sep = '')
+    },
+    content = function(file) {
+      cairo_pdf(filename = file, width = 20, height = 18, bg = "transparent")
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
+
+  output$pngAGP <- downloadHandler(
+
+    filename = function() {
+      paste("AGP", '.png', sep = '')
+    },
+    content = function(file) {
+      png(file)
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
+
+  output$epsAGP <- downloadHandler(
+    filename = function() {
+      paste("AGP", '.eps', sep = '')
+    },
+    content = function(file) {
+      postscript(file)
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
 
 })
 

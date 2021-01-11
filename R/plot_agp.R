@@ -4,10 +4,11 @@
 #' The function plot_agp produces an AGP plot that collapses all data into a single 24 hr "modal day".
 #'
 #' @usage
-#' plot_agp(data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "")
+#' plot_agp(data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", title = FALSE)
 #'
 #' @inheritParams CGMS2DayByDay
 #' @inheritParams plot_glu
+#' @param title Indicator whether the title of the plot should display the subject ID. The default is FALSE (no title).
 #'
 #' @return Plot of a 24 hr modal day collapsing all data to a single day.
 #'
@@ -35,7 +36,7 @@
 #' plot_agp(example_data_1_subject)
 #'
 
-plot_agp <- function (data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "") {
+plot_agp <- function (data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", title = FALSE) {
 
   gl = id = five = twentyfive = seventyfive = ninetyfive = times = value = NULL
   rm(list = c("gl",  "id", "five", "twentyfive", "seventyfive", "ninetyfive", "times", "value"))
@@ -59,7 +60,7 @@ plot_agp <- function (data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, t
     seventyfive = quartiles[4, ], ninetyfive = quartiles[5, ]
   )
 
-  ggplot2::ggplot(plot_data) +
+  p = ggplot2::ggplot(plot_data) +
     ggplot2::geom_line(ggplot2::aes(times, median), color = "black", size = 1) +
     ggplot2::geom_line(ggplot2::aes(times, five), linetype = "longdash", color = "#325DAA") +
     ggplot2::geom_line(ggplot2::aes(times, ninetyfive), linetype = "longdash", color = "#325DAA") +
@@ -81,7 +82,12 @@ plot_agp <- function (data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, t
                        ggplot2::aes(label = c("5%", "25%", "50%", "75%", "95%"), y = value),
                        x = 90700, hjust = 0, size = 3.25) +
     ggplot2::coord_cartesian(clip = "off") +
-    ggplot2::theme(plot.margin = ggplot2::unit(c(1,3,1,1), units = "line")) +
-    ggplot2::ggtitle(subject)
+    ggplot2::theme(plot.margin = ggplot2::unit(c(1,3,1,1), units = "line"))
+
+  if (title){
+    p + ggplot2::ggtitle(subject)
+  }else{
+    p
+  }
 
 }

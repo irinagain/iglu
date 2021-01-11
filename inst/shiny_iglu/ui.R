@@ -53,7 +53,8 @@ shinyUI(fluidPage(
                                                                                `Standard Deviation` = 'sd_glu',
                                                                                `Standard Deviation Subtypes` = 'sd_measures',
                                                                                `Standard Deviation ROC` = 'sd_roc',
-                                                                               `Summary Statistics` = 'summary_glu'
+                                                                               `Summary Statistics` = 'summary_glu',
+                                                                               `All Metrics` = 'all_metrics'
                )),
                uiOutput("select_parameter"),
                uiOutput("help_text")),
@@ -96,6 +97,9 @@ shinyUI(fluidPage(
                sidebarPanel(
                  uiOutput("agp_subject"),
                  uiOutput("agp_subject_help_text"),
+                 downloadButton(outputId = "pdfAGP", label = "pdf"),
+                 downloadButton(outputId = "pngAGP", label = "png"),
+                 downloadButton(outputId = "epsAGP", label = "eps")
                ),
                mainPanel(
                  fluidRow(

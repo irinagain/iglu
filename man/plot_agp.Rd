@@ -4,7 +4,7 @@
 \alias{plot_agp}
 \title{Plot Ambulatory Glucose Profile (AGP) modal day}
 \usage{
-plot_agp(data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "")
+plot_agp(data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", title = FALSE)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.}
@@ -18,6 +18,8 @@ plot_agp(data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "")
 \item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
+
+\item{title}{Indicator whether the title of the plot should display the subject ID. The default is FALSE (no title).}
 }
 \value{
 Plot of a 24 hr modal day collapsing all data to a single day.

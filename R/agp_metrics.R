@@ -14,8 +14,11 @@
 #' AGP page in shiny. Defaults to FALSE.
 #'
 #' @return
-#' By default, a tibble object with 1 row for each subject, and 10 columns is returned:
+#' By default, a tibble object with 1 row for each subject, and 13 columns is returned:
 #' a column for subject id,
+#' a column for start date,
+#' a column for end date,
+#' a column for number of days,
 #' a column for active_percent,
 #' a column for Mean value,
 #' a column for gmi value,
@@ -33,6 +36,9 @@
 #'
 #' If shinyformat = FALSE (default), returns a tibble object with 1 row for each subject, and 12 columns:
 #' a column for subject id,
+#' a column for start date,
+#' a column for end date,
+#' a column for number of days,
 #' a column for active_percent,
 #' a column for Mean value,
 #' a column for gmi value,
@@ -42,7 +48,7 @@
 #' a column for in_range_70_180 value,
 #' a column for above_180 value,
 #' a column for above_250 value.
-#' If shinyformat = TRUE, a tibble with 3 columns: id, metric, and value, is returned.
+#' If shinyformat = TRUE, a tibble with 2 columns: metric and value, is returned.
 #' This output is used when generating the single subject AGP shiny page.
 #'
 #'
@@ -61,11 +67,16 @@
 
 agp_metrics <- function (data, shinyformat = FALSE) {
 
-  id = . = NULL
-  rm(list = c("id", "."))
+  id = . = start_date = end_date = ndays = cv = NULL
+  rm(list = c("id", ".", "start_date", "end_date", "ndays", "cv"))
 
-  out = list("Percent_Active" = active_percent(data),
-             "Mean_Glu" = mean_glu(data),
+  activity <- active_percent(data)
+
+  out = list("Start Date" = activity[, c(1,4)],
+             "End Date" = activity[, c(1,5)],
+             "Duration" = activity[, c(1,3)],
+             "% Time CGM is Active" = activity[, c(1,2)],
+             "Average Glucose" = mean_glu(data),
              "GMI" = gmi(data),
              "CV" = cv_glu(data),
              "Percent_Below" = below_percent(data, targets_below = c(54, 70)),
@@ -76,8 +87,15 @@ agp_metrics <- function (data, shinyformat = FALSE) {
 
   if (shinyformat) {
     outTable <- outTable %>%
-      tidyr::pivot_longer(cols = -id, names_to = "metric", values_to = "value") %>%
-      dplyr::slice(c(1:4))
+      dplyr::transmute("Subject ID" = as.character(id),
+                "Start Date" = as.character(as.Date(start_date)),
+                "End Date" = as.character(as.Date(end_date)),
+                "Duration" = paste(as.character(ndays),"days"),
+                "% Time CGM is Active" = paste0(round(active_percent, 1), "%"),
+                "Average Glucose" = paste(round(mean), "mg/dL"),
+                "GMI" = paste0(round(gmi, 1), "%"),
+                "CV" = paste0(round(cv, 1), "%")) %>%
+      tidyr::pivot_longer(cols = "Subject ID":"CV", names_to = "metric", values_to = "value")
   }
 
   return(outTable)
