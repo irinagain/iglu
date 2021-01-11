@@ -25,7 +25,7 @@
 #' @examples
 #'
 #' plot_lasagna_1subject(example_data_1_subject)
-#' plot_lasagna_1subject(example_data_1_subject, color_scheme = 'red_orange')
+#' plot_lasagna_1subject(example_data_1_subject, color_scheme = 'red-orange')
 #' plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'timesorted')
 #' plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted')
 #'
