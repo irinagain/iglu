@@ -12,6 +12,9 @@
 #' The default value is 60 min.
 #' @param LLTR Lower Limit of Target Range, default value is 70 mg/dL.
 #' @param ULTR Upper Limit of Target Range, default value is 180 mg/dL.
+#' @param log Logical value indicating whether log of glucose values should be taken, default values is FALSE.
+#' When log = TRUE the glucose values, limits, midpoint, LLTR, and ULTR will all be log transformed.
+#'
 #' @param color_scheme String corresponding to the chosen color scheme. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.
 #'
 #' @return A ggplot object corresponding to lasagna plot
@@ -23,14 +26,24 @@
 #' @examples
 #'
 #' plot_lasagna_1subject(example_data_1_subject)
-#' plot_lasagna_1subject(example_data_1_subject, color_scheme = 'red_orange')
+#' plot_lasagna_1subject(example_data_1_subject, color_scheme = 'red-orange')
 #' plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'timesorted')
 #' plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted')
+#' plot_lasagna_1subject(example_data_1_subject, log = TRUE)
 #'
-plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted', 'daysorted'), limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 60, tz = "", color_scheme = c("blue-red", "red-orange")){
+plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted', 'daysorted'), limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 60, tz = "", color_scheme = c("blue-red", "red-orange"), log = F){
 
   id = glucose = day = NULL
   rm(list = c("id", "glucose", "day"))
+
+  # Optionally convert data to log scale
+  if (log){
+    data$gl = log10(data$gl)
+    limits = log10(limits)
+    midpoint = log10(midpoint)
+    LLTR = log10(LLTR)
+    ULTR = log10(ULTR)
+  }
 
   # Select the color scheme
   color_scheme = match.arg(color_scheme)
@@ -73,12 +86,16 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
     xtitle = "Hour (sorted)"
   }
 
-  # Melt the measurements for lasanga plot
+  # Melt the measurements for lasagna plot
   data_l = data.frame(day = rep(data_ip$actual_dates, each = ntimes), hour = rep(time_grid_hours, ndays), glucose = as.vector(t(gl_by_id_ip)))
 
   # Make a plot
   p = data_l%>%
     ggplot(aes(x = hour, y = as.character(day), fill = glucose)) + geom_tile()  + ylab(ytitle) + ggtitle(paste0(subject, title, "")) + xlab(xtitle) + xlim(c(0, 24)) + scale_fill_gradientn(colors = colors, na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits)
+
+  if(log){
+    p = p + ggplot2::labs(fill = 'log(glucose)')
+  }
 
   # Take out days if sorted within time since each subject changes
   if (lasagnatype == 'timesorted'){
@@ -97,6 +114,8 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 #' @param maxd For datatype "all", maximal number of days to be plotted from the study. The default value is 14 days (2 weeks).
 #' @param LLTR Lower Limit of Target Range, default value is 70 mg/dL.
 #' @param ULTR Upper Limit of Target Range, default value is 180 mg/dL.
+#' @param log Logical value indicating whether log10 of glucose values should be taken, default value is FALSE.
+#' When log = TRUE the glucose values, limits, midpoint, LLTR, and ULTR will all be log transformed.
 #'
 #' @return A ggplot object corresponding to lasagna plot
 #' @export
@@ -108,14 +127,24 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 #'
 #' plot_lasagna(example_data_5_subject, datatype = "average", lasagnatype = 'timesorted', tz = "EST")
 #' plot_lasagna(example_data_5_subject, lasagnatype = "subjectsorted", LLTR = 100, tz = "EST")
+#' plot_lasagna(example_data_5_subject, log = TRUE)
 #'
-plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('unsorted', 'timesorted', 'subjectsorted'), maxd = 14, limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 60, tz = "", color_scheme = c("blue-red", "red-orange")){
+plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('unsorted', 'timesorted', 'subjectsorted'), maxd = 14, limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 60, tz = "", color_scheme = c("blue-red", "red-orange"), log = F){
 
   lasagnatype = match.arg(lasagnatype)
   datatype = match.arg(datatype)
 
   id = glucose = day = NULL
   rm(list = c("id", "glucose", "day"))
+
+  # Optionally convert data to log scale
+  if (log){
+    data$gl = log10(data$gl)
+    limits = log10(limits)
+    midpoint = log10(midpoint)
+    LLTR = log10(LLTR)
+    ULTR = log10(ULTR)
+  }
 
   subject = unique(data$id)
   ns = length(subject)
@@ -169,6 +198,10 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
     p = data_l%>%
       ggplot(aes(x = hour, y = subject, fill = glucose)) + geom_tile() + ylab(ytitle) + ggtitle(paste0("24 hours averages for all subjects", title, "")) + xlab(xtitle) + xlim(c(0, 24)) + scale_fill_gradientn(colors = colors, na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits)
 
+    if(log){
+      p = p + ggplot2::labs(fill = 'log(glucose)')
+    }
+
     # Take out subject names if sorted within time since each subject changes
     if (lasagnatype == 'timesorted'){
       p = p + scale_y_discrete(labels = NULL)
@@ -212,6 +245,10 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
 
     p = data_l%>%
       ggplot(aes(x = day + 1, y = subject, fill = glucose)) + geom_tile() + ylab(ytitle) + ggtitle(paste0("All subjects", title)) + xlab(xtitle) + geom_vline(xintercept = c(1:max_days)) + scale_x_continuous(breaks = seq(1, max_days, by = 2)) + scale_fill_gradientn(colors = colors, na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits)
+
+    if(log){
+      p = p + ggplot2::labs(fill = 'log(glucose)')
+    }
 
     # Take out subject names if sorted within time since each subject changes
     if (lasagnatype == 'timesorted'){
