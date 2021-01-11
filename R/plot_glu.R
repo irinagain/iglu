@@ -2,9 +2,6 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
   gl = date_by_id = id = gap = time_group = NULL
   rm(list = c("gl", "date_by_id", "id", "gap", "time_group"))
   # Optionally convert data to log scale
-  if (log){
-    data$gl = log(data$gl)
-  }
   if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
     data$time = as.character(data$time)
     data$time = as.POSIXct(data$time, format='%Y-%m-%d %H:%M:%S', tz = tz)
@@ -26,24 +23,22 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
   data <- data %>%
     dplyr::mutate(time_group = rep(1:(length(gaps) - 1), diff(gaps))) # group by consecutive times to avoid artifacts
 
-  if(log){
-    ggplot(data = data, ggplot2::aes(x = time, y = gl, group = time_group)) +
-    geom_line() +
-    scale_x_datetime(name = 'Date') +
-    scale_y_continuous(name = 'log(Blood Glucose)') +
-    geom_hline(yintercept = LLTR, color = 'red') +
-    geom_hline(yintercept = ULTR, color = 'red') + ggplot2::facet_wrap(~id, scales = "free_x")
-  }
-  else{
-    ggplot(data = data, aes(x = time, y = gl, group = time_group)) +
+    p = ggplot(data = data, aes(x = time, y = gl, group = time_group)) +
     geom_line(size = 1) +
     scale_x_datetime(name = 'Date') +
-    scale_y_continuous(name = 'Blood Glucose') +
     geom_hline(yintercept = LLTR, color = 'red') +
     geom_hline(yintercept = ULTR, color = 'red') +
     facet_wrap(~id, scales = "free_x") +
     geom_point(size = 0.3)
-  }
+
+    if(log){
+      p = p + scale_y_continuous(name = 'Blood Glucose (mg/dL,  semilogarithmic scale).', trans = 'log10')
+    }
+    else{
+      p = p + scale_y_continuous(name = 'Blood Glucose (mg/dL)')
+
+    }
+       p
 }
 
 
@@ -62,8 +57,9 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
 #'
 #' @param LLTR Lower Limit of Target Range, default value is 70 mg/dL.
 #' @param ULTR Upper Limit of Target Range, default value is 180 mg/dL.
-#' @param log Logical value indicating whether log of glucose values should be taken, default values is FALSE.
-#' Only the glucose values will be log transformed, so the user is able to set any desired target range.
+#' @param log Logical value indicating whether log10 of glucose values should be taken, default value is FALSE.
+#' When log = TRUE, the glucose values, LLTR, and ULTR will all be log transformed, and time series plots will
+#' be on a semilogarithmic scale.
 #'
 #' @param subjects String or list of strings corresponding to subject names
 #' in 'id' column of data. Default is all subjects.

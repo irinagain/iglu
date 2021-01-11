@@ -44,7 +44,7 @@ The default value is 60 min.}
 \item{color_scheme}{String corresponding to the chosen color scheme. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.}
 
 \item{log}{Logical value indicating whether log of glucose values should be taken, default values is FALSE.
-Only the glucose values will be log transformed, so the user is able to set any desired target range, limits, and midpoint.}
+When log = TRUE the glucose values, limits, midpoint, LLTR, and ULTR will all be log transformed.}
 }
 \value{
 A ggplot object corresponding to lasagna plot
@@ -58,6 +58,7 @@ plot_lasagna_1subject(example_data_1_subject)
 plot_lasagna_1subject(example_data_1_subject, color_scheme = 'red-orange')
 plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'timesorted')
 plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted')
+plot_lasagna_1subject(example_data_1_subject, log = TRUE)
 
 }
 \references{
