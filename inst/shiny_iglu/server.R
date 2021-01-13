@@ -576,7 +576,7 @@ parameter_type <- reactive({
 
     data = transform_data()
     string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
-                   input$plot_TR, ', subjects = NULL, tz = "", "blue-orange", log = ', input$plot_log, ')' ,sep = "")
+                   input$plot_TR, ', subjects = NULL, inter_gap = 45, tz = "", "blue-orange", log = ', input$plot_log, ')' ,sep = "")
     eval(parse(text = string))
   }
   else if(plottype == "lasagnamulti"){
