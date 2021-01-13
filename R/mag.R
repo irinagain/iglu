@@ -50,6 +50,7 @@ mag <- function (data, n = 60, dt0 = NULL, inter_gap = 45, tz = "") {
     idx_gl = as.vector(t(data_ip[[1]][, idx]))
     mag = sum(abs(diff(idx_gl)), na.rm = TRUE)/
       (length(na.omit(idx_gl))*n/60)
+    return(mag)
   }
 
   id = mag = NULL
