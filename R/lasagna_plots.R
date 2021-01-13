@@ -196,7 +196,7 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
     data_l = data.frame(subject = rep(subject, each = length(time_grid_hours)), hour = rep(time_grid_hours, ns), glucose = as.vector(t(average24)))
 
     p = data_l%>%
-      ggplot(aes(x = hour, y = subject, fill = glucose)) + geom_tile() + ylab(ytitle) + ggtitle(paste0("24 hours averages for all subjects", title, "")) + xlab(xtitle) + xlim(c(0, 24)) + scale_fill_gradientn(colors = colors, na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits)
+      ggplot(aes(x = hour, y = subject, fill = glucose)) + geom_tile() + ylab(ytitle) + ggtitle(paste0("Average glucose values for all subjects across days", title, "")) + xlab(xtitle) + xlim(c(0, 24)) + scale_fill_gradientn(colors = colors, na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits)
 
     if(log){
       p = p + ggplot2::labs(fill = 'log(glucose)')
