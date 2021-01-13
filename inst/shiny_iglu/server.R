@@ -511,6 +511,53 @@ parameter_type <- reactive({
       NULL
     }
   })
+
+  ### Get color scheme
+  output$plot_color_scheme <- renderUI({
+    plottype = plottype()
+    if(plottype == "tsplot"){
+      NULL
+    }
+    else if(plottype == "lasagnamulti"){
+      radioButtons('plot_color_scheme', 'Transformation type',
+                   choices = c(`Blue/Red` = '"blue-red"', `Red/Orange` = '"red-orange"'))
+    }
+    else if(plottype == "lasagnasingle"){
+      radioButtons('plot_color_scheme', 'Transformation type',
+                   choices = c(`Blue/Red` = '"blue-red"', `Red/Orange` = '"red-orange"'))
+    }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
+    }
+  })
+
+  ### Get log boolean
+
+  output$plot_log <- renderUI({
+    plottype = plottype()
+    if(plottype == "tsplot"){
+      radioButtons('plot_log', 'Transformation type',
+                   choices = c(`None` = 'FALSE', `Log10` = 'TRUE'))
+    }
+    else if(plottype == "lasagnamulti"){
+      radioButtons('plot_log', 'Transformation type',
+                   choices = c(`None` = 'FALSE', `Log10` = 'TRUE'))
+    }
+    else if(plottype == "lasagnasingle"){
+      radioButtons('plot_log', 'Transformation type',
+                   choices = c(`None` = 'FALSE', `Log10` = 'TRUE'))
+    }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
+    }
+  })
+
   ### Render Plot
 
   plotFunc <- reactive({
@@ -520,9 +567,16 @@ parameter_type <- reactive({
 
   if(plottype == "tsplot"){
     #plot_glu(data, plottype = "tsplot")
+
+    validate (
+      need(all(!is.null(input$plot_log)),
+           "Please wait - Rendering")
+    )
+
+
     data = transform_data()
     string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
-                   input$plot_TR, ', subjects = NULL, tz = "")', sep = "")
+                   input$plot_TR, ', subjects = NULL, tz = "", "blue-orange", log = ', input$plot_log, ')' ,sep = "")
     eval(parse(text = string))
   }
   else if(plottype == "lasagnamulti"){
@@ -534,9 +588,9 @@ parameter_type <- reactive({
 
     data = transform_data()
     string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
-                   input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(', input$plot_limits, '), ',
-                   midpoint = input$plot_midpoint, ', ',
-                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = "")
+                   input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(', input$plot_limits, ') ,',
+                   input$plot_midpoint, ', ', input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz ="",',
+                   input$plot_color_scheme, ', ', input$plot_log, ')', sep = "")
     eval(parse(text = string))
   }
   else if(plottype == "lasagnasingle"){
@@ -547,9 +601,9 @@ parameter_type <- reactive({
 
     data = subset_data() # subset data to only user-specified subject
     string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
-                   input$plot_lasagnatype, '", limits = c(', input$plot_limits, '), ',
-                   midpoint = input$plot_midpoint, ', ',
-                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = "")
+                   input$plot_lasagnatype, '", limits = c(', input$plot_limits, ') ,',
+                   input$plot_midpoint, ', ', input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "",',
+                   input$plot_color_scheme, ', ', input$plot_log, ')', sep = "")
     eval(parse(text = string))
   }
   else if(plottype == "plot_roc"){
