@@ -35,7 +35,7 @@ parameter_type <- reactive({
     }
 
     else if(input$metric %in% c("conga", "grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
-                                "mage", "modd", "roc", "sd_roc", "active_percent")){
+                                "mag", "mage", "modd", "roc", "sd_roc", "active_percent")){
       return("value")
     }
 
@@ -86,6 +86,10 @@ parameter_type <- reactive({
 
       else if(input$metric == "m_value"){
         textInput("parameter", "Specify Reference Value", value = "90")
+      }
+
+      else if(input$metric == "mag"){
+        textInput("parameter", "Specify Parameter", value = "60")
       }
 
       else if(input$metric == "mage"){
@@ -576,7 +580,7 @@ parameter_type <- reactive({
 
     data = transform_data()
     string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
-                   input$plot_TR, ', subjects = NULL, tz = "", "blue-orange", log = ', input$plot_log, ')' ,sep = "")
+                   input$plot_TR, ', subjects = NULL, inter_gap = 45, tz = "", "blue-orange", log = ', input$plot_log, ')' ,sep = "")
     eval(parse(text = string))
   }
   else if(plottype == "lasagnamulti"){

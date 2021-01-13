@@ -10,7 +10,8 @@ all_metrics(data)
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
 }
 \value{
-If a data.frame object is passed, then a tibble object with 1 row for each subject, and 49 columns is returned:
+If a data.frame object is passed, then a tibble object with 1 row for each subject,
+and one column for each metric is returned:
 a column for subject id,
 a column for adrr value,
 a column for hourly_auc value,
@@ -33,18 +34,17 @@ a column for igc value,
 a column for iqr value,
 a column for j_index value,
 a column for m_value value,
+#' a column for MAG value,
 a column for MAD value,
 a column for mage value,
 a column for modd value,
 a column for above_140 value,
 a column for above_180 value,
-a column for above_200 value,
 a column for above_250 value,
 a column for below_54 value,
 a column for below_70 value,
-a column for in_range_70_140 value,
+a column for in_range_63_140 value,
 a column for in_range_70_180 value,
-a column for in_range_80_200 value,
 a column for range value,
 a column for sd value,
 a column for SdW value,
@@ -66,13 +66,13 @@ The function all_metrics runs all of the iglu functions:
 ADRR, AUC, CONGA, CV_GLU, CV_Measures, eA1C, GMI, GRADE,
 GRADE_Euglycemia, GRADE_Hyperglycemia, GRADE_Hypoglycemia,
 GVP, HBGI, LBGI, Hyper_Index, Hypo_Index, IGC, IQR_GLU,
-J_Index, M_Value, Mad_GLU, MAGE, MODD, Percent_Above,
+J_Index, M_Value, MAG, Mad_GLU, MAGE, MODD, Percent_Above,
 Percent_Below, Percent_In_Range, Range, SD_GLU,
 SD_Measures, SD_ROC, Summary
 and combines them into a tibble object.
 }
 \details{
-Returns a tibble object with 1 row for each subject, and 47 columns:
+Returns a tibble object with 1 row for each subject, and one column per metric:
 a column for subject id,
 a column for adrr value,
 a column for hourly_auc value,
@@ -96,6 +96,7 @@ a column for iqr value,
 a column for j_index value,
 a column for m_value value,
 a column for MAD value,
+a column for MAG value,
 a column for mage value,
 a column for modd value,
 a column for above_140 value,
