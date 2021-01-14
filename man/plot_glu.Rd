@@ -38,7 +38,7 @@ Default is 'tsplot'.}
 in 'id' column of data. Default is all subjects.}
 
 \item{inter_gap}{The maximum allowable gap (in minutes). Gaps larger than
-this will not be connected in the time series plot}
+this will not be connected in the time series plot. The default value is 45 minutes.}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 

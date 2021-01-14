@@ -14,7 +14,7 @@ plot_lasagna(
   LLTR = 70,
   ULTR = 180,
   dt0 = NULL,
-  inter_gap = 60,
+  inter_gap = 45,
   tz = "",
   color_scheme = c("blue-red", "red-orange"),
   log = F
@@ -42,7 +42,7 @@ plot_lasagna(
 \item{inter_gap}{The maximum allowable gap (in minutes) for interpolation of
 NA glucose values. The values will not be interpolated between
 the glucose measurements that are more than inter_gap minutes apart.
-The default value is 60 min.}
+The default value is 45 min.}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 

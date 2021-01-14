@@ -9,7 +9,7 @@
 #' @param inter_gap The maximum allowable gap (in minutes) for interpolation of
 #' NA glucose values. The values will not be interpolated between
 #' the glucose measurements that are more than inter_gap minutes apart.
-#' The default value is 60 min.
+#' The default value is 45 min.
 #' @param LLTR Lower Limit of Target Range, default value is 70 mg/dL.
 #' @param ULTR Upper Limit of Target Range, default value is 180 mg/dL.
 #' @param log Logical value indicating whether log of glucose values should be taken, default values is FALSE.
@@ -31,7 +31,7 @@
 #' plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted')
 #' plot_lasagna_1subject(example_data_1_subject, log = TRUE)
 #'
-plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted', 'daysorted'), limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 60, tz = "", color_scheme = c("blue-red", "red-orange"), log = F){
+plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted', 'daysorted'), limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", color_scheme = c("blue-red", "red-orange"), log = F){
 
   id = glucose = day = NULL
   rm(list = c("id", "glucose", "day"))
@@ -129,7 +129,7 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 #' plot_lasagna(example_data_5_subject, lasagnatype = "subjectsorted", LLTR = 100, tz = "EST")
 #' plot_lasagna(example_data_5_subject, log = TRUE)
 #'
-plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('unsorted', 'timesorted', 'subjectsorted'), maxd = 14, limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 60, tz = "", color_scheme = c("blue-red", "red-orange"), log = F){
+plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('unsorted', 'timesorted', 'subjectsorted'), maxd = 14, limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", color_scheme = c("blue-red", "red-orange"), log = F){
 
   lasagnatype = match.arg(lasagnatype)
   datatype = match.arg(datatype)
