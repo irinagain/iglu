@@ -11,6 +11,8 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
     }
   }
 
+  data <- data %>% dplyr::select(c(id, time, gl))
+
   data <- data[complete.cases(data), ] %>%
     dplyr::group_by(id) %>%
     dplyr::arrange(data.frame(id, time, gl), time) %>%
