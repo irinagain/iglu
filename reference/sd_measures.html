@@ -166,33 +166,33 @@ each SD subtype.</p>
 a column for each SD subtype values is returned.</p>
 <p>Missing values will be linearly interpolated when close enough to non-missing values.</p>
 <ol>
-<li><p>SdW- vertical within days:</p>
+<li><p>SDw - vertical within days:</p>
 <p>Calculated by first taking the standard deviation of each day's glucose measurements,
 then taking the mean of all the standard deviations. That is, for d
 days we compute SD_1 ... SD_d daily standard deviations and calculate
 \(1/d * \sum [(SD_i)]\)</p></li>
-<li><p>SdHHMM - between time points:</p>
-<p>Calculated by taking the mean glucose values at each time point in the grid across days,
+<li><p>SDhhmm - between time points:</p>
+<p>Also known as SDhh:mm. Calculated by taking the mean glucose values at each time point in the grid across days,
 and taking the standard deviation of those mans. That is, for t time points
 we compute X_t means for each time point and then compute SD([X_1, X_2, ... X_t]).</p></li>
-<li><p>SdWSH - within series:</p>
-<p>Calculated by taking the hour-long intervals starting at every point in the interpolated
+<li><p>SDwsh - within series:</p>
+<p>Also known as SDws h. Calculated by taking the hour-long intervals starting at every point in the interpolated
 grid, computing the standard deviation of the points in each hour-long interval, and then
 finding the mean of those standard deviations. That is, for n time points compute
 SD_1 ... SD_n, where SD_i is the standard deviation of the set [SD_i, SD_i+2, ... SD_k-1]
 where SD_k is the first measurement more than an hour later than SD_1. Then, take
 \(1/n * \sum [(SD_i)]\).</p></li>
-<li><p>SdDM - horizontal sd:</p>
+<li><p>SDdm - horizontal sd:</p>
 <p>Calculated by taking the daily mean glucose values, and then taking the standard deviation
 of those daily means. That is, for d days we take X_1 ... X_d daily means, and then compute
 SD([X_1, X_2, ... X_d]).</p></li>
-<li><p>SdB -  between days, within timepoints:</p>
+<li><p>SDb -  between days, within timepoints:</p>
 <p>Calculated by taking the standard deviation of the glucose values across days for each time point,
 and then taking the mean of those standard deviations.
 That is, for t time points take SD_1 ... SD_t standard deviations, and then compute
 \(1/t * \sum[(SD_i)]\)</p></li>
-<li><p>SdBDM - between days, within timepoints, corrected for changes in daily means:
-Calculated by subtracting the daily mean from each glucose value, then taking the standard deviation
+<li><p>SDbdm - between days, within timepoints, corrected for changes in daily means:
+Also known as SDb // dm. Calculated by subtracting the daily mean from each glucose value, then taking the standard deviation
 of the corrected glucose values across days for each time point, and then taking the mean of those
 standard deviations.
 That is, for t time points take SD_1 ... SD_t standard deviations, and then compute
@@ -214,7 +214,7 @@ doi: <a href='https://doi.org/10.1089/dia.2009.0015'>10.1089/dia.2009.0015</a>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 <span class='fu'>sd_measures</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 7</span><span>
-#&gt;   id          SdW SdHHMM SdWSH  SdDM   SdB SdBDM
+#&gt;   id          SDw SDhhmm SDwsh  SDdm   SDb SDbdm
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> Subject 1  26.4   19.6  6.54  16.7  27.9  24.0</div><div class='input'>
 </div></span></pre>
