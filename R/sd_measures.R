@@ -42,8 +42,8 @@
 #' Also known as SDws h. Calculated by taking the hour-long intervals starting at every point in the interpolated
 #' grid, computing the standard deviation of the points in each hour-long interval, and then
 #' finding the mean of those standard deviations. That is, for n time points compute
-#' SD_1 ... SD_n, where SD_i is the standard deviation of the set [SD_i, SD_i+2, ... SD_k-1]
-#' where SD_k is the first measurement more than an hour later than SD_1. Then, take
+#' SD_1 ... SD_n, where SD_i is the standard deviation of the glucose values [X_i, X_{i+1}, ... X_{i+k}]
+#' corresponding to hour-long window starting at observation X_i, the number of observations in the window k depends on CGM meter frequency. Then, take
 #' \eqn{1/n * \sum [(SD_i)]}.
 #'
 #' \item SDdm - horizontal sd:
@@ -60,6 +60,7 @@
 #' \eqn{1/t * \sum[(SD_i)]}
 #'
 #' \item SDbdm - between days, within timepoints, corrected for changes in daily means:
+#'
 #' Also known as SDb // dm. Calculated by subtracting the daily mean from each glucose value, then taking the standard deviation
 #' of the corrected glucose values across days for each time point, and then taking the mean of those
 #' standard deviations.
