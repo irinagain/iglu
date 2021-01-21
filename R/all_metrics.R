@@ -22,6 +22,7 @@
 #' a column for subject id,
 #' a column for adrr value,
 #' a column for hourly_auc value,
+#' a column for COGI value,
 #' a column for CONGA(24) value,
 #' a column for cv value,
 #' a column for CVmean value,
@@ -41,7 +42,7 @@
 #' a column for iqr value,
 #' a column for j_index value,
 #' a column for m_value value,
-#' #' a column for MAG value,
+#' a column for MAG value,
 #' a column for MAD value,
 #' a column for mage value,
 #' a column for modd value,
@@ -75,6 +76,7 @@
 #' a column for subject id,
 #' a column for adrr value,
 #' a column for hourly_auc value,
+#' a column for COGI value,
 #' a column for CONGA(24) value,
 #' a column for cv value,
 #' a column for CVmean value,
@@ -135,6 +137,7 @@ all_metrics <- function(data){
 
   # Mean, Median, and Quantile Metrics not included. Summary covers all
   out = list("ADRR" = adrr(data),
+             "COGI" = cogi(data),
              "CV_GLU" = cv_glu(data),
              "eA1C" = ea1c(data),
              "GMI" = gmi(data),
