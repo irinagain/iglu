@@ -9,11 +9,13 @@ plot_glu(
   plottype = c("tsplot", "lasagna"),
   datatype = c("all", "average", "single"),
   lasagnatype = c("unsorted", "timesorted"),
-  LLTR = 80,
-  ULTR = 140,
+  LLTR = 70,
+  ULTR = 180,
   subjects = NULL,
   inter_gap = 45,
-  tz = ""
+  tz = "",
+  color_scheme = c("blue-red", "red-orange"),
+  log = F
 )
 }
 \arguments{
@@ -26,19 +28,25 @@ Default is 'tsplot'.}
 
 \item{datatype}{String corresponding to data aggregation used for plotting, currently supported options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject}
 
-\item{lasagnatype}{String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.}
+\item{lasagnatype}{String corresponding to plot type when using \code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.}
 
-\item{LLTR}{Lower Limit of Target Range, default value is 80 mg/dL.}
+\item{LLTR}{Lower Limit of Target Range, default value is 70 mg/dL.}
 
-\item{ULTR}{Upper Limit of Target Range, default value is 140 mg/dL.}
+\item{ULTR}{Upper Limit of Target Range, default value is 180 mg/dL.}
 
 \item{subjects}{String or list of strings corresponding to subject names
 in 'id' column of data. Default is all subjects.}
 
 \item{inter_gap}{The maximum allowable gap (in minutes). Gaps larger than
-this will not be connected in the time series plot}
+this will not be connected in the time series plot. The default value is 45 minutes.}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
+
+\item{color_scheme}{String corresponding to the chosen color scheme when the `plottype` is 'lasagna'. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.}
+
+\item{log}{Logical value indicating whether log10 of glucose values should be taken, default value is FALSE.
+When log = TRUE, the glucose values, LLTR, and ULTR will all be log transformed, and time series plots will
+be on a semilogarithmic scale.}
 }
 \value{
 Any output from the plot object
@@ -62,7 +70,7 @@ plot_glu(example_data_1_subject)
 
 data(example_data_5_subject)
 plot_glu(example_data_5_subject, subjects = 'Subject 2')
-plot_glu(example_data_5_subject, plottype = 'tsplot', tz = 'EST', LLTR = 70, ULTR= 150)
+plot_glu(example_data_5_subject, plottype = 'tsplot', tz = 'EST', LLTR = 70, ULTR = 150)
 plot_glu(example_data_5_subject, plottype = 'lasagna', lasagnatype = 'timesorted')
 
 }

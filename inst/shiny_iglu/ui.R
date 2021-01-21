@@ -43,6 +43,7 @@ shinyUI(fluidPage(
                                                                                `Low Blood Glucose Index` = 'lbgi',
                                                                                `M-Value` = 'm_value',
                                                                                `MAD` = 'mad_glu',
+                                                                               `MAG` = 'mag',
                                                                                `MAGE` = 'mage',
                                                                                `Mean` = 'mean_glu',
                                                                                `Median` = 'median_glu',
@@ -53,7 +54,8 @@ shinyUI(fluidPage(
                                                                                `Standard Deviation` = 'sd_glu',
                                                                                `Standard Deviation Subtypes` = 'sd_measures',
                                                                                `Standard Deviation ROC` = 'sd_roc',
-                                                                               `Summary Statistics` = 'summary_glu'
+                                                                               `Summary Statistics` = 'summary_glu',
+                                                                               `All Metrics` = 'all_metrics'
                )),
                uiOutput("select_parameter"),
                uiOutput("help_text")),
@@ -84,14 +86,46 @@ shinyUI(fluidPage(
                uiOutput("plot_midpoint"),
                uiOutput('plot_limits'),
                uiOutput('plot_colorbar_help_text'),
+               uiOutput('plot_color_scheme'),
+               uiOutput('plot_log'),
                downloadButton(outputId = "pdfButton", label = "PDF"),
                downloadButton(outputId = "pngButton", label = "PNG"),
                downloadButton(outputId = "epsButton", label = "EPS")
                ),
                mainPanel(plotOutput("plot"))
+             )),
+
+    tabPanel("AGP", fluid = TRUE,
+             sidebarLayout(
+               sidebarPanel(
+                 uiOutput("agp_subject"),
+                 uiOutput("agp_subject_help_text"),
+                 downloadButton(outputId = "pdfAGP", label = "pdf"),
+                 downloadButton(outputId = "pngAGP", label = "png"),
+                 downloadButton(outputId = "epsAGP", label = "eps")
+               ),
+               mainPanel(
+                 fluidRow(
+                   column(6, wellPanel("Glucose Statistics")),
+                   column(6, wellPanel("Time in Ranges"))),
+                 fluidRow(
+                   column(6, DT::dataTableOutput("agp_metrics")),
+                   column(6, plotOutput("plot_ranges"))
+                 ),
+                 fluidRow(
+                   column(12, wellPanel("Ambulatory Glucose Profile (AGP)"))
+                 ),
+                 fluidRow(
+                   column(12,  plotOutput("plot_agp"))
+                 ),
+                 fluidRow(
+                   column(12, wellPanel("Daily Glucose Profiles"))
+                 ),
+                 fluidRow(
+                   column(12, plotOutput("plot_daily"))
+                 )
+               )
              ))
-
-
   )
 
 

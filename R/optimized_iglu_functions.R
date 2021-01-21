@@ -1,26 +1,25 @@
-
-#'  Optomized Calculations of the iglu Functions: AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, & SD_MEASURES
+#' Optimized Calculations of the iglu Functions: AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, & SD_MEASURES
 #'
 #' @description
 #' The function all_metrics_optomized optimizes the functions
 #' AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, & SD_MEASURES iglu functions
 #' by extracting the CGMS2DayByDay calculation and passing the result into each function.
-#' Tests with microbenchmark show the optimization is 9x faster.
 #'
 #' @usage
 #' optimized_iglu_functions(data)
 #'
-#' @param data DataFrame object with column names "id", "time", and "gl", or numeric vector of glucose values.
+#' @param data DataFrame object with column names "id", "time", and "gl".
 #'
 #' @return
-#' If a data.frame object is passed, then a tibble object with 1 row for each subject, and fourteen columns is returned:
+#' If a data.frame object is passed, then a tibble object with 1 row for each subject, and fifteen columns is returned:
 #' a column for subject id,
-#' a column for Continuous Overall Net Glycemic Action (Conga) value,
+#' a column for CONGA(24) value,
 #' a column for Glucose Variability Percentage (GVP) value,
 #' a column for mean difference between glucose values obtained at the same time of day (MODD) value,
 #' a column for area under curve (AUC) value,
 #' a column for Coefficient of Variation mean (CV_Measures_Mean) value,
 #' a column for Coefficient of Variation standard deviation (CV_Measures_SD) value,
+#' a column for Mean Absolute Glucose (MAG) value,
 #' a column for Standard Deviation of rate of change (SD Roc) value,
 #' a column for Standard Deviation vertical within days (SdW) value,
 #' a column for Standard Deviation between time points (SdHHMM) value,
@@ -33,15 +32,16 @@
 #' @export
 #'
 #' @details
-#' Retruns a tibble object with 1 row for each subject, and fourteen columns:
+#' Returns a tibble object with 1 row for each subject, and fifteen columns:
 #' a column for subject id,
-#' a column for Continuous Overall Net Glycemic Action (Conga) value,
+#' a column for CONGA(24) value,
 #' a column for Glucose Variability Percentage (GVP) value,
 #' a column for mean difference between glucose values obtained at the same time of day (MODD) value,
 #' a column for area under curve (AUC) value,
 #' a column for Coefficient of Variation mean (CV_Measures_Mean) value,
 #' a column for Coefficient of Variation standard deviation (CV_Measures_SD) value,
 #' a column for Standard Deviation of rate of change (SD Roc) value,
+#' a column for Mean Absolute Glucose (MAG) value,
 #' a column for Standard Deviation vertical within days (SdW) value,
 #' a column for Standard Deviation between time points (SdHHMM) value,
 #' a column for Standard Deviation within series (SdWSH) value,
@@ -50,7 +50,7 @@
 #' a column for Standard Deviation between days, within timepoints value,
 #' corrected for changes in daily means (SdBDM) value.
 #'
-#'@examples
+#' @examples
 #' data(example_data_1_subject)
 #' optimized_iglu_functions(example_data_1_subject)
 #'
@@ -59,15 +59,15 @@
 #'
 
 
-## Needed Packages
-#library(dplyr)
-#library(tidyverse)
-
 optimized_iglu_functions <- function(data) {
+
+  gl = id = NULL
+  rm(list = c("gl", "id"))
+  data = check_data_columns(data)
+
   ## Passes CGMS2DayByDay data to individual functions
   function_call <- function(data, hours) {
     conga_single_O <- function(.data_ip, hours = 24, tz = "") {
-      ## conga stuff
       gl_by_id_ip = .data_ip[[1]]
       dt0 = .data_ip[[3]]
       hourly_readings = round(60 / dt0, digits = 0)
@@ -123,6 +123,9 @@ optimized_iglu_functions <- function(data) {
 
     auc_single_O <- function(.data_ip, tz = "") {
 
+      each_area = daily_area = NULL
+      rm(list = c("each_area", "daily_area"))
+
       dt0 = .data_ip$dt0
 
       day <- rep(.data_ip$actual_dates, 1440/dt0)
@@ -130,12 +133,24 @@ optimized_iglu_functions <- function(data) {
 
       temp_df = cbind.data.frame(day, gl) %>%
         dplyr::group_by(day) %>%
-        dplyr::summarise(each_area = (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2), .groups = "drop") %>%
+        dplyr::summarise(each_area = (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2)) %>%
         dplyr::summarise(daily_area = sum(each_area, na.rm = TRUE),
                          hours = dt0/60 * length(na.omit(each_area)),
                          hourly_avg = daily_area/hours, .groups = 'drop')
 
       return(mean(temp_df$hourly_avg))
+    }
+
+    mag_single_O <- function(.data_ip) {
+      n = 60
+
+      data_ip = .data_ip
+      idx = seq(1, ncol(data_ip[[1]]), by = round(n/data_ip[[3]]))
+      idx_gl = as.vector(t(data_ip[[1]][, idx]))
+      mag = sum(abs(diff(idx_gl)), na.rm = TRUE)/
+        (length(na.omit(idx_gl))*n/60)
+
+      return(mag)
     }
 
     SdW <- function(.data_ip) {
@@ -180,11 +195,11 @@ optimized_iglu_functions <- function(data) {
     .data_ip = CGMS2DayByDay(data, tz = "")
     out <- data.frame("Conga" = numeric(), "GVP" = numeric(), "MODD" = numeric(),
                       "SD Roc" = numeric(), "CV_Measures_Mean" = numeric(),
-                      "CV_Measures_SD" = numeric(), "AUC" = numeric(), "SdW" = numeric(),
-                      "SdHHMM" = numeric(), "SdWSH" = numeric(), "SdDM" = numeric(),
+                      "CV_Measures_SD" = numeric(), "AUC" = numeric(), "MAG" = numeric(),
+                      "SdW" = numeric(),  "SdHHMM" = numeric(), "SdWSH" = numeric(), "SdDM" = numeric(),
                       "SdB" = numeric(), "SdBDM" = numeric())
 
-    outrow <- c(1:13)
+    outrow <- c(1:14)
 
     ## conga
     outrow[1] = conga_single_O(.data_ip)
@@ -205,20 +220,26 @@ optimized_iglu_functions <- function(data) {
     ## AUC
     outrow[7] = auc_single_O(.data_ip)
 
+    ## MAG
+    outrow[8] = mag_single_O(.data_ip)
+
     ## SD Measures
-    outrow[8] = SdW(.data_ip)
-    outrow[9] = SdHHMM(.data_ip)
-    outrow[10] = SdWSH(.data_ip)
-    outrow[11] = SdDM(.data_ip)
-    outrow[12] = SdB(.data_ip)
-    outrow[13] = SdBDM(.data_ip)
+    outrow[9] = SdW(.data_ip)
+    outrow[10] = SdHHMM(.data_ip)
+    outrow[11] = SdWSH(.data_ip)
+    outrow[12] = SdDM(.data_ip)
+    outrow[13] = SdB(.data_ip)
+    outrow[14] = SdBDM(.data_ip)
 
     out[1, ] <- outrow
 
     return(out)
   }
 
-  ## Creates the tibble and calls the funtion above
+  id = NULL
+  rm(id)
+
+  ## Creates the tibble and calls the function above
   out = data %>%
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%

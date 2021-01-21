@@ -26,7 +26,7 @@ shinyServer(function(input, output) {
 parameter_type <- reactive({
 
   if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
-                         "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu")){
+                         "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
     return("none")
   }
 
@@ -35,7 +35,7 @@ parameter_type <- reactive({
     }
 
     else if(input$metric %in% c("conga", "grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
-                                "mage", "modd", "roc", "sd_roc", "active_percent")){
+                                "mag", "mage", "modd", "roc", "sd_roc", "active_percent")){
       return("value")
     }
 
@@ -53,7 +53,7 @@ parameter_type <- reactive({
 
     if(parameter_type == "list"){
       if(input$metric == "above_percent"){
-        textInput("parameter", "Specify Parameter", value = "140, 180, 200, 250")
+        textInput("parameter", "Specify Parameter", value = "140, 180, 250")
       }
       else if(input$metric == "below_percent"){
         textInput("parameter", "Specify Parameter", value = "50, 80")
@@ -65,7 +65,7 @@ parameter_type <- reactive({
 
   else if(parameter_type == "value"){
     if(input$metric == "conga"){
-      textInput("parameter", "Specify n", value = "24")
+      textInput("parameter", "Specify Parameter", value = "24")
     }
 
       else if(input$metric == "grade_hyper"){
@@ -86,6 +86,10 @@ parameter_type <- reactive({
 
       else if(input$metric == "m_value"){
         textInput("parameter", "Specify Reference Value", value = "90")
+      }
+
+      else if(input$metric == "mag"){
+        textInput("parameter", "Specify Parameter", value = "60")
       }
 
       else if(input$metric == "mage"){
@@ -129,26 +133,118 @@ parameter_type <- reactive({
 
   output$help_text <- renderUI({
     parameter_type = parameter_type()
+
     if(parameter_type == "none"){
       helpText("No parameters need to be specified.")
     }
+
     else if(parameter_type == "list"){
-      helpText("Enter numeric target values separated by comma.")
+      if(input$metric == "above_percent"){
+        helpText("Enter target glucose thresholds separated by comma.")
+      }
+      else if(input$metric == "below_percent"){
+        helpText("Enter target glucose thresholds separated by comma.")
+      }
+      else if(input$metric == "quantile_glu"){
+        helpText("Enter quantile values separated by comma.")
+      }
     }
+
     else if(parameter_type == "value"){
-      helpText("Enter numeric value corresponding to parameter.")
+      if(input$metric == "conga"){
+        helpText("Enter the hours between observations for the CONGA calculation.")
+      }
+
+      else if(input$metric == "grade_hyper"){
+        helpText("Enter the upper bound hyperglycemia cutoff value.")
+      }
+
+      else if(input$metric == "grade_hypo"){
+        helpText("Enter the lower bound hypoglycemia cutoff value.")
+      }
+
+      else if(input$metric == "hyper_index"){
+        helpText("Enter the upper limit of target glucose range.")
+      }
+
+      else if(input$metric == "hypo_index"){
+        helpText("Enter the lower limit of target glucose range.")
+      }
+
+      else if(input$metric == "m_value"){
+        helpText("Enter the reference value for normal basal glycemia.")
+      }
+
+      else if(input$metric == "mag"){
+        helpText("Enter the interval (in minutes) to calculate change in glucose.")
+      }
+
+      else if(input$metric == "mage"){
+        helpText("Enter the multiple of SD used to determine glycemic excursions.")
+      }
+
+      else if(input$metric == "modd"){
+        helpText("Enter the lag in days.")
+      }
+
+      else if(input$metric == "active_percent"){
+        helpText("Enter CGM frequency in minutes.")
+      }
+
+      else if(input$metric == "roc"){
+        helpText("Enter time interval (in minutes) for rate of change.")
+      }
+
+      else if(input$metric == "sd_roc"){
+        helpText("Enter time interval (in minutes) for rate of change.")
+      }
     }
+
     else if(parameter_type == "lwrupr"){
-      helpText("Enter numeric values corresponding to the lower and upper bounds, respectively, separated by commas.")
+      if(input$metric == "grade_eugly"){
+        helpText("Enter a lower and an upper glycemic bound separated by a comma.")
+      }
+
+      else if(input$metric == "igc"){
+        helpText("Enter the lower and upper limits of the target range separated by a comma.")
+      }
     }
+
     else if(parameter_type == "nested"){
-      helpText("Enter pairs of numeric values in parentheses, with commas separating values in each pair and the pairs themselves.")
+      if(input$metric == "in_range_percent"){
+        helpText("Enter target ranges in list format - e.g. (lower, upper), (lower, upper)")
+      }
     }
   })
 
   metric_table <- reactive({
     parameter_type = parameter_type()
     data = transform_data()
+
+    if (is.null(input$parameter)) {
+      validate(
+        need(!is.null(input$parameter), "Please wait - Rendering")
+      )
+    } else if (grepl(',', input$parameter) & !grepl("\\(", input$parameter)) {
+      if (length(strsplit(input$parameter, split = ",")[[1]]) != 2) {
+        validate (
+          need(parameter_type %in% c("list", "none"), "Please wait - Rendering")
+        )
+      } else {
+        validate(
+          need(parameter_type %in% c("list", "lwrupr", "none"), "Please wait - Rendering")
+        )
+      }
+    } else if (grepl("\\(", input$parameter)) {
+      validate(
+        need(parameter_type %in% c("nested", "none"), "Please wait - Rendering")
+      )
+    } else if (!grepl(',', input$parameter)) {
+      validate(
+        need(parameter_type %in% c("value", "none"), "Please wait - Rendering")
+      )
+    }
+
     library(iglu)
     if(is.null(input$parameter) | parameter_type == "none"){
       string = paste("iglu::", input$metric, "(data)", sep = "")
@@ -193,7 +289,8 @@ parameter_type <- reactive({
 
   output$metric <- DT::renderDataTable(metric_table(), extensions = "Buttons",
                                        options = list(dom = "Btip",
-                                                      buttons = c("copy", "csv", "excel", "pdf", "print")))
+                                                      buttons = c("copy", "csv", "excel", "pdf", "print"),
+                                                      scrollX = TRUE))
 
 
   ############################ PLOTTING SECTION #####################################################
@@ -406,7 +503,7 @@ parameter_type <- reactive({
   output$plot_TR <- renderUI({  # Request input parameters depending on type of plot
     plottype = plottype() # bring reactive input variable into this renderUI call
     if(plottype %in% c("tsplot", "lasagnamulti", "lasagnasingle")){
-      textInput("plot_TR", "Specify Lower and Upper Target Values, separated by a Comma", value = "80, 140")
+      textInput("plot_TR", "Specify Lower and Upper Target Values, separated by a Comma", value = "70, 180")
     }
     else if(plottype %in% c("plot_roc", "hist_roc")){
       NULL # ROC plots don't need TR
@@ -485,6 +582,53 @@ parameter_type <- reactive({
       NULL
     }
   })
+
+  ### Get color scheme
+  output$plot_color_scheme <- renderUI({
+    plottype = plottype()
+    if(plottype == "tsplot"){
+      NULL
+    }
+    else if(plottype == "lasagnamulti"){
+      radioButtons('plot_color_scheme', 'Transformation type',
+                   choices = c(`Blue/Red` = '"blue-red"', `Red/Orange` = '"red-orange"'))
+    }
+    else if(plottype == "lasagnasingle"){
+      radioButtons('plot_color_scheme', 'Transformation type',
+                   choices = c(`Blue/Red` = '"blue-red"', `Red/Orange` = '"red-orange"'))
+    }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
+    }
+  })
+
+  ### Get log boolean
+
+  output$plot_log <- renderUI({
+    plottype = plottype()
+    if(plottype == "tsplot"){
+      radioButtons('plot_log', 'Transformation type',
+                   choices = c(`None` = 'FALSE', `Log10` = 'TRUE'))
+    }
+    else if(plottype == "lasagnamulti"){
+      radioButtons('plot_log', 'Transformation type',
+                   choices = c(`None` = 'FALSE', `Log10` = 'TRUE'))
+    }
+    else if(plottype == "lasagnasingle"){
+      radioButtons('plot_log', 'Transformation type',
+                   choices = c(`None` = 'FALSE', `Log10` = 'TRUE'))
+    }
+    else if(plottype == "plot_roc"){
+      NULL
+    }
+    else if(plottype == "hist_roc"){
+      NULL
+    }
+  })
+
   ### Render Plot
 
   plotFunc <- reactive({
@@ -494,25 +638,43 @@ parameter_type <- reactive({
 
   if(plottype == "tsplot"){
     #plot_glu(data, plottype = "tsplot")
+
+    validate (
+      need(all(!is.null(input$plot_log)),
+           "Please wait - Rendering")
+    )
+
+
     data = transform_data()
     string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
-                   input$plot_TR, ', subjects = NULL, tz = "")', sep = "")
+                   input$plot_TR, ', subjects = NULL, inter_gap = 45, tz = "", "blue-orange", log = ', input$plot_log, ')' ,sep = "")
     eval(parse(text = string))
   }
   else if(plottype == "lasagnamulti"){
+
+    validate (
+      need(all(!is.null(input$plot_lasagnatype) & !is.null(input$plot_datatype)),
+           "Please wait - Rendering")
+    )
+
     data = transform_data()
     string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
-                   input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(', input$plot_limits, '), ',
-                   midpoint = input$plot_midpoint, ', ',
-                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = "")
+                   input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(', input$plot_limits, ') ,',
+                   input$plot_midpoint, ', ', input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz ="",',
+                   input$plot_color_scheme, ', ', input$plot_log, ')', sep = "")
     eval(parse(text = string))
   }
   else if(plottype == "lasagnasingle"){
+
+    validate (
+      need(!is.null(input$plot_subjects), "Please wait - Rendering")
+    )
+
     data = subset_data() # subset data to only user-specified subject
     string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
-                   input$plot_lasagnatype, '", limits = c(', input$plot_limits, '), ',
-                   midpoint = input$plot_midpoint, ', ',
-                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = "")
+                   input$plot_lasagnatype, '", limits = c(', input$plot_limits, ') ,',
+                   input$plot_midpoint, ', ', input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "",',
+                   input$plot_color_scheme, ', ', input$plot_log, ')', sep = "")
     eval(parse(text = string))
   }
   else if(plottype == "plot_roc"){
@@ -568,6 +730,130 @@ parameter_type <- reactive({
     content = function(file) {
       postscript(file)
       plot(plotFunc())
+      dev.off()
+    }
+  )
+
+  ############################ AGP SECTION #####################################################
+
+  ### Get desired subject
+  output$agp_subject <- renderUI({
+    data = transform_data() # bring reactive data input into this renderUI call to default to all subjects
+    subject = unique(data$id)[1]
+    textInput("agp_subject", "Enter Subject ID", value = subject)
+  })
+
+  output$agp_subject_help_text <- renderUI({
+    helpText("Enter the ID of a subject to display their AGP Report")
+  })
+
+  agp_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
+
+    validate (
+      if (is.null(input$agp_subject)) {
+        need(!is.null(input$agp_subject), "Please wait - Rendering")
+      } else {
+        need(input$agp_subject %in% transform_data()$id, "Please check Subject ID")
+      }
+    )
+
+    data = transform_data()
+    data = data[data$id == input$agp_subject,] # reactively subset data when subjects input is modified
+    return(data)
+  })
+
+  ### Rendering Sections
+
+  agpMetrics <- reactive({
+
+    library(iglu)
+    data = agp_data()
+    string = paste("iglu::agp_metrics(data = data, shinyformat = TRUE)")
+    eval(parse(text = string))
+  })
+
+  output$agp_metrics <- DT::renderDataTable({
+
+    DT::datatable(agpMetrics(), options = list(dom = 't'), rownames = FALSE, colnames = "")
+    })
+
+  plotRanges <- reactive({
+
+    library(iglu)
+    data = agp_data()
+    string = paste('iglu::plot_ranges(data = data)')
+    eval(parse(text = string))
+  })
+
+  output$plot_ranges <- renderPlot({
+
+    plotRanges()
+  })
+
+  plotAGP <- reactive({
+
+    library(iglu)
+    data = agp_data()
+    string = paste('iglu::plot_agp(data = data)')
+    eval(parse(text = string))
+  })
+
+  output$plot_agp <- renderPlot({
+
+    plotAGP()
+  })
+
+  plotDaily <- reactive({
+
+    library(iglu)
+    data = agp_data()
+    string = paste('iglu::plot_daily(data = data)')
+    eval(parse(text = string))
+  })
+
+  output$plot_daily <- renderPlot({
+
+    plotDaily()
+  })
+
+  options(shiny.usecairo = T)
+
+  output$pdfAGP<- downloadHandler(
+    filename = function() {
+      paste("AGP", '.pdf', sep = '')
+    },
+    content = function(file) {
+      cairo_pdf(filename = file, width = 20, height = 18, bg = "transparent")
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
+
+  output$pngAGP <- downloadHandler(
+
+    filename = function() {
+      paste("AGP", '.png', sep = '')
+    },
+    content = function(file) {
+      png(file)
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
+
+  output$epsAGP <- downloadHandler(
+    filename = function() {
+      paste("AGP", '.eps', sep = '')
+    },
+    content = function(file) {
+      postscript(file)
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
       dev.off()
     }
   )

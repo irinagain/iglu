@@ -8,12 +8,12 @@
 #' (no measurements) and 100 (all measurements).
 #'
 #' @usage
-#' above_percent(data, targets_above = c(140, 180, 200, 250))
+#' above_percent(data, targets_above = c(140, 180, 250))
 #'
 #' @inheritParams mean_glu
 #' @param targets_above Numeric vector of glucose thresholds. Glucose values from
 #' data argument will be compared to each value in the targets_above vector.
-#' Default list is (140, 180, 200, 250).
+#' Default list is (140, 180, 250).
 #'
 #' @details
 #' A tibble object with 1 row for each subject, a column for subject id and
@@ -46,7 +46,7 @@
 #' above_percent(example_data_5_subject, targets_above = c(70, 170))
 #'
 
-above_percent <- function(data, targets_above = c(140,180,200,250)){
+above_percent <- function(data, targets_above = c(140, 180, 250)){
 
   x = target_val = id = NULL
   rm(list = c("id", "target_val", "x"))

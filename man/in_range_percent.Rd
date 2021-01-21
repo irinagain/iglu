@@ -4,14 +4,14 @@
 \alias{in_range_percent}
 \title{Calculate percentage in targeted value ranges}
 \usage{
-in_range_percent(data, target_ranges = list(c(80, 200), c(70, 180), c(70, 140)))
+in_range_percent(data, target_ranges = list(c(70, 180), c(63, 140)))
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values.}
 
 \item{target_ranges}{List of target value ranges wrapped in an r 'list' structure.
-Default list of ranges is ((80, 200), (70, 180), (70, 140)).}
+Default list of ranges is ((70, 180), (63, 140)) mg/dL, where the range (70, 180) is recommended to assess glycemic control for subjects with type 1 or type 2 diabetes, and (63, 140) is recommended for assessment of glycemic control during pregnancy; see Battelino et al. (2019)}
 }
 \value{
 If a data.frame object is passed, then a tibble object with
@@ -56,4 +56,6 @@ Rodbard (2009) Interpretation of continuous glucose monitoring data:
 glycemic variability and quality of glycemic control,
 \emph{Diabetes Technology and Therapeutics} \strong{11} .55-67,
 \doi{10.1089/dia.2008.0132}.
+
+Battelino et al. (2019) Clinical targets for continuous glucose monitoring data interpretation: recommendations from the international consensus on time in range. \emph{Diabetes Care}  \strong{42}(8):1593-603, \doi{10.2337/dci19-0028}
 }
