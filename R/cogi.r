@@ -4,7 +4,7 @@
 #' The function COGI produces cogi values in a tibble object.
 #'
 #' @usage
-#' cogi(data, targets = c(70, 180))
+#' cogi(data, targets = c(70, 180), weights = c(.5,.35,.15))
 #'
 #' @param data DataFrame with column names ("id", "time", and "gl"),
 #' or numeric vector of glucose values.
@@ -42,12 +42,12 @@
 #' data(example_data_1_subject)
 #'
 #' cogi(example_data_1_subject)
-#' cogi(example_data_1_subject, targets = c(50, 140))
+#' cogi(example_data_1_subject, targets = c(50, 140), weights = c(.3,.6,.1))
 #'
 #' data(example_data_5_subject)
 #'
 #' cogi(example_data_5_subject)
-#' cogi(example_data_5_subject, targets = c(80, 180))
+#' cogi(example_data_5_subject, targets = c(80, 180), weights = (.2,.4,.4))
 #'
 
 
@@ -71,7 +71,7 @@ cogi <- function(data, targets = c(70,180), weights = c(.5,.35,.15)){
   br = below_percent(data, targets_below = targets[1])[,2]
   stddev = sd_glu(data)$sd
   weighted_features = weight_features(ir,c(0,100),weight = weights[1], increasing = TRUE)+weight_features(br,c(0,15),weight = weights[2])+weight_features(stddev,c(18,108),weight = weights[3])
-  out = tibble(weighted_features)
+  out = dplyr::tibble(weighted_features)
   out$id = sd_glu(data)$id
   out = out[,c(2,1)]
   colnames(out) = c("id", "COGI")
