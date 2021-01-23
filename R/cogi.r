@@ -47,7 +47,7 @@
 #' data(example_data_5_subject)
 #'
 #' cogi(example_data_5_subject)
-#' cogi(example_data_5_subject, targets = c(80, 180), weights = (.2,.4,.4))
+#' cogi(example_data_5_subject, targets = c(80, 180), weights = c(.2,.4,.4))
 #'
 
 
