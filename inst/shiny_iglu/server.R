@@ -30,7 +30,7 @@ parameter_type <- reactive({
     return("none")
   }
 
-    else if(input$metric %in% c("above_percent", "below_percent", "quantile_glu")){
+    else if(input$metric %in% c("above_percent", "below_percent", "cogi", "quantile_glu")){
       return("list")
     }
 
@@ -55,9 +55,15 @@ parameter_type <- reactive({
       if(input$metric == "above_percent"){
         textInput("parameter", "Specify Parameter", value = "140, 180, 250")
       }
+
       else if(input$metric == "below_percent"){
         textInput("parameter", "Specify Parameter", value = "50, 80")
       }
+
+      else if(input$metric == "cogi"){
+        textInput("parameter", "Specify Parameter", value = "70, 180")
+      }
+
       else if(input$metric == "quantile_glu"){
         textInput("parameter", "Specify Parameter", value = "0, 25, 50, 75, 100")
       }
@@ -142,9 +148,18 @@ parameter_type <- reactive({
       if(input$metric == "above_percent"){
         helpText("Enter target glucose thresholds separated by comma.")
       }
+
       else if(input$metric == "below_percent"){
         helpText("Enter target glucose thresholds separated by comma.")
       }
+
+      else if(input$metric == "cogi"){
+        helpText("Enter lower and upper glucose limits separated by comma")
+        helpText("Default weights applie to time in range, time below range,
+                 and glucose variability, respectively, are (.5, .35, .15)")
+
+      }
+
       else if(input$metric == "quantile_glu"){
         helpText("Enter quantile values separated by comma.")
       }
