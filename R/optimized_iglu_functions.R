@@ -11,7 +11,7 @@
 #' @param data DataFrame object with column names "id", "time", and "gl".
 #'
 #' @return
-#' If a data.frame object is passed, then a tibble object with 1 row for each subject, and fourteen columns is returned:
+#' If a data.frame object is passed, then a tibble object with 1 row for each subject, and fifteen columns is returned:
 #' a column for subject id,
 #' a column for CONGA(24) value,
 #' a column for Glucose Variability Percentage (GVP) value,
@@ -19,6 +19,7 @@
 #' a column for area under curve (AUC) value,
 #' a column for Coefficient of Variation mean (CV_Measures_Mean) value,
 #' a column for Coefficient of Variation standard deviation (CV_Measures_SD) value,
+#' a column for Mean Absolute Glucose (MAG) value,
 #' a column for Standard Deviation of rate of change (SD Roc) value,
 #' a column for Standard Deviation vertical within days (SdW) value,
 #' a column for Standard Deviation between time points (SdHHMM) value,
@@ -31,7 +32,7 @@
 #' @export
 #'
 #' @details
-#' Returns a tibble object with 1 row for each subject, and fourteen columns:
+#' Returns a tibble object with 1 row for each subject, and fifteen columns:
 #' a column for subject id,
 #' a column for CONGA(24) value,
 #' a column for Glucose Variability Percentage (GVP) value,
@@ -40,6 +41,7 @@
 #' a column for Coefficient of Variation mean (CV_Measures_Mean) value,
 #' a column for Coefficient of Variation standard deviation (CV_Measures_SD) value,
 #' a column for Standard Deviation of rate of change (SD Roc) value,
+#' a column for Mean Absolute Glucose (MAG) value,
 #' a column for Standard Deviation vertical within days (SdW) value,
 #' a column for Standard Deviation between time points (SdHHMM) value,
 #' a column for Standard Deviation within series (SdWSH) value,
@@ -139,6 +141,18 @@ optimized_iglu_functions <- function(data) {
       return(mean(temp_df$hourly_avg))
     }
 
+    mag_single_O <- function(.data_ip) {
+      n = 60
+
+      data_ip = .data_ip
+      idx = seq(1, ncol(data_ip[[1]]), by = round(n/data_ip[[3]]))
+      idx_gl = as.vector(t(data_ip[[1]][, idx]))
+      mag = sum(abs(diff(idx_gl)), na.rm = TRUE)/
+        (length(na.omit(idx_gl))*n/60)
+
+      return(mag)
+    }
+
     SdW <- function(.data_ip) {
       out = mean(apply(.data_ip$gd2d, 1, sd, na.rm = TRUE), na.rm = TRUE)
       return(out)
@@ -181,11 +195,11 @@ optimized_iglu_functions <- function(data) {
     .data_ip = CGMS2DayByDay(data, tz = "")
     out <- data.frame("Conga" = numeric(), "GVP" = numeric(), "MODD" = numeric(),
                       "SD Roc" = numeric(), "CV_Measures_Mean" = numeric(),
-                      "CV_Measures_SD" = numeric(), "AUC" = numeric(), "SdW" = numeric(),
-                      "SdHHMM" = numeric(), "SdWSH" = numeric(), "SdDM" = numeric(),
+                      "CV_Measures_SD" = numeric(), "AUC" = numeric(), "MAG" = numeric(),
+                      "SdW" = numeric(),  "SdHHMM" = numeric(), "SdWSH" = numeric(), "SdDM" = numeric(),
                       "SdB" = numeric(), "SdBDM" = numeric())
 
-    outrow <- c(1:13)
+    outrow <- c(1:14)
 
     ## conga
     outrow[1] = conga_single_O(.data_ip)
@@ -206,13 +220,16 @@ optimized_iglu_functions <- function(data) {
     ## AUC
     outrow[7] = auc_single_O(.data_ip)
 
+    ## MAG
+    outrow[8] = mag_single_O(.data_ip)
+
     ## SD Measures
-    outrow[8] = SdW(.data_ip)
-    outrow[9] = SdHHMM(.data_ip)
-    outrow[10] = SdWSH(.data_ip)
-    outrow[11] = SdDM(.data_ip)
-    outrow[12] = SdB(.data_ip)
-    outrow[13] = SdBDM(.data_ip)
+    outrow[9] = SdW(.data_ip)
+    outrow[10] = SdHHMM(.data_ip)
+    outrow[11] = SdWSH(.data_ip)
+    outrow[12] = SdDM(.data_ip)
+    outrow[13] = SdB(.data_ip)
+    outrow[14] = SdBDM(.data_ip)
 
     out[1, ] <- outrow
 

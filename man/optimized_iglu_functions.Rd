@@ -10,7 +10,7 @@ optimized_iglu_functions(data)
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
 }
 \value{
-If a data.frame object is passed, then a tibble object with 1 row for each subject, and fourteen columns is returned:
+If a data.frame object is passed, then a tibble object with 1 row for each subject, and fifteen columns is returned:
 a column for subject id,
 a column for CONGA(24) value,
 a column for Glucose Variability Percentage (GVP) value,
@@ -18,6 +18,7 @@ a column for mean difference between glucose values obtained at the same time of
 a column for area under curve (AUC) value,
 a column for Coefficient of Variation mean (CV_Measures_Mean) value,
 a column for Coefficient of Variation standard deviation (CV_Measures_SD) value,
+a column for Mean Absolute Glucose (MAG) value,
 a column for Standard Deviation of rate of change (SD Roc) value,
 a column for Standard Deviation vertical within days (SdW) value,
 a column for Standard Deviation between time points (SdHHMM) value,
@@ -33,7 +34,7 @@ AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, & SD_MEASURES iglu functions
 by extracting the CGMS2DayByDay calculation and passing the result into each function.
 }
 \details{
-Returns a tibble object with 1 row for each subject, and fourteen columns:
+Returns a tibble object with 1 row for each subject, and fifteen columns:
 a column for subject id,
 a column for CONGA(24) value,
 a column for Glucose Variability Percentage (GVP) value,
@@ -42,6 +43,7 @@ a column for area under curve (AUC) value,
 a column for Coefficient of Variation mean (CV_Measures_Mean) value,
 a column for Coefficient of Variation standard deviation (CV_Measures_SD) value,
 a column for Standard Deviation of rate of change (SD Roc) value,
+a column for Mean Absolute Glucose (MAG) value,
 a column for Standard Deviation vertical within days (SdW) value,
 a column for Standard Deviation between time points (SdHHMM) value,
 a column for Standard Deviation within series (SdWSH) value,

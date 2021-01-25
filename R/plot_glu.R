@@ -11,6 +11,8 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
     }
   }
 
+  data <- data %>% dplyr::select(c(id, time, gl))
+
   data <- data[complete.cases(data), ] %>%
     dplyr::group_by(id) %>%
     dplyr::arrange(data.frame(id, time, gl), time) %>%
@@ -65,7 +67,7 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
 #' in 'id' column of data. Default is all subjects.
 #'
 #' @param inter_gap The maximum allowable gap (in minutes). Gaps larger than
-#' this will not be connected in the time series plot
+#' this will not be connected in the time series plot. The default value is 45 minutes.
 #'
 #' @param color_scheme String corresponding to the chosen color scheme when the `plottype` is 'lasagna'. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.
 #'

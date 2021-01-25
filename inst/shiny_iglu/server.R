@@ -35,7 +35,7 @@ parameter_type <- reactive({
     }
 
     else if(input$metric %in% c("conga", "grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
-                                "mage", "modd", "roc", "sd_roc", "active_percent")){
+                                "mag", "mage", "modd", "roc", "sd_roc", "active_percent")){
       return("value")
     }
 
@@ -65,7 +65,7 @@ parameter_type <- reactive({
 
   else if(parameter_type == "value"){
     if(input$metric == "conga"){
-      textInput("parameter", "Specify n", value = "24")
+      textInput("parameter", "Specify Parameter", value = "24")
     }
 
       else if(input$metric == "grade_hyper"){
@@ -86,6 +86,10 @@ parameter_type <- reactive({
 
       else if(input$metric == "m_value"){
         textInput("parameter", "Specify Reference Value", value = "90")
+      }
+
+      else if(input$metric == "mag"){
+        textInput("parameter", "Specify Parameter", value = "60")
       }
 
       else if(input$metric == "mage"){
@@ -129,20 +133,87 @@ parameter_type <- reactive({
 
   output$help_text <- renderUI({
     parameter_type = parameter_type()
+
     if(parameter_type == "none"){
       helpText("No parameters need to be specified.")
     }
+
     else if(parameter_type == "list"){
-      helpText("Enter numeric target values separated by comma.")
+      if(input$metric == "above_percent"){
+        helpText("Enter target glucose thresholds separated by comma.")
+      }
+      else if(input$metric == "below_percent"){
+        helpText("Enter target glucose thresholds separated by comma.")
+      }
+      else if(input$metric == "quantile_glu"){
+        helpText("Enter quantile values separated by comma.")
+      }
     }
+
     else if(parameter_type == "value"){
-      helpText("Enter numeric value corresponding to parameter.")
+      if(input$metric == "conga"){
+        helpText("Enter the hours between observations for the CONGA calculation.")
+      }
+
+      else if(input$metric == "grade_hyper"){
+        helpText("Enter the upper bound hyperglycemia cutoff value.")
+      }
+
+      else if(input$metric == "grade_hypo"){
+        helpText("Enter the lower bound hypoglycemia cutoff value.")
+      }
+
+      else if(input$metric == "hyper_index"){
+        helpText("Enter the upper limit of target glucose range.")
+      }
+
+      else if(input$metric == "hypo_index"){
+        helpText("Enter the lower limit of target glucose range.")
+      }
+
+      else if(input$metric == "m_value"){
+        helpText("Enter the reference value for normal basal glycemia.")
+      }
+
+      else if(input$metric == "mag"){
+        helpText("Enter the interval (in minutes) to calculate change in glucose.")
+      }
+
+      else if(input$metric == "mage"){
+        helpText("Enter the multiple of SD used to determine glycemic excursions.")
+      }
+
+      else if(input$metric == "modd"){
+        helpText("Enter the lag in days.")
+      }
+
+      else if(input$metric == "active_percent"){
+        helpText("Enter CGM frequency in minutes.")
+      }
+
+      else if(input$metric == "roc"){
+        helpText("Enter time interval (in minutes) for rate of change.")
+      }
+
+      else if(input$metric == "sd_roc"){
+        helpText("Enter time interval (in minutes) for rate of change.")
+      }
     }
+
     else if(parameter_type == "lwrupr"){
-      helpText("Enter numeric values corresponding to the lower and upper bounds, respectively, separated by commas.")
+      if(input$metric == "grade_eugly"){
+        helpText("Enter a lower and an upper glycemic bound separated by a comma.")
+      }
+
+      else if(input$metric == "igc"){
+        helpText("Enter the lower and upper limits of the target range separated by a comma.")
+      }
     }
+
     else if(parameter_type == "nested"){
-      helpText("Enter pairs of numeric values in parentheses, with commas separating values in each pair and the pairs themselves.")
+      if(input$metric == "in_range_percent"){
+        helpText("Enter target ranges in list format - e.g. (lower, upper), (lower, upper)")
+      }
     }
   })
 
@@ -576,7 +647,7 @@ parameter_type <- reactive({
 
     data = transform_data()
     string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
-                   input$plot_TR, ', subjects = NULL, tz = "", "blue-orange", log = ', input$plot_log, ')' ,sep = "")
+                   input$plot_TR, ', subjects = NULL, inter_gap = 45, tz = "", "blue-orange", log = ', input$plot_log, ')' ,sep = "")
     eval(parse(text = string))
   }
   else if(plottype == "lasagnamulti"){
