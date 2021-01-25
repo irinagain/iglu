@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Optimized Calculations of the iglu Functions: AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, &amp; SD_MEASURES — optimized_iglu_functions • iglu</title>
+<title>Optimized Calculations of Time Dependent iglu Metrics — optimized_iglu_functions • iglu</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,9 @@
 
 
 
-<meta property="og:title" content="Optimized Calculations of the iglu Functions: AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, &amp; SD_MEASURES — optimized_iglu_functions" />
-<meta property="og:description" content="The function all_metrics_optomized optimizes the functions
-AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, &amp;amp; SD_MEASURES iglu functions
-by extracting the CGMS2DayByDay calculation and passing the result into each function." />
+<meta property="og:title" content="Optimized Calculations of Time Dependent iglu Metrics — optimized_iglu_functions" />
+<meta property="og:description" content="The function optimized_iglu_functions optimizes the calculation of all time dependent iglu
+metrics by extracting the CGMS2DayByDay calculation and passing the result into each function." />
 
 
 
@@ -123,15 +122,14 @@ by extracting the CGMS2DayByDay calculation and passing the result into each fun
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Optimized Calculations of the iglu Functions: AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, &amp; SD_MEASURES</h1>
+    <h1>Optimized Calculations of Time Dependent iglu Metrics</h1>
     
     <div class="hidden name"><code>optimized_iglu_functions.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The function all_metrics_optomized optimizes the functions
-AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, &amp; SD_MEASURES iglu functions
-by extracting the CGMS2DayByDay calculation and passing the result into each function.</p>
+    <p>The function optimized_iglu_functions optimizes the calculation of all time dependent iglu
+metrics by extracting the CGMS2DayByDay calculation and passing the result into each function.</p>
     </div>
 
     <pre class="usage"><span class='fu'>optimized_iglu_functions</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
@@ -147,42 +145,13 @@ by extracting the CGMS2DayByDay calculation and passing the result into each fun
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If a data.frame object is passed, then a tibble object with 1 row for each subject, and fifteen columns is returned:
-a column for subject id,
-a column for CONGA(24) value,
-a column for Glucose Variability Percentage (GVP) value,
-a column for mean difference between glucose values obtained at the same time of day (MODD) value,
-a column for area under curve (AUC) value,
-a column for Coefficient of Variation mean (CV_Measures_Mean) value,
-a column for Coefficient of Variation standard deviation (CV_Measures_SD) value,
-a column for Mean Absolute Glucose (MAG) value,
-a column for Standard Deviation of rate of change (SD Roc) value,
-a column for Standard Deviation vertical within days (SdW) value,
-a column for Standard Deviation between time points (SdHHMM) value,
-a column for Standard Deviation within series (SdWSH) value,
-a column for horizontal Standard Deviation (SdDM) value,
-a column for Standard Deviation between days, within timepoints (SdB) value,
-a column for Standard Deviation between days, within timepoints value,
-corrected for changes in daily means (SdBDM) value.</p>
+    <p>If a data.frame object is passed, then a tibble object with 1 row for each subject
+and one column for each metric is returned.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Returns a tibble object with 1 row for each subject, and fifteen columns:
-a column for subject id,
-a column for CONGA(24) value,
-a column for Glucose Variability Percentage (GVP) value,
-a column for mean difference between glucose values obtained at the same time of day (MODD) value,
-a column for area under curve (AUC) value,
-a column for Coefficient of Variation mean (CV_Measures_Mean) value,
-a column for Coefficient of Variation standard deviation (CV_Measures_SD) value,
-a column for Standard Deviation of rate of change (SD Roc) value,
-a column for Mean Absolute Glucose (MAG) value,
-a column for Standard Deviation vertical within days (SdW) value,
-a column for Standard Deviation between time points (SdHHMM) value,
-a column for Standard Deviation within series (SdWSH) value,
-a column for horizontal Standard Deviation (SdDM) value,
-a column for Standard Deviation between days, within timepoints (SdB) value,
-a column for Standard Deviation between days, within timepoints value,
-corrected for changes in daily means (SdBDM) value.</p>
+    <p>Returns a tibble object with 1 row for each subject and a column for each metric. This
+function includes time dependent iglu metrics only. For metric specific information,
+please see the corresponding function documentation.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
