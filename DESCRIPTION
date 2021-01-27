@@ -14,7 +14,7 @@ Authors@R: c(person("Steve", "Broll",
             person("John", "Muschelli",
             role = c("aut"),
             email = "muschellij2@gmail.com",
-            comment = c(ORCID = "https://0000-0001-6469-1750")),
+            comment = c(ORCID = "0000-0001-6469-1750")),
             person("John", "Schwenck",
             role = c("ctb"),
             email = "jschwenck@stat.tamu.edu"),
@@ -32,7 +32,7 @@ Authors@R: c(person("Steve", "Broll",
             email = "nhannguyen993@tamu.edu"),
             person("Irina", "Gaynanova",
             email = "irinag@stat.tamu.edu",role = c("aut", "cre"),
-            comment = c(ORCID = "https://0000-0002-4116-0268")))
+            comment = c(ORCID = "0000-0002-4116-0268")))
 Description: Implements a wide range of metrics for measuring glucose control and glucose variability based on continuous glucose monitoring data. The list of implemented metrics is summarized in Rodbard (2009) <doi:10.1089/dia.2009.0015>. Additional visualization tools include time-series and lasagna plots. 
 License: GPL-2
 Encoding: UTF-8
