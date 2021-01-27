@@ -127,7 +127,6 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 #'
 #' plot_lasagna(example_data_5_subject, datatype = "average", lasagnatype = 'timesorted', tz = "EST")
 #' plot_lasagna(example_data_5_subject, lasagnatype = "subjectsorted", LLTR = 100, tz = "EST")
-#' plot_lasagna(example_data_5_subject, log = TRUE)
 #'
 plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('unsorted', 'timesorted', 'subjectsorted'), maxd = 14, limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", color_scheme = c("blue-red", "red-orange"), log = F){
 

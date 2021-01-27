@@ -20,7 +20,6 @@
 #'
 #' @examples
 #' data(example_data_1_subject)
-#' agp(example_data_1_subject)
 #' agp(example_data_1_subject, daily = FALSE)
 agp <- function(data, maxd = 14, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE){
 

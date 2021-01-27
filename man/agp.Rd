@@ -28,7 +28,6 @@ Display Ambulatory Glucose Profile (AGP) statistics for selected subject
 }
 \examples{
 data(example_data_1_subject)
-agp(example_data_1_subject)
 agp(example_data_1_subject, daily = FALSE)
 }
 \references{
