@@ -124,10 +124,10 @@
 <span class="co">#&gt; 1 Subject 1    66        99    112  124.       143   276</span>
 
 <span class="fu"><a href="reference/in_range_percent.html">in_range_percent</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 1 x 4</span>
-<span class="co">#&gt;   id        in_range_70_140 in_range_70_180 in_range_80_200</span>
-<span class="co">#&gt;   &lt;fct&gt;               &lt;dbl&gt;           &lt;dbl&gt;           &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Subject 1            73.7            91.7            96.0</span>
+<span class="co">#&gt; # A tibble: 1 x 3</span>
+<span class="co">#&gt;   id        in_range_63_140 in_range_70_180</span>
+<span class="co">#&gt;   &lt;fct&gt;               &lt;dbl&gt;           &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Subject 1            73.9            91.7</span>
 
 <span class="fu"><a href="reference/above_percent.html">above_percent</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, targets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">140</span>,<span class="fl">200</span>,<span class="fl">250</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 5</span>
@@ -138,13 +138,13 @@
 <span class="fu"><a href="reference/j_index.html">j_index</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 2</span>
 <span class="co">#&gt;   id        j_index</span>
-<span class="co">#&gt;   &lt;fct&gt;       &lt;dbl&gt;</span>
+<span class="co">#&gt; * &lt;fct&gt;       &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 Subject 1    24.6</span>
 
 <span class="fu"><a href="reference/conga.html">conga</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 2</span>
 <span class="co">#&gt;   id        conga</span>
-<span class="co">#&gt;   &lt;fct&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; * &lt;fct&gt;     &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 Subject 1  37.0</span>
 
 <span class="co"># Load multiple subject data</span>
@@ -167,17 +167,14 @@
 <span class="fu"><a href="reference/mage.html">mage</a></span><span class="op">(</span><span class="va">example_data_5_subject</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 5 x 2</span>
 <span class="co">#&gt;   id         mage</span>
-<span class="co">#&gt;   &lt;fct&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; * &lt;fct&gt;     &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 Subject 1  53.4</span>
 <span class="co">#&gt; 2 Subject 2  78.2</span>
 <span class="co">#&gt; 3 Subject 3  76.6</span>
 <span class="co">#&gt; 4 Subject 4  42.9</span>
 <span class="co">#&gt; 5 Subject 5  90.0</span></pre></div>
-</div>
-<div id="shiny-demonstration" class="section level2">
-<h2 class="hasAnchor">
-<a href="#shiny-demonstration" class="anchor"></a>Shiny Demonstration</h2>
-<p>For a demonstration of the package in a point and click interface, click the link below.</p>
+<p>– Shiny Demonstration –</p>
+<p>– For a demonstration of the package in a point and click interface, click the link below.</p>
 <p><a href="https://stevebroll.shinyapps.io/shinyigludemo/" class="uri">https://stevebroll.shinyapps.io/shinyigludemo/</a></p>
 </div>
 </div>
@@ -205,8 +202,8 @@
 <li>Jacek Urbanek <br><small class="roles"> Author </small>  </li>
 <li>David Buchanan <br><small class="roles"> Author </small>  </li>
 <li>Elizabeth Chun <br><small class="roles"> Author </small>  </li>
-<li>John Muschelli <br><small class="roles"> Author </small> <a href="https://orcid.org/https://0000-0001-6469-1750" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Irina Gaynanova <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/https://0000-0002-4116-0268" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>John Muschelli <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-6469-1750" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Irina Gaynanova <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-4116-0268" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
@@ -216,7 +213,7 @@
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.com/github/irinagain/iglu"><img src="https://api.travis-ci.com/irinagain/iglu.svg?branch=master" alt="Travis build status"></a></li>
 <li><a href="https://ci.appveyor.com/project/irinagain/iglu"><img src="https://ci.appveyor.com/api/projects/status/github/irinagain/iglu?branch=master&amp;svg=true" alt="AppVeyor build status"></a></li>
-<li><a href="https://cran.rstudio.com/web/packages/iglu/index.html"><img src="https://cranlogs.r-pkg.org/badges/iglu"></a></li>
+<li><a href="https://CRAN.R-project.org/package=iglu"><img src="https://cranlogs.r-pkg.org/badges/iglu"></a></li>
 </ul>
 </div>
 </div>
