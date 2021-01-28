@@ -10,7 +10,7 @@ status](https://api.travis-ci.com/irinagain/iglu.svg?branch=master)](https://tra
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/irinagain/iglu?branch=master&svg=true)](https://ci.appveyor.com/project/irinagain/iglu)
 
-[![](https://cranlogs.r-pkg.org/badges/iglu)](https://CRAN.R-project.org/package=iglu)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/iglu)](https://cran.r-project.org/package=iglu)[![](https://cranlogs.r-pkg.org/badges/iglu)](https://CRAN.R-project.org/package=iglu)
 
 <!-- badges: end -->
 
@@ -121,9 +121,20 @@ mage(example_data_5_subject)
 #> 5 Subject 5  90.0
 ```
 
-– Shiny Demonstration –
+– Shiny App –
 
-– For a demonstration of the package in a point and click interface,
-click the link below.
+– Shiny App can be accessed locally via
+
+``` r
+library(iglu)
+iglu_shiny()
+```
+
+or globally at <https://irinagain.shinyapps.io/shiny_iglu/>. As new
+functionality gets added, local version will be slightly ahead of the
+global one.
+
+– For a Shiny App demo of the package in a point and click interface,
+click the link below for pre-loaded dataset.
 
 <https://stevebroll.shinyapps.io/shinyigludemo/>
