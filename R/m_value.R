@@ -47,7 +47,7 @@ m_value <- function(data, r = 90){
   out = data %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      m_value = mean(1000 * abs(log10(gl / r)) ^ 3, na.rm = TRUE)
+      M_value = mean(1000 * abs(log10(gl / r)) ^ 3, na.rm = TRUE)
     )
 
   if (is_vector) {

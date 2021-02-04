@@ -48,7 +48,7 @@ gmi <- function(data){
   out = data %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      gmi = 3.31 + (.02392*mean(gl, na.rm = TRUE) )
+      GMI = 3.31 + (.02392*mean(gl, na.rm = TRUE) )
     )
   if (is_vector) {
     out$id = NULL

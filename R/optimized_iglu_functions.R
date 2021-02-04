@@ -166,8 +166,8 @@ optimized_iglu_functions <- function(data) {
     out <- data.frame("Conga" = numeric(), "GVP" = numeric(), "MODD" = numeric(),
                       "SD Roc" = numeric(), "CV_Measures_Mean" = numeric(),
                       "CV_Measures_SD" = numeric(), "AUC" = numeric(), "MAG" = numeric(),
-                      "SdW" = numeric(),  "SdHHMM" = numeric(), "SdWSH" = numeric(), "SdDM" = numeric(),
-                      "SdB" = numeric(), "SdBDM" = numeric())
+                      "SDW" = numeric(),  "SDhhmm" = numeric(), "SDwsh" = numeric(), "SDdm" = numeric(),
+                      "SDb" = numeric(), "SDbdm" = numeric())
 
     outrow <- c(1:14)
 

@@ -58,7 +58,7 @@ grade_eugly <- function(data, lower = 70, upper = 140){
     dplyr::mutate(grade = grade_formula(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      grade_eugly = sum(grade[gl >= lower & gl <= upper ], na.rm = TRUE) /
+      GRADE_eugly = sum(grade[gl >= lower & gl <= upper ], na.rm = TRUE) /
         sum(grade, na.rm = TRUE) * 100
     )
   if (is_vector) {
