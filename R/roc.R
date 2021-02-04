@@ -51,7 +51,6 @@
 #'
 #' data(example_data_5_subject)
 #' roc(example_data_5_subject)
-#' roc(example_data_5_subject, timelag = 10)
 #'
 
 roc <- function (data, timelag = 15, dt0 = NULL, inter_gap = 45, tz = "") {

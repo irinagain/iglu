@@ -51,7 +51,6 @@ roc(example_data_1_subject, timelag = 10)
 
 data(example_data_5_subject)
 roc(example_data_5_subject)
-roc(example_data_5_subject, timelag = 10)
 
 }
 \references{

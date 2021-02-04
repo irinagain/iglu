@@ -23,6 +23,7 @@ shinyUI(fluidPage(
                                                                                `Active Percent` = 'active_percent',
                                                                                `ADRR` = 'adrr',
                                                                                `Below Percent` = 'below_percent',
+                                                                               `COGI` = 'cogi',
                                                                                `CONGA` = 'conga',
                                                                                `CV` = 'cv_glu',
                                                                                `CV Subtypes` = 'cv_measures',

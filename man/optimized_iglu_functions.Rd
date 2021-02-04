@@ -2,7 +2,7 @@
 % Please edit documentation in R/optimized_iglu_functions.R
 \name{optimized_iglu_functions}
 \alias{optimized_iglu_functions}
-\title{Optimized Calculations of the iglu Functions: AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, & SD_MEASURES}
+\title{Optimized Calculations of Time Dependent iglu Metrics}
 \usage{
 optimized_iglu_functions(data)
 }
@@ -10,47 +10,17 @@ optimized_iglu_functions(data)
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
 }
 \value{
-If a data.frame object is passed, then a tibble object with 1 row for each subject, and fifteen columns is returned:
-a column for subject id,
-a column for CONGA(24) value,
-a column for Glucose Variability Percentage (GVP) value,
-a column for mean difference between glucose values obtained at the same time of day (MODD) value,
-a column for area under curve (AUC) value,
-a column for Coefficient of Variation mean (CV_Measures_Mean) value,
-a column for Coefficient of Variation standard deviation (CV_Measures_SD) value,
-a column for Mean Absolute Glucose (MAG) value,
-a column for Standard Deviation of rate of change (SD Roc) value,
-a column for Standard Deviation vertical within days (SdW) value,
-a column for Standard Deviation between time points (SdHHMM) value,
-a column for Standard Deviation within series (SdWSH) value,
-a column for horizontal Standard Deviation (SdDM) value,
-a column for Standard Deviation between days, within timepoints (SdB) value,
-a column for Standard Deviation between days, within timepoints value,
-corrected for changes in daily means (SdBDM) value.
+If a data.frame object is passed, then a tibble object with 1 row for each subject
+and one column for each metric is returned.
 }
 \description{
-The function all_metrics_optomized optimizes the functions
-AUC, CONGA, GVP, MODD, SD_ROC, CV_MEASURES, & SD_MEASURES iglu functions
-by extracting the CGMS2DayByDay calculation and passing the result into each function.
+The function optimized_iglu_functions optimizes the calculation of all time dependent iglu
+metrics by extracting the CGMS2DayByDay calculation and passing the result into each function.
 }
 \details{
-Returns a tibble object with 1 row for each subject, and fifteen columns:
-a column for subject id,
-a column for CONGA(24) value,
-a column for Glucose Variability Percentage (GVP) value,
-a column for mean difference between glucose values obtained at the same time of day (MODD) value,
-a column for area under curve (AUC) value,
-a column for Coefficient of Variation mean (CV_Measures_Mean) value,
-a column for Coefficient of Variation standard deviation (CV_Measures_SD) value,
-a column for Standard Deviation of rate of change (SD Roc) value,
-a column for Mean Absolute Glucose (MAG) value,
-a column for Standard Deviation vertical within days (SdW) value,
-a column for Standard Deviation between time points (SdHHMM) value,
-a column for Standard Deviation within series (SdWSH) value,
-a column for horizontal Standard Deviation (SdDM) value,
-a column for Standard Deviation between days, within timepoints (SdB) value,
-a column for Standard Deviation between days, within timepoints value,
-corrected for changes in daily means (SdBDM) value.
+Returns a tibble object with 1 row for each subject and a column for each metric. This
+function includes time dependent iglu metrics only. For metric specific information,
+please see the corresponding function documentation.
 }
 \examples{
 data(example_data_1_subject)

@@ -1,3 +1,13 @@
+# iglu 2.1.0
+* Added MAG (Mean Absolute Glucose)
+* Added COGI (COntinuous Glucose monitoring Index)
+* Added AGP (Ambulatory Glucose Profile)
+* Added new color scheme for lasagna plots
+* Added functionality for semilogarithmic plots
+* Adjust default in range interval to [70, 180] mg/dL
+* Extended active_percent to return information on available data period
+* Fixed missing data artifact in time-series plots
+
 # iglu 2.0.1
 * Updated links in readme
 
