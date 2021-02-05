@@ -50,7 +50,7 @@ ea1c <- function(data){
   out = data %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      ea1c = (46.7+mean(gl, na.rm = TRUE) )/28.7
+      eA1C = (46.7+mean(gl, na.rm = TRUE) )/28.7
     )
   if (is_vector) {
     out$id = NULL

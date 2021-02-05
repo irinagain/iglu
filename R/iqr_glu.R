@@ -39,7 +39,7 @@ iqr_glu <- function(data){
   out = data %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      iqr = IQR(gl, na.rm = TRUE)
+      IQR = IQR(gl, na.rm = TRUE)
     )
   if (is_vector) {
     out$id = NULL

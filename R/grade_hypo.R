@@ -57,7 +57,7 @@ grade_hypo <- function(data, lower = 80){
     dplyr::mutate(grade = grade_formula(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      grade_hypo = sum(grade[gl < lower], na.rm = TRUE) /
+      GRADE_hypo = sum(grade[gl < lower], na.rm = TRUE) /
         sum(grade, na.rm = TRUE) * 100
     )
   if (is_vector) {

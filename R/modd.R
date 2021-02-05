@@ -58,7 +58,7 @@ modd <- function(data, lag = 1, tz = ""){
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      modd = modd_single(data.frame(id,time,gl),lag)
+      MODD = modd_single(data.frame(id,time,gl),lag)
     )
   if (is_vector) {
     out$id = NULL
