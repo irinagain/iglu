@@ -52,7 +52,7 @@ agp <- function(data, maxd = 14, inter_gap = 45, dt0 = NULL, tz = "", daily = TR
   tableStat[6, 1] = "Average Glucose"
   tableStat[6, 2] = paste(round(mean_glu(data)$mean), "mg/dL")
   tableStat[7, 1] = "Glucose Management Indicator (GMI)"
-  tableStat[7, 2] = paste0(round(gmi(data)$gmi, 1), "%")
+  tableStat[7, 2] = paste0(round(gmi(data)$GMI, 1), "%")
   tableStat[8, 1] = "Glucose Variability (CV)"
   tableStat[8, 2] = paste0(round(cv_glu(data)$cv, 1), "%")
 
