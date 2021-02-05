@@ -45,7 +45,7 @@ plot_ranges <- function (data) {
   }
 
   ranges <- agp_metrics(data, shinyformat = FALSE) %>%
-    dplyr::select(-c("id", "active_percent", "mean", "gmi", "cv")) %>%
+    dplyr::select(-c("id", "active_percent", "mean", "GMI", "CV")) %>%
     dplyr::summarise(range = c("very_low", 'low', 'target', 'high', 'very_high'),
                      percent = c(below_54, below_70 - below_54, in_range_70_180,
                                  above_180 - above_250, above_250))
