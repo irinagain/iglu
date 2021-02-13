@@ -1,170 +1,80 @@
 library(iglu)
 
-example_data = CGMS2DayByDay(example_data_5_subject)
-subject_5 = example_data[[1]][4,]
-subject_1
+# Author: Johnathan Shih, Jung Hoon Seo
+# Date: February 13, 2021
 
-print(example_data[3])
+episode_calculation <- function(data, hypo_thres=91.0, hyper_thres= 120.0, dur_length = 15){
 
+    data_ip = CGMS2DayByDay(data, dt0 = 5)
 
-episode_calculation <- function(user_data, hypo=91.0, hyper= 120.0){
+    gl_by_id_ip = data_ip[[1]][4,]
 
-  plot(user_data,pch =19, col = ifelse(user_data < hypo |(user_data > hyper), "red", "black"), xlab="Time (5 min intervals)", ylab="Glucose Profile (mg/dL)", main= "Subject 1 Glucose levels")
+    dt0 = data_ip[[3]]
 
-  #Threshold lines
-  abline(h=c(0,hypo), col="red")
-  abline(h=c(0,hyper), col="red")
+    params = list(gl_by_id_ip, hypo_thres, hyper_thres, dur_length, dt0)
 
-  #Initializing variables
-  hypogl_continue = c()
-  hypo_current_state = FALSE
-  hypo_exceeded_fiftmin = FALSE
+    plot_episode<- function(params){
 
-  hypergl_continue = c()
-  hyper_current_state = FALSE
-  hyper_exceeded_fiftmin = FALSE
-
-  hypo_episode = 0
-  hyper_episode = 0
-
-  hypogl_container = c()
-  hypo_duration_mean_episodes_per_day = 0
-  hypo_episode_dayAvg =c()
-  hypo_duration_list = c()
-
-  hypergl_container = c()
-  hyper_duration_mean_episodes_per_day = 0
-  hyper_episode_dayAvg =c()
-
-  hyper_duration_list = c()
-  # Initilization ended
-
-
-  # Loop until 288
-  for (x in user_data){
-
-    # If Hypoglycemia
-
-    #Counting number of Hypoglycemia episodes if it continues more than 15 mins
-    if(x < hypo && !is.na(x)){
-
-      current_hypo_state = TRUE
-
-      # Store a boolean value (Current_hypo_state) to check if it exceeds 15 minutes
-      # Ex) [TRUE TRUE TRUE] means it exceeded the threshold 15 minutes since it happens three times in sequence.
-      # Else we are going to disgard values
-      hypogl_continue <- c(hypogl_continue,current_hypo_state)
-
-      # Storing the value to calculate duration, mean time, and average value for episodes
-      # Only it exceeds 15 mins
-      hypogl_container <- c(hypogl_container, x)
-
-
-      if(length(hypogl_continue) >= 3 && !is.na(hypogl_continue)){
-
-        hypo_exceeded_fiftmin = TRUE
-      }
-    }
-    else{
-
-      if (hypo_exceeded_fiftmin == TRUE){
-
-        # Add one if its duration exceeded 15 mins
-        hypo_episode = hypo_episode + 1
-
-        # Storing each episode's mean value into a list for hypoglycemia
-        hypo_episode_dayAvg = c(hypo_episode_dayAvg, mean(hypogl_container))
-
-        # Storing duration for each episode
-        hypo_duration_list = c(hypo_duration_list, length(hypogl_container) * example_data[3])
-      }
-      hypogl_container = c()
-      current_hypo_state = FALSE
-      hypogl_continue = c()
-      hypo_exceeded_fiftmin = FALSE
-
+        plot(params[[1]], pch =19, col = ifelse(params[[1]] < params[[2]] |(params[[1]] > params[[3]]), "red", "black"), xlab="Time (5 min intervals)", ylab="Glucose Profile (mg/dL)", main= "Subject 1 Glucose levels")
+        abline(h=c(0,params[[2]]), col="red")
+        abline(h=c(0,params[[3]]), col="red")
     }
 
-    #Counting number of Hyperglycemia episodes
-    if(x > hyper && !is.na(x)){
+    episode<- function(params) {
+      hypogl_continue = c(); hypo_exceeded_duration = FALSE; hypo_episode = 0;hypo_vals = c();
+      hypo_day_AVG = c(); hypo_dur_Mean = c();
+      hypergl_continue = c(); hyper_exceeded_duration = FALSE; hyper_episode = 0; hyper_vals = c();
+      hyper_day_AVG = c(); hyper_dur_Mean = c();
 
-      current_hyper_state = TRUE
+      for (x in params[[1]]){
 
-      # Store a boolean value (Current_hyper_state)  to check if it exceeds 15 minutes
-      # Ex) [TRUE TRUE TRUE] means it exceeded the threshold 15 minutes since it happens three times in sequence.
-      # Else we are going to disgard values
-      hypergl_continue <- c(hypergl_continue,current_hyper_state)
+          if((x < params[[2]] && !is.na(x)) || (x > params[[3]] && !is.na(x))){
+            if (x < params[[2]]){
+                  hypo_vals <- c(hypo_vals, x)
+                  hypogl_continue <- c(hypogl_continue, TRUE)
+            }
+            else{
+                  hyper_vals <- c(hyper_vals, x)
+                  hypergl_continue <- c(hypergl_continue, TRUE)
+            }
 
-      # Storing the value to calculate duration, mean time, and average value for episodes
-      # Only it exceeds 15 mins
-      hypergl_container <- c(hypergl_container, x)
+            if(length(hypogl_continue) * params[[5]] > params[[4]] && !is.na(hypogl_continue))
+                                                                  hypo_exceeded_duration = TRUE
+            if(length(hypergl_continue) * params[[5]] > params[[4]] && !is.na(hypergl_continue))
+                                                                  hyper_exceeded_duration = TRUE
+          }
+          else{
+            if (hypo_exceeded_duration == TRUE){
+                      hypo_day_AVG <- c(hypo_day_AVG, mean(hypo_vals))
+                      hypo_dur_Mean <- c(hypo_dur_Mean, length(hypo_vals *params[[5]]))
+                      hypo_episode = hypo_episode + 1
+            }
+            else if(hyper_exceeded_duration == TRUE){
+                      hyper_day_AVG <- c(hyper_day_AVG, mean(hyper_vals))
+                      hyper_dur_Mean <- c(hyper_dur_Mean, length(hyper_vals *params[[5]]))
+                      hyper_episode = hyper_episode + 1
+            }
+            hypogl_continue = c(); hypo_exceeded_duration = FALSE
+            hypergl_continue = c(); hyper_exceeded_duration = FALSE
+          }
 
-      if(length(hypergl_continue) >= 3 && !is.na(hypergl_continue)){
-
-        hyper_exceeded_fiftmin = TRUE
       }
+      episodes = c(hypo_episode, hyper_episode)
+      dur_mean = c(mean(hypo_dur_Mean), mean(hyper_dur_Mean))
+      day_AVG = c(mean(hypo_day_AVG), mean(hyper_day_AVG))
+      dataframe <- data.frame( "Number_Episodes(Hypo)" = hypo_episode, "Number_Episodes(Hyper)" = hyper_episode,
+                               "Duration_Mean(Hypo)" = mean(hypo_dur_Mean), "Duration_Mean(Hyper)" = mean(hyper_dur_Mean),
+                               "Episode_Day_Avg(Hypo)" = mean(hypo_day_AVG), "Episode_Day_Avg(Hyper)" = mean(hyper_day_AVG))
+      return (dataframe)
     }
-    else{
 
-      if (hyper_exceeded_fiftmin == TRUE){
+    plot_episode(params)
 
-        # Add one if its duration exceeded 15 mins
-        hyper_episode = hyper_episode + 1
+    result = episode(params)
 
-        # Storing each episode's mean value into a list for hyperglycemia
-        hyper_episode_dayAvg = c(hyper_episode_dayAvg, mean(hypergl_container))
+    return (result)
 
-        # Storing duration for each episode
-        hyper_duration_list = c(hyper_duration_list, length(hypergl_container) * example_data[3])
-      }
-      hypergl_container = c()
-      current_hyper_state = FALSE
-      hypergl_continue = c()
-      hyper_exceeded_fiftmin = FALSE
+}#end Function
 
+episode_calculation(example_data_5_subject)
 
-    }
-  }
-
-  #Calculating mean time in an episode
-
-
-  #Outputting results
-  output_hypo <- ("Number of Hypoglycemic episodes: ")
-  output_hyper <- ("Number of Hyperglycemic episodes: ")
-
-  print(paste(output_hypo, hypo_episode))
-  print(paste(output_hyper,hyper_episode))
-
-  output_hypo_duration_mean <- ("Duration Mean (Hypoglycemic episode): ")
-  output_hyper_duration_mean <- ("Duration Mean (Hyperglycemic episode): ")
-
-  hypo_duration_mean <- mean(hypo_duration_list)
-  hyper_duration_mean <- mean(hyper_duration_list)
-
-  print(paste(output_hypo_duration_mean, hypo_duration_mean))
-  print(paste(output_hyper_duration_mean, hyper_duration_mean))
-
-  hypo_episode_avgVal = mean(hypo_episode_dayAvg)
-  hyper_episode_avgVal = mean(hyper_episode_dayAvg)
-
-  print(paste("Episode Average value (Hypo) : ", hypo_episode_avgVal))
-  print(paste("Episode Average value (Hyper): ", hyper_episode_avgVal))
-
-
-  number_of_episodes = c(hypo_episode, hyper_episode)
-
-  duration_mean = c(hypo_duration_mean, hyper_duration_mean)
-
-  episode_dayAvg = c(hypo_episode_avgVal, hyper_episode_avgVal)
-
-  # Return list (# of epsidoes, duration mean, and episode day avg)
-  results = c(number_of_episodes, duration_mean, episode_dayAvg)
-
-  #print(episode_dayAvg)
-  return (results)
-
-
-}#end alert_system
-
-#episode_calculation(subject_5)
