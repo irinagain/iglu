@@ -52,7 +52,9 @@ Imports:
     shiny,
     stats,
     tibble,
-    tidyr
+    tidyr,
+    zoo,
+    plotly
 Suggests:
     knitr,
     rmarkdown,
