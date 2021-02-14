@@ -1,8 +1,6 @@
 #' Calculate Mean Amplitude of Glycemic Excursions
 #'
-#' @description
-#' UPDATED TO VERSION 2. The function calculates MAGE values and can optionally return a plot of the
-#' glucose trace. Version 1 is also accessible for backwards compatibility.
+#' @description UPDATED to version 2. The function calculates MAGE values and can optionally return a plot of the glucose trace. Version 1 is also accessible for backwards compatibility.
 #'
 #' @usage
 #' mage(data)
@@ -10,45 +8,46 @@
 #' mage(data, short_MA = 7, long_MA = 20)
 #' mage(data, version = 'v1')
 #'
-#' @param data DataFrame object with column names "id", "time", and "gl",
-#' or numeric vector of glucose values.
+#' @param data Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector).
 #'
-#' @param
+#' @param version Optional. Either 'v2' or 'v1'. Chooses which version of the MAGE algorithm to use. Version 2 is default and highly recommended.
 #'
-#' sd_multiplier A numeric value that can change the sd value used
-#' to determine size of glycemic excursions used in the calculation.
+#' @param dateformat OPTIONAL. POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of different format.
 #'
-#' @return If a data.frame object is passed, then a tibble object with
-#' two columns: subject id and corresponding MAGE value is returned. If a vector of glucose
-#' values is passed, then a tibble object with just the MAGE value is returned.
-#' as.numeric() can be wrapped around the latter to output just a numeric value.
+#' @param short_MA OPTIONAL. Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended <15).
+#'
+#' @param long_MA OPTIONAL. Integer for period length for the long moving average. Default: 23. (Recommended >20)
+#'
+#' @param plot OPTIONAL. Boolean. Returns ggplot if TRUE. Default: FALSE.
+#'
+#' @param interval OPTIONAL. Integer for time interval in minutes between glucose readings. Algorithm will automagically determine the interval if not specified. Default: NA (Only used to calculate the gaps shown on the ggplot)
+#'
+#' @param .title OPTIONAL. Title for the ggplot. Default: "Glucose Trace"
+#'
+#' @param sd_multiplier DEPRECATED. A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation.
+#'
+#' @return Version 2: The calculated MAGE value for the glucose values or a ggplot if plot = TRUE. Version 1: If a data.frame object is passed, then a tibble object with two columns - subject id and corresponding MAGE value is returned. If a vector of glucose values is passed, then a tibble object with just the MAGE value is returned. as.numeric() can be wrapped around the latter to output just a numeric value.
 #'
 #' @export
 #'
 #' @details
-#' A tibble object with 1 row for each subject, a column for subject id and
-#' a column for the MAGE values is returned. NA glucose values are
-#' omitted from the calculation of MAGE.
+#' The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970). The proposed method uses the crosses of a short and long moving average to identify intervals where a peak or nadir may exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.
 #'
-#' MAGE is calculated by taking the mean of absolute differences (between
-#' each value and the mean) that are greater than the standard deviation.
-#' A multiplier can be added to the standard deviation by the sd_multiplier
-#' argument.
 #'
 #' @references
-#' Service, F. J. & Nelson, R. L. (1980) Characteristics of glycemic stability.
-#' \emph{Diabetes care} \strong{3} .58-62,
-#' \doi{10.2337/diacare.3.1.58}.
+#' Service et al. (1970) Mean amplitude of glycemic excursions, a measure of diabetic instability
+#' \emph{Diabetes}  \strong{19} .644-655,
+#' \doi{10.2337/diab.19.9.644}.
 #'
 #' @examples
+#' mage(data)
+#' mage(data, dateformat = "%m-%d-%Y %H:%M:%S")
+#' mage(data, short_MA = 4, long_MA = 24)
+#' mage(data, plot = TRUE, interval = 15, .title="Glucose Trace for Patient X")
 #'
-#' data(example_data_1_subject)
-#' mage(example_data_1_subject)
-#' mage(example_data_1_subject, sd_multiplier = 2)
-#'
-#' data(example_data_5_subject)
-#' mage(example_data_5_subject, sd_multiplier = .9)
-#'
+#' DEPRECATED.
+#' mage(data, version = 'v1')
+#' mage(example_data_1_subject, version = 'v1', sd_multiplier = 2)
 
 mage <- function(data, version = c('v2', 'v1'), ...) {
 
@@ -56,6 +55,7 @@ mage <- function(data, version = c('v2', 'v1'), ...) {
   version = match.arg(version)
 
   if(version == 'v1') {
+    warning("You are using Version 1 of the iglu mage algorithm. This function is deprecated and will return SIGNIFICANT errors. Please use Version 2")
     return(mage_old(data, ...))
   }
 
@@ -195,7 +195,7 @@ mage_new <- function(data, short_MA = 5, long_MA = 23, plot = FALSE, interval=NA
       }
     }
 
-    # incrememnt loop variable
+    # increment loop variable
     n <- n + 1
   }
 
