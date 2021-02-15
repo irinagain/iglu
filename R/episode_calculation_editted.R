@@ -14,7 +14,6 @@ episode_calculation <- function(data, hypo_thres=91.0, hyper_thres= 120.0, dur_l
   params = list(gl_by_id_ip, hypo_thres, hyper_thres, dur_length, dt0)
 
   plot_episode<- function(params){
-
     plot(params[[1]], pch =19, col = ifelse(params[[1]] < params[[2]] |(params[[1]] > params[[3]]), "red", "black"), xlab="Time (5 min intervals)", ylab="Glucose Profile (mg/dL)", main= "Subject 1 Glucose levels")
     abline(h=c(0,params[[2]]), col="red")
     abline(h=c(0,params[[3]]), col="red")
