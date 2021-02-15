@@ -1,5 +1,5 @@
 library(iglu)
-
+library(ggplot2)
 # Author: Johnathan Shih, Jung Hoon Seo
 # Date: February 13, 2021
 
@@ -14,9 +14,11 @@ episode_calculation <- function(data, hypo_thres=91.0, hyper_thres= 120.0, dur_l
   params = list(gl_by_id_ip, hypo_thres, hyper_thres, dur_length, dt0)
 
   plot_episode<- function(params){
-    plot(params[[1]], pch =19, col = ifelse(params[[1]] < params[[2]] |(params[[1]] > params[[3]]), "red", "black"), xlab="Time (5 min intervals)", ylab="Glucose Profile (mg/dL)", main= "Subject 1 Glucose levels")
-    abline(h=c(0,params[[2]]), col="red")
-    abline(h=c(0,params[[3]]), col="red")
+    df = data.frame(params[[1]])
+    df <- cbind(index = cbind(1:length(params[[1]])), df)
+    p2 <- ggplot(df, aes(x=index, y=gl_by_id_ip)) + geom_point() 
+    p2 <- p2 + geom_hline(yintercept=cbind(params[[2]],params[[3]]), linetype="dashed", color = "blue", size=.5)
+    print(p2)
   }
 
   episode<- function(params) {
@@ -58,12 +60,13 @@ episode_calculation <- function(data, hypo_thres=91.0, hyper_thres= 120.0, dur_l
       }
 
     }
-    episodes = c(hypo_episode, hyper_episode)
-    dur_mean = c(mean(hypo_dur_Mean), mean(hyper_dur_Mean))
-    day_AVG = c(mean(hypo_day_AVG), mean(hyper_day_AVG))
-    dataframe <- data.frame( "Number_Episodes(Hypo)" = hypo_episode, "Number_Episodes(Hyper)" = hyper_episode,
-                             "Duration_Mean(Hypo)" = mean(hypo_dur_Mean), "Duration_Mean(Hyper)" = mean(hyper_dur_Mean),
-                             "Episode_Day_Avg(Hypo)" = mean(hypo_day_AVG), "Episode_Day_Avg(Hyper)" = mean(hyper_day_AVG))
+    #episodes = c(hypo_episode, hyper_episode)
+    #dur_mean = c(mean(hypo_dur_Mean), mean(hyper_dur_Mean))
+    #day_AVG = c(mean(hypo_day_AVG), mean(hyper_day_AVG))
+    dataframe <- data.frame( "hypo_ep" = hypo_episode, "hyper_ep" = hyper_episode,
+                             "hypo_ep_mean" = mean(hypo_dur_Mean), "hyper_ep_mean" = mean(hyper_dur_Mean),
+                             "hypo_avg" = mean(hypo_day_AVG), "hyper_avg" = mean(hyper_day_AVG))
+    
     return (dataframe)
   }
 
@@ -76,3 +79,6 @@ episode_calculation <- function(data, hypo_thres=91.0, hyper_thres= 120.0, dur_l
 }#end Function
 
 episode_calculation(example_data_5_subject)
+
+#data_ip = CGMS2DayByDay(example_data_5_subject, dt0 = 5)
+
