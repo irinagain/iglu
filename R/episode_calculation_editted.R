@@ -7,7 +7,7 @@ episode_calculation <- function(data, hypo_thres=91.0, hyper_thres= 120.0, dur_l
 
   data_ip = CGMS2DayByDay(data, dt0 = 5)
 
-  gl_by_id_ip = data_ip[[1]][4,]
+  gl_by_id_ip = data_ip[[1]][1,]
 
   dt0 = data_ip[[3]]
 
@@ -16,9 +16,8 @@ episode_calculation <- function(data, hypo_thres=91.0, hyper_thres= 120.0, dur_l
   plot_episode<- function(params){
     df = data.frame(params[[1]])
     df <- cbind(index = cbind(1:length(params[[1]])), df)
-    p2 <- ggplot(df, aes(x=index, y=gl_by_id_ip)) + geom_point() 
+    p2 <- ggplot(df, aes(x=index, y=gl_by_id_ip)) + geom_point()
     p2 <- p2 + geom_hline(yintercept=cbind(params[[2]],params[[3]]), linetype="dashed", color = "blue", size=.5)
-    print(p2)
   }
 
   episode<- function(params) {
@@ -60,13 +59,25 @@ episode_calculation <- function(data, hypo_thres=91.0, hyper_thres= 120.0, dur_l
       }
 
     }
-    #episodes = c(hypo_episode, hyper_episode)
-    #dur_mean = c(mean(hypo_dur_Mean), mean(hyper_dur_Mean))
-    #day_AVG = c(mean(hypo_day_AVG), mean(hyper_day_AVG))
-    dataframe <- data.frame( "hypo_ep" = hypo_episode, "hyper_ep" = hyper_episode,
-                             "hypo_ep_mean" = mean(hypo_dur_Mean), "hyper_ep_mean" = mean(hyper_dur_Mean),
-                             "hypo_avg" = mean(hypo_day_AVG), "hyper_avg" = mean(hyper_day_AVG))
-    
+    episodes = c(hypo_episode, hyper_episode)
+
+    if(is.null(hypo_dur_Mean))
+          hypo_dur_Mean = c(0)
+    if(is.null(hyper_dur_Mean))
+          hyper_dur_Mean = c(0)
+
+    dur_mean = c(mean(hypo_dur_Mean), mean(hyper_dur_Mean))
+
+    if(is.null(hypo_day_AVG))
+      hypo_day_AVG = c(0)
+    if(is.null(hyper_day_AVG))
+      hyper_day_AVG = c(0)
+
+    day_AVG = c(mean(hypo_day_AVG), (hyper_day_AVG))
+
+    dataframe <- data.frame( "hypo_ep" = episodes[1], "hyper_ep" = episodes[2],
+                             "hypo_ep_mean" = dur_mean[1], "hyper_ep_mean" = dur_mean[2],
+                             "hypo_avg" = day_AVG[1], "hyper_avg" = day_AVG[2])
     return (dataframe)
   }
 
@@ -79,6 +90,4 @@ episode_calculation <- function(data, hypo_thres=91.0, hyper_thres= 120.0, dur_l
 }#end Function
 
 episode_calculation(example_data_5_subject)
-
-#data_ip = CGMS2DayByDay(example_data_5_subject, dt0 = 5)
 
