@@ -25,7 +25,7 @@
 #' omitted from the calculation of the M-value.
 #'
 #' M-value is computed by averaging the transformed glucose values, where each
-#' transformed value is equal to \eqn{|1000 * log_10(glucose/100)|^3}
+#' transformed value is equal to \eqn{|10 * log_10(glucose/r)|^3}, where r is the specified reference value.
 #'
 #' @references
 #' Schlichtkrull J, Munck O, Jersild M. (1965) The M-value, an index of
