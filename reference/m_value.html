@@ -165,7 +165,7 @@ as.numeric() can be wrapped around the latter to output just a numeric value.</p
 a column for the M-values is returned. NA glucose values are
 omitted from the calculation of the M-value.</p>
 <p>M-value is computed by averaging the transformed glucose values, where each
-transformed value is equal to \(|1000 * log_10(glucose/100)|^3\)</p>
+transformed value is equal to \(|10 * log_10(glucose/r)|^3\), where r is the specified reference value.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Schlichtkrull J, Munck O, Jersild M. (1965) The M-value, an index of
