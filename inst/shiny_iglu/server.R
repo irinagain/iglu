@@ -71,11 +71,11 @@ shinyServer(function(input, output) {
       }
 
       else if(input$metric == "hyper_index"){
-        textInput("parameter", "Specify Parameter", value = "140")
+        textInput("parameter", "Specify Parameter", value = "180,1.1,30")
       }
 
       else if(input$metric == "hypo_index"){
-        textInput("parameter", "Specify Parameter", value = "80")
+        textInput("parameter", "Specify Parameter", value = "70,2,30")
       }
 
       else if(input$metric == "m_value"){
@@ -98,7 +98,7 @@ shinyServer(function(input, output) {
       }
 
       else if(input$metric == "igc"){
-        textInput("parameter", "Specify Parameter", value = "80, 140")
+        textInput("parameter", "Specify Parameter", value = "70,180,1.1,2,30,30")
       }
     }
 
