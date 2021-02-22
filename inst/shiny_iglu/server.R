@@ -23,22 +23,21 @@ shinyServer(function(input, output) {
   ############################# METRIC SECTION ######################################################
 
 
-parameter_type <- reactive({
+  parameter_type <- reactive({
 
-  if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
-                         "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu")){
-    return("none")
-  }
+    if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
+                           "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
+      return("none")
+    }
 
-    else if(input$metric %in% c("above_percent", "below_percent", "quantile_glu")){
+    else if(input$metric %in% c("above_percent", "below_percent", "cogi", "quantile_glu")){
       return("list")
     }
 
-
-  else if(input$metric %in% c("conga", "grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
-                              "mage", "modd", "roc", "sd_roc", "active_percent")){
-    return("value")
-  }
+    else if(input$metric %in% c("conga", "grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
+                                "mag", "mage", "modd", "roc", "sd_roc", "active_percent")){
+      return("value")
+    }
 
     else if(input$metric %in% c("grade_eugly", "igc")){
       return("lwrupr")
@@ -54,40 +53,49 @@ parameter_type <- reactive({
 
     if(parameter_type == "list"){
       if(input$metric == "above_percent"){
-        textInput("parameter", "Specify Parameter", value = "140, 180, 200, 250")
+        textInput("parameter", "Specify Parameter", value = "140, 180, 250")
       }
+
       else if(input$metric == "below_percent"){
         textInput("parameter", "Specify Parameter", value = "50, 80")
       }
+
+      else if(input$metric == "cogi"){
+        textInput("parameter", "Specify Parameter", value = "70, 180")
+      }
+
       else if(input$metric == "quantile_glu"){
         textInput("parameter", "Specify Parameter", value = "0, 25, 50, 75, 100")
-
       }
     }
 
-  else if(parameter_type == "value"){
-    if(input$metric == "conga"){
-      textInput("parameter", "Specify n", value = "24")
-    }
+    else if(parameter_type == "value"){
+      if(input$metric == "conga"){
+        textInput("parameter", "Specify Parameter", value = "24")
+      }
 
-    else if(input$metric == "grade_hyper"){
-      textInput("parameter", "Specify Parameter", value = "140")
-    }
+      else if(input$metric == "grade_hyper"){
+        textInput("parameter", "Specify Parameter", value = "140")
+      }
 
       else if(input$metric == "grade_hypo"){
         textInput("parameter", "Specify Parameter", value = "80")
       }
 
       else if(input$metric == "hyper_index"){
-        textInput("parameter", "Specify Parameter", value = "180,1.1,30")
+        textInput("parameter", "Specify Parameter", value = "180, 1.1, 30")
       }
 
       else if(input$metric == "hypo_index"){
-        textInput("parameter", "Specify Parameter", value = "70,2,30")
+        textInput("parameter", "Specify Parameter", value = "70, 2, 30")
       }
 
       else if(input$metric == "m_value"){
         textInput("parameter", "Specify Reference Value", value = "90")
+      }
+
+      else if(input$metric == "mag"){
+        textInput("parameter", "Specify Parameter", value = "60")
       }
 
       else if(input$metric == "mage"){
@@ -97,16 +105,27 @@ parameter_type <- reactive({
       else if(input$metric == "modd"){
         textInput("parameter", "Specify Parameter", value = "1")
       }
+
+      else if(input$metric == "active_percent"){
+        textInput("parameter", "Specify Parameter", value = "5")
+      }
+
+      else if(input$metric == "roc"){
+        textInput("parameter", "Specify Parameter", value = "15")
+      }
+
+      else if(input$metric == "sd_roc"){
+        textInput("parameter", "Specify Parameter", value = "15")
+      }
     }
 
     else if(parameter_type == "lwrupr"){
-
       if(input$metric == "grade_eugly"){
         textInput("parameter", "Specify Parameter", value = "80, 140")
       }
 
       else if(input$metric == "igc"){
-        textInput("parameter", "Specify Parameter", value = "70,180,1.1,2,30,30")
+        textInput("parameter", "Specify Parameter", value = "80, 140, 1.1, 2, 30, 30")
       }
     }
 
@@ -115,18 +134,7 @@ parameter_type <- reactive({
         textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
       }
     }
-    else if(input$metric == "active_percent"){
-      textInput("parameter", "Specify Parameter", value = "5")
-    }
 
-    else if(input$metric == "roc"){
-      textInput("parameter", "Specify Parameter", value = "15")
-    }
-
-    else if(input$metric == "sd_roc"){
-      textInput("parameter", "Specify Parameter", value = "15")
-    }
-  }
   })
 
   output$help_text <- renderUI({
@@ -303,7 +311,7 @@ parameter_type <- reactive({
   })
 
 
-### Get time lag for Rate of Change plots
+  ### Get time lag for Rate of Change plots
   output$plot_timelag <- renderUI({
     plottype = plottype() # bring reactive input variable into this renderUI call
     if(plottype == "tsplot"){
@@ -323,7 +331,7 @@ parameter_type <- reactive({
     }
   })
 
-### Get max days to plot (maxd)
+  ### Get max days to plot (maxd)
   output$plot_maxd <- renderUI({
     plottype = plottype() # bring reactive input variable into this renderUI call
     if(plottype == "tsplot"){
@@ -494,43 +502,42 @@ parameter_type <- reactive({
     plottype = plottype() # bring reactive input variable into this renderPlot call
     library(iglu)
 
-  if(plottype == "tsplot"){
-    #plot_glu(data, plottype = "tsplot")
-    data = transform_data()
-    string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
-                   input$plot_TR, ', subjects = NULL, tz = "")', sep = "")
-    eval(parse(text = string))
-  }
-  else if(plottype == "lasagnamulti"){
-    data = transform_data()
-    string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
-                   input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(', input$plot_limits, '), ',
-                   midpoint = input$plot_midpoint, ', ',
-                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = "")
-    eval(parse(text = string))
-  }
-  else if(plottype == "lasagnasingle"){
-    data = subset_data() # subset data to only user-specified subject
-    string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
-                   input$plot_lasagnatype, '", limits = c(', input$plot_limits, '), ',
-                   midpoint = input$plot_midpoint, ', ',
-                   input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = "")
-    eval(parse(text = string))
-  }
-  else if(plottype == "plot_roc"){
-    data = subset_data() # subset data to only user-specified subject
-    string = paste('iglu::plot_roc(data = data',
-                   ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
-    eval(parse(text = string))
-  }
-  else if(plottype == "hist_roc"){
-    data = subset_data() # subset data to only user-specified subject
-    string = paste('iglu::hist_roc(data = data',
-                   ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
-    eval(parse(text = string))
-  }
+    if(plottype == "tsplot"){
+      #plot_glu(data, plottype = "tsplot")
+      data = transform_data()
+      string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
+                     input$plot_TR, ', subjects = NULL, tz = "")', sep = "")
+      eval(parse(text = string))
+    }
+    else if(plottype == "lasagnamulti"){
+      data = transform_data()
+      string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
+                     input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(', input$plot_limits, '), ',
+                     midpoint = input$plot_midpoint, ', ',
+                     input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = "")
+      eval(parse(text = string))
+    }
+    else if(plottype == "lasagnasingle"){
+      data = subset_data() # subset data to only user-specified subject
+      string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
+                     input$plot_lasagnatype, '", limits = c(', input$plot_limits, '), ',
+                     midpoint = input$plot_midpoint, ', ',
+                     input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "")', sep = "")
+      eval(parse(text = string))
+    }
+    else if(plottype == "plot_roc"){
+      data = subset_data() # subset data to only user-specified subject
+      string = paste('iglu::plot_roc(data = data',
+                     ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
+      eval(parse(text = string))
+    }
+    else if(plottype == "hist_roc"){
+      data = subset_data() # subset data to only user-specified subject
+      string = paste('iglu::hist_roc(data = data',
+                     ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
+      eval(parse(text = string))
+    }
 
   })
 
-})
-
+  })
