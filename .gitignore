@@ -2,7 +2,9 @@ Meta
 doc
 inst/doc
 packrat/lib*/
+.Rproj
 .Rproj.user
 .Rhistory
 .RData
 docs/
+iglu.Rproj
