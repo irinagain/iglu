@@ -28,7 +28,7 @@
 #' is set to an integer > 1.
 #'
 #' @references
-#' Service, Nelson (1980) Characteristics of glycemic stability.
+#' Service, F. J. & Nelson, R. L. (1980) Characteristics of glycemic stability.
 #' \emph{Diabetes care} \strong{3} .58-62,
 #' \doi{10.2337/diacare.3.1.58}.
 #' @examples
@@ -58,7 +58,7 @@ modd <- function(data, lag = 1, tz = ""){
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      modd = modd_single(data.frame(id,time,gl),lag)
+      MODD = modd_single(data.frame(id,time,gl),lag)
     )
   if (is_vector) {
     out$id = NULL

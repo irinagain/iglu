@@ -31,43 +31,44 @@ Missing values will be linearly interpolated when close enough to non-missing va
 
 \enumerate{
 
-\item SdW- vertical within days:
+\item SDw - vertical within days:
 
 Calculated by first taking the standard deviation of each day's glucose measurements,
 then taking the mean of all the standard deviations. That is, for d
 days we compute SD_1 ... SD_d daily standard deviations and calculate
 \eqn{1/d * \sum [(SD_i)]}
 
-\item SdHHMM - between time points:
+\item SDhhmm - between time points:
 
-Calculated by taking the mean glucose values at each time point in the grid across days,
+Also known as SDhh:mm. Calculated by taking the mean glucose values at each time point in the grid across days,
 and taking the standard deviation of those mans. That is, for t time points
 we compute X_t means for each time point and then compute SD([X_1, X_2, ... X_t]).
 
-\item SdWSH - within series:
+\item SDwsh - within series:
 
-Calculated by taking the hour-long intervals starting at every point in the interpolated
+Also known as SDws h. Calculated by taking the hour-long intervals starting at every point in the interpolated
 grid, computing the standard deviation of the points in each hour-long interval, and then
 finding the mean of those standard deviations. That is, for n time points compute
-SD_1 ... SD_n, where SD_i is the standard deviation of the set [SD_i, SD_i+2, ... SD_k-1]
-where SD_k is the first measurement more than an hour later than SD_1. Then, take
+SD_1 ... SD_n, where SD_i is the standard deviation of the glucose values [X_i, X_{i+1}, ... X_{i+k}]
+corresponding to hour-long window starting at observation X_i, the number of observations in the window k depends on CGM meter frequency. Then, take
 \eqn{1/n * \sum [(SD_i)]}.
 
-\item SdDM - horizontal sd:
+\item SDdm - horizontal sd:
 
 Calculated by taking the daily mean glucose values, and then taking the standard deviation
 of those daily means. That is, for d days we take X_1 ... X_d daily means, and then compute
 SD([X_1, X_2, ... X_d]).
 
-\item SdB -  between days, within timepoints:
+\item SDb -  between days, within timepoints:
 
 Calculated by taking the standard deviation of the glucose values across days for each time point,
 and then taking the mean of those standard deviations.
 That is, for t time points take SD_1 ... SD_t standard deviations, and then compute
 \eqn{1/t * \sum[(SD_i)]}
 
-\item SdBDM - between days, within timepoints, corrected for changes in daily means:
-Calculated by subtracting the daily mean from each glucose value, then taking the standard deviation
+\item SDbdm - between days, within timepoints, corrected for changes in daily means:
+
+Also known as SDb // dm. Calculated by subtracting the daily mean from each glucose value, then taking the standard deviation
 of the corrected glucose values across days for each time point, and then taking the mean of those
 standard deviations.
 That is, for t time points take SD_1 ... SD_t standard deviations, and then compute

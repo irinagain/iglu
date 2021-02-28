@@ -1,7 +1,7 @@
 Package: iglu
 Type: Package
 Title: Interpreting Glucose Data from Continuous Glucose Monitors
-Version: 1.0.2
+Version: 2.1.0
 Authors@R: c(person("Steve", "Broll",
             email = "stevebroll@tamu.edu",
             role = c("aut")),
@@ -9,11 +9,30 @@ Authors@R: c(person("Steve", "Broll",
             role = c("aut")),
             person("David", "Buchanan",
             role = c("aut")),
+            person("Elizabeth", "Chun",
+            role = c("aut")),
             person("John", "Muschelli",
             role = c("aut"),
-            email = "muschellij2@gmail.com"), 
+            email = "muschellij2@gmail.com",
+            comment = c(ORCID = "0000-0001-6469-1750")),
+            person("John", "Schwenck",
+            role = c("ctb"),
+            email = "jschwenck@stat.tamu.edu"),
+            person("Mary", "Martin",
+            role = c("ctb"),
+            email = "marymartin16@tamu.edu"),
+            person("Pratik", "Patel",
+            role = c("ctb"),
+            email = "p.pratik99@tamu.edu"),
+            person("Marielle", "Hicban",
+            role = c("ctb"),
+            email = "marbhic@tamu.edu"),
+            person("Nhan", "Nguyen",
+            role = c("ctb"),
+            email = "nhannguyen993@tamu.edu"),
             person("Irina", "Gaynanova",
-            email = "irinag@stat.tamu.edu",role = c("aut", "cre")))
+            email = "irinag@stat.tamu.edu",role = c("aut", "cre"),
+            comment = c(ORCID = "0000-0002-4116-0268")))
 Description: Implements a wide range of metrics for measuring glucose control and glucose variability based on continuous glucose monitoring data. The list of implemented metrics is summarized in Rodbard (2009) <doi:10.1089/dia.2009.0015>. Additional visualization tools include time-series and lasagna plots. 
 License: GPL-2
 Encoding: UTF-8
@@ -22,13 +41,16 @@ RoxygenNote: 7.1.1
 Depends: R (>= 3.1.0)
 Imports:
     caTools,
-    scales,
-    stats,
-    ggplot2,
-    lubridate,
-    shiny,
     dplyr,
+    ggplot2,
+    gridExtra,
+    hms,
+    lubridate,
     magrittr,
+    patchwork,
+    scales,
+    shiny,
+    stats,
     tibble,
     tidyr
 Suggests:

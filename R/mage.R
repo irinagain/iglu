@@ -30,10 +30,9 @@
 #' argument.
 #'
 #' @references
-#' Service et al. (1970) Mean amplitude of glycemic excursions, a
-#' measure of diabetic instability
-#' \emph{Diabetes}  \strong{19} .644-655,
-#' \doi{10.2337/diab.19.9.644}.
+#' Service, F. J. & Nelson, R. L. (1980) Characteristics of glycemic stability.
+#' \emph{Diabetes care} \strong{3} .58-62,
+#' \doi{10.2337/diacare.3.1.58}.
 #'
 #' @examples
 #'
@@ -58,7 +57,7 @@ mage <- function(data, sd_multiplier = 1){
     dplyr::group_by(id) %>%
     dplyr::mutate(abs_diff_mean = abs(gl - mean(gl, na.rm = TRUE))) %>%
     dplyr::summarise(
-      mage = mean(
+      MAGE = mean(
         abs_diff_mean[abs_diff_mean > (sd_multiplier * sd(gl, na.rm = TRUE))],
         na.rm = TRUE)
     )

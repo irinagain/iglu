@@ -11,11 +11,13 @@ plot_lasagna(
   maxd = 14,
   limits = c(50, 500),
   midpoint = 105,
-  LLTR = 80,
-  ULTR = 140,
+  LLTR = 70,
+  ULTR = 180,
   dt0 = NULL,
-  inter_gap = 60,
-  tz = ""
+  inter_gap = 45,
+  tz = "",
+  color_scheme = c("blue-red", "red-orange"),
+  log = F
 )
 }
 \arguments{
@@ -23,26 +25,31 @@ plot_lasagna(
 
 \item{datatype}{String corresponding to data aggregation used for plotting, currently supported options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject}
 
-\item{lasagnatype}{String corresponding to plot type when using\code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.}
+\item{lasagnatype}{String corresponding to plot type when using \code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.}
 
 \item{maxd}{For datatype "all", maximal number of days to be plotted from the study. The default value is 14 days (2 weeks).}
 
 \item{limits}{The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link{scale_fill_gradient2}})}
 
-\item{midpoint}{The glucose value serving as midpoint (white) of the diverging gradient scale (see \code{\link{scale_fill_gradient2}}). The default value is 125 mg/dL. The values above are colored in red, and below in blue.}
+\item{midpoint}{The glucose value serving as midpoint of the diverging gradient scale (see \code{\link{scale_fill_gradient2}}). The default value is 105 mg/dL. The values above are colored in red, and below in blue in the default color_scheme, which can be adjusted.}
 
-\item{LLTR}{Lower Limit of Target Range, default value is 80 mg/dL.}
+\item{LLTR}{Lower Limit of Target Range, default value is 70 mg/dL.}
 
-\item{ULTR}{Upper Limit of Target Range, default value is 140 mg/dL.}
+\item{ULTR}{Upper Limit of Target Range, default value is 180 mg/dL.}
 
 \item{dt0}{The time frequency for interpolated aligned grid in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
 \item{inter_gap}{The maximum allowable gap (in minutes) for interpolation of
 NA glucose values. The values will not be interpolated between
 the glucose measurements that are more than inter_gap minutes apart.
-The default value is 60 min.}
+The default value is 45 min.}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
+
+\item{color_scheme}{String corresponding to the chosen color scheme. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.}
+
+\item{log}{Logical value indicating whether log10 of glucose values should be taken, default value is FALSE.
+When log = TRUE the glucose values, limits, midpoint, LLTR, and ULTR will all be log transformed.}
 }
 \value{
 A ggplot object corresponding to lasagna plot

@@ -1,6 +1,6 @@
 #' Calculate percentage below targeted values
 #'
-#' #' @description
+#' @description
 #' The function below_percent produces a tibble object with values equal to
 #' the percentage of glucose measurements below target values. The output columns
 #' correspond to the subject id followed by the target values and the output rows
@@ -8,14 +8,14 @@
 #' and 100 (all measurements).
 #'
 #' @usage
-#' below_percent(data, targets_below = c(50, 80))
+#' below_percent(data, targets_below = c(54, 70))
 #'
 #' @param data DataFrame with column names ("id", "time", and "gl"),
 #' or numeric vector of glucose values.
 #'
 #' @param targets_below Numeric vector of glucose thresholds. Glucose values from
 #' data argument will be compared to each value in the targets_below vector.
-#' Default list is (50, 80).
+#' Default list is (54, 70).
 #'
 #' @details
 #' A tibble object with 1 row for each subject, a column for subject id and
@@ -50,7 +50,7 @@
 #'
 
 
-below_percent <- function(data, targets_below = c(50,80)){
+below_percent <- function(data, targets_below = c(54,70)){
 
   x = target_val = id = NULL
   rm(list = c("id", "target_val", "x"))

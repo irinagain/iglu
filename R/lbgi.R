@@ -55,7 +55,7 @@ lbgi <- function(data){
       fbg = pmin(fbg, 0)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      lbgi = 22.77  *
+      LBGI = 22.77  *
         sum(fbg[ gl <  112.5]^2, na.rm = TRUE) /
         sum(!is.na(gl))
     )

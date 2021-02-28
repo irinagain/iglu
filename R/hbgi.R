@@ -56,7 +56,7 @@ hbgi <- function(data){
       fbg = pmax(fbg, 0)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      hbgi = 22.77  *
+      HBGI = 22.77  *
         sum(fbg[gl >=  112.5]^2, na.rm = TRUE) /
         sum(!is.na(gl))
     )

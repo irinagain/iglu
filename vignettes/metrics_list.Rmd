@@ -19,31 +19,43 @@ library(iglu)
 ```
 
 |Metric Name | Corresponding function in iglu | Reference| Time-dependent |
-|------------|:------------------------------:|----------|------------|
-|ADRR (Average Daily Risk Range) | adrr |[Kovatchev et al. (2006)](https://doi.org/10.2337/dc06-1085)| Yes |
+|:------------|:------------------------------:|:----------|:------------|
+|Active Percent | active_percent | [Danne et al. (2017)](https://doi.org/10.2337/dc17-1600)| Yes |
+|ADRR (Average Daily Risk Range) | adrr | [Kovatchev et al. (2006)](https://doi.org/10.2337/dc06-1085)| Yes |
+|AUC (Area Under the Curve) | auc | [Danne et al. (2017)](https://doi.org/10.2337/dc17-1600)| Yes |
+|COGI (COntinuous Glucose monitoring Index) | cogi | [Leelarathna et al. (2019)](https://doi.org/10.1177/1932296819838525)| No |
 |CONGA (Continuous Overall Net Glycemic Action) | conga | [McDonnell et al. (2005)](https://doi.org/10.1089/dia.2005.7.253)| Yes |
 |Coefficient of variation (CV) | cv_glu | [Rodbard (2009)](https://doi.org/10.1089/dia.2008.0132) | No |
+|CVmean (mean of daily CV) | cv_measures (CVmean) | [Umpierrez et al. (2018)](https://doi.org/10.1016/j.amjms.2018.09.010) | Yes |
+|CVsd (SD of daily CV) | cv_measures (CVsd) | [Umpierrez et al. (2018)](https://doi.org/10.1016/j.amjms.2018.09.010) | Yes |
+|eA1c (Estimated A1c) | ea1c | [Nathan et. al (2008)](https://doi.org/10.2337/dc08-0545)| No |
+|Glucose Management Indicator (GMI) | gmi | [Bergenstal (2018)](https://doi.org/10.2337/dc18-1581)| No |
 |GRADE (Glycemic Risk Assessment Diabetes Equation) | grade | [Hill et al. (2007)](https://doi.org/10.1111/j.1464-5491.2007.02119.x)| No |
 |GRADEeu | grade_eugly | [Hill et al. (2007)](https://doi.org/10.1111/j.1464-5491.2007.02119.x)| No |
 |GRADEhyper | grade_hyper | [Hill et al. (2007)](https://doi.org/10.1111/j.1464-5491.2007.02119.x)| No |
 |GRADEhypo | grade_hypo | [Hill et al. (2007)](https://doi.org/10.1111/j.1464-5491.2007.02119.x)| No |
+|GVP (Glucose Variability Percentage) | gvp | [Peyser et al. (2017)](https://dx.doi.org/10.1089%2Fdia.2017.0187) | Yes |
 |HBGI (High Blood Glucose Index) | hbgi | [Kovatchev et al. (2006)](https://doi.org/10.2337/dc06-1085)| No |
 |LBGI (Low Blood Glucose Index) | lbgi | [Kovatchev et al. (2006)](https://doi.org/10.2337/dc06-1085)| No |
-|Hyperglycemia Index Parameters | hyper_index | [Rodbard (2009)](https://doi.org/10.1089/dia.2008.0132)|
+|Hyperglycemia Index Parameters | hyper_index | [Rodbard (2009)](https://doi.org/10.1089/dia.2008.0132)| No |
 |Hypoglycemia Index Parameters | hypo_index | [Rodbard (2009)](https://doi.org/10.1089/dia.2008.0132)| No |
 |IGC (Index of Glycemic Control)| igc | [Rodbard (2009)](https://doi.org/10.1089/dia.2008.0132) | No |
 |IQR (Interquartile Range)| iqr_glu | | No |
 |J-Index| j_index | [Wojcicki (1995)](https://doi.org/10.1055/s-2007-979906) | No |
 |M-value| m_value | [Schlichtkrull et al. (1965)](https://doi.org/10.1111/j.0954-6820.1965.tb01810.x) |  No |
-|MAGE (Mean Amplitude of Glycemic Excursions)| mage | [Service et al. (1970)](https://doi.org/10.2337/diab.19.9.644) | No |
+|MAD (Mean Absolute Deviation) | mad_glu | | No |
+|MAG (Mean Absolute Glucose) | mag | [Hermanides et al. (2010)](https://doi.org/10.1097/ccm.0b013e3181cc4be9) | Yes |
+|MAGE (Mean Amplitude of Glycemic Excursions)| mage | [Service & Nelson (1980)](https://doi.org/10.2337/diacare.3.1.58) | No |
 |Mean   | mean_glu | |  No |
 |Median | median_glu | | No |
-|MODD (Mean Of Daily Differences)| modd | [Nelson (1980)](https://doi.org/10.2337/diacare.3.1.58) | Yes |
+|MODD (Mean Of Daily Differences)| modd | [Service & Nelson (1980)](https://doi.org/10.2337/diacare.3.1.58) | Yes |
 |Percent Above | above_percent | | No |
 |Percent Below | below_percent | | No |
 |Percent in range | in_range_percent | | No |
 |Quantiles | quantile_glu | | No |
 |Range | range_glu | | No |
+|Rate of change (ROC) | roc | [Clarke et al. (2009)](https://doi.org/10.1089/dia.2008.0138) | Yes |
+|Standard Deviation of ROC | sd_roc | [Clarke et al. (2009)](https://doi.org/10.1089/dia.2008.0138) | Yes |
 |Standard Deviation | sd_glu | | No |
 |SdB (between days, within timepoints)| sd_measures (SdB) |[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)| Yes |
 |SdBDM (between days, within timepoints, corrected for changes in daily means)| sd_measures (SdBDM) |[Rodbard (2009)](https://doi.org/10.1089/dia.2009.0015)| Yes |

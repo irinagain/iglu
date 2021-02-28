@@ -39,7 +39,7 @@ sd_glu <- function(data){
   out = data %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      sd = sd(gl, na.rm = TRUE)
+      SD = sd(gl, na.rm = TRUE)
     )
   if (is_vector) {
     out$id = NULL
