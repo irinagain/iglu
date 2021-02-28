@@ -3,7 +3,7 @@ library(ggplot2)
 # Author: Johnathan Shih, Jung Hoon Seo
 # Date: February 13, 2021
 
-episode_calculation <- function(data, hypo_thres=100.0, hyper_thres= 100.0, dur_length = 15){
+episode_calculation <- function(data, hypo_thres=90.0, hyper_thres= 120.0, dur_length = 15){
 
   data_ip = CGMS2DayByDay(data, dt0 = 5)
 
@@ -80,9 +80,27 @@ episode_calculation <- function(data, hypo_thres=100.0, hyper_thres= 100.0, dur_
     episodes = c(length(hypo_total), length(hyper_total))
     durations = c(hypo_duration, hyper_duration)
     means = c(hypo_mean, hyper_mean)
-    dataframe <- data.frame("Mean Episodes Day(Hypo)" = episodes[1], "Mean Episodes Day(Hyper)" = episodes[2],
+
+    if (length(hypo_dur_length != 0))
+          Low_Alert = length(hypo_dur_length) / length(params[[1]]) * 100
+    else
+          Low_Alert = 0
+    if (length(hyper_dur_length != 0))
+          High_Alert = length(hyper_dur_length) / length(params[[1]]) * 100
+    else
+          High_Alert = 0
+
+    Target_Range = params[[1]][ (params[[1]] > hypo_thres) & (params[[1]] < hyper_thres)]
+    Target_Range = length(Target_Range)/ length(params[[1]])
+
+    Avg_Glucose = mean(params[[1]][!is.na(params[[1]])] )
+
+        dataframe <- data.frame("Averge Glucose" = Avg_Glucose,
+                            "Mean Episodes Day(Hypo)" = episodes[1], "Mean Episodes Day(Hyper)" = episodes[2],
                             "Mean Duration (Hypo)" = durations[1], "Mean Duration (Hyper)" = durations[2], check.names = FALSE,
-                            "Hypo Episode Mean" = means[1], "Hyper Episode Mean" = means[2])
+                            "Hypo Episode Mean" = means[1], "Hyper Episode Mean" = means[2],
+                            "Low Alert (%)" = Low_Alert, "High Alert (%)" = High_Alert,
+                            "Target Range (%)" = Target_Range)
     return (dataframe)
   }
 
