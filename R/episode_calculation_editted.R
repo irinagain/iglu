@@ -7,7 +7,7 @@ episode_calculation <- function(data, hypo_thres=91.0, hyper_thres= 120.0, dur_l
 
   data_ip = CGMS2DayByDay(data, dt0 = 5)
 
-  gl_by_id_ip = data_ip[[1]][1,]
+  gl_by_id_ip = data_ip[[1]][2,]
 
   dt0 = data_ip[[3]]
 
@@ -18,6 +18,7 @@ episode_calculation <- function(data, hypo_thres=91.0, hyper_thres= 120.0, dur_l
     df <- cbind(index = cbind(1:length(params[[1]])), df)
     p2 <- ggplot(df, aes(x=index, y=gl_by_id_ip)) + geom_point()
     p2 <- p2 + geom_hline(yintercept=cbind(params[[2]],params[[3]]), linetype="dashed", color = "blue", size=.5)
+    print(p2)
   }
 
   episode<- function(params) {
