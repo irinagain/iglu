@@ -83,11 +83,11 @@ parameter_type <- reactive({
       }
 
       else if(input$metric == "hyper_index"){
-        textInput("parameter", "Specify Parameter", value = "140")
+        textInput("parameter", "Specify Upper Limit", value = "180")
       }
 
       else if(input$metric == "hypo_index"){
-        textInput("parameter", "Specify Parameter", value = "80")
+        textInput("parameter", "Specify Lower Limit", value = "70")
       }
 
       else if(input$metric == "m_value"){
@@ -125,7 +125,7 @@ parameter_type <- reactive({
     }
 
       else if(input$metric == "igc"){
-        textInput("parameter", "Specify Parameter", value = "80, 140")
+        textInput("parameter", "Specify Lower and Upper Limits", value = "70, 180")
       }
     }
 
@@ -230,6 +230,82 @@ parameter_type <- reactive({
         helpText("Enter target ranges in list format - e.g. (lower, upper), (lower, upper)")
       }
     }
+  })
+  output$select_second_parameter <- renderUI({
+    parameter_type = parameter_type()
+    if(parameter_type == "value"){
+      if(input$metric == "hyper_index"){
+        textInput("parameter", "Specify Exponent", value = "1.1")
+      }
+
+      else if(input$metric == "hypo_index"){
+        textInput("parameter", "Specify Exponent", value = "2")
+      }
+    }
+
+    else if(parameter_type == "lwrupr"){
+      if(input$metric == "igc"){
+        textInput("parameter", "Specify Exponent", value = "1.1, 2")
+      }
+    }
+
+  })
+  output$second_parameter_helptext <- renderUI({
+    parameter_type = parameter_type()
+    if(parameter_type == "value"){
+      if(input$metric == "hyper_index"){
+        helpText("Enter the upper limit exponent.")
+      }
+
+      else if(input$metric == "hypo_index"){
+        helpText("Enter the lower limit exponent.")
+      }
+    }
+
+    else if(parameter_type == "lwrupr"){
+      if(input$metric == "igc"){
+        helpText("Enter the exponents separated by a comma with the upper limit as the first input and the lower limit as the second input.")
+      }
+    }
+
+  })
+  output$select_third_parameter <- renderUI({
+    parameter_type = parameter_type()
+    if(parameter_type == "value"){
+      if(input$metric == "hyper_index"){
+        textInput("parameter", "Specify Scaling Factor", value = "30")
+      }
+
+      else if(input$metric == "hypo_index"){
+        textInput("parameter", "Specify Scaling Factor", value = "30")
+      }
+    }
+
+    else if(parameter_type == "lwrupr"){
+      if(input$metric == "igc"){
+        textInput("parameter", "Specify Scaling Factor", value = "30,30")
+      }
+    }
+
+  })
+  output$third_parameter_helptext <- renderUI({
+    parameter_type = parameter_type()
+    if(parameter_type == "value"){
+      if(input$metric == "hyper_index"){
+        helpText("Enter the upper limit scaling factor.")
+      }
+
+      else if(input$metric == "hypo_index"){
+        helpText("Enter the lower limit scaling factor.")
+      }
+    }
+
+    else if(parameter_type == "lwrupr"){
+      if(input$metric == "igc"){
+        helpText("Enter the scarling factors separated by a comma with the upper limit as the first input and the lower limit as the second input.")
+      }
+    }
+
   })
 
   metric_table <- reactive({
