@@ -4,10 +4,11 @@
 \alias{mage}
 \title{Calculate Mean Amplitude of Glycemic Excursions}
 \usage{
-mage(data)
-mage(data, plot = TRUE)
-mage(data, short_MA = 7, long_MA = 20)
-mage(data, version = 'v1')
+data(example_data_5_subject)
+mage(example_data_5_subject)
+mage(example_data_5_subject, .plot = TRUE)
+mage(example_data_5_subject, short_MA = 7, long_MA = 20)
+mage(example_data_5_subject, version = 'v1')
 }
 \arguments{
 \item{data}{Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector).}
@@ -19,8 +20,8 @@ mage(data, version = 'v1')
   \item{dateformat: POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of a different format.}
   \item{short_MA: Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended <15).}
   \item{long_MA: Integer for period length for the long moving average. Default: 23. (Recommended >20)}
- \item{plot: Boolean. Returns ggplot if TRUE. Default: FALSE.}
- \item{interval: Integer for time interval in minutes between glucose readings. Algorithm will auto-magically determine the interval if not specified. Default: NA (Only used to calculate the gaps shown on the ggplot)}
+ \item{.plot: Boolean. Returns ggplot if TRUE. Default: FALSE.}
+ \item{.interval: Integer for time interval in minutes between glucose readings. Algorithm will auto-magically determine the interval if not specified. Default: NA (Only used to calculate the gaps shown on the ggplot)}
  \item{.title: Title for the ggplot. Default: "Glucose Trace"}
  \item{sd_multiplier: DEPRECATED. A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation.}
 }}
@@ -35,13 +36,14 @@ UPDATED to version 2. The function calculates MAGE values and can optionally ret
 The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970). The proposed method uses the crosses of a short and long moving average to identify intervals where a peak or nadir may exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.
 }
 \examples{
-mage(data)
-mage(data, dateformat = "\%m-\%d-\%Y \%H:\%M:\%S")
-mage(data, short_MA = 4, long_MA = 24)
-mage(data, plot = TRUE, interval = 15, .title="Glucose Trace for Patient X")
+data(example_data_5_subject)
+mage(example_data_5_subject)
+mage(example_data_5_subject, dateformat = "\%m-\%d-\%Y \%H:\%M:\%S")
+mage(example_data_5_subject, short_MA = 4, long_MA = 24)
+mage(example_data_5_subject, .plot = TRUE, .interval = 15, .title="Glucose Trace for Patient X")
 
 DEPRECATED.
-mage(data, version = 'v1')
+mage(example_data_5_subject, version = 'v1')
 mage(example_data_1_subject, version = 'v1', sd_multiplier = 2)
 }
 \references{

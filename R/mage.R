@@ -3,10 +3,11 @@
 #' @description UPDATED to version 2. The function calculates MAGE values and can optionally return a plot of the glucose trace. Version 1 is also accessible for backwards compatibility.
 #'
 #' @usage
-#' mage(data)
-#' mage(data, .plot = TRUE)
-#' mage(data, short_MA = 7, long_MA = 20)
-#' mage(data, version = 'v1')
+#' data(example_data_5_subject)
+#' mage(example_data_5_subject)
+#' mage(example_data_5_subject, .plot = TRUE)
+#' mage(example_data_5_subject, short_MA = 7, long_MA = 20)
+#' mage(example_data_5_subject, version = 'v1')
 #'
 #' @param data Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector).
 #'
@@ -36,13 +37,14 @@
 #' \doi{10.2337/diab.19.9.644}.
 #'
 #' @examples
-#' mage(data)
-#' mage(data, dateformat = "%m-%d-%Y %H:%M:%S")
-#' mage(data, short_MA = 4, long_MA = 24)
-#' mage(data, .plot = TRUE, .interval = 15, .title="Glucose Trace for Patient X")
+#' data(example_data_5_subject)
+#' mage(example_data_5_subject)
+#' mage(example_data_5_subject, dateformat = "%m-%d-%Y %H:%M:%S")
+#' mage(example_data_5_subject, short_MA = 4, long_MA = 24)
+#' mage(example_data_5_subject, .plot = TRUE, .interval = 15, .title="Glucose Trace for Patient X")
 #'
 #' DEPRECATED.
-#' mage(data, version = 'v1')
+#' mage(example_data_5_subject, version = 'v1')
 #' mage(example_data_1_subject, version = 'v1', sd_multiplier = 2)
 
 mage <- function(data, version = c('v2', 'v1'), ...) {
@@ -226,8 +228,8 @@ mage_single <- function(data, short_MA = 5, long_MA = 23, .plot = FALSE, .interv
 
     # 4a. Label 'Peaks' and 'Nadirs'
     .data <- .data %>%
-      dplyr::mutate(TP = dplyr::case_when(row_number() %in% tp_indexes[seq(to=length(tp_indexes), by=2)] ~ ifelse(nadir2peak==0,"Peak","Nadir"),
-                                          row_number() %in% tp_indexes[1+seq(to=length(tp_indexes), by=2)] ~ ifelse(nadir2peak==0,"Nadir","Peak")))
+      dplyr::mutate(TP = dplyr::case_when(dplyr::row_number() %in% tp_indexes[seq(to=length(tp_indexes), by=2)] ~ ifelse(nadir2peak==0,"Peak","Nadir"),
+                                          dplyr::row_number() %in% tp_indexes[1+seq(to=length(tp_indexes), by=2)] ~ ifelse(nadir2peak==0,"Nadir","Peak")))
     #View(.data)
     # 4b. Label Gaps in Data
     # Automagically calculate interval of glucose monitor if unspecified
