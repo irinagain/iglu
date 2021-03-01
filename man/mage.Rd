@@ -14,19 +14,16 @@ mage(data, version = 'v1')
 
 \item{version}{Optional. Either 'v2' or 'v1'. Chooses which version of the MAGE algorithm to use. Version 2 is default and highly recommended.}
 
-\item{dateformat}{OPTIONAL. POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of different format.}
-
-\item{short_MA}{OPTIONAL. Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended <15).}
-
-\item{long_MA}{OPTIONAL. Integer for period length for the long moving average. Default: 23. (Recommended >20)}
-
-\item{plot}{OPTIONAL. Boolean. Returns ggplot if TRUE. Default: FALSE.}
-
-\item{interval}{OPTIONAL. Integer for time interval in minutes between glucose readings. Algorithm will automagically determine the interval if not specified. Default: NA (Only used to calculate the gaps shown on the ggplot)}
-
-\item{.title}{OPTIONAL. Title for the ggplot. Default: "Glucose Trace"}
-
-\item{sd_multiplier}{DEPRECATED. A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation.}
+\item{...}{Optional arguments to pass to the MAGE Functions
+\itemize{
+  \item{dateformat: POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of a different format.}
+  \item{short_MA: Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended <15).}
+  \item{long_MA: Integer for period length for the long moving average. Default: 23. (Recommended >20)}
+ \item{plot: Boolean. Returns ggplot if TRUE. Default: FALSE.}
+ \item{interval: Integer for time interval in minutes between glucose readings. Algorithm will auto-magically determine the interval if not specified. Default: NA (Only used to calculate the gaps shown on the ggplot)}
+ \item{.title: Title for the ggplot. Default: "Glucose Trace"}
+ \item{sd_multiplier: DEPRECATED. A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation.}
+}}
 }
 \value{
 Version 2: The calculated MAGE value for the glucose values or a ggplot if plot = TRUE. Version 1: If a data.frame object is passed, then a tibble object with two columns - subject id and corresponding MAGE value is returned. If a vector of glucose values is passed, then a tibble object with just the MAGE value is returned. as.numeric() can be wrapped around the latter to output just a numeric value.
@@ -46,7 +43,6 @@ mage(data, plot = TRUE, interval = 15, .title="Glucose Trace for Patient X")
 DEPRECATED.
 mage(data, version = 'v1')
 mage(example_data_1_subject, version = 'v1', sd_multiplier = 2)
-
 }
 \references{
 Service et al. (1970) Mean amplitude of glycemic excursions, a measure of diabetic instability

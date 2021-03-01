@@ -4,7 +4,7 @@
 #'
 #' @usage
 #' mage(data)
-#' mage(data, plot = TRUE)
+#' mage(data, .plot = TRUE)
 #' mage(data, short_MA = 7, long_MA = 20)
 #' mage(data, version = 'v1')
 #'
@@ -12,26 +12,22 @@
 #'
 #' @param version Optional. Either 'v2' or 'v1'. Chooses which version of the MAGE algorithm to use. Version 2 is default and highly recommended.
 #'
-#' @param dateformat OPTIONAL. POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of different format.
-#'
-#' @param short_MA OPTIONAL. Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended <15).
-#'
-#' @param long_MA OPTIONAL. Integer for period length for the long moving average. Default: 23. (Recommended >20)
-#'
-#' @param plot OPTIONAL. Boolean. Returns ggplot if TRUE. Default: FALSE.
-#'
-#' @param interval OPTIONAL. Integer for time interval in minutes between glucose readings. Algorithm will automagically determine the interval if not specified. Default: NA (Only used to calculate the gaps shown on the ggplot)
-#'
-#' @param .title OPTIONAL. Title for the ggplot. Default: "Glucose Trace"
-#'
-#' @param sd_multiplier DEPRECATED. A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation.
+#' @param ... Optional arguments to pass to the MAGE Functions
+#' \itemize{
+#'   \item{dateformat: POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of a different format.}
+#'   \item{short_MA: Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended <15).}
+#'   \item{long_MA: Integer for period length for the long moving average. Default: 23. (Recommended >20)}
+#'  \item{.plot: Boolean. Returns ggplot if TRUE. Default: FALSE.}
+#'  \item{.interval: Integer for time interval in minutes between glucose readings. Algorithm will auto-magically determine the interval if not specified. Default: NA (Only used to calculate the gaps shown on the ggplot)}
+#'  \item{.title: Title for the ggplot. Default: "Glucose Trace"}
+#'  \item{sd_multiplier: DEPRECATED. A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation.}
+#' }
 #'
 #' @return Version 2: The calculated MAGE value for the glucose values or a ggplot if plot = TRUE. Version 1: If a data.frame object is passed, then a tibble object with two columns - subject id and corresponding MAGE value is returned. If a vector of glucose values is passed, then a tibble object with just the MAGE value is returned. as.numeric() can be wrapped around the latter to output just a numeric value.
 #'
 #' @export
 #'
-#' @details
-#' The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970). The proposed method uses the crosses of a short and long moving average to identify intervals where a peak or nadir may exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.
+#' @details The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970). The proposed method uses the crosses of a short and long moving average to identify intervals where a peak or nadir may exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.
 #'
 #'
 #' @references
@@ -43,7 +39,7 @@
 #' mage(data)
 #' mage(data, dateformat = "%m-%d-%Y %H:%M:%S")
 #' mage(data, short_MA = 4, long_MA = 24)
-#' mage(data, plot = TRUE, interval = 15, .title="Glucose Trace for Patient X")
+#' mage(data, .plot = TRUE, .interval = 15, .title="Glucose Trace for Patient X")
 #'
 #' DEPRECATED.
 #' mage(data, version = 'v1')
@@ -62,7 +58,33 @@ mage <- function(data, version = c('v2', 'v1'), ...) {
   return(mage_new(data, ...))
 }
 
-mage_new <- function(data, short_MA = 5, long_MA = 23, plot = FALSE, interval=NA,
+mage_new <- function(data, ...) {
+  data = check_data_columns(data)
+  is_vector = attr(data, "is_vector")
+#
+  if(exists('.plot') && .plot == TRUE) {
+    plot_list = data %>%
+      dplyr::filter(!is.na(gl)) %>%
+      dplyr::group_by(id) %>%
+      dplyr::do(MAGE = mage_single(., ...))
+
+    return(plot_list)
+  }
+
+  out = data %>%
+    dplyr::filter(!is.na(gl)) %>%
+    dplyr::group_by(id) %>%
+    dplyr::do(data.frame(MAGE = mage_single(., ...)))
+
+
+  if (is_vector) {
+    out$id = NULL
+  }
+
+  return(out)
+}
+
+mage_single <- function(data, short_MA = 5, long_MA = 23, .plot = FALSE, .interval=NA,
                      dateformat="%Y-%m-%d %H:%M:%S", .title = "Glucose Trace") {
 
   ## 1. Preprocessing
@@ -71,7 +93,7 @@ mage_new <- function(data, short_MA = 5, long_MA = 23, plot = FALSE, interval=NA
   rm(list = c("MA_Short", "MA_Long", "DIFF", "TP", ".xmin", ".xmax"))
 
   # 1b. Sanitize the input data
-  data = check_data_columns(data)
+  #data = check_data_columns(data)
 
   ## 2. Process the Data
   # 2a. Calculate the moving average values
@@ -200,28 +222,31 @@ mage_new <- function(data, short_MA = 5, long_MA = 23, plot = FALSE, interval=NA
   }
 
   ## 4. Generate Plot of Data (if specified)
-  if(plot) {
+  if(.plot) {
 
     # 4a. Label 'Peaks' and 'Nadirs'
     .data <- .data %>%
       dplyr::mutate(TP = dplyr::case_when(row_number() %in% tp_indexes[seq(to=length(tp_indexes), by=2)] ~ ifelse(nadir2peak==0,"Peak","Nadir"),
                                           row_number() %in% tp_indexes[1+seq(to=length(tp_indexes), by=2)] ~ ifelse(nadir2peak==0,"Nadir","Peak")))
-
+    #View(.data)
     # 4b. Label Gaps in Data
     # Automagically calculate interval of glucose monitor if unspecified
-    interval <- if(is.na(interval)) {
+    .interval <- if(is.na(.interval)) {
       diff <- as.numeric(nrow(.data) - 1)
 
       for( i in 2:nrow(.data)) {
         diff[i-1] = .data$time[i] - .data$time[i-1]
       }
       median(diff, na.rm = T)
-    } else { interval }
+    } else { .interval }
 
-    # Label Data
+    # # Label Data
     .gaps <- .data %>%
-        dplyr::filter(difftime(time, dplyr::lag(time), units = "min") >= interval*2 |
-               abs(difftime(time, dplyr::lead(time), units = "min")) >= 2*interval)
+        dplyr::filter(difftime(time, dplyr::lag(time), units = "min") >= .interval*2 |
+               abs(difftime(time, dplyr::lead(time), units = "min")) >= 2*.interval)
+    # View(.gaps)
+    .gaps <- if(nrow(.gaps) %% 2 == 1) { .gaps[1:(nrow(.gaps)-1), ] } else { .gaps } # make the df even
+
     .gaps <- data.frame(.xmin = .gaps$time[c(TRUE, FALSE)],
                         .xmax = .gaps$time[c(FALSE, TRUE)])
     .ymin <- min(.data$gl)
@@ -230,7 +255,7 @@ mage_new <- function(data, short_MA = 5, long_MA = 23, plot = FALSE, interval=NA
     # 4c. Generate ggplot
     colors <- c("Short MA" = "#D55E00", "Long MA" = "#009E73","Nadir" = "blue", "Peak"="red", "Gap"="purple")
 
-    plot <- ggplot2::ggplot(.data, ggplot2::aes(x=time, y=gl)) +
+    .p <- ggplot2::ggplot(.data, ggplot2::aes(x=time, y=gl)) +
       ggplot2::ggtitle(.title) +
       ggplot2::geom_point() +
       ggplot2::geom_point(data = subset(.data, .data$TP != ""), ggplot2::aes(color = TP), size=2) +
@@ -250,7 +275,7 @@ mage_new <- function(data, short_MA = 5, long_MA = 23, plot = FALSE, interval=NA
       ggplot2::scale_color_manual(values = colors)
 
     # 4d. Return plot
-    return(plotly::ggplotly(plot))
+    return(plotly::ggplotly(.p))
   }
 
   # 5. Return MAGE calculation
@@ -261,7 +286,6 @@ mage_new <- function(data, short_MA = 5, long_MA = 23, plot = FALSE, interval=NA
 }
 
 mage_old <- function(data, sd_multiplier = 1){
-
 
   abs_diff_mean = gl = id = NULL
   rm(list = c("gl", "id", "abs_diff_mean"))
@@ -277,9 +301,9 @@ mage_old <- function(data, sd_multiplier = 1){
         abs_diff_mean[abs_diff_mean > (sd_multiplier * sd(gl, na.rm = TRUE))],
         na.rm = TRUE)
     )
-  if (is_vector) {
-    out$id = NULL
-  }
+  #if (is_vector) {
+  #  out$id = NULL
+  #}
   return(out)
 
 }
