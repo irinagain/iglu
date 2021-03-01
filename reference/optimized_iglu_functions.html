@@ -156,11 +156,25 @@ please see the corresponding function documentation.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 <span class='fu'>optimized_iglu_functions</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in gsub(finish, start, ..., fixed = TRUE): zero-length pattern</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 15</span><span>
+#&gt;   id        Conga   GVP  MODD SD.Roc CV_Measures_Mean CV_Measures_SD   AUC   MAG
+#&gt; </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1  37.0  1.17  27.8  0.620             21.1           7.80  123.  17.0
+#&gt; </span><span style='color: #949494;'># … with 6 more variables: SDw &lt;dbl&gt;, SDhhmm &lt;dbl&gt;, SDwsh &lt;dbl&gt;, SDdm &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   SDb &lt;dbl&gt;, SDbdm &lt;dbl&gt;</span><span></div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
 <span class='fu'>optimized_iglu_functions</span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in gsub(finish, start, ..., fixed = TRUE): zero-length pattern</span></div><div class='input'>
-</div></pre>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 15</span><span>
+#&gt;   id        Conga   GVP  MODD SD.Roc CV_Measures_Mean CV_Measures_SD   AUC   MAG
+#&gt; </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1  37.0  1.17  27.8  0.620             21.1           7.80  123.  17.0
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Subject 2  60.6  1.21  44.1  0.642             17.0           6.41  218.  18.9
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Subject 3  63.4  1.26  48.2  0.831             27.1           9.40  154.  27.1
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Subject 4  33.5  1.17  24.9  0.617             18.4           5.70  130.  16.7
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> Subject 5  73.8  1.38  59.4  1.05              29.0           7.56  174.  35.3
+#&gt; </span><span style='color: #949494;'># … with 6 more variables: SDw &lt;dbl&gt;, SDhhmm &lt;dbl&gt;, SDwsh &lt;dbl&gt;, SDdm &lt;dbl&gt;,</span><span>
+#&gt; </span><span style='color: #949494;'>#   SDb &lt;dbl&gt;, SDbdm &lt;dbl&gt;</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

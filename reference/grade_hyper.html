@@ -171,13 +171,33 @@ doi: <a href='https://doi.org/10.1111/j.1464-5491.2007.02119.x'>10.1111/j.1464-5
     <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 <span class='fu'>grade_hyper</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in gsub(finish, start, ..., fixed = TRUE): zero-length pattern</span></div><div class='input'><span class='fu'>grade_hyper</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, upper <span class='op'>=</span> <span class='fl'>180</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in gsub(finish, start, ..., fixed = TRUE): zero-length pattern</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 2</span><span>
+#&gt;   id        GRADE_hyper
+#&gt; </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1        71.7</div><div class='input'><span class='fu'>grade_hyper</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, upper <span class='op'>=</span> <span class='fl'>180</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 2</span><span>
+#&gt;   id        GRADE_hyper
+#&gt; </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1        33.1</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
 <span class='fu'>grade_hyper</span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in gsub(finish, start, ..., fixed = TRUE): zero-length pattern</span></div><div class='input'><span class='fu'>grade_hyper</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, upper <span class='op'>=</span> <span class='fl'>160</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in gsub(finish, start, ..., fixed = TRUE): zero-length pattern</span></div><div class='input'>
-</div></pre>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 2</span><span>
+#&gt;   id        GRADE_hyper
+#&gt; </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1        71.7
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Subject 2        99.4
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Subject 3        79.6
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Subject 4        65.5
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> Subject 5        93.3</div><div class='input'><span class='fu'>grade_hyper</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, upper <span class='op'>=</span> <span class='fl'>160</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 2</span><span>
+#&gt;   id        GRADE_hyper
+#&gt; </span><span style='color: #BCBCBC;'>*</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1        48.5
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Subject 2        96.3
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Subject 3        65.7
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Subject 4        39.3
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> Subject 5        82.0</div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
