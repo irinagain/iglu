@@ -1,7 +1,30 @@
-library(iglu)
-library(ggplot2)
+#' Calculates the number of Hypo/Hyperglycemic events as well as other statistics
+#'
+#' @description
+#' The function episode calculation produces the number of Hypo/Hyperglycemic events as well as other statistics such as the average glucose level, mean duration, and the percentage of time spent in the ranges.
+#'
+#' @usage
+#' episode_calculation(data, hypo_thres=90.0, hyper_thres= 120.0, dur_length = 15)
+#'
+#' @details
+#'
+#' @return Data frame including Average Glucose, number of hypo and hyper episodes, Hypo and hyper mean values, the percentages of low, high and target alerts
+#'
+#' @export
+#' library(iglu)
+#' library(ggplot2)
+#'
+#' @author Johnathan Shih, Jung Hoon Seo
+#'
+#' @references
+#'
+#' @examples
+#'
+#' episode_calculation(example_data_4_subject, dt0 = 5)
+#'
+# library(iglu)
+# library(ggplot2)
 # Author: Johnathan Shih, Jung Hoon Seo
-# Date: February 13, 2021
 
 episode_calculation <- function(data, hypo_thres=90.0, hyper_thres= 120.0, dur_length = 15){
 
@@ -22,85 +45,116 @@ episode_calculation <- function(data, hypo_thres=90.0, hyper_thres= 120.0, dur_l
   }
 
   episode<- function(params) {
-    hypo_episode = params[[1]] < params[[2]]
+    hypo_episode = params[[1]] <= params[[2]]
     hypo_result = hypo_episode[2:length(hypo_episode)] - hypo_episode[1:length(hypo_episode)-1]
 
-    if(params[[1]][length(params[[1]])] < params[[2]])
-          hypo_result[length(hypo_result)] = -1
-    if(params[[1]][1] < params[[2]])
+    if(params[[1]][length(params[[1]])] <= params[[2]])
+      hypo_result[length(hypo_result)] = -1
+
+    if(params[[1]][1] <= params[[2]] & !is.na(params[[1]][1])) # Handle exception when first point or first sequence is NA
       hypo_result[1] = 1
 
-    hypo_starting_point = which(hypo_result %in% 1)
-    hypo_end_point = which(hypo_result %in% -1)
+    else if (is.na(params[[1]][1])){
+      NonNA <- which(!is.na(params[[1]]))
+      firstNA <- min(NonNA)
+      if(params[[1]][firstNA] < params[[2]]){
+        hypo_result[firstNA] = 1
+      }
+    }
+
+    hypo_starting_point = which(hypo_result %in% 1) + 1
+    hypo_end_point = which(hypo_result %in% -1) + 1
 
     hypo_dur_length = hypo_end_point - hypo_starting_point
 
     if(is.null(hypo_dur_length))
-        hypo_dur_length = c(0)
+      hypo_dur_length = c(0)
 
     i = 1; hypo_mean = 0
 
-    while(i < length(hypo_end_point)){
+    while(i <= length(hypo_dur_length)){
+      if((hypo_end_point[i] - hypo_starting_point[i]) >= 3 ){
         interval = seq(hypo_starting_point[i],hypo_end_point[i], 1)
-        hypo_mean = hypo_mean + mean(params[[1]][interval])
-        i = i + 1
+        interval_val = params[[1]][interval]
+        hypo_mean = hypo_mean + mean(interval_val[!is.na(interval_val)])
+      }
+      i = i + 1
     }
-
+    hypo_dur_length = hypo_dur_length[hypo_dur_length >= 3]
     hypo_duration = mean(hypo_dur_length * dt0)
     hypo_total <- hypo_result[!is.na(hypo_result) & hypo_result ==1]
 
-    hyper_episode = params[[1]] > params[[3]]
+    hyper_episode = params[[1]] >= params[[3]]
     hyper_result = hyper_episode[2:length(hyper_episode)] - hyper_episode[1:length(hyper_episode)-1]
 
-    if(params[[1]][length(params[[1]])] > params[[3]])
+    if(params[[1]][length(params[[1]])] >= params[[3]]) # Handle exception When data ends but still did not go down to the threshold
       hyper_result[length(hyper_result)] = -1
-    if(params[[1]][1] > params[[3]])
-      hyper_result[1] = 1
 
-    hyper_starting_point = which(hyper_result %in% 1)
-    hyper_end_point = which(hyper_result %in% -1)
+    if(params[[1]][1] >= params[[3]] & !is.na(params[[1]][1])) # Handle exception when first point or first sequence is NA
+      hyper_result[1] = 1
+    else if (is.na(params[[1]][1])){
+      NonNA <- which(!is.na(params[[1]]))
+      firstNA <- min(NonNA)
+      if(params[[1]][firstNA] >= params[[3]]){
+        hyper_result[firstNA] = 1
+      }
+    }
+
+    hyper_starting_point = which(hyper_result %in% 1) + 1
+
+    hyper_end_point = which(hyper_result %in% -1) + 1
 
     hyper_dur_length = hyper_end_point - hyper_starting_point
 
+    #print(hyper_dur_length)
     if(is.null(hyper_dur_length))
-        hyper_dur_length = c(0)
+      hyper_dur_length = c(0)
 
     i = 1; hyper_mean = 0
 
-    while(i < length(hyper_end_point)){
-      interval = seq(hyper_starting_point[i],hyper_end_point[i], 1)
-      hyper_mean = hyper_mean + mean(params[[1]][interval])
+    while(i <= length(hyper_dur_length)){
+      if((hyper_end_point[i] - hyper_starting_point[i]) >= 3 ){
+        interval = seq(hyper_starting_point[i],hyper_end_point[i], 1)
+        print(interval)
+        interval_val = params[[1]][interval]
+        hyper_mean = hyper_mean + mean(interval_val[!is.na(interval_val)])
+      }
       i = i + 1
     }
+    hyper_dur_length = hyper_dur_length[hyper_dur_length >= 3]
 
     hyper_duration = mean(hyper_dur_length * dt0)
 
     hyper_total <- hyper_result[!is.na(hyper_result) & hyper_result ==1]
 
-    episodes = c(length(hypo_total), length(hyper_total))
+    episodes = c(length(hypo_dur_length), length(hyper_dur_length))
+
     durations = c(hypo_duration, hyper_duration)
+
     means = c(hypo_mean, hyper_mean)
 
     if (length(hypo_dur_length != 0))
-          Low_Alert = length(hypo_dur_length) / length(params[[1]]) * 100
+      Low_Alert = (sum(hypo_dur_length)) / length(params[[1]][!is.na(params[[1]])]) * 100
     else
-          Low_Alert = 0
+      Low_Alert = 0
     if (length(hyper_dur_length != 0))
-          High_Alert = length(hyper_dur_length) / length(params[[1]]) * 100
+      High_Alert = (sum(hyper_dur_length)) / length(params[[1]][!is.na(params[[1]])]) * 100
     else
-          High_Alert = 0
+      High_Alert = 0
 
-    Target_Range = params[[1]][ (params[[1]] > hypo_thres) & (params[[1]] < hyper_thres)]
-    Target_Range = length(Target_Range)/ length(params[[1]])
+    Target_Range = 100 - High_Alert - Low_Alert
 
     Avg_Glucose = mean(params[[1]][!is.na(params[[1]])] )
 
-        dataframe <- data.frame("Averge Glucose" = Avg_Glucose,
-                            "Mean Episodes Day(Hypo)" = episodes[1], "Mean Episodes Day(Hyper)" = episodes[2],
-                            "Mean Duration (Hypo)" = durations[1], "Mean Duration (Hyper)" = durations[2], check.names = FALSE,
-                            "Hypo Episode Mean" = means[1], "Hyper Episode Mean" = means[2],
-                            "Low Alert (%)" = Low_Alert, "High Alert (%)" = High_Alert,
-                            "Target Range (%)" = Target_Range)
+    range = c(Low_Alert, Target_Range, High_Alert)
+
+    dataframe <- data.frame("Average_Glucose" = Avg_Glucose,
+                            "Hypo_ep" = episodes[1], "Hyper_ep" = episodes[2],
+                            "hypo_duration" = durations[1], "hyper_duration" = durations[2], check.names = FALSE,
+                            "Hypo_mean" = means[1], "Hyper_mean" = means[2],
+                            "low_alert" = range[1], "high_alert" = range[3],
+                            "target_range" = range[2])
+
     return (dataframe)
   }
 
@@ -108,9 +162,7 @@ episode_calculation <- function(data, hypo_thres=90.0, hyper_thres= 120.0, dur_l
 
   result = episode(params)
 
-  print(result)
+  return (result)
 
 }#end Function
-
-episode_calculation(example_data_5_subject)
 
