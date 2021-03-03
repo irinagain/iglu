@@ -30,6 +30,8 @@ Authors@R: c(person("Steve", "Broll",
             person("Nhan", "Nguyen",
             role = c("ctb"),
             email = "nhannguyen993@tamu.edu"),
+            person("Nathaniel", "Fernandes",
+            role = c("ctb"), email="njfernandes24@tamu.edu")
             person("Irina", "Gaynanova",
             email = "irinag@stat.tamu.edu",role = c("aut", "cre"),
             comment = c(ORCID = "0000-0002-4116-0268")))
