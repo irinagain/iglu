@@ -31,7 +31,7 @@ episode_calculation <- function(data, hypo_thres=90.0, hyper_thres= 120.0, dur_l
   ##################### Input Processing  #####################
   data_ip = CGMS2DayByDay(data, dt0 = 5)
 
-  gl_by_id_ip = data_ip[[1]][1,]
+  gl_by_id_ip = data_ip[[1]][2,]
 
   dt0 = data_ip[[3]]
 
@@ -179,9 +179,39 @@ episode_calculation <- function(data, hypo_thres=90.0, hyper_thres= 120.0, dur_l
 
   ##################### Episode computation End ###############
 
-  plot_episode(params)
 
-  result = episode(params)
+
+  multidays <-function(data_ip, params){
+    i = 1
+
+    gl_by_id_ip = data_ip[[1]]
+
+    num_rows = dim(gl_by_id_ip)[1]
+
+    result = NA; Average_Glucose=0; Hypo_ep = 0; Hyper_ep=0;hypo_duration=0;hyper_duration=0;Hypo_mean=0;Hyper_mean=0;low_alert=0;high_alert=0;target_range=0;
+    while(i <= num_rows){
+      params[[1]] = gl_by_id_ip[i,]
+      temp = episode(params)
+      Average_Glucose = Average_Glucose + temp$Average_Glucose; Hypo_ep = Hypo_ep+temp$Hypo_ep; Hyper_ep = Hyper_ep + temp$Hyper_ep;
+      hypo_duration = temp$hypo_duration + hypo_duration; hyper_duration = temp$hyper_duration + hyper_duration; Hypo_mean = temp$Hypo_mean + Hypo_mean;
+      Hyper_mean = temp$Hyper_mean; low_alert = temp$low_alert + low_alert; high_alert = temp$high_alert + high_alert; target_range = temp$target_range + target_range;
+
+      dataframe <- data.frame("Average_Glucose" = Average_Glucose/num_rows,
+                              "Hypo_ep" = Hypo_ep/num_rows, "Hyper_ep" = Hyper_ep/num_rows,
+                              "hypo_duration" = hypo_duration/num_rows, "hyper_duration" = hyper_duration/num_rows, check.names = FALSE,
+                              "Hypo_mean" = Hypo_mean/num_rows, "Hyper_mean" =Hyper_mean/num_rows,
+                              "low_alert" = low_alert/num_rows, "high_alert" = high_alert/num_rows,
+                              "target_range" = target_range/num_rows)
+      i = i + 1
+    }
+    return (dataframe)
+  }
+
+  #plot_episode(params)
+
+  #result = episode(params)
+
+  result = multidays(data_ip, params)
 
   return (result)
 
