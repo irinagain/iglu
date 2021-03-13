@@ -20,7 +20,7 @@
 #'
 #' @examples
 #'
-#' episode_calculation(example_data_4_subject, dt0 = 5)
+#' episode_calculation(example_data_5_subject, dt0 = 5)
 #'
 # library(iglu)
 # library(ggplot2)
@@ -35,17 +35,14 @@ episode_calculation <- function(data, hypo_thres=90.0, hyper_thres= 120.0, dur_l
 
   dt0 = data_ip[[3]]
 
-  params = list(gl_by_id_ip, hypo_thres, hyper_thres, dur_length, dt0)
+  params = list(gl_by_id_ip, hypo_thres, hyper_thres, dt0)
 
   #gl_by_id_ip       : CGM data for a subject
   #hypo(hyper)_thres : Hypoglycemia and hyperglycemia threshold
-  #dur_length        : Duaration length
   #dt0               : Default value for an inteveral (default = 5 mins)
   ##################### Input Ended       #####################
 
-
   ##################### Plot Function     #####################
-
   plot_episode<- function(params){
     df = data.frame(params[[1]])
     df <- cbind(index = cbind(1:length(params[[1]])), df)
@@ -53,7 +50,6 @@ episode_calculation <- function(data, hypo_thres=90.0, hyper_thres= 120.0, dur_l
     p2 <- p2 + geom_hline(yintercept=cbind(params[[2]], params[[3]]), linetype="dashed", color = "blue", size=.5)
     print(p2)
   }
-
   ##################### Plot Function ened#####################
 
   ##################### Episode computation ###################
@@ -93,7 +89,7 @@ episode_calculation <- function(data, hypo_thres=90.0, hyper_thres= 120.0, dur_l
     hypo_duration = mean(hypo_dur_length * dt0)
 
     hypo_total = length(hypo_dur_length)
-
+    # Hypoglycemia calculation ENDS
 
     hyper_episode = gl_by_id_ip >= params[[3]]
 
@@ -130,7 +126,7 @@ episode_calculation <- function(data, hypo_thres=90.0, hyper_thres= 120.0, dur_l
     durations = c(hypo_duration, hyper_duration)
 
     i = 1; hypo_mean = 0
-
+    # Calculate means for hypo & hyperglycemia
     while(i <= length(hypo_dur_length)){
       if( (!is.na(hypo_end_point[i]) & !is.na(hypo_starting_point[i])) & (hypo_end_point[i] - hypo_starting_point[i]) >= 3){
         interval = seq(hypo_starting_point[i],hypo_end_point[i], 1)
@@ -179,16 +175,11 @@ episode_calculation <- function(data, hypo_thres=90.0, hyper_thres= 120.0, dur_l
 
   ##################### Episode computation End ###############
 
-
-
+  ##################### Calculate for multiple days ###########
   multidays <-function(data_ip, params){
-    i = 1
+    i = 1; gl_by_id_ip = data_ip[[1]]; num_rows = dim(gl_by_id_ip)[1]
 
-    gl_by_id_ip = data_ip[[1]]
-
-    num_rows = dim(gl_by_id_ip)[1]
-
-    result = NA; Average_Glucose=c(0); Hypo_ep = c(0); Hyper_ep= c(0);hypo_duration=c(0);hyper_duration=c(0);Hypo_mean=c(0);Hyper_mean=c(0);low_alert=c(0);high_alert=c(0);target_range=c(0);
+    result = NA; Average_Glucose=c(); Hypo_ep = c(); Hyper_ep= c();hypo_duration=c();hyper_duration=c();Hypo_mean=c();Hyper_mean=c();low_alert=c();high_alert=c();target_range=c();
     while(i <= num_rows){
       params[[1]] = gl_by_id_ip[i,]
       temp = episode(params)
@@ -196,21 +187,17 @@ episode_calculation <- function(data, hypo_thres=90.0, hyper_thres= 120.0, dur_l
       Average_Glucose = c(Average_Glucose, temp$Average_Glucose); Hypo_ep = c(Hypo_ep, temp$Hypo_ep); Hyper_ep = c(Hyper_ep, temp$Hyper_ep);
       hypo_duration = c(hypo_duration, temp$hypo_duration); hyper_duration = c(hyper_duration, temp$hyper_duration); Hypo_mean = c(Hypo_mean, temp$Hypo_mean);
       Hyper_mean = c(Hyper_mean, temp$Hyper_mean); low_alert = c(low_alert, temp$low_alert); high_alert = c(high_alert, temp$high_alert); target_range = c(target_range, temp$target_range);
-      dataframe <- data.frame("Average_Glucose" = mean(Average_Glucose, na.rm =TRUE),
-                              "Hypo_ep" = mean(Hypo_ep, na.rm =TRUE), "Hyper_ep" = mean(Hyper_ep, na.rm =TRUE),
-                              "hypo_duration" = mean(hypo_duration, na.rm =TRUE), "hyper_duration" = mean(hyper_duration, na.rm =TRUE), check.names = FALSE,
-                              "Hypo_mean" = mean(Hypo_mean,na.rm =TRUE), "Hyper_mean" = mean(Hyper_mean, na.rm =TRUE),
-                              "low_alert" = mean(low_alert,na.rm =TRUE), "high_alert" = mean(high_alert, na.rm =TRUE),
-                              "target_range" = mean(target_range,na.rm =TRUE))
+      dataframe <- data.frame("Average_Glucose" = Average_Glucose,
+                              "Hypo_ep" = Hypo_ep, "Hyper_ep" = Hyper_ep,
+                              "hypo_duration" = hypo_duration, "hyper_duration" = hyper_duration, check.names = FALSE,
+                              "Hypo_mean" = Hypo_mean, "Hyper_mean" = Hyper_mean,
+                              "low_alert" = low_alert, "high_alert" = high_alert,
+                              "target_range" = target_range)
       i = i + 1
     }
     return (dataframe)
   }
 
-  #plot_episode(params)
-
-  #result = episode(params)
-  result = 0
   result = multidays(data_ip, params)
 
   return (result)
