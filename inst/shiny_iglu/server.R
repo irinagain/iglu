@@ -23,26 +23,35 @@ shinyServer(function(input, output) {
   ############################# METRIC SECTION ######################################################
 
 
-parameter_type <- reactive({
+  parameter_type <- reactive({
 
-  if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
-                         "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
-    return("none")
-  }
+    if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
+                           "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
+      return("none")
+    }
 
     else if(input$metric %in% c("above_percent", "below_percent", "cogi", "quantile_glu")){
       return("list")
     }
 
-    else if(input$metric %in% c("conga", "grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
+    else if(input$metric %in% c("grade_hyper", "grade_hypo","m_value",
                                 "mag", "mage", "modd", "roc", "sd_roc", "active_percent")){
       return("value")
     }
-
-    else if(input$metric %in% c("grade_eugly", "igc")){
-      return("lwrupr")
+    else if(input$metric %in% c("hyper_index", "hypo_index")){
+      return("value1")
     }
 
+    else if(input$metric %in% c("conga")){
+      return("value2")
+    }
+
+    else if(input$metric %in% c("grade_eugly")){
+      return("lwrupr")
+    }
+    else if(input$metric %in% c("igc")){
+      return("lwrupr1")
+    }
     else if(input$metric %in% c("in_range_percent")){
       return("nested")
     }
@@ -69,10 +78,10 @@ parameter_type <- reactive({
       }
     }
 
-  else if(parameter_type == "value"){
-    if(input$metric == "conga"){
-      textInput("parameter", "Specify Parameter", value = "24")
-    }
+    else if(parameter_type == "value"){
+      if(input$metric == "conga"){
+        textInput("parameter", "Specify Parameter", value = "24")
+      }
 
       else if(input$metric == "grade_hyper"){
         textInput("parameter", "Specify Parameter", value = "140")
@@ -81,15 +90,6 @@ parameter_type <- reactive({
       else if(input$metric == "grade_hypo"){
         textInput("parameter", "Specify Parameter", value = "80")
       }
-
-      else if(input$metric == "hyper_index"){
-        textInput("parameter", "Specify Upper Limit", value = "180")
-      }
-
-      else if(input$metric == "hypo_index"){
-        textInput("parameter", "Specify Lower Limit", value = "70")
-      }
-
       else if(input$metric == "m_value"){
         textInput("parameter", "Specify Reference Value", value = "90")
       }
@@ -118,21 +118,35 @@ parameter_type <- reactive({
         textInput("parameter", "Specify Parameter", value = "15")
       }
     }
+    else if(parameter_type == "value1"){
+      if(input$metric == "hyper_index"){
+        textInput("parameter", "Specify Upper Limit", value = "180")
+      }
 
-   else if(parameter_type == "lwrupr"){
-    if(input$metric == "grade_eugly"){
-      textInput("parameter", "Specify Parameter", value = "80, 140")
+      else if(input$metric == "hypo_index"){
+        textInput("parameter", "Specify Lower Limit", value = "70")
+      }
     }
+    else if(parameter_type == "value2"){
+      if(input$metric == "conga"){
+        textInput("parameter", "Specify Parameter", value = "24")
+      }
+    }
+    else if(parameter_type == "lwrupr"){
+      if(input$metric == "grade_eugly"){
+        textInput("parameter", "Specify Parameter", value = "80, 140")
+      }
 
-      else if(input$metric == "igc"){
+    }
+    else if(parameter_type == "lwrupr1"){
+      if(input$metric == "igc"){
         textInput("parameter", "Specify Lower and Upper Limits", value = "70, 180")
       }
     }
-
-   else if(parameter_type == "nested"){
-    if(input$metric == "in_range_percent"){
-      textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
-    }
+    else if(parameter_type == "nested"){
+      if(input$metric == "in_range_percent"){
+        textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
+      }
     }
 
   })
@@ -166,24 +180,13 @@ parameter_type <- reactive({
     }
 
     else if(parameter_type == "value"){
-      if(input$metric == "conga"){
-        helpText("Enter the hours between observations for the CONGA calculation.")
-      }
 
-      else if(input$metric == "grade_hyper"){
+      if(input$metric == "grade_hyper"){
         helpText("Enter the upper bound hyperglycemia cutoff value.")
       }
 
       else if(input$metric == "grade_hypo"){
         helpText("Enter the lower bound hypoglycemia cutoff value.")
-      }
-
-      else if(input$metric == "hyper_index"){
-        helpText("Enter the upper limit of target glucose range.")
-      }
-
-      else if(input$metric == "hypo_index"){
-        helpText("Enter the lower limit of target glucose range.")
       }
 
       else if(input$metric == "m_value"){
@@ -214,17 +217,30 @@ parameter_type <- reactive({
         helpText("Enter time interval (in minutes) for rate of change.")
       }
     }
+    else if(parameter_type == "value1"){
+      if(input$metric == "hyper_index"){
+        helpText("Enter the upper limit of target glucose range.")
+      }
 
+      else if(input$metric == "hypo_index"){
+        helpText("Enter the lower limit of target glucose range.")
+      }
+    }
+    else if(parameter_type =="value2"){
+      if(input$metric == "conga"){
+        helpText("Enter the hours between observations for the CONGA calculation.")
+      }
+    }
     else if(parameter_type == "lwrupr"){
       if(input$metric == "grade_eugly"){
         helpText("Enter a lower and an upper glycemic bound separated by a comma.")
       }
-
-      else if(input$metric == "igc"){
+    }
+    else if(parameter_type == "lwrupr1"){
+      if(input$metric == "igc"){
         helpText("Enter the lower and upper limits of the target range separated by a comma.")
       }
     }
-
     else if(parameter_type == "nested"){
       if(input$metric == "in_range_percent"){
         helpText("Enter target ranges in list format - e.g. (lower, upper), (lower, upper)")
@@ -233,26 +249,30 @@ parameter_type <- reactive({
   })
   output$select_second_parameter <- renderUI({
     parameter_type = parameter_type()
-    if(parameter_type == "value"){
+    if(parameter_type == "value1"){
       if(input$metric == "hyper_index"){
-        textInput("parameter", "Specify Exponent", value = "1.1")
+        textInput("parameter2", "Specify Exponent", value = "1.1")
       }
 
       else if(input$metric == "hypo_index"){
-        textInput("parameter", "Specify Exponent", value = "2")
+        textInput("parameter2", "Specify Exponent", value = "2")
       }
     }
-
-    else if(parameter_type == "lwrupr"){
+    else if(parameter_type =="value2"){
+      if(input$metric == "conga"){
+        textInput("parameter2","Specify Time Zone" ,value = input$tz)
+      }
+    }
+    else if(parameter_type == "lwrupr1"){
       if(input$metric == "igc"){
-        textInput("parameter", "Specify Exponent", value = "1.1, 2")
+        textInput("parameter2", "Specify Exponent", value = "1.1, 2")
       }
     }
 
   })
   output$second_parameter_helptext <- renderUI({
     parameter_type = parameter_type()
-    if(parameter_type == "value"){
+    if(parameter_type == "value1"){
       if(input$metric == "hyper_index"){
         helpText("Enter the upper limit exponent.")
       }
@@ -261,8 +281,12 @@ parameter_type <- reactive({
         helpText("Enter the lower limit exponent.")
       }
     }
-
-    else if(parameter_type == "lwrupr"){
+    else if(parameter_type =="value2"){
+      if(input$metric == "conga"){
+        helpText("Time Zone")
+      }
+    }
+    else if(parameter_type == "lwrupr1"){
       if(input$metric == "igc"){
         helpText("Enter the exponents separated by a comma with the upper limit as the first input and the lower limit as the second input.")
       }
@@ -271,26 +295,26 @@ parameter_type <- reactive({
   })
   output$select_third_parameter <- renderUI({
     parameter_type = parameter_type()
-    if(parameter_type == "value"){
+    if(parameter_type == "value1"){
       if(input$metric == "hyper_index"){
-        textInput("parameter", "Specify Scaling Factor", value = "30")
+        textInput("parameter3", "Specify Scaling Factor", value = "30")
       }
 
       else if(input$metric == "hypo_index"){
-        textInput("parameter", "Specify Scaling Factor", value = "30")
+        textInput("parameter3", "Specify Scaling Factor", value = "30")
       }
     }
 
-    else if(parameter_type == "lwrupr"){
+    else if(parameter_type == "lwrupr1"){
       if(input$metric == "igc"){
-        textInput("parameter", "Specify Scaling Factor", value = "30,30")
+        textInput("parameter3", "Specify Scaling Factor", value = "30,30")
       }
     }
 
   })
   output$third_parameter_helptext <- renderUI({
     parameter_type = parameter_type()
-    if(parameter_type == "value"){
+    if(parameter_type == "value1"){
       if(input$metric == "hyper_index"){
         helpText("Enter the upper limit scaling factor.")
       }
@@ -300,7 +324,7 @@ parameter_type <- reactive({
       }
     }
 
-    else if(parameter_type == "lwrupr"){
+    else if(parameter_type == "lwrupr1"){
       if(input$metric == "igc"){
         helpText("Enter the scarling factors separated by a comma with the upper limit as the first input and the lower limit as the second input.")
       }
@@ -323,7 +347,7 @@ parameter_type <- reactive({
         )
       } else {
         validate(
-          need(parameter_type %in% c("list", "lwrupr", "none"), "Please wait - Rendering")
+          need(parameter_type %in% c("list", "lwrupr","lwrupr1","none"), "Please wait - Rendering")
         )
       }
     } else if (grepl("\\(", input$parameter)) {
@@ -332,7 +356,7 @@ parameter_type <- reactive({
       )
     } else if (!grepl(',', input$parameter)) {
       validate(
-        need(parameter_type %in% c("value", "none"), "Please wait - Rendering")
+        need(parameter_type %in% c("value","value1","value2", "none"), "Please wait - Rendering")
       )
     }
 
@@ -351,9 +375,21 @@ parameter_type <- reactive({
       string = paste("iglu::", input$metric, "(data, ", input$parameter, ")", sep = "")
       eval(parse(text = string))
     }
+    else if(parameter_type == "value1"){
+      string = paste("iglu::", input$metric, "(data, ", input$parameter, ",",input$parameter2,",",input$parameter3, ")", sep = "")
+      eval(parse(text = string))
+    }
+    else if(parameter_type == "value2"){
+      string = paste("iglu::", input$metric, "(data, ", input$parameter, ",", "'", input$parameter2,"'" ,")", sep = "")
+      eval(parse(text = string))
+    }
 
     else if(parameter_type == "lwrupr"){
       string = paste("iglu::", input$metric, "(data, " , input$parameter, ")", sep = "")
+      eval(parse(text = string))
+    }
+    else if(parameter_type == "lwrupr1"){
+      string = paste("iglu::", input$metric, "(data, " , input$parameter,",",input$parameter2,",",input$parameter3, ")", sep = "")
       eval(parse(text = string))
     }
     else if(parameter_type == "nested"){
@@ -489,7 +525,7 @@ parameter_type <- reactive({
   })
 
 
-### Get time lag for Rate of Change plots
+  ### Get time lag for Rate of Change plots
   output$plot_timelag <- renderUI({
     plottype = plottype() # bring reactive input variable into this renderUI call
     if(plottype == "tsplot"){
@@ -509,7 +545,7 @@ parameter_type <- reactive({
     }
   })
 
-### Get max days to plot (maxd)
+  ### Get max days to plot (maxd)
   output$plot_maxd <- renderUI({
     plottype = plottype() # bring reactive input variable into this renderUI call
     if(plottype == "tsplot"){
@@ -727,59 +763,59 @@ parameter_type <- reactive({
     plottype = plottype() # bring reactive input variable into this renderPlot call
     library(iglu)
 
-  if(plottype == "tsplot"){
-    #plot_glu(data, plottype = "tsplot")
+    if(plottype == "tsplot"){
+      #plot_glu(data, plottype = "tsplot")
 
-    validate (
-      need(all(!is.null(input$plot_log)),
-           "Please wait - Rendering")
-    )
+      validate (
+        need(all(!is.null(input$plot_log)),
+             "Please wait - Rendering")
+      )
 
 
-    data = transform_data()
-    string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
-                   input$plot_TR, ', subjects = NULL, inter_gap = 45, tz = "", "blue-orange", log = ', input$plot_log, ')' ,sep = "")
-    eval(parse(text = string))
-  }
-  else if(plottype == "lasagnamulti"){
+      data = transform_data()
+      string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
+                     input$plot_TR, ', subjects = NULL, inter_gap = 45, tz = "", "blue-orange", log = ', input$plot_log, ')' ,sep = "")
+      eval(parse(text = string))
+    }
+    else if(plottype == "lasagnamulti"){
 
-    validate (
-      need(all(!is.null(input$plot_lasagnatype) & !is.null(input$plot_datatype)),
-           "Please wait - Rendering")
-    )
+      validate (
+        need(all(!is.null(input$plot_lasagnatype) & !is.null(input$plot_datatype)),
+             "Please wait - Rendering")
+      )
 
-    data = transform_data()
-    string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
-                   input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(', input$plot_limits, ') ,',
-                   input$plot_midpoint, ', ', input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz ="",',
-                   input$plot_color_scheme, ', ', input$plot_log, ')', sep = "")
-    eval(parse(text = string))
-  }
-  else if(plottype == "lasagnasingle"){
+      data = transform_data()
+      string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
+                     input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(', input$plot_limits, ') ,',
+                     input$plot_midpoint, ', ', input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz ="",',
+                     input$plot_color_scheme, ', ', input$plot_log, ')', sep = "")
+      eval(parse(text = string))
+    }
+    else if(plottype == "lasagnasingle"){
 
-    validate (
-      need(!is.null(input$plot_subjects), "Please wait - Rendering")
-    )
+      validate (
+        need(!is.null(input$plot_subjects), "Please wait - Rendering")
+      )
 
-    data = subset_data() # subset data to only user-specified subject
-    string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
-                   input$plot_lasagnatype, '", limits = c(', input$plot_limits, ') ,',
-                   input$plot_midpoint, ', ', input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "",',
-                   input$plot_color_scheme, ', ', input$plot_log, ')', sep = "")
-    eval(parse(text = string))
-  }
-  else if(plottype == "plot_roc"){
-    data = subset_data() # subset data to only user-specified subject
-    string = paste('iglu::plot_roc(data = data',
-                   ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
-    eval(parse(text = string))
-  }
-  else if(plottype == "hist_roc"){
-    data = subset_data() # subset data to only user-specified subject
-    string = paste('iglu::hist_roc(data = data',
-                   ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
-    eval(parse(text = string))
-  }
+      data = subset_data() # subset data to only user-specified subject
+      string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
+                     input$plot_lasagnatype, '", limits = c(', input$plot_limits, ') ,',
+                     input$plot_midpoint, ', ', input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "",',
+                     input$plot_color_scheme, ', ', input$plot_log, ')', sep = "")
+      eval(parse(text = string))
+    }
+    else if(plottype == "plot_roc"){
+      data = subset_data() # subset data to only user-specified subject
+      string = paste('iglu::plot_roc(data = data',
+                     ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
+      eval(parse(text = string))
+    }
+    else if(plottype == "hist_roc"){
+      data = subset_data() # subset data to only user-specified subject
+      string = paste('iglu::hist_roc(data = data',
+                     ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
+      eval(parse(text = string))
+    }
 
   })
 
@@ -866,7 +902,7 @@ parameter_type <- reactive({
   output$agp_metrics <- DT::renderDataTable({
 
     DT::datatable(agpMetrics(), options = list(dom = 't'), rownames = FALSE, colnames = "")
-    })
+  })
 
   plotRanges <- reactive({
 
@@ -950,5 +986,3 @@ parameter_type <- reactive({
   )
 
 })
-
-
