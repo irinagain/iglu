@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Calculate Mean Amplitude of Glycemic Excursions — mage" />
-<meta property="og:description" content="UPDATED to version 2. The function calculates MAGE values and can optionally return a plot of the glucose trace. Version 1 is also accessible for backwards compatibility." />
+<meta property="og:description" content="The function calculates MAGE values and can optionally return a plot of the glucose trace. UPDATED to version 2. Version 1 is accessible for backwards compatibility." />
 
 
 
@@ -127,7 +127,7 @@
     </div>
 
     <div class="ref-description">
-    <p>UPDATED to version 2. The function calculates MAGE values and can optionally return a plot of the glucose trace. Version 1 is also accessible for backwards compatibility.</p>
+    <p>The function calculates MAGE values and can optionally return a plot of the glucose trace. UPDATED to version 2. Version 1 is accessible for backwards compatibility.</p>
     </div>
 
     <pre class="usage"><span class='fu'>mage</span><span class='op'>(</span><span class='va'>data</span>, version <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"v2"</span>, <span class='st'>"v1"</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
@@ -164,7 +164,10 @@
     <p>A tibble object with two columns: the subject id and corresponding MAGE value. If a vector of glucose values is passed, then a tibble object with just the MAGE value is returned. In version 2, if <code>plot = TRUE</code>, a "master" ggplot will be returned with glucose traces for all subjects.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970). The proposed method uses the crosses of a short and long moving average to identify intervals where a peak or nadir may exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.</p>
+    <p>The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970).</p>
+<p>Version 2 is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.</p>
+<p>In Version 1, MAGE is calculated by taking the mean of absolute differences (between each value and the mean) that are greater than the standard deviation.
+A multiplier can be added to the standard deviation by the sd_multiplier argument.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Service et al. (1970) Mean amplitude of glycemic excursions, a measure of diabetic instability

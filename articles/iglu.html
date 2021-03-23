@@ -196,7 +196,7 @@
 <span class="fu"><a href="../reference/hyper_index.html">hyper_index</a></span><span class="op">(</span><span class="va">example_data_5_subject</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 5 x 2</span>
 <span class="co">#&gt;   id        hyper_index</span>
-<span class="co">#&gt; * &lt;fct&gt;           &lt;dbl&gt;</span>
+<span class="co">#&gt;   &lt;fct&gt;           &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 Subject 1       0.391</span>
 <span class="co">#&gt; 2 Subject 2       4.17 </span>
 <span class="co">#&gt; 3 Subject 3       1.18 </span>
@@ -246,7 +246,7 @@
 <span class="fu"><a href="../reference/conga.html">conga</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 2</span>
 <span class="co">#&gt;   id        CONGA</span>
-<span class="co">#&gt; * &lt;fct&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt;   &lt;fct&gt;     &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 Subject 1  37.0</span></pre></div>
 <p>Note that even though we are working with a single subject, a dataframe with glucose values, time, and subject id’s must be passed. Functions for metrics requiring the time component for calculation can not be passed a vector of glucose values.</p>
 <p><code><a href="../reference/sd_measures.html">sd_measures()</a></code>, which computes 6 unique standard deviation subtypes, requires linear interpolation and returns multiple values for each subject.</p>
