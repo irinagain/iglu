@@ -46,6 +46,7 @@ Imports:
     caTools,
     dplyr,
     ggplot2,
+    ggpubr,
     gridExtra,
     hms,
     lubridate,
