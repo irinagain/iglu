@@ -44,13 +44,9 @@ episode_calculation <- function (data, hypo_thres=100.0, hyper_thres= 120.0, dur
         warning("WARNING. Hypoglycemia threshold is greater than hyperglycemia threshold. This may affect result")
 
       gl_by_id_ip = params[[1]][!is.na(params[[1]])]
-
       hypo_episode = gl_by_id_ip <= params[[2]] # if data is less than or equal to the threshold containing true or false value
-
       hypo_result = hypo_episode[2:length(hypo_episode)] - hypo_episode[1:length(hypo_episode)-1]
-
       hypo_end_point = which(hypo_result %in% -1) + 1
-
       hypo_starting_point = which(hypo_result %in% 1) + 1
 
       # Handle when hypoglycemia continues until the end
@@ -70,17 +66,11 @@ episode_calculation <- function (data, hypo_thres=100.0, hyper_thres= 120.0, dur
       if(is.null(hypo_dur_length)) hypo_dur_length = c(0)
 
       hypo_dur_length = hypo_dur_length[hypo_dur_length >= 3]
-
       hypo_duration = mean(hypo_dur_length * dt0)
-
       hypo_total = length(hypo_dur_length)
-
       hyper_episode = gl_by_id_ip >= params[[3]]
-
       hyper_result = hyper_episode[2:length(hyper_episode)] - hyper_episode[1:length(hyper_episode)-1]
-
       hyper_end_point = which(hyper_result %in% -1) + 1
-
       hyper_starting_point = which(hyper_result %in% 1) + 1
 
       # Handle when hyperglycemia continues until the end
@@ -100,13 +90,9 @@ episode_calculation <- function (data, hypo_thres=100.0, hyper_thres= 120.0, dur
       if(is.null(hypo_dur_length)) hypo_dur_length = c(0)
 
       hyper_dur_length = hyper_dur_length[hyper_dur_length >= 3]
-
       hyper_duration = mean(hyper_dur_length * dt0)
-
       hyper_total = length(hyper_dur_length)
-
       episodes = c(hypo_total, hyper_total)
-
       durations = c(hypo_duration, hyper_duration)
 
       i = 1; hypo_mean = 0
@@ -143,11 +129,8 @@ episode_calculation <- function (data, hypo_thres=100.0, hyper_thres= 120.0, dur
         High_Alert = 0
 
       Target_Range = 100 - High_Alert - Low_Alert
-
       Avg_Glucose = mean(gl_by_id_ip)
-
       range = c(Low_Alert, Target_Range, High_Alert)
-
       dataframe <- data.frame("Average_Glucose" = Avg_Glucose,
                               "Hypo_ep" = episodes[1], "Hyper_ep" = episodes[2],
                               "hypo_duration" = durations[1], "hyper_duration" = durations[2], check.names = FALSE,
