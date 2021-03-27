@@ -59,7 +59,11 @@ shinyUI(fluidPage(
                                                                                `All Metrics` = 'all_metrics'
                )),
                uiOutput("select_parameter"),
-               uiOutput("help_text")),
+               uiOutput("help_text"),
+               uiOutput("select_second_parameter"),
+               uiOutput("second_parameter_helptext"),
+               uiOutput("select_third_parameter"),
+               uiOutput("third_parameter_helptext")),
                mainPanel(DT::dataTableOutput("metric"))
              )),
 

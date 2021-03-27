@@ -4,7 +4,7 @@
 \alias{episode_calculation}
 \title{Calculates the number of Hypo/Hyperglycemic events as well as other statistics}
 \usage{
-episode_calculation(example_data_5_subject, hypo_thres=100.0, hyper_thres= 120.0, dur_length = 15)
+episode_calculation(data, hypo_thres=100.0, hyper_thres= 120.0, dur_length = 15)
 }
 \value{
 Data frame including Average Glucose, number of hypo and hyper episodes, Hypo and hyper mean values, the percentages of low, high and target alerts

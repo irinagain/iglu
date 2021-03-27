@@ -5,7 +5,7 @@
 #' The function episode calculation produces the number of Hypo/Hyperglycemic events as well as other statistics such as the average glucose level, mean duration, and the percentage of time spent in the ranges.
 #'
 #' @usage
-#' episode_calculation(example_data_5_subject, hypo_thres=100.0, hyper_thres= 120.0, dur_length = 15)
+#' episode_calculation(data, hypo_thres=100.0, hyper_thres= 120.0, dur_length = 15)
 #'
 #' @return Data frame including Average Glucose, number of hypo and hyper episodes, Hypo and hyper mean values, the percentages of low, high and target alerts
 #'
@@ -171,7 +171,7 @@ episode_calculation <- function (data, hypo_thres=100.0, hyper_thres= 120.0, dur
   }
   id = NULL
   rm("id")
-  data = check_data_columns(data)
+  #data = check_data_columns(data)
   wrapper_function <-function(data,params){
     out <- data %>%
       dplyr::group_by(id) %>%
