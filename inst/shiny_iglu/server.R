@@ -39,7 +39,7 @@ parameter_type <- reactive({
       return("value")
     }
 
-    else if(input$metric %in% c("grade_eugly", "igc")){
+    else if(input$metric %in% c("episode_calculation", "grade_eugly", "igc")){
       return("lwrupr")
     }
 
@@ -117,6 +117,7 @@ parameter_type <- reactive({
       else if(input$metric == "sd_roc"){
         textInput("parameter", "Specify Parameter", value = "15")
       }
+
     }
 
    else if(parameter_type == "lwrupr"){
@@ -127,13 +128,17 @@ parameter_type <- reactive({
       else if(input$metric == "igc"){
         textInput("parameter", "Specify Lower and Upper Limits", value = "70, 180")
       }
+     else if(input$metric == "episode_calculation"){
+       textInput("parameter", "Specify Parameter", value = "100, 120")
+     }
     }
 
    else if(parameter_type == "nested"){
     if(input$metric == "in_range_percent"){
       textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
     }
-    }
+   }
+
 
   })
 
@@ -222,6 +227,9 @@ parameter_type <- reactive({
 
       else if(input$metric == "igc"){
         helpText("Enter the lower and upper limits of the target range separated by a comma.")
+      }
+      else if(input$metric == "episode_calculation"){
+        helpText("Enter hypo and hyper glycemia thresholds separated by a comma.")
       }
     }
 
