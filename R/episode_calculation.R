@@ -7,13 +7,19 @@
 #' @usage
 #' episode_calculation(data, hypo_thres=100.0, hyper_thres= 120.0, dur_length = 15)
 #'
+#' @param data DataFrame object with column names "id", "time", and "gl"
+#'
+#' @param hypo_thres A double specifying a hypoglycemia threshold. The default value is set to hypo_thres = 100.0
+#'
+#' @param hyper_thres A double specifying a hyperglycemia threshold. The default value is set to hyper_thres = 120.0
+#'
+#' @param dur_length An integer or a double specfiying a duration length in minutes
+#'
 #' @return Data frame including Average Glucose, number of hypo and hyper episodes, Hypo and hyper mean values, the percentages of low, high and target alerts
 #'
 #' @export
 #'
 #' @author Johnathan Shih, Jung Hoon Seo
-#'
-#' @references
 #'
 #' @examples
 #'
@@ -27,7 +33,7 @@ episode_calculation <- function (data, hypo_thres=100.0, hyper_thres= 120.0, dur
   params = list(hypo_thres, hyper_thres, dur_length)
 
   episode_calculator <- function(data, params){
-    ##################### Input Processing  #####################
+    ##################### Input Processing        #####################
     data_ip = CGMS2DayByDay(data, dt0 = 5)
     gl_by_id_ip = data_ip[[1]]
     dt0 = data_ip[[3]]
@@ -36,9 +42,9 @@ episode_calculation <- function (data, hypo_thres=100.0, hyper_thres= 120.0, dur
     #hypo(hyper)_thres : Hypoglycemia and hyperglycemia threshold
     #dur_length        : Duaration length
     #dt0               : Default value for an inteveral (default = 5 mins)
-    ##################### Input Ended       #####################
+    ##################### Input Ended             #####################
 
-    ##################### Episode Day computation ###################
+    ##################### Episode Day computation   ###################
     episode_one_day<- function(params) {
       if(params[[2]] > params[[3]])
         warning("WARNING. Hypoglycemia threshold is greater than hyperglycemia threshold. This may affect result")
@@ -139,7 +145,9 @@ episode_calculation <- function (data, hypo_thres=100.0, hyper_thres= 120.0, dur
                               "target_range" = range[2])
       return (dataframe)
     }
-    ##################### Episode Day computation End ###############
+    ##################### Episode Day computation End       ###############
+
+    ##################### Eipsode computation for multidays ###############
     multidays <-function(data_ip, params){
       i = 1
       gl_by_id_ip = data_ip[[1]]
@@ -165,13 +173,15 @@ episode_calculation <- function (data, hypo_thres=100.0, hyper_thres= 120.0, dur
       }
       return (dataframe)
     }
+    ##################### Eipsode computation for multidays END ###############
     result = 0
     result = multidays(data_ip, params)
     return (result)
   }
   id = NULL
   rm("id")
-  #data = check_data_columns(data)
+
+    #####################         Wrapper Function         ####################
   wrapper_function <-function(data,params){
     out <- data %>%
       dplyr::group_by(id) %>%
@@ -179,6 +189,7 @@ episode_calculation <- function (data, hypo_thres=100.0, hyper_thres= 120.0, dur
   }
 
   out = wrapper_function(data,params)
+
   return(out)
 }#end Function
 

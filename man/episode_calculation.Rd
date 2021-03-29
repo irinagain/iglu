@@ -6,6 +6,15 @@
 \usage{
 episode_calculation(data, hypo_thres=100.0, hyper_thres= 120.0, dur_length = 15)
 }
+\arguments{
+\item{data}{DataFrame object with column names "id", "time", and "gl"}
+
+\item{hypo_thres}{A double specifying a hypoglycemia threshold. The default value is set to hypo_thres = 100.0}
+
+\item{hyper_thres}{A double specifying a hyperglycemia threshold. The default value is set to hyper_thres = 120.0}
+
+\item{dur_length}{An integer or a double specfiying a duration length in minutes}
+}
 \value{
 Data frame including Average Glucose, number of hypo and hyper episodes, Hypo and hyper mean values, the percentages of low, high and target alerts
 }
@@ -15,9 +24,6 @@ The function episode calculation produces the number of Hypo/Hyperglycemic event
 \examples{
 
 episode_calculation(example_data_5_subject, hypo_thres=100.0, hyper_thres= 120.0, dur_length = 15)
-}
-\references{
-
 }
 \author{
 Johnathan Shih, Jung Hoon Seo
