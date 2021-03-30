@@ -29,20 +29,22 @@ shinyServer(function(input, output) {
                            "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
       return("none")
     }
-
+    else if(input$metric %in% c("cv_measures", "sd_measures")){
+      return("none1")
+    }
     else if(input$metric %in% c("above_percent", "below_percent", "cogi", "quantile_glu")){
       return("list")
     }
 
     else if(input$metric %in% c("grade_hyper", "grade_hypo","m_value",
-                                "mag", "mage", "modd", "roc", "sd_roc", "active_percent")){
+                               "mage", "active_percent")){
       return("value")
     }
     else if(input$metric %in% c("hyper_index", "hypo_index")){
       return("value1")
     }
 
-    else if(input$metric %in% c("conga")){
+    else if(input$metric %in% c("conga","mag","modd","roc","sd_roc")){
       return("value2")
     }
 
@@ -79,11 +81,8 @@ shinyServer(function(input, output) {
     }
 
     else if(parameter_type == "value"){
-      if(input$metric == "conga"){
-        textInput("parameter", "Specify Parameter", value = "24")
-      }
 
-      else if(input$metric == "grade_hyper"){
+      if(input$metric == "grade_hyper"){
         textInput("parameter", "Specify Parameter", value = "140")
       }
 
@@ -94,28 +93,12 @@ shinyServer(function(input, output) {
         textInput("parameter", "Specify Reference Value", value = "90")
       }
 
-      else if(input$metric == "mag"){
-        textInput("parameter", "Specify Parameter", value = "60")
-      }
-
       else if(input$metric == "mage"){
-        textInput("parameter", "Specify Parameter", value = "1")
-      }
-
-      else if(input$metric == "modd"){
         textInput("parameter", "Specify Parameter", value = "1")
       }
 
       else if(input$metric == "active_percent"){
         textInput("parameter", "Specify Parameter", value = "5")
-      }
-
-      else if(input$metric == "roc"){
-        textInput("parameter", "Specify Parameter", value = "15")
-      }
-
-      else if(input$metric == "sd_roc"){
-        textInput("parameter", "Specify Parameter", value = "15")
       }
     }
     else if(parameter_type == "value1"){
@@ -130,6 +113,20 @@ shinyServer(function(input, output) {
     else if(parameter_type == "value2"){
       if(input$metric == "conga"){
         textInput("parameter", "Specify Parameter", value = "24")
+      }
+
+      else if(input$metric == "mag"){
+        textInput("parameter", "Specify Parameter", value = "60")
+      }
+      else if(input$metric == "modd"){
+        textInput("parameter", "Specify Parameter", value = "1")
+      }
+      else if(input$metric == "roc"){
+        textInput("parameter", "Specify Parameter", value = "15")
+      }
+
+      else if(input$metric == "sd_roc"){
+        textInput("parameter", "Specify Parameter", value = "15")
       }
     }
     else if(parameter_type == "lwrupr"){
@@ -155,6 +152,9 @@ shinyServer(function(input, output) {
     parameter_type = parameter_type()
 
     if(parameter_type == "none"){
+      helpText("No parameters need to be specified.")
+    }
+    else if(parameter_type == "none1"){
       helpText("No parameters need to be specified.")
     }
 
@@ -193,28 +193,12 @@ shinyServer(function(input, output) {
         helpText("Enter the reference value for normal basal glycemia.")
       }
 
-      else if(input$metric == "mag"){
-        helpText("Enter the interval (in minutes) to calculate change in glucose.")
-      }
-
       else if(input$metric == "mage"){
         helpText("Enter the multiple of SD used to determine glycemic excursions.")
       }
 
-      else if(input$metric == "modd"){
-        helpText("Enter the lag in days.")
-      }
-
       else if(input$metric == "active_percent"){
         helpText("Enter CGM frequency in minutes.")
-      }
-
-      else if(input$metric == "roc"){
-        helpText("Enter time interval (in minutes) for rate of change.")
-      }
-
-      else if(input$metric == "sd_roc"){
-        helpText("Enter time interval (in minutes) for rate of change.")
       }
     }
     else if(parameter_type == "value1"){
@@ -230,6 +214,20 @@ shinyServer(function(input, output) {
       if(input$metric == "conga"){
         helpText("Enter the hours between observations for the CONGA calculation.")
       }
+      else if(input$metric == "mag"){
+        helpText("Enter the interval (in minutes) to calculate change in glucose.")
+      }
+      else if(input$metric == "modd"){
+        helpText("Enter the lag in days.")
+      }
+      else if(input$metric == "roc"){
+        helpText("Enter time interval (in minutes) for rate of change.")
+      }
+
+      else if(input$metric == "sd_roc"){
+        helpText("Enter time interval (in minutes) for rate of change.")
+      }
+
     }
     else if(parameter_type == "lwrupr"){
       if(input$metric == "grade_eugly"){
@@ -258,11 +256,6 @@ shinyServer(function(input, output) {
         textInput("parameter2", "Specify Exponent", value = "2")
       }
     }
-    else if(parameter_type =="value2"){
-      if(input$metric == "conga"){
-        textInput("parameter2","Specify Time Zone" ,value = input$tz)
-      }
-    }
     else if(parameter_type == "lwrupr1"){
       if(input$metric == "igc"){
         textInput("parameter2", "Specify Exponent", value = "1.1, 2")
@@ -279,11 +272,6 @@ shinyServer(function(input, output) {
 
       else if(input$metric == "hypo_index"){
         helpText("Enter the lower limit exponent.")
-      }
-    }
-    else if(parameter_type =="value2"){
-      if(input$metric == "conga"){
-        helpText("Time Zone")
       }
     }
     else if(parameter_type == "lwrupr1"){
@@ -343,26 +331,30 @@ shinyServer(function(input, output) {
     } else if (grepl(',', input$parameter) & !grepl("\\(", input$parameter)) {
       if (length(strsplit(input$parameter, split = ",")[[1]]) != 2) {
         validate (
-          need(parameter_type %in% c("list", "none"), "Please wait - Rendering")
+          need(parameter_type %in% c("list", "none","none1"), "Please wait - Rendering")
         )
       } else {
         validate(
-          need(parameter_type %in% c("list", "lwrupr","lwrupr1","none"), "Please wait - Rendering")
+          need(parameter_type %in% c("list", "lwrupr","lwrupr1","none","none1"), "Please wait - Rendering")
         )
       }
     } else if (grepl("\\(", input$parameter)) {
       validate(
-        need(parameter_type %in% c("nested", "none"), "Please wait - Rendering")
+        need(parameter_type %in% c("nested", "none","none1"), "Please wait - Rendering")
       )
     } else if (!grepl(',', input$parameter)) {
       validate(
-        need(parameter_type %in% c("value","value1","value2", "none"), "Please wait - Rendering")
+        need(parameter_type %in% c("value","value1","value2", "none","none1"), "Please wait - Rendering")
       )
     }
 
     library(iglu)
     if(is.null(input$parameter) | parameter_type == "none"){
       string = paste("iglu::", input$metric, "(data)", sep = "")
+      eval(parse(text = string))
+    }
+    else if(is.null(input$parameter) | parameter_type == "none1"){
+      string = paste("iglu::", input$metric, "(data,", "tz=","'",input$tz,"')",sep = "")
       eval(parse(text = string))
     }
 
@@ -380,7 +372,7 @@ shinyServer(function(input, output) {
       eval(parse(text = string))
     }
     else if(parameter_type == "value2"){
-      string = paste("iglu::", input$metric, "(data, ", input$parameter, ",", "'", input$parameter2,"'" ,")", sep = "")
+      string = paste("iglu::", input$metric, "(data, ", input$parameter, ",","tz=" ,"'", input$tz,"'" ,")", sep = "")
       eval(parse(text = string))
     }
 
