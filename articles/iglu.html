@@ -262,133 +262,126 @@
 <span class="co">#&gt; 5 Subject 5  50.0   29.6 12.8   23.3  50.3  45.9</span></pre></div>
 <p>Notice the high fluctuations in Subject 5, with all but one subtypes of standard deviation being the largest for Subject 5. This provides additional level of CGM data interpretation, since frequent or large glucose fluctuations may contribute to diabetes-related complications independently from chronic hyperglycemia.</p>
 </div>
-</div>
-<div id="visualizations" class="section level1">
-<h1 class="hasAnchor">
-<a href="#visualizations" class="anchor"></a>Visualizations</h1>
-<p>The iglu package supports multiple plot types, that are summarized below</p>
-<table class="table">
-<colgroup>
-<col width="23%">
-<col width="56%">
-<col width="20%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">Function call</th>
-<th align="left">Visualization description</th>
-<th align="left">Main parameters</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>plot_glu</code></td>
-<td align="left">Multiple plot types: time series and lasagna</td>
-<td align="left"><code>plottype, lasagnatype</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>plot_lasagna</code></td>
-<td align="left">Lasagna plot of glucose values for multiple subjects</td>
-<td align="left">
-<code>datatype</code>, <code>lasagnatype</code>
-</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>plot_lasagna_1subject</code></td>
-<td align="left">Lasagna plot of glucose values for a single subject</td>
-<td align="left"><code>lasagnatype</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>plot_roc</code></td>
-<td align="left">Time series of glucose values colored by rate of change (ROC)</td>
-<td align="left">
-<code>subjects</code>, <code>timelag</code>
-</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>hist_roc</code></td>
-<td align="left">Histogram of rate of change (ROC) values</td>
-<td align="left">
-<code>subjects</code>, <code>timelag</code>
-</td>
-</tr>
-</tbody>
-</table>
-<div id="time-series-plots" class="section level2">
+<div id="episode-calculation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#time-series-plots" class="anchor"></a>Time-series plots</h2>
-<p>The time series plot is the default type for the function <code>plot_glu</code>. This plot type can support both single and multiple subjects.</p>
+<a href="#episode-calculation" class="anchor"></a>Episode Calculation</h2>
+<p>The Episode_Calculation function measures the number of hypoglycemia and hyperglycemia that occur more than a certain period.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span> <span class="st">'tsplot'</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
+<span class="fu"><a href="../reference/episode_calculation.html">episode_calculation</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, hypo_thres<span class="op">=</span><span class="fl">100.0</span>, hyper_thres<span class="op">=</span> <span class="fl">120.0</span>, dur_length <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 5 x 11</span>
+<span class="co">#&gt;   id     Average_Glucose Hypo_ep Hyper_ep hypo_duration hyper_duration Hypo_mean</span>
+<span class="co">#&gt;   &lt;fct&gt;            &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Subje…            125.  2.79       2.64         111.            197.    215.  </span>
+<span class="co">#&gt; 2 Subje…            221.  0.0769     1.15          50             965.      7.32</span>
+<span class="co">#&gt; 3 Subje…            156.  1.14       3.71          66.7           288.    106.  </span>
+<span class="co">#&gt; 4 Subje…            132.  2.43       4.71          93.3           219.    206.  </span>
+<span class="co">#&gt; 5 Subje…            172.  1          2.42          96.6           534.     91.1 </span>
+<span class="co">#&gt; # … with 4 more variables: Hyper_mean &lt;dbl&gt;, low_alert &lt;dbl&gt;, high_alert &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   target_range &lt;dbl&gt;</span></pre></div>
+<p>Users can set certain thresholds for the hypo and hyperglycemia by passing parameters. Here, we are passing 100 for the hypoglycemia threshold and 120 for the hyperglycemia threshold. By setting a duration length to 15 minutes (the last parameter), the function will count the number of episodes that glucose values go below or above the thresholds more than 15 minutes.</p>
+<p>In this example, we calculated episodes for multiple subjects. The average numbers of hypo and hyperglycemia for subject 1 are 2.7 and 2.6 respectively. It occurred for 111 minutes and 196 minutes in average. You can also see other values such as the mean value of glucose, hypoglycemia and hyperglycemia, and this function can be used for a single subject as well.</p>
+</div>
+<div id="epicalc_profile-function" class="section level2">
+<h2 class="hasAnchor">
+<a href="#epicalc_profile-function" class="anchor"></a>Epicalc_profile function</h2>
+<p>Visualization of the metrics produced by the <code><a href="../reference/episode_calculation.html">episode_calculation()</a></code> function is done with the function <code>epicalc_profile()</code>. This function takes the <code><a href="../reference/episode_calculation.html">episode_calculation()</a></code> output and displays it as a tables of the episode metrics as well as plots that visualizes the subject’s glucose level over time. Like <code>episode_calculation</code>, this function is designed to work with one subject data at a time, and the structure of the function output is shown below.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="fu">epicalc_profile</span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></pre></div>
+<p>The function will accept the following three parameters that are passed on to <code>epicalc_profile()</code>. Like <code><a href="../reference/episode_calculation.html">episode_calculation()</a></code>, there are options to adjust the hypoglycemia and hyperglycemia thresholds. If the hyperglycemia threshold is lower than the hypoglycemia threshold, a warning will be produced. * “<code>hypo_thres</code>” - Threshold for what below is considered hypoglycemia. Default is 90 and the units are mg/dL * “<code>hyper_thres</code>” - Threshold for what above is considered hyperglycemia. Default is 120 and the units are mg/dL * “<code>color_scheme = c("blue-red", "red-orange")</code>” - String corresponding to a color scheme for the plot. Default is blue-red The ‘red-orange’ color scheme corresponds to red for hypoglycemia, orange for hyperglycemia, and green for in between. The ‘blue-red’ corresponds to blue for hypoglycemia, red for hyperglycemia, and white for in between.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">epicalc_profile</span>(example_data_<span class="dv">1</span>_subject, <span class="dv">40</span>, <span class="dv">120</span>, <span class="dt">color_scheme =</span> (<span class="st">'red-orange'</span>))</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">The episode calculation <span class="cf">function</span> receives </a>
+<a class="sourceLine" id="cb17-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="co"># Visualizations</span></a>
+<a class="sourceLine" id="cb17-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb17-8" data-line-number="8">The iglu package supports multiple plot types, that are summarized below    </a>
+<a class="sourceLine" id="cb17-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb17-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb17-11" data-line-number="11"><span class="op">|</span><span class="st"> </span>Function call <span class="op">|</span><span class="st"> </span>Visualization description <span class="op">|</span><span class="st"> </span>Main parameters<span class="op">|</span></a>
+<a class="sourceLine" id="cb17-12" data-line-number="12"><span class="er">|:</span><span class="op">------------</span><span class="er">|:</span><span class="op">------------------------------</span><span class="er">|:</span><span class="op">----------</span><span class="er">|</span></a>
+<a class="sourceLine" id="cb17-13" data-line-number="13"><span class="er">|</span><span class="st">`</span><span class="dt">plot_glu</span><span class="st">`</span> <span class="op">|</span><span class="st"> </span>Multiple plot types<span class="op">:</span><span class="st"> </span>time series and lasagna <span class="op">|</span><span class="st"> `</span><span class="dt">plottype, lasagnatype</span><span class="st">`</span><span class="op">|</span></a>
+<a class="sourceLine" id="cb17-14" data-line-number="14"><span class="er">|</span><span class="st">`</span><span class="dt">plot_lasagna</span><span class="st">`</span> <span class="op">|</span><span class="st"> </span>Lasagna plot of glucose values <span class="cf">for</span> multiple subjects <span class="op">|</span><span class="st"> `</span><span class="dt">datatype</span><span class="st">`</span>, <span class="st">`</span><span class="dt">lasagnatype</span><span class="st">`</span><span class="op">|</span></a>
+<a class="sourceLine" id="cb17-15" data-line-number="15"><span class="er">|</span><span class="st">`</span><span class="dt">plot_lasagna_1subject</span><span class="st">`</span> <span class="op">|</span><span class="st"> </span>Lasagna plot of glucose values <span class="cf">for</span> a single subject <span class="op">|</span><span class="st"> `</span><span class="dt">lasagnatype</span><span class="st">`</span><span class="op">|</span></a>
+<a class="sourceLine" id="cb17-16" data-line-number="16"><span class="er">|</span><span class="st">`</span><span class="dt">plot_roc</span><span class="st">`</span><span class="op">|</span><span class="st"> </span>Time series of glucose values colored by rate of <span class="kw">change</span> (ROC)<span class="op">|</span><span class="st"> `</span><span class="dt">subjects</span><span class="st">`</span>, <span class="st">`</span><span class="dt">timelag</span><span class="st">`</span><span class="op">|</span></a>
+<a class="sourceLine" id="cb17-17" data-line-number="17"><span class="er">|</span><span class="st">`</span><span class="dt">hist_roc</span><span class="st">`</span> <span class="op">|</span><span class="st"> </span>Histogram of rate of <span class="kw">change</span> (ROC) values <span class="op">|</span><span class="st"> `</span><span class="dt">subjects</span><span class="st">`</span>, <span class="st">`</span><span class="dt">timelag</span><span class="st">`</span><span class="op">|</span></a>
+<a class="sourceLine" id="cb17-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb17-19" data-line-number="19">## Time-series plots</a>
+<a class="sourceLine" id="cb17-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb17-21" data-line-number="21">The time series plot is the default type <span class="cf">for</span> the <span class="cf">function</span> <span class="st">`</span><span class="dt">plot_glu</span><span class="st">`</span>. This plot type can support both single and multiple subjects.</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span> <span class="st">'tsplot'</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></pre></div>
+<p><img src="iglu_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
+<div class="sourceCode" id="cb19"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'tsplot'</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-15-2.png" width="672"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-18-2.png" width="672"></p>
 <p>We set the ‘tz’ (timezone) parameter to be EST because the data was collected in the eastern time zone. If left blank, the time zone used for plotting will be the system’s time zone. Time zone is mainly an issue in cases where daylight savings time might make it appear as though there were duplicate values at some time points.</p>
 <p>To just plot a single subject of interest from the grid of time series plots, set the ‘subjects’ parameter to be that subject’s ID.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
+<div class="sourceCode" id="cb20"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'tsplot'</span>, subjects <span class="op">=</span> <span class="st">'Subject 3'</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
 <p>The red lines can be shifted to any Lower and Upper Target Range Limits with the ‘LLTR’ and ‘ULTR’ arguments.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
+<div class="sourceCode" id="cb21"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'tsplot'</span>, subjects <span class="op">=</span> <span class="st">'Subject 3'</span>, LLTR <span class="op">=</span> <span class="fl">80</span>, ULTR <span class="op">=</span> <span class="fl">150</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
 </div>
 <div id="lasagna-plots" class="section level2">
 <h2 class="hasAnchor">
 <a href="#lasagna-plots" class="anchor"></a>Lasagna plots</h2>
 <p>The <code>plot_glu</code> function also supports lasagna plots by changing the ‘plottype’ parameter. For more on lasagna plots, see <a href="https://doi.org/10.1097/ede.0b013e3181e5b06a">Swihart et al. (2010) “Lasagna Plots: A Saucy Alternative to Spaghetti Plots.”</a></p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
-<p>By default, this will produce an unsorted lasagna plot using up to 14 days worth of data displayed separately. To average across days at each time point, we can use <code>datatype = 'average'</code>:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">'average'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
-<p>We can additionally sort the values at each time point across the five subjects by setting <code>lasagnatype = 'timesorted'</code></p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">'average'</span>, lasagnatype <span class="op">=</span> <span class="st">'timesorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
-<p>When working with a single subject, setting <code>datatype = single</code> will produce plots where rows represent days instead of subjects.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">'single'</span>, lasagnatype <span class="op">=</span> <span class="st">'unsorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
 <p><img src="iglu_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
+<p>By default, this will produce an unsorted lasagna plot using up to 14 days worth of data displayed separately. To average across days at each time point, we can use <code>datatype = 'average'</code>:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">'single'</span>, lasagnatype <span class="op">=</span> <span class="st">'timesorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">'average'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
 <p><img src="iglu_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
+<p>We can additionally sort the values at each time point across the five subjects by setting <code>lasagnatype = 'timesorted'</code></p>
+<div class="sourceCode" id="cb24"><pre class="downlit">
+<span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">'average'</span>, lasagnatype <span class="op">=</span> <span class="st">'timesorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
+<p><img src="iglu_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
+<p>When working with a single subject, setting <code>datatype = single</code> will produce plots where rows represent days instead of subjects.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit">
+<span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">'single'</span>, lasagnatype <span class="op">=</span> <span class="st">'unsorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
+<p><img src="iglu_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
+<div class="sourceCode" id="cb26"><pre class="downlit">
+<span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">'single'</span>, lasagnatype <span class="op">=</span> <span class="st">'timesorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
+<p><img src="iglu_files/figure-html/unnamed-chunk-25-1.png" width="672"></p>
 <p>For further customization of lasagna plots, use the <code>plot_lasagna</code> and <code>plot_lasagna_1subject</code> functions.</p>
 <p><code>plot_lasagna</code> allows for multi-subject lasagna plots with the additional options of sorting the hours by glucose values for each subject, i.e. horizontal sorting, by setting <code>lasagnatype = 'subjectsorted'</code>.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit">
-<span class="fu"><a href="../reference/plot_lasagna.html">plot_lasagna</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, datatype <span class="op">=</span> <span class="st">'average'</span>, lasagnatype <span class="op">=</span> <span class="st">'subjectsorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
-<p><code>plot_lasagna</code> also supports changing the maximum number of days to display, as well as the upper and lower target range limits (LLTR and ULTR), midpoint, and minimum and maximum values to display, all of which will affect the colorbar.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit">
-<span class="fu"><a href="../reference/plot_lasagna.html">plot_lasagna</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, datatype <span class="op">=</span> <span class="st">'average'</span>, lasagnatype <span class="op">=</span> <span class="st">'subjectsorted'</span>, LLTR <span class="op">=</span> <span class="fl">100</span>, ULTR <span class="op">=</span> <span class="fl">180</span>, midpoint <span class="op">=</span> <span class="fl">150</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">500</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
-<p><code>plot_lasagna_1subject</code> allows for customization of the more detailed single subject lasagna plots. There is no datatype parameter for <code>plot_lasagna_1subject</code>, but there are three types of plots available, accessed with the <code>lasagnatype</code> parameter.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit">
-<span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lasagnatype <span class="op">=</span> <span class="st">'unsorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-25-1.png" width="672"></p>
 <div class="sourceCode" id="cb27"><pre class="downlit">
-<span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lasagnatype <span class="op">=</span> <span class="st">'timesorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="../reference/plot_lasagna.html">plot_lasagna</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, datatype <span class="op">=</span> <span class="st">'average'</span>, lasagnatype <span class="op">=</span> <span class="st">'subjectsorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
 <p><img src="iglu_files/figure-html/unnamed-chunk-26-1.png" width="672"></p>
+<p><code>plot_lasagna</code> also supports changing the maximum number of days to display, as well as the upper and lower target range limits (LLTR and ULTR), midpoint, and minimum and maximum values to display, all of which will affect the colorbar.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit">
-<span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lasagnatype <span class="op">=</span> <span class="st">'daysorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="../reference/plot_lasagna.html">plot_lasagna</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, datatype <span class="op">=</span> <span class="st">'average'</span>, lasagnatype <span class="op">=</span> <span class="st">'subjectsorted'</span>, LLTR <span class="op">=</span> <span class="fl">100</span>, ULTR <span class="op">=</span> <span class="fl">180</span>, midpoint <span class="op">=</span> <span class="fl">150</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">500</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
 <p><img src="iglu_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
-<p>As with the <code>lasagna_plot</code> function, changing the LLTR, ULTR, midpoint, and limits parameters will affect the colorbar.</p>
+<p><code>plot_lasagna_1subject</code> allows for customization of the more detailed single subject lasagna plots. There is no datatype parameter for <code>plot_lasagna_1subject</code>, but there are three types of plots available, accessed with the <code>lasagnatype</code> parameter.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit">
-<span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lasagnatype <span class="op">=</span> <span class="st">'daysorted'</span>, midpoint <span class="op">=</span> <span class="fl">150</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">500</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lasagnatype <span class="op">=</span> <span class="st">'unsorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
 <p><img src="iglu_files/figure-html/unnamed-chunk-28-1.png" width="672"></p>
+<div class="sourceCode" id="cb30"><pre class="downlit">
+<span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lasagnatype <span class="op">=</span> <span class="st">'timesorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
+<p><img src="iglu_files/figure-html/unnamed-chunk-29-1.png" width="672"></p>
+<div class="sourceCode" id="cb31"><pre class="downlit">
+<span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lasagnatype <span class="op">=</span> <span class="st">'daysorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
+<p><img src="iglu_files/figure-html/unnamed-chunk-30-1.png" width="672"></p>
+<p>As with the <code>lasagna_plot</code> function, changing the LLTR, ULTR, midpoint, and limits parameters will affect the colorbar.</p>
+<div class="sourceCode" id="cb32"><pre class="downlit">
+<span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lasagnatype <span class="op">=</span> <span class="st">'daysorted'</span>, midpoint <span class="op">=</span> <span class="fl">150</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">500</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></pre></div>
+<p><img src="iglu_files/figure-html/unnamed-chunk-31-1.png" width="672"></p>
 </div>
 <div id="rate-of-change-plots" class="section level2">
 <h2 class="hasAnchor">
 <a href="#rate-of-change-plots" class="anchor"></a>Rate of change plots</h2>
 <p>In addition to visualizing absolute glucose values, <code>iglu</code> also allows to visualize local changes in glucose variability as measured by rate of change <a href="https://doi.org/10.1089/dia.2008.0138">Clarke et al. (2009)</a>. There are two types of visualizations associated with rate of change. The first is a time series plot of glucose values where each point is colored by the rate of change at that given time. Points colored in white have a stable rate of change, meaning the glucose is neither significantly increasing nor decreasing at that time point. Points colored red or blue represent times at which the glucose is significantly rising or falling, respectively. Thus colored points represent times of glucose variability, while white points represent glucose stability. The below figure shows a side by side comparison of rate of change time-series plots for two subjects. Subject 1 shows significantly less glucose variability than Subject 5.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit">
+<div class="sourceCode" id="cb33"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_roc.html">plot_roc</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, subjects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Subject 1"</span>, <span class="st">"Subject 5"</span><span class="op">)</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-29-1.png" width="672"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-32-1.png" width="672"></p>
 <p>The next figure shows a side by side comparison of rate of change histogram plots for the same subjects. Once again, the colors show in what direction and how quickly the glucose is changing. The histogram plots allow to immediately assess the variation in rate of change. Extreme values on either end of the histogram indicate very rapid rises or drops in glucose - a high degree of local variability. Here, Subject 1 once again shows lower glucose variability by having a narrower histogram with most values falling between -2 mg/dl/min and 2 mg/dl/min. Subject 5 has a shorter, more widely distributed histogram indicating greater glucose variability.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit">
+<div class="sourceCode" id="cb34"><pre class="downlit">
 <span class="fu"><a href="../reference/hist_roc.html">hist_roc</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, subjects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Subject 1"</span>, <span class="st">"Subject 5"</span><span class="op">)</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-30-1.png" width="672"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-33-1.png" width="672"></p>
 </div>
 </div>
 <div id="shiny-app" class="section level1">
