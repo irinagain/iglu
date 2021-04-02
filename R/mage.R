@@ -76,7 +76,7 @@ mage_cross <- function(data, ...) {
   }
 
   else {
-    out <- ggarrange(plotlist = out$MAGE, nrow = 1, ncol = 1)
+    out <- ggpubr::ggarrange(plotlist = out$MAGE, nrow = 1, ncol = 1)
   }
 
   if (is_vector) {
