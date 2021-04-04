@@ -915,6 +915,17 @@ parameter_type <- reactive({
     plotDaily()
   })
 
+  plotEpisodeCalc <- reactive({
+    library(iglu)
+    data = agp_data()
+    string = paste('iglu::epicalc_profile(data = data)')
+    eval(parse(text = string))
+  })
+
+  output$plot_episode_calculation <- renderPlot({
+    plotEpisodeCalc()
+  })
+
   options(shiny.usecairo = T)
 
   output$pdfAGP<- downloadHandler(

@@ -129,6 +129,12 @@ shinyUI(fluidPage(
                  ),
                  fluidRow(
                    column(12, plotOutput("plot_daily"))
+                 ),
+                 fluidRow(
+                   column(12, wellPanel("Episode Calculation Profile (ECP)"))
+                 ),
+                 fluidRow(
+                   column(12, plotOutput("plot_episode_calculation"))
                  )
                )
              ))

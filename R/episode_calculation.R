@@ -162,8 +162,8 @@ episode_calculation <- function (data, hypo_thres=100.0, hyper_thres= 120.0, dur
           Average_Glucose = c(Average_Glucose, temp$Average_Glucose); Hypo_ep = c(Hypo_ep, temp$Hypo_ep); Hyper_ep = c(Hyper_ep, temp$Hyper_ep);
           hypo_duration = c(hypo_duration, temp$hypo_duration); hyper_duration = c(hyper_duration, temp$hyper_duration); Hypo_mean = c(Hypo_mean, temp$Hypo_mean);
           Hyper_mean = c(Hyper_mean, temp$Hyper_mean); low_alert = c(low_alert, temp$low_alert); high_alert = c(high_alert, temp$high_alert); target_range = c(target_range, temp$target_range);
-          dataframe <- data.frame("Average_Glucose" = mean(Average_Glucose, na.rm= TRUE),
-                                  "Hypo_ep" = mean(Hypo_ep, na.rm= TRUE), "Hyper_ep" = mean(Hyper_ep, na.rm= TRUE),
+          dataframe <- data.frame("Average_Glucose" = round(mean(Average_Glucose, na.rm= TRUE),2),
+                                  "Hypo_ep" = round(mean(Hypo_ep, na.rm= TRUE),2), "Hyper_ep" = mean(Hyper_ep, na.rm= TRUE),
                                   "hypo_duration" = mean(hypo_duration, na.rm= TRUE), "hyper_duration" = mean(hyper_duration, na.rm= TRUE), check.names = FALSE,
                                   "Hypo_mean" = mean(Hypo_mean, na.rm= TRUE), "Hyper_mean" = mean(Hyper_mean, na.rm= TRUE),
                                   "low_alert" = mean(low_alert, na.rm= TRUE), "high_alert" = mean(high_alert, na.rm= TRUE),
@@ -181,6 +181,7 @@ episode_calculation <- function (data, hypo_thres=100.0, hyper_thres= 120.0, dur
   id = NULL
   rm("id")
 
+
     #####################         Wrapper Function         ####################
   wrapper_function <-function(data,params){
     out <- data %>%
@@ -192,4 +193,6 @@ episode_calculation <- function (data, hypo_thres=100.0, hyper_thres= 120.0, dur
 
   return(out)
 }#end Function
+
+
 

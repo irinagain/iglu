@@ -58,7 +58,11 @@ Imports:
     tibble,
     tidyr,
     zoo,
-    plotly
+    plotly,
+    gtable,
+    grid,
+    patchwork,
+    gridExtra
 Suggests:
     knitr,
     rmarkdown,
