@@ -129,7 +129,18 @@ shinyUI(fluidPage(
                  ),
                  fluidRow(
                    column(12, plotOutput("plot_daily"))
-                 ),
+                 )
+               )
+             )),
+    tabPanel("Episode Calculation", fluid = TRUE,
+             sidebarLayout(
+               sidebarPanel(
+                 uiOutput("episode_subject"),
+                 downloadButton(outputId = "pdfEpisode", label = "pdf"),
+                 downloadButton(outputId = "pngEpisode", label = "png"),
+                 downloadButton(outputId = "epsEpisode", label = "eps")
+               ),
+               mainPanel(
                  fluidRow(
                    column(12, wellPanel("Episode Calculation Profile (ECP)"))
                  ),
@@ -137,7 +148,7 @@ shinyUI(fluidPage(
                    column(12, plotOutput("plot_episode_calculation"))
                  )
                )
-             ))
+            ))
   )
 
 

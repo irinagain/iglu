@@ -915,17 +915,6 @@ parameter_type <- reactive({
     plotDaily()
   })
 
-  plotEpisodeCalc <- reactive({
-    library(iglu)
-    data = agp_data()
-    string = paste('iglu::epicalc_profile(data = data)')
-    eval(parse(text = string))
-  })
-
-  output$plot_episode_calculation <- renderPlot({
-    plotEpisodeCalc()
-  })
-
   options(shiny.usecairo = T)
 
   output$pdfAGP<- downloadHandler(
@@ -958,6 +947,81 @@ parameter_type <- reactive({
   output$epsAGP <- downloadHandler(
     filename = function() {
       paste("AGP", '.eps', sep = '')
+    },
+    content = function(file) {
+      postscript(file)
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
+
+
+  ########## Episode calculation section#########
+  ### Get desired subject
+  output$episode_subject <- renderUI({
+    data = transform_data() # bring reactive data input into this renderUI call to default to all subjects
+    subject = unique(data$id)[1]
+    textInput("episode_subject", "Enter Subject ID", value = subject)
+  })
+
+  episode_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
+
+    validate (
+      if (is.null(input$episode_subject)) {
+        need(!is.null(input$episode_subject), "Please wait - Rendering")
+      } else {
+        need(input$episode_subject %in% transform_data()$id, "Please check Subject ID")
+      }
+    )
+
+    data = transform_data()
+    data = data[data$id == input$episode_subject,] # reactively subset data when subjects input is modified
+    return(data)
+  })
+
+  plotEpisodeCalc <- reactive({
+    library(iglu)
+    data = episode_data()
+    string = paste('iglu::epicalc_profile(data = data)')
+    eval(parse(text = string))
+  })
+
+  output$plot_episode_calculation <- renderPlot({
+    plotEpisodeCalc()
+  })
+
+  output$pdfEpisode<- downloadHandler(
+    filename = function() {
+      paste("Episode", '.pdf', sep = '')
+    },
+    content = function(file) {
+      cairo_pdf(filename = file, width = 20, height = 18, bg = "transparent")
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
+
+  output$pngEpisode <- downloadHandler(
+
+    filename = function() {
+      paste("Episode", '.png', sep = '')
+    },
+    content = function(file) {
+      png(file)
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
+
+  output$epsEpisode <- downloadHandler(
+    filename = function() {
+      paste("Episode", '.eps', sep = '')
     },
     content = function(file) {
       postscript(file)

@@ -19,11 +19,11 @@
 #' epicalc_profile(example_data_1_subject)
 #'
 #
-library(ggplot2)
-library(grid)
-library(patchwork)
-library(gridExtra)
-library(gtable)
+# library(ggplot2)
+# library(grid)
+# library(patchwork)
+# library(gridExtra)
+# library(gtable)
 
 
 epicalc_profile <- function(data, hypo_thres=100, hyper_thres= 120.0, color_scheme = c("blue-red", "red-orange")){
@@ -37,17 +37,18 @@ epicalc_profile <- function(data, hypo_thres=100, hyper_thres= 120.0, color_sche
   day_label = as.character(test)
 
 
-  epicalc = episode_calculation(data, hypo_thres, hyper_thres)
-  gl_ip.t = t(gl_ip)
-  #Checking for multiple subjects
-  subject = unique(data$id)
+
   ns = length(subject)
   if (ns > 1){
     subject = subject[1]
     warning(paste("The provided data have", ns, "subjects. The plot will only be created for subject", subject))
     data = data %>% dplyr::filter(id == subject)
   }
-  print("part 1")
+  epicalc = episode_calculation(data, hypo_thres, hyper_thres)
+  gl_ip.t = t(gl_ip)
+  #Checking for multiple subjects
+  subject = unique(data$id)
+
   #Creating table 1(t1) -------------------------------------
   tableStat = data.frame("Hypoglycemia/Hyperglycemia episode metrics")
   tableStat[1, 1] = ""
@@ -80,7 +81,6 @@ epicalc_profile <- function(data, hypo_thres=100, hyper_thres= 120.0, color_sche
   t1 <- gtable_add_grob(t1, grobs = separators,
                         t = 2, b = nrow(t1), l = seq_len(ncol(t1)-2)+2)
 
-  print("part 2")
   #Adding title and footnote(t1)
   title <- textGrob("",gp=gpar(fontsize=16))
   footnote <- textGrob("An episode is >= 15 continuous minutes", x=0, hjust=0,
