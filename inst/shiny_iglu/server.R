@@ -22,7 +22,7 @@ shinyServer(function(input, output) {
 
   ############################# METRIC SECTION ######################################################
 
-
+#add metric based on the parameter it takes in
   parameter_type <- reactive({
 
     if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
@@ -58,7 +58,7 @@ shinyServer(function(input, output) {
       return("nested")
     }
   })
-
+#specify first parameter and the default values
   output$select_parameter <- renderUI({
     parameter_type = parameter_type()
 
@@ -147,6 +147,8 @@ shinyServer(function(input, output) {
     }
 
   })
+
+  #add description of parameter
 
   output$help_text <- renderUI({
     parameter_type = parameter_type()
@@ -245,6 +247,7 @@ shinyServer(function(input, output) {
       }
     }
   })
+  #specify second parameter and its default values
   output$select_second_parameter <- renderUI({
     parameter_type = parameter_type()
     if(parameter_type == "value1"){
@@ -263,6 +266,7 @@ shinyServer(function(input, output) {
     }
 
   })
+  #add description of second parameter
   output$second_parameter_helptext <- renderUI({
     parameter_type = parameter_type()
     if(parameter_type == "value1"){
@@ -281,6 +285,7 @@ shinyServer(function(input, output) {
     }
 
   })
+  #specify third parameter and its default value
   output$select_third_parameter <- renderUI({
     parameter_type = parameter_type()
     if(parameter_type == "value1"){
@@ -300,6 +305,7 @@ shinyServer(function(input, output) {
     }
 
   })
+  #add description on third parameter
   output$third_parameter_helptext <- renderUI({
     parameter_type = parameter_type()
     if(parameter_type == "value1"){
@@ -319,7 +325,7 @@ shinyServer(function(input, output) {
     }
 
   })
-
+#reactivate function
   metric_table <- reactive({
     parameter_type = parameter_type()
     data = transform_data()
