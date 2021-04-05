@@ -325,7 +325,7 @@ shinyServer(function(input, output) {
     }
 
   })
-#reactivate function
+#reactivate
   metric_table <- reactive({
     parameter_type = parameter_type()
     data = transform_data()

@@ -93,8 +93,8 @@ agp_metrics <- function (data, shinyformat = FALSE) {
                 "Duration" = paste(as.character(ndays),"days"),
                 "% Time CGM is Active" = paste0(round(active_percent, 1), "%"),
                 "Average Glucose" = paste(round(mean), "mg/dL"),
-                "GMI" = paste0(round(gmi, 1), "%"),
-                "CV" = paste0(round(cv, 1), "%")) %>%
+                "GMI" = paste0(round(GMI, 1), "%"),
+                "CV" = paste0(round(CV, 1), "%")) %>%
       tidyr::pivot_longer(cols = "Subject ID":"CV", names_to = "metric", values_to = "value")
   }
 

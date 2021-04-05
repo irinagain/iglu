@@ -1,6 +1,6 @@
 #' Calculate Mean Amplitude of Glycemic Excursions
 #'
-#' @description UPDATED to version 2. The function calculates MAGE values and can optionally return a plot of the glucose trace. Version 1 is also accessible for backwards compatibility.
+#' @description The function calculates MAGE values and can optionally return a plot of the glucose trace. UPDATED to version 2. Version 1 is accessible for backwards compatibility.
 #'
 #'
 #' @param data Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector).
@@ -23,7 +23,12 @@
 #' @return A tibble object with two columns: the subject id and corresponding MAGE value. If a vector of glucose values is passed, then a tibble object with just the MAGE value is returned. In version 2, if \code{plot = TRUE}, a "master" ggplot will be returned with glucose traces for all subjects.
 #' @export
 #'
-#' @details The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970). The proposed method uses the crosses of a short and long moving average to identify intervals where a peak or nadir may exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.
+#' @details The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970).
+#'
+#' Version 2 is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.
+#'
+#' In Version 1, MAGE is calculated by taking the mean of absolute differences (between each value and the mean) that are greater than the standard deviation.
+#' A multiplier can be added to the standard deviation by the sd_multiplier argument.
 #'
 #' @references
 #' Service et al. (1970) Mean amplitude of glycemic excursions, a measure of diabetic instability
@@ -42,7 +47,7 @@ mage <- function(data, version = c('v2', 'v1'), ...) {
   version = match.arg(version)
 
   if(version == 'v1') {
-    warning("You are using Version 1 of the iglu mage algorithm. This function is deprecated and will return SIGNIFICANT errors. Please use Version 2")
+    warning("You are using Version 1 of the iglu mage algorithm. This version is deprecated and less accurate. Please use Version 2.")
     return(mage_sd(data, ...))
   }
 
@@ -60,10 +65,18 @@ mage_cross <- function(data, ...) {
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::do(MAGE = mage_cross_single(., ...))
+    # dplyr::summarize(
+    #   MAGE = mage_cross_single(., ...)
+    # )
+#    dplyr::do(MAGE = View(mage_cross_single(., ...)))
 
   # Check if a ggplot or number in list is returned - convert the latter to a number
   if(is.numeric(out$MAGE[[1]])) {
     out <- out %>% dplyr::mutate(MAGE = as.numeric(MAGE))
+  }
+
+  else {
+    out <- ggpubr::ggarrange(plotlist = out$MAGE, nrow = 1, ncol = 1)
   }
 
   if (is_vector) {

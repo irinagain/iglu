@@ -31,6 +31,7 @@ shinyUI(fluidPage(
                                                                                `CV` = 'cv_glu',
                                                                                `CV Subtypes` = 'cv_measures',
                                                                                `eA1C` = 'ea1c',
+                                                                               `Episode Calculation` = 'episode_calculation',
                                                                                `GMI` = 'gmi',
                                                                                `GRADE` = 'grade',
                                                                                `GRADE Euglycemia` = 'grade_eugly',
