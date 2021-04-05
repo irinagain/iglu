@@ -29,8 +29,8 @@ shinyServer(function(input, output) {
                            "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
       return("none")
     }
-    else if(input$metric %in% c("cv_measures", "sd_measures")){
-      return("none1")
+    else if(input$metric %in% c("auc","cv_measures", "sd_measures")){
+      return("time")
     }
     else if(input$metric %in% c("above_percent", "below_percent", "cogi", "quantile_glu")){
       return("list")
@@ -45,7 +45,7 @@ shinyServer(function(input, output) {
     }
 
     else if(input$metric %in% c("conga","mag","modd","roc","sd_roc")){
-      return("value2")
+      return("value_time")
     }
 
     else if(input$metric %in% c("grade_eugly")){
@@ -110,7 +110,7 @@ shinyServer(function(input, output) {
         textInput("parameter", "Specify Lower Limit", value = "70")
       }
     }
-    else if(parameter_type == "value2"){
+    else if(parameter_type == "value_time"){
       if(input$metric == "conga"){
         textInput("parameter", "Specify Parameter", value = "24")
       }
@@ -154,7 +154,7 @@ shinyServer(function(input, output) {
     if(parameter_type == "none"){
       helpText("No parameters need to be specified.")
     }
-    else if(parameter_type == "none1"){
+    else if(parameter_type == "time"){
       helpText("No parameters need to be specified.")
     }
 
@@ -210,7 +210,7 @@ shinyServer(function(input, output) {
         helpText("Enter the lower limit of target glucose range.")
       }
     }
-    else if(parameter_type =="value2"){
+    else if(parameter_type =="value_time"){
       if(input$metric == "conga"){
         helpText("Enter the hours between observations for the CONGA calculation.")
       }
@@ -331,20 +331,20 @@ shinyServer(function(input, output) {
     } else if (grepl(',', input$parameter) & !grepl("\\(", input$parameter)) {
       if (length(strsplit(input$parameter, split = ",")[[1]]) != 2) {
         validate (
-          need(parameter_type %in% c("list", "none","none1"), "Please wait - Rendering")
+          need(parameter_type %in% c("list", "none","time"), "Please wait - Rendering")
         )
       } else {
         validate(
-          need(parameter_type %in% c("list", "lwrupr","lwrupr1","none","none1"), "Please wait - Rendering")
+          need(parameter_type %in% c("list", "lwrupr","lwrupr1","none","time"), "Please wait - Rendering")
         )
       }
     } else if (grepl("\\(", input$parameter)) {
       validate(
-        need(parameter_type %in% c("nested", "none","none1"), "Please wait - Rendering")
+        need(parameter_type %in% c("nested", "none","time"), "Please wait - Rendering")
       )
     } else if (!grepl(',', input$parameter)) {
       validate(
-        need(parameter_type %in% c("value","value1","value2", "none","none1"), "Please wait - Rendering")
+        need(parameter_type %in% c("value","value1","value_time", "none","time"), "Please wait - Rendering")
       )
     }
 
@@ -353,7 +353,7 @@ shinyServer(function(input, output) {
       string = paste("iglu::", input$metric, "(data)", sep = "")
       eval(parse(text = string))
     }
-    else if(is.null(input$parameter) | parameter_type == "none1"){
+    else if(is.null(input$parameter) | parameter_type == "time"){
       string = paste("iglu::", input$metric, "(data,", "tz=","'",input$tz,"')",sep = "")
       eval(parse(text = string))
     }
@@ -371,7 +371,7 @@ shinyServer(function(input, output) {
       string = paste("iglu::", input$metric, "(data, ", input$parameter, ",",input$parameter2,",",input$parameter3, ")", sep = "")
       eval(parse(text = string))
     }
-    else if(parameter_type == "value2"){
+    else if(parameter_type == "value_time"){
       string = paste("iglu::", input$metric, "(data, ", input$parameter, ",","tz=" ,"'", input$tz,"'" ,")", sep = "")
       eval(parse(text = string))
     }

@@ -24,6 +24,7 @@ shinyUI(fluidPage(
                sidebarPanel(selectInput('metric', 'Choose Metric', choices = c(`Above Percent` = 'above_percent',
                                                                                `Active Percent` = 'active_percent',
                                                                                `ADRR` = 'adrr',
+                                                                               `Area Under Curve` = 'auc',
                                                                                `Below Percent` = 'below_percent',
                                                                                `COGI` = 'cogi',
                                                                                `CONGA` = 'conga',
