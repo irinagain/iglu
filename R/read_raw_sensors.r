@@ -15,14 +15,17 @@
 #'
 #' @param id String indicating subject id. Defaults to "filename".
 #' A value of "read" will cause the program to attempt to read the subject id from the file. A value of "filename" will cause the
-#' program to use the basename of the filename (i.e. filename without any directory information) with .csv removed as subject id.
+#' program to use the basename of the filename (i.e. filename without any directory information) with anything after a period removed, as subject id.
+#' A value of "default" will cause the program to use whatever the default value associated with the sensor is.
 #' The asc reader currently does not support id="read"
 #'
 #' @return A dataframe containing the data read from the named file.
 #'
 #' @export
 #'
-#' @details A dataframe object with the columns "id", "time" and "gl" and one row per reading will be returned.
+#' @details A dataframe object with the columns "id", "time" and "gl" and one row per reading will be returned. For the libre reader,
+#' if the phrase "mmol/l" is found in the column names, the glucose values will be multiplied by 18.
+#'
 #'
 #' @references
 #' Vigers et al. (2019) cgmanalysis: An R package for descriptive analysis of continuous glucose monitor data
@@ -64,8 +67,9 @@ read_raw_data = function(filename, sensor = NULL, id = "filename") {
     return(out)
   }
 
-  importlibre = function(filename, id="read", mmol = F,colnamerow = 2) {
+  importlibre = function(filename, id="read",colnamerow = 2) {
     data = read.csv(filename, stringsAsFactors = FALSE)
+    mmol = FALSE
     if (tolower(id) == "read") {
       id <- data[1,1]
     } else if (tolower(id) == "filename") {
@@ -73,10 +77,17 @@ read_raw_data = function(filename, sensor = NULL, id = "filename") {
     }
     colnames(data) = data[colnamerow,]
     data = data[(colnamerow+1):length(data[,1]),]
+
+    if (sum(grep("mmol/l", tolower(colnames(data))))) {
+      mmol = TRUE
+    }
+
     data <- data[,c(grep("timestamp",tolower(colnames(data))),
                       grep("historic glucose",tolower(colnames(data))))]
     colnames(data) <- c('time','gl')
+    data$gl = as.numeric(data$gl)
     data$id = id
+    data = data[,c(3,1,2)]
     if (mmol) {
       data$gl = 18*data$gl
     }
@@ -95,6 +106,7 @@ read_raw_data = function(filename, sensor = NULL, id = "filename") {
     data <- data[,c("Time","Historic Glucose (mg/dL)")]
     colnames(data) <- c('time','gl')
     data$id = id
+    data = data[,c(3,1,2)]
     return(data)
   }
 
@@ -110,6 +122,7 @@ read_raw_data = function(filename, sensor = NULL, id = "filename") {
     data$sensorglucose = data$Value
     data = data[,c('time','gl')]
     data$id = id
+    data = data[,c(3,1,2)]
     return(data)
   }
 
@@ -132,16 +145,26 @@ read_raw_data = function(filename, sensor = NULL, id = "filename") {
     data <- data[,c("time","gl")]
     base::colnames(data) <- c('time','gl')
     data$id = id
+    data = data[,c(3,1,2)]
     return(data)
   }
+  if (id == "default") {
+    out = switch(sensor,
+                 "dexcom" = importdexcom(filename),
+                 "libre" = importlibre(filename),
+                 "librepro" = importlibrepro(filename),
+                 "asc" = importasc(filename),
+                 "ipro" = importipro(filename))
 
+  } else {
+    out = switch(sensor,
+                 "dexcom" = importdexcom(filename, id = id),
+                 "libre" = importlibre(filename, id = id),
+                 "librepro" = importlibrepro(filename, id = id),
+                 "asc" = importasc(filename, id = id),
+                 "ipro" = importipro(filename, id = id))
 
-  out = switch(sensor,
-         "dexcom" = importdexcom(filename, id = id),
-         "libre" = importlibre(filename, id = id),
-         "librepro" = importlibrepro(filename, id = id),
-         "asc" = importasc(filename, id = id),
-         "ipro" = importipro(filename, id = id))
+  }
 
   return(out)
 }
