@@ -34,14 +34,14 @@
 #' data("example_data_1_subject")
 #'
 #' # Process example data
-#' processed <- process_data(example_data_1_subject, id = "id", timestamp = "time", glu = "gl", time_parser = as.PoSIXct)
+#' processed <- process_data(example_data_1_subject, id = "id", timestamp = "time", glu = "gl", time_parser = as.POSIXct)
 #'
 #' processed
 #'
 #' data("example_data_5_subject")
 #'
 #' # Process example data
-#' processed_multisubject <- process_data(example_data_5_subject, id = "id", timestamp = "time", glu = "gl", time_parser = as.PoSIXct)
+#' processed_multisubject <- process_data(example_data_5_subject, id = "id", timestamp = "time", glu = "gl", time_parser = as.POSIXct)
 #'
 #' processed_multisubject
 #'
