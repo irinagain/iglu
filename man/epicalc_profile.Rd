@@ -4,7 +4,20 @@
 \alias{epicalc_profile}
 \title{Display Episode Calculation statistics for selected subject}
 \usage{
-epicalc_profile(data, maxd = 14, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE)
+epicalc_profile(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, color_scheme = c("blue-red", "red-orange"))
+}
+\arguments{
+\item{data}{data}
+
+\item{lv1_hypo}{hypo_thres}
+
+\item{lv2_hypo}{hypo_thres}
+
+\item{lv1_hyper}{lv1_hyper}
+
+\item{lv2_hyper}{lv2_hyper}
+
+\item{color_scheme}{color_scheme}
 }
 \value{
 A plot displaying the varying glucose levels (mg/dL) of the subject in a day as well as the statistics for the episodes.

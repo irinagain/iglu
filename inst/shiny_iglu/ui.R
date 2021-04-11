@@ -138,7 +138,15 @@ shinyUI(fluidPage(
                  uiOutput("episode_subject"),
                  downloadButton(outputId = "pdfEpisode", label = "pdf"),
                  downloadButton(outputId = "pngEpisode", label = "png"),
-                 downloadButton(outputId = "epsEpisode", label = "eps")
+                 downloadButton(outputId = "epsEpisode", label = "eps"),
+                 numericInput(inputId = "lv1hypoThreshold", label = "\nEnter a value for HypoThreshold (level1)",
+                           value = 100),
+                 numericInput(inputId = "lv2hypoThreshold", label = "\nEnter a value for HypoThreshold (level2)",
+                              value = 70),
+                 numericInput(inputId = "lv1hyperThreshold", label = "\nEnter a value for HypoThreshold (level1)",
+                           value = 120),
+                 numericInput(inputId = "lv2hyperThreshold", label = "\nEnter a value for HypoThreshold (level2)",
+                              value = 180)
                ),
                mainPanel(
                  fluidRow(

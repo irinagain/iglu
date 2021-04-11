@@ -129,10 +129,9 @@ parameter_type <- reactive({
         textInput("parameter", "Specify Lower and Upper Limits", value = "70, 180")
       }
      else if(input$metric == "episode_calculation"){
-       textInput("parameter", "Specify Parameter", value = "100, 120")
+        textInput("parameter", "Specify Parameter")
      }
     }
-
    else if(parameter_type == "nested"){
     if(input$metric == "in_range_percent"){
       textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
@@ -984,7 +983,11 @@ parameter_type <- reactive({
   plotEpisodeCalc <- reactive({
     library(iglu)
     data = episode_data()
-    string = paste('iglu::epicalc_profile(data = data)')
+    lv1_hypo = input$lv1hypoThreshold
+    lv2_hypo = input$lv2hypoThreshold
+    lv1_hyper = input$lv1hyperThreshold
+    lv2_hyper = input$lv2hyperThreshold
+    string = paste('iglu::epicalc_profile(data = data, lv1_hypo= lv1_hypo, lv2_hypo = lv2_hypo, lv1_hyper=lv1_hyper,lv2_hyper=lv2_hyper)')
     eval(parse(text = string))
   })
 
