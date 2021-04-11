@@ -1,12 +1,9 @@
-#' Functions to read raw data from a variety of common sensors. Assumes .csv format for all data. Due to limited accessiblity of data,
-#' only the import for libre sensors has been tested on actual data as of 4/7/2021.
-#'
-#' Heavily derived from the readers available in the cgmanalysis package's cleandata function.
+#' Read raw data from a variety of common sensors.
 #'
 #' @description Helper function to assist in reading data directly from sensor outputs. Should return a dataframe in correct format
 #' for use with the rest of the \code{iglu} package. Assumes all data will be readable with base R read.csv function.
 #'
-#' @usage read_raw_data("cgmdata.csv", sensor = "libre", id = "read")
+#' @usage read_raw_data("cgmdata.csv", sensor = c("dexcom", "libre", "librepro", "asc", "ipro"), id = "read")
 #'
 #' @param filename String matching the name of the data to be read. Assumed to be .csv
 #'
@@ -15,7 +12,7 @@
 #'
 #' @param id String indicating subject id. Defaults to "filename".
 #' A value of "read" will cause the program to attempt to read the subject id from the file. A value of "filename" will cause the
-#' program to use the basename of the filename (i.e. filename without any directory information) with anything after a period removed, as subject id.
+#' program to use the basename of the filename (i.e. filename without any directory information) with anything after the first period removed, as subject id.
 #' A value of "default" will cause the program to use whatever the default value associated with the sensor is.
 #' The asc reader currently does not support id="read"
 #'
@@ -25,23 +22,15 @@
 #'
 #' @details A dataframe object with the columns "id", "time" and "gl" and one row per reading will be returned. For the libre reader,
 #' if the phrase "mmol/l" is found in the column names, the glucose values will be multiplied by 18.
-#'
+#' Assumes .csv format for all data.
+#' Due to limited accessiblity of data, only the import for FreeStyle Libre sensor has been tested on actual data as of 4/7/2021.
+#' Heavily derived from the readers available in the cgmanalysis package's cleandata function.
 #'
 #' @references
 #' Vigers et al. (2019) cgmanalysis: An R package for descriptive analysis of continuous glucose monitor data
 #' \emph{PLoS ONE} \strong{14(10)}: e0216851,
 #' \doi{10.1371/journal.pone.0216851}
 #'
-#' @examples
-#' read_raw_data("johndoe.csv", sensor = "dexcom", id = "filename")
-#'
-#' read_raw_data("yourdata.csv", sensor = "libre", id = "read")
-#'
-#' read_raw_data("data.csv", sensor = "librepro", id = "read")
-#'
-#' read_raw_data("home/janedoe.csv", sensor = "asc", id = "filename")
-#'
-#' read_raw_data("cgmsequences.csv", sensor = "ipro", id = "read")
 #'
 
 read_raw_data = function(filename, sensor = NULL, id = "filename") {

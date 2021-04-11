@@ -1,6 +1,4 @@
 #' Data Pre-Processor
-#' Based on John Schwenck's data_process for his bp package
-#' https://github.com/johnschwenck/bp
 #'
 #' @description A helper function to assist in pre-processing the user-supplied
 #' input data for use with other functions.
@@ -11,7 +9,7 @@
 #' @usage process_data(data, id = "id", timestamp = "time", glu = "gl", time_parser = as.POSIXct)
 #'
 #' @param data User-supplied dataset containing continuous glucose monitor data. Must
-#' contain data for time and glucose readings at a minimum.
+#' contain data for time and glucose readings at a minimum. Accepted formats are dataframe and tibble.
 #'
 #' @param timestamp Required column name (character string) corresponding to time values in data. The dates can be
 #' in any format parsable by as.POSIXct, or any format accepted by the parser passed to time_parser. See time_parser param for an explanation
@@ -21,10 +19,12 @@
 #'
 #' @param time_parser Optional function used to convert datetime strings to time objects. Defaults to as.POSIXct.
 #' If your times are in a format not parsable by as.POSIXct, you can parse a custom format by passing
-#' function(time_string) {strptime(time_string, format = <format string>)} as the time_parser parameter.
+#' function(time_string) \{strptime(time_string, format = <format string>)\} as the time_parser parameter.
 #'
 #' @details A dataframe with the columns "id", "time", and "gl" will be returned.
 #' If there is a mention of "mmol/l" in the glucose column name, the glucose values will be multipled by 18 to convert to mg/dl
+#' Based on John Schwenck's data_process for his bp package
+#' https://github.com/johnschwenck/bp
 #'
 #' @return A processed dataframe object that cooperates with every other
 #' function within the iglu package - all column names and formats comply.
@@ -58,7 +58,7 @@ process_data = function(data,
       }
     }
   }
-
+  data = na.omit(data)
   if (is.data.frame(data) || tibble::is_tibble(data)) {
     colnames(data) = tolower(colnames(data))
     data = na.omit(data)
