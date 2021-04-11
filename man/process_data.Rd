@@ -13,14 +13,14 @@ process_data(data, id = "id", timestamp = "time", glu = "gl", time_parser = as.P
 contain data for time and glucose readings at a minimum.}
 
 \item{timestamp}{Required column name (character string) corresponding to time values in data. The dates can be
-in any format parsable by as.POSIXct, or any format accepted by the parser passed to time_parser. See time_parser for an explanation
+in any format parsable by as.POSIXct, or any format accepted by the parser passed to time_parser. See time_parser param for an explanation
 on how to handle arbitrary formats.}
 
 \item{glu}{Required column name (character string) corresponding to blood glucose values, mg/dl}
 
 \item{time_parser}{Optional function used to convert datetime strings to time objects. Defaults to as.POSIXct.
 If your times are in a format not parsable by as.POSIXct, you can parse a custom format by passing
-function(time_string) {strptime(time_string, format = <format string>) as the time_parser parameter.}}
+function(time_string) {strptime(time_string, format = <format string>)} as the time_parser parameter.}
 }
 \value{
 A processed dataframe object that cooperates with every other

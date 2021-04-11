@@ -14,14 +14,14 @@
 #' contain data for time and glucose readings at a minimum.
 #'
 #' @param timestamp Required column name (character string) corresponding to time values in data. The dates can be
-#' in any format parsable by as.POSIXct, or any format accepted by the parser passed to time_parser. See time_parser for an explanation
+#' in any format parsable by as.POSIXct, or any format accepted by the parser passed to time_parser. See time_parser param for an explanation
 #' on how to handle arbitrary formats.
 #'
 #' @param glu Required column name (character string) corresponding to blood glucose values, mg/dl
 #'
 #' @param time_parser Optional function used to convert datetime strings to time objects. Defaults to as.POSIXct.
 #' If your times are in a format not parsable by as.POSIXct, you can parse a custom format by passing
-#' function(time_string) {strptime(time_string, format = <format string>) as the time_parser parameter.}
+#' function(time_string) {strptime(time_string, format = <format string>)} as the time_parser parameter.
 #'
 #' @details A dataframe with the columns "id", "time", and "gl" will be returned.
 #' If there is a mention of "mmol/l" in the glucose column name, the glucose values will be multipled by 18 to convert to mg/dl
@@ -114,7 +114,7 @@ process_data = function(data,
           tryCatch({
             data$time <- time_parser(data$time)
             },error=function(cond) {
-              message("Failed to parse times, ensure times are in convertable format and possible.\nOriginal error message:")
+              message("Failed to parse times, ensure times are in convertable format and possible.\nSee docs for explanation on how to handle arbitary formats.\nOriginal error message:")
               message(cond)
               stop("Error in time conversion.")
               return(NA)
