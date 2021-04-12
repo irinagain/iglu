@@ -32,13 +32,14 @@
 #'
 
 read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "asc", "ipro"), id = "filename") {
+
   if (is.null(sensor)) {
     stop("You must enter the sensor type to be read from. Current supported sensors are 'dexcom', 'libre', 'librepro', 'asc', 'ipro'")
   }
   sensor = tolower(sensor)
 
   importdexcom = function(filename, id= "read") {
-    data = read.csv(filename, stringsAsFactors = FALSE)
+    data = utils::read.csv(filename, stringsAsFactors = FALSE)
     if (tolower(id) == "read") {
       id <- data[3,grep("patient",tolower(colnames(data)))]
     } else if (tolower(id) == "filename") {
@@ -55,7 +56,7 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
   }
 
   importlibre = function(filename, id="read",colnamerow = 2) {
-    data = read.csv(filename, stringsAsFactors = FALSE)
+    data = utils::read.csv(filename, stringsAsFactors = FALSE)
     mmol = FALSE
     if (tolower(id) == "read") {
       id <- data[1,1]
@@ -82,7 +83,7 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
   }
 
   importlibrepro = function(filename, id="read") {
-    data = read.csv(filename, stringsAsFactors = FALSE)
+    data = utils::read.csv(filename, stringsAsFactors = FALSE)
     if (tolower(id) == "read") {
       id <- data[1,1]
     } else if (tolower(id) == "filename") {
@@ -98,7 +99,7 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
   }
 
   importasc = function(filename, id="filename") {
-    data = read.csv(filename, stringsAsFactors = FALSE)
+    data = utils::read.csv(filename, stringsAsFactors = FALSE)
     if (tolower(id) == "filename") {
       id = sub("\\..*","",basename(filename))
     }
@@ -115,7 +116,7 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
 
 
   importipro = function(filename, id="read") {
-    data = read.csv(filename, stringsAsFactors = FALSE)
+    data = utils::read.csv(filename, stringsAsFactors = FALSE)
     base::colnames(data) <- data[11,]
     if (tolower(id) == "read") {
       id <- data[2,2]
