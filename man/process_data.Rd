@@ -4,11 +4,14 @@
 \alias{process_data}
 \title{Data Pre-Processor}
 \usage{
-process_data(data, id = "id", timestamp = "time", glu = "gl", time_parser = as.POSIXct)
+process_data(data, id, timestamp, glu, time_parser = as.POSIXct)
 }
 \arguments{
 \item{data}{User-supplied dataset containing continuous glucose monitor data. Must
 contain data for time and glucose readings at a minimum. Accepted formats are dataframe and tibble.}
+
+\item{id}{Optional column name (character string) corresponding to subject id column.
+If no value is passed, an id of 1 will be assigned to the data.}
 
 \item{timestamp}{Required column name (character string) corresponding to time values in data. The dates can be
 in any format parsable by as.POSIXct, or any format accepted by the parser passed to time_parser. See time_parser param for an explanation

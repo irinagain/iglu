@@ -2,19 +2,23 @@
 % Please edit documentation in R/read_raw_data.r
 \name{read_raw_data}
 \alias{read_raw_data}
-\title{Functions to read raw data from a variety of common sensors.}
+\title{Read raw data from a variety of common sensors.}
 \usage{
-read_raw_data("cgmdata.csv", sensor = c("dexcom", "libre", "librepro", "asc", "ipro"), id = "read")
+read_raw_data(
+  filename,
+  sensor = c("dexcom", "libre", "librepro", "asc", "ipro"),
+  id = "filename"
+)
 }
 \arguments{
 \item{filename}{String matching the name of the data to be read. Assumed to be .csv}
 
 \item{sensor}{String naming the type of sensor the data was exported from.
-Currently supports "dexcom", "libre", "librepro", "asc", and "ipro" as options.}
+Must be one of "dexcom", "libre", "librepro", "asc", or "ipro".}
 
 \item{id}{String indicating subject id. Defaults to "filename".
 A value of "read" will cause the program to attempt to read the subject id from the file. A value of "filename" will cause the
-program to use the basename of the filename (i.e. filename without any directory information) with anything after a period removed, as subject id.
+program to use the basename of the filename (i.e. filename without any directory information) with anything after the first period removed, as subject id.
 A value of "default" will cause the program to use whatever the default value associated with the sensor is.
 The asc reader currently does not support id="read"}
 }

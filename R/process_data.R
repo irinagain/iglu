@@ -6,10 +6,13 @@
 #' This function ensures that the supplied data will be compitable with every
 #' function within the \code{iglu} package. See Vignette for further details.
 #'
-#' @usage process_data(data, id = "id", timestamp = "time", glu = "gl", time_parser = as.POSIXct)
+#' @usage process_data(data, id, timestamp, glu, time_parser = as.POSIXct)
 #'
 #' @param data User-supplied dataset containing continuous glucose monitor data. Must
 #' contain data for time and glucose readings at a minimum. Accepted formats are dataframe and tibble.
+#'
+#' @param id Optional column name (character string) corresponding to subject id column.
+#' If no value is passed, an id of 1 will be assigned to the data.
 #'
 #' @param timestamp Required column name (character string) corresponding to time values in data. The dates can be
 #' in any format parsable by as.POSIXct, or any format accepted by the parser passed to time_parser. See time_parser param for an explanation

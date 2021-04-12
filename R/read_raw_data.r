@@ -3,12 +3,10 @@
 #' @description Helper function to assist in reading data directly from sensor outputs. Should return a dataframe in correct format
 #' for use with the rest of the \code{iglu} package. Assumes all data will be readable with base R read.csv function.
 #'
-#' @usage read_raw_data("cgmdata.csv", sensor = c("dexcom", "libre", "librepro", "asc", "ipro"), id = "read")
-#'
 #' @param filename String matching the name of the data to be read. Assumed to be .csv
 #'
 #' @param sensor String naming the type of sensor the data was exported from.
-#' Currently supports "dexcom", "libre", "librepro", "asc", and "ipro" as options.
+#' Must be one of "dexcom", "libre", "librepro", "asc", or "ipro".
 #'
 #' @param id String indicating subject id. Defaults to "filename".
 #' A value of "read" will cause the program to attempt to read the subject id from the file. A value of "filename" will cause the
@@ -33,7 +31,7 @@
 #'
 #'
 
-read_raw_data = function(filename, sensor = NULL, id = "filename") {
+read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "asc", "ipro"), id = "filename") {
   if (is.null(sensor)) {
     stop("You must enter the sensor type to be read from. Current supported sensors are 'dexcom', 'libre', 'librepro', 'asc', 'ipro'")
   }
