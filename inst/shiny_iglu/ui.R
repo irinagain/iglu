@@ -19,6 +19,7 @@ shinyUI(fluidPage(
                ),
                mainPanel(tableOutput("data"))
              )),
+    #full metric name and function name are added in alphabetical order
     tabPanel("Metrics", fluid = TRUE,
              sidebarLayout(
                sidebarPanel(selectInput('metric', 'Choose Metric', choices = c(`Above Percent` = 'above_percent',

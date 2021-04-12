@@ -24,18 +24,20 @@ shinyServer(function(input, output) {
 
 #add metric based on the parameter it takes in
   parameter_type <- reactive({
-
+    #metric is considered as parameter type "none" if it only requires data as a parameter
     if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
                            "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
       return("none")
     }
+    #metric is considered as parameter type "time" if it takes in data and time zone as parameters
     else if(input$metric %in% c("auc","cv_measures", "sd_measures")){
       return("time")
     }
+    #metric is considered as parameter type "list" if it takes in data and a list of values as parameters
     else if(input$metric %in% c("above_percent", "below_percent", "cogi", "quantile_glu")){
       return("list")
     }
-
+    #metric is considered as parameter type "value" if it takes in data and a single value as parameters
     else if(input$metric %in% c("grade_hyper", "grade_hypo","m_value",
                                "mage", "active_percent")){
       return("value")
@@ -43,17 +45,18 @@ shinyServer(function(input, output) {
     else if(input$metric %in% c("hyper_index", "hypo_index")){
       return("value1")
     }
-
+    #metric is considered as parameter type "value_time" if it takes in data, a single value, and timezone as parameters
     else if(input$metric %in% c("conga","mag","modd","roc","sd_roc")){
       return("value_time")
     }
-
+    #metric is considered as parameter type "lwrupr" if it takes in data, lower threshold, and upper threshold as parameters
     else if(input$metric %in% c("grade_eugly")){
       return("lwrupr")
     }
     else if(input$metric %in% c("igc")){
       return("lwrupr1")
     }
+    #metric is considered as parameter type "nested" if it takes in data and a list of ranges
     else if(input$metric %in% c("in_range_percent")){
       return("nested")
     }
@@ -148,7 +151,7 @@ shinyServer(function(input, output) {
 
   })
 
-  #add description of parameter
+  #add description of first parameter
 
   output$help_text <- renderUI({
     parameter_type = parameter_type()
@@ -247,6 +250,7 @@ shinyServer(function(input, output) {
       }
     }
   })
+
   #specify second parameter and its default values
   output$select_second_parameter <- renderUI({
     parameter_type = parameter_type()
@@ -325,7 +329,7 @@ shinyServer(function(input, output) {
     }
 
   })
-#reactivate
+#reactive function
   metric_table <- reactive({
     parameter_type = parameter_type()
     data = transform_data()
@@ -354,6 +358,7 @@ shinyServer(function(input, output) {
       )
     }
 
+    #loading iglu library and using metric function
     library(iglu)
     if(is.null(input$parameter) | parameter_type == "none"){
       string = paste("iglu::", input$metric, "(data)", sep = "")
