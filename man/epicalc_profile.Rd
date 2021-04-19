@@ -4,7 +4,7 @@
 \alias{epicalc_profile}
 \title{Display Episode Calculation statistics for selected subject}
 \usage{
-epicalc_profile(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, color_scheme = c("blue-red", "red-orange"))
+epicalc_profile(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, color_scheme = "Color Scheme 1")
 }
 \arguments{
 \item{data}{data}

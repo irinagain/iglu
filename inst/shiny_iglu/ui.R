@@ -139,19 +139,21 @@ shinyUI(fluidPage(
                  downloadButton(outputId = "pdfEpisode", label = "pdf"),
                  downloadButton(outputId = "pngEpisode", label = "png"),
                  downloadButton(outputId = "epsEpisode", label = "eps"),
+                 numericInput(inputId = "lv1hyperThreshold", label = "\nEnter a value for HyperThreshold (level1)",
+                              value = 120),
+                 numericInput(inputId = "lv2hyperThreshold", label = "\nEnter a value for HyperThreshold (level2)",
+                              value = 180),
                  numericInput(inputId = "lv1hypoThreshold", label = "\nEnter a value for HypoThreshold (level1)",
                            value = 100),
                  numericInput(inputId = "lv2hypoThreshold", label = "\nEnter a value for HypoThreshold (level2)",
                               value = 70),
-                 numericInput(inputId = "lv1hyperThreshold", label = "\nEnter a value for HypoThreshold (level1)",
-                           value = 120),
-                 numericInput(inputId = "lv2hyperThreshold", label = "\nEnter a value for HypoThreshold (level2)",
-                              value = 180)
+                 radioButtons("colorScheme", "Color Scheme", c("Color Scheme 1", "Color Scheme 2", "Color Scheme 3"))
                ),
                mainPanel(
                  fluidRow(
                    column(12, wellPanel("Episode Calculation Profile (ECP)"))
                  ),
+
                  fluidRow(
                    column(12, plotOutput("plot_episode_calculation"))
                  )

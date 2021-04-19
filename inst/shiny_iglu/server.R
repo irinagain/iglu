@@ -129,7 +129,7 @@ parameter_type <- reactive({
         textInput("parameter", "Specify Lower and Upper Limits", value = "70, 180")
       }
      else if(input$metric == "episode_calculation"){
-        textInput("parameter", "Specify Parameter")
+        textInput("parameter", "Specify Parameter", value = "100.0, 70")
      }
     }
    else if(parameter_type == "nested"){
@@ -254,6 +254,7 @@ parameter_type <- reactive({
       if(input$metric == "igc"){
         textInput("parameter", "Specify Exponent", value = "1.1, 2")
       }
+
     }
 
   })
@@ -338,9 +339,11 @@ parameter_type <- reactive({
         need(parameter_type %in% c("nested", "none"), "Please wait - Rendering")
       )
     } else if (!grepl(',', input$parameter)) {
+      print(input$parameter)
       validate(
         need(parameter_type %in% c("value", "none"), "Please wait - Rendering")
       )
+
     }
 
     library(iglu)
@@ -987,7 +990,9 @@ parameter_type <- reactive({
     lv2_hypo = input$lv2hypoThreshold
     lv1_hyper = input$lv1hyperThreshold
     lv2_hyper = input$lv2hyperThreshold
-    string = paste('iglu::epicalc_profile(data = data, lv1_hypo= lv1_hypo, lv2_hypo = lv2_hypo, lv1_hyper=lv1_hyper,lv2_hyper=lv2_hyper)')
+    color_scheme = input$colorScheme
+    string = paste('iglu::epicalc_profile(data = data, lv1_hypo= lv1_hypo, lv2_hypo = lv2_hypo,
+                   lv1_hyper=lv1_hyper,lv2_hyper=lv2_hyper,color_scheme= color_scheme)')
     eval(parse(text = string))
   })
 

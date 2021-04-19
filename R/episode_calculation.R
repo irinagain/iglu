@@ -99,6 +99,7 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
 
       if(is.null(hypo_dur_length)) hypo_dur_length = c(0)
 
+
       hyper_dur_length = hyper_dur_length[hyper_dur_length >= 3]
       hyper_duration = mean(hyper_dur_length * dt0)
       hyper_total = length(hyper_dur_length)
@@ -138,13 +139,26 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
       else
         High_Alert = 0
 
+
       Target_Range = 100 - High_Alert - Low_Alert
       range = c(Low_Alert, Target_Range, High_Alert)
+
+      avg_Min_hypo = 0
+      avg_Min_hyper = 0
+      if(!all(is.na(gl_by_id_ip))){
+        avg_Min_hypo = hypo_dur_length * dt0
+        #avg_Min_hyper = hyper_dur_length/ length(gl_by_id_ip)
+        avg_Min_hyper = hyper_dur_length * dt0
+      }
+
+      Min_avg = c(avg_Min_hypo, avg_Min_hyper)
+
+
       dataframe <- data.frame("Hypo_ep" = episodes[1], "Hyper_ep" = episodes[2],
                               "hypo_duration" = durations[1], "hyper_duration" = durations[2], check.names = FALSE,
-                              "Hypo_mean" = means[1], "Hyper_mean" = means[2],
                               "low_alert" = range[1], "high_alert" = range[3],
-                              "target_range" = range[2])
+                              "target_range" = range[2], "Min_hypo" = Min_avg[1], "Min_hyper" = Min_avg[2])
+
       return (dataframe)
     }
     ##################### Episode Day computation End       ###############
@@ -157,18 +171,20 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
       num_rows = dim(gl_by_id_ip)[1]
 
       result = NA; Average_Glucose=c(); Hypo_ep = c(); Hyper_ep= c();hypo_duration=c();hyper_duration=c();Hypo_mean=c();Hyper_mean=c();low_alert=c();high_alert=c();target_range=c();
+      hypo_min_avg = c();hyper_min_avg = c();
       while(i <= num_rows){
         params[[1]] = gl_by_id_ip[i,]
         if(!all(is.na(params[[1]]))){
           temp = episode_one_day(params)
           Hypo_ep = c(Hypo_ep, temp$Hypo_ep); Hyper_ep = c(Hyper_ep, temp$Hyper_ep);
-          hypo_duration = c(hypo_duration, temp$hypo_duration); hyper_duration = c(hyper_duration, temp$hyper_duration); Hypo_mean = c(Hypo_mean, temp$Hypo_mean);
-          Hyper_mean = c(Hyper_mean, temp$Hyper_mean); low_alert = c(low_alert, temp$low_alert); high_alert = c(high_alert, temp$high_alert); target_range = c(target_range, temp$target_range);
+          hypo_duration = c(hypo_duration, temp$hypo_duration); hyper_duration = c(hyper_duration, temp$hyper_duration);
+          low_alert = c(low_alert, temp$low_alert); high_alert = c(high_alert, temp$high_alert); target_range = c(target_range, temp$target_range);
+          hypo_min_avg = c(hypo_min_avg, temp$Min_hypo); hyper_min_avg = c(hyper_min_avg, temp$Min_hyper)
           dataframe <- data.frame("Hypo_ep" = mean(Hypo_ep, na.rm= TRUE), "Hyper_ep" = mean(Hyper_ep, na.rm= TRUE),
                                   "hypo_duration" = mean(hypo_duration, na.rm= TRUE), "hyper_duration" = mean(hyper_duration, na.rm= TRUE), check.names = FALSE,
-                                  "Hypo_mean" = mean(Hypo_mean, na.rm= TRUE), "Hyper_mean" = mean(Hyper_mean, na.rm= TRUE),
                                   "low_alert" = mean(low_alert, na.rm= TRUE), "high_alert" = mean(high_alert, na.rm= TRUE),
-                                  "target_range" = mean(target_range, na.rm= TRUE))
+                                  "target_range" = mean(target_range, na.rm= TRUE),
+                                  "hypo_min_avg" = mean(hypo_min_avg, na.rm = TRUE), "hyper_min_avg" = mean(hyper_min_avg, na.rm = TRUE))
         }
         i = i + 1
       }
@@ -198,12 +214,29 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
   out2 = wrapper_function(data,params)
 
   #print(typeof(out2))
-  final = list(out, out2)
+  df1 = data.frame(out)
+  df2 = data.frame(out2)
+  #df1$id <- "Subject 1 (Level 1)"
+  i <- 1
+  row_names_lv1 = c()
+  row_names_lv2 = c()
+  while(i <= nrow(df1)){
+      names_lv1 <- paste(df1$id[i], "(Lv1)")
+      names_lv2 <- paste(df2$id[i], "(Lv2)")
+      row_names_lv1 <- c(row_names_lv1, names_lv1)
+      row_names_lv2 <- c(row_names_lv2, names_lv2)
+      i = i + 1
+  }
 
-  #final = data.frame(level1 = out, level2 = out2)
+  df1$id <- toString(df1$id)
+  df1$id <- row_names_lv1
+
+  df2$id <- toString(df2$id)
+  df2$id <- row_names_lv2
+
+  final = rbind(df1,df2)
+
   return(final)
+
 }#end Function
-
-
-
 
