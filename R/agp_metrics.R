@@ -67,8 +67,8 @@
 
 agp_metrics <- function (data, shinyformat = FALSE) {
 
-  id = . = start_date = end_date = ndays = cv = NULL
-  rm(list = c("id", ".", "start_date", "end_date", "ndays", "cv"))
+  id = . = start_date = end_date = ndays = CV = GMI = NULL
+  rm(list = c("id", ".", "start_date", "end_date", "ndays", "CV", "GMI"))
 
   activity <- active_percent(data)
 

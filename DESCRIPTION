@@ -57,6 +57,7 @@ Imports:
     stats,
     tibble,
     tidyr,
+    utils,
     zoo,
     plotly
 Suggests:
