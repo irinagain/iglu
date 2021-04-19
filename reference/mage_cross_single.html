@@ -98,6 +98,12 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/AGP_and_Episodes.html">AGP and Episodes</a>
+    </li>
+    <li>
+      <a href="../articles/lasagna_plots.html">Lasagna Plots</a>
+    </li>
+    <li>
       <a href="../articles/metrics_list.html">List of metrics implemented in iglu</a>
     </li>
   </ul>
@@ -134,6 +140,7 @@
   <span class='va'>data</span>,
   short_ma <span class='op'>=</span> <span class='fl'>5</span>,
   long_ma <span class='op'>=</span> <span class='fl'>23</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"auto"</span>, <span class='st'>"plus"</span>, <span class='st'>"minus"</span><span class='op'>)</span>,
   plot <span class='op'>=</span> <span class='cn'>FALSE</span>,
   interval <span class='op'>=</span> <span class='cn'>NA</span>,
   dateformat <span class='op'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%S"</span>,
@@ -156,6 +163,10 @@
     <tr>
       <th>long_ma</th>
       <td><p>Integer for period length for the long moving average. (Recommended &gt;20)</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.</p></td>
     </tr>
     <tr>
       <th>plot</th>
@@ -198,8 +209,9 @@
 <span class='fu'>mage_cross_single</span><span class='op'>(</span>
    <span class='va'>example_data_5_subject</span>,
    short_ma <span class='op'>=</span> <span class='fl'>4</span>,
-   long_ma <span class='op'>=</span> <span class='fl'>24</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 123.42</div><div class='input'>
+   long_ma <span class='op'>=</span> <span class='fl'>24</span>,
+   type <span class='op'>=</span> <span class='st'>'plus'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 122.5248</div><div class='input'>
 <span class='fu'>mage_cross_single</span><span class='op'>(</span>
    <span class='va'>example_data_5_subject</span>,
    dateformat<span class='op'>=</span><span class='st'>"%m-%d-%Y %H:%M:%S"</span><span class='op'>)</span>

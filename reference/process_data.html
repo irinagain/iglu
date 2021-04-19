@@ -102,6 +102,12 @@ function within the iglu package. See Vignette for further details." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/AGP_and_Episodes.html">AGP and Episodes</a>
+    </li>
+    <li>
+      <a href="../articles/lasagna_plots.html">Lasagna Plots</a>
+    </li>
+    <li>
       <a href="../articles/metrics_list.html">List of metrics implemented in iglu</a>
     </li>
   </ul>
@@ -186,7 +192,8 @@ https://github.com/johnschwenck/bp</p>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"example_data_1_subject"</span><span class='op'>)</span>
 
 <span class='co'># Process example data</span>
-<span class='va'>processed</span> <span class='op'>&lt;-</span> <span class='fu'>process_data</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, id <span class='op'>=</span> <span class='st'>"id"</span>, timestamp <span class='op'>=</span> <span class='st'>"time"</span>, glu <span class='op'>=</span> <span class='st'>"gl"</span>, time_parser <span class='op'>=</span> <span class='va'>as.POSIXct</span><span class='op'>)</span>
+<span class='va'>processed</span> <span class='op'>&lt;-</span> <span class='fu'>process_data</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, id <span class='op'>=</span> <span class='st'>"id"</span>,
+timestamp <span class='op'>=</span> <span class='st'>"time"</span>, glu <span class='op'>=</span> <span class='st'>"gl"</span>, time_parser <span class='op'>=</span> <span class='va'>as.POSIXct</span><span class='op'>)</span>
 
 <span class='va'>processed</span>
 </div><div class='output co'>#&gt;             id                time  gl
@@ -3108,7 +3115,8 @@ https://github.com/johnschwenck/bp</p>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"example_data_5_subject"</span><span class='op'>)</span>
 
 <span class='co'># Process example data</span>
-<span class='va'>processed_multisubject</span> <span class='op'>&lt;-</span> <span class='fu'>process_data</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, id <span class='op'>=</span> <span class='st'>"id"</span>, timestamp <span class='op'>=</span> <span class='st'>"time"</span>, glu <span class='op'>=</span> <span class='st'>"gl"</span>, time_parser <span class='op'>=</span> <span class='va'>as.POSIXct</span><span class='op'>)</span>
+<span class='va'>processed_multisubject</span> <span class='op'>&lt;-</span> <span class='fu'>process_data</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>,
+id <span class='op'>=</span> <span class='st'>"id"</span>, timestamp <span class='op'>=</span> <span class='st'>"time"</span>, glu <span class='op'>=</span> <span class='st'>"gl"</span>, time_parser <span class='op'>=</span> <span class='va'>as.POSIXct</span><span class='op'>)</span>
 
 <span class='va'>processed_multisubject</span>
 </div><div class='output co'>#&gt;              id                time  gl
