@@ -7,13 +7,32 @@ shinyServer(function(input, output) {
 
   data <- reactive({
     req(input$datafile)
-    read.csv(input$datafile$datapath)
+    # if input is already processed just read.csv
+    # else select associated sensor type
+    out = switch(input$datatype,
+           "processed" = read.csv(input$datafile$datapath),
+           "FreeStyle Libre" = read_raw_data(input$datafile$datapath, sensor = "libre", id = input$subjid),
+           "Dexcom" = read_raw_data(input$datafile$datapath, sensor = "dexcom", id = input$subjid),
+           "Libre Pro" = read_raw_data(input$datafile$datapath, sensor = "librepro", id = input$subjid),
+           "ASC" = read_raw_data(input$datafile$datapath, sensor = "asc", id = input$subjid),
+           "iPro" = read_raw_data(input$datafile$datapath, sensor = "ipro", id = input$subjid)
+    )
+    return(out)
   })
-
   output$data <- renderTable({
     data()
   })
-
+  output$downloaddata <- downloadHandler(
+    filename = function() {
+      # you can change the filename here. this was for a different project where the input was called compraw
+      filename <- paste0(gsub("\\.csv", "",basename(input$datafile$name)), "_processed")
+      paste(filename, ".csv", sep = "")
+    },
+    content = function(file) {
+      # assuming the reactive is still just called data
+      write.csv(data(), file, row.names = FALSE)
+    }
+  )
   transform_data <- reactive({
     data = data()
     iglu:::read_df_or_vec(data, id = input$id, time = input$time, gl = input$gl)

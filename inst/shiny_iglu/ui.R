@@ -11,9 +11,20 @@ shinyUI(fluidPage(
                sidebarPanel(fileInput("datafile", "Choose a CSV File",
                                       multiple =  FALSE,
                                       accept = ".csv"),
+                            selectInput("datatype",
+                                        "Choose what format this .csv file is in",
+                                        c("Processed" = "processed",
+                                          "Dexcom" = "Dexcom",
+                                          "FreeStyle Libre" = "FreeStyle Libre",
+                                          "FreeStyle Libre Pro" = "Libre Pro",
+                                          "ASC" = "ASC",
+                                          "iPro" = "iPro"),
+                                        selected = "Processed"),
+                            textInput("subjid", "Enter subject id (for non processed formats, if id in data leave as default)", value = "default"),
                             textInput('id', 'Enter column name corresponding to subject ID', value = 'id'),
                             textInput('time', 'Enter column name corresponding to timestamp', value = 'time'),
-                            textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl')
+                            textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl'),
+                            downloadButton("downloaddata", "Download Data")
                ),
                mainPanel(tableOutput("data"))
              )),
