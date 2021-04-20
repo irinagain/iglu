@@ -37,6 +37,7 @@ epicalc_profile <- function(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.
   subject = unique(data$id)
   data_ip = CGMS2DayByDay(data, dt0 = 5)
 
+
   gl_ip = data_ip[[1]]
   test = data_ip$actual_dates
   day_label = as.character(test)
@@ -47,6 +48,7 @@ epicalc_profile <- function(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.
     warning(paste("The provided data have", ns, "subjects. The plot will only be created for subject", subject))
     data = data %>% dplyr::filter(id == subject)
   }
+
   epicalc = episode_calculation(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper)
 
   gl_ip.t = t(gl_ip)
@@ -99,6 +101,7 @@ epicalc_profile <- function(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.
   t1 <- gtable_add_grob(t1,
                         grobs = rectGrob(gp = gpar(fill = NA, lwd = 5)),
                         t = 1, b = 6, l = 1, r = 5)
+
   #Adding dotted separator(t1)
   separators <- replicate(ncol(t1) - 2,
                           segmentsGrob(x1 = unit(0, "npc"), gp=gpar(lty=2)),
@@ -111,6 +114,7 @@ epicalc_profile <- function(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.
   #Adding title and footnote(t1)
   title <- textGrob("Episode Metrics",gp=gpar(fontsize=18), x=0, hjust=0)
   footnote <- textGrob("An episode is >= 15 continuous minutes", x=1, hjust=1,
+
                        gp=gpar( fontface="italic", fontsize = 8))
 
   padding <- unit(0.5,"line")
@@ -122,7 +126,6 @@ epicalc_profile <- function(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.
   t1 <- gtable_add_grob(t1, list(title, footnote),
                         t=c(1, nrow(t1)), l=c(1,2),
                         r=ncol(t1))
-
 
   # Creating overall plot(p1) ---------------------------------
 
@@ -192,12 +195,9 @@ epicalc_profile <- function(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.
 
   #adding all figures together ---------------------------
 
-  pFinal = (
-
-    wrap_elements(t1) + plot_layout()) / p1
+  pFinal = (wrap_elements(t1) + plot_layout()) / p1
 
   pFinal
-
 
   # }#end Function
 }

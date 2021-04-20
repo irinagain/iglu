@@ -8,6 +8,7 @@
 #' @param data Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector)
 #' @param short_ma Integer for period length of the short moving average. Must be positive and less than "long_ma". (Recommended <15)
 #' @param long_ma Integer for period length for the long moving average. (Recommended >20)
+#' @param type One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.
 #' @param plot Boolean. Returns ggplot if TRUE.
 #' @param interval Integer for time interval in minutes between glucose readings. Function will auto-magically determine the interval if not specified. (Only used to calculate the gaps shown on the ggplot)
 #' @param dateformat POSIXct time format for time of glucose readings. Highly recommended to set if glucose times are in a different format.
@@ -24,7 +25,8 @@
 #' mage_cross_single(
 #'    example_data_5_subject,
 #'    short_ma = 4,
-#'    long_ma = 24)
+#'    long_ma = 24,
+#'    type = 'plus')
 #'
 #' mage_cross_single(
 #'    example_data_5_subject,
@@ -39,7 +41,7 @@
 #'    ylab="Glucose Level (mg/dL)")
 
 
-mage_cross_single <- function(data, short_ma = 5, long_ma = 23, plot = FALSE, interval=NA, dateformat="%Y-%m-%d %H:%M:%S", title = NA, xlab=NA,ylab = NA) {
+mage_cross_single <- function(data, short_ma = 5, long_ma = 23,type=c('auto','plus','minus'), plot = FALSE, interval=NA, dateformat="%Y-%m-%d %H:%M:%S", title = NA, xlab=NA,ylab = NA) {
 
   ## 1. Preprocessing
   # 1a. Clean up Global Environment
@@ -117,7 +119,13 @@ mage_cross_single <- function(data, short_ma = 5, long_ma = 23, plot = FALSE, in
   #     - n: a counter that helps iterate through the turning points
   #     - tp_indexes: vector that will contain tp from valid excursions
   heights <- numeric()
-  nadir2peak <- -1
+  type <- match.arg(type)
+  nadir2peak <- if(type == "plus") {
+    1
+  } else if (type == "minus") {
+    0
+  } else { -1 }
+
   n <- 1
   tp_indexes <- numeric()
 
