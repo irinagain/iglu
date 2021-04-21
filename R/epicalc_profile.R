@@ -203,4 +203,3 @@ epicalc_profile <- function(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hype
 
   # }#end Function
 }
-

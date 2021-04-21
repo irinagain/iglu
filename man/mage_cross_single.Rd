@@ -8,6 +8,7 @@ mage_cross_single(
   data,
   short_ma = 5,
   long_ma = 23,
+  type = c("auto", "plus", "minus"),
   plot = FALSE,
   interval = NA,
   dateformat = "\%Y-\%m-\%d \%H:\%M:\%S",
@@ -22,6 +23,8 @@ mage_cross_single(
 \item{short_ma}{Integer for period length of the short moving average. Must be positive and less than "long_ma". (Recommended <15)}
 
 \item{long_ma}{Integer for period length for the long moving average. (Recommended >20)}
+
+\item{type}{One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.}
 
 \item{plot}{Boolean. Returns ggplot if TRUE.}
 
@@ -49,7 +52,8 @@ data(example_data_5_subject)
 mage_cross_single(
    example_data_5_subject,
    short_ma = 4,
-   long_ma = 24)
+   long_ma = 24,
+   type = 'plus')
 
 mage_cross_single(
    example_data_5_subject,
