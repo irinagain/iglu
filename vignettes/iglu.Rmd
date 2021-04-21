@@ -1,9 +1,9 @@
 ---
-title: "Working in iglu"
+title: "Getting Started in iglu"
 author: "Steve Broll, Elizabeth Chun, Irina Gaynanova"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Working in iglu}
+  %\VignetteIndexEntry{Getting Started in iglu}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,7 +18,7 @@ library(iglu)
 # date: "`r Sys.Date()`"
 ```
 
-The iglu package is developed to assist the analyses of data from Continuous Glucose Monitors (CGMs). CGMs are small wearable devices that measure the glucose levels continuously throughout the day, with some monitors taking measurements as often as every 5 minutes. Data from these monitors provide a detailed quantification of the variation in blood glucose levels during the course of the day, and thus CGMs play an increasing role in clinical practice. For more on CGMs, see [Rodbard (2016) "Continuous Glucose Monitoring: A Review of Successes, Challenges, and Opportunities."](https://doi.org/10.1089/dia.2015.0417).
+The iglu package is designed to assist in the analyses of data from Continuous Glucose Monitors (CGMs). CGMs are small wearable devices that measure glucose levels continuously throughout the day, with some monitors taking measurements as often as every 5 minutes. Data from these monitors provide a detailed quantification of the variation in blood glucose levels during the course of the day, and thus CGMs play an increasing role in clinical practice. For more on CGMs, see [Rodbard (2016) "Continuous Glucose Monitoring: A Review of Successes, Challenges, and Opportunities."](https://doi.org/10.1089/dia.2015.0417).
 
 Multiple CGM-derived metrics have been developed to assess the quality of glycemic control and glycemic variability, many of which are summarized in [Rodbard (2009) "Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control."](https://doi.org/10.1089/dia.2008.0132). The iglu package streamlines the calculation of these metrics by providing clearly named functions that output metrics values with one line of code. 
 
@@ -30,8 +30,18 @@ The iglu package is designed to work with Continuous Glucose Monitor (CGM) data 
 
 * Subject identification (`"id"`)
 
-The iglu package comes with example data from 5 subjects with Type II diabetes whose glucose levels were measured using Dexcom G4 CGM. These data are part of a larger study analyzed in [Gaynanova et al. (2020)](https://doi.org/10.1093/biostatistics/kxaa023).
+The iglu package comes with example data from 5 subjects with Type II diabetes whose glucose levels were measured using a Dexcom G4 CGM. These data are part of a larger study analyzed in [Gaynanova et al. (2020)](https://doi.org/10.1093/biostatistics/kxaa023).
 
+# Shiny App
+
+The iglu package comes with a shiny app containing all of the metric calculations as well as all plot types of the package itself.
+  
+The full app can be accessed by running `iglu::iglu_shiny()` (iglu must be installed to use the `iglu_shiny` function).
+  
+The app itself has a demo (reduced functionality) available at [https://stevebroll.shinyapps.io/shinyigludemo/](https://stevebroll.shinyapps.io/shinyigludemo/) with data pre-loaded.
+
+# Example Datasets
+The iglu package includes two datasets: example_data_1_subject, and example_data_5_subject. The one subject data is simply the first subject of the five subject data. 
 
 ## Example data for 1 subject
 
@@ -44,7 +54,7 @@ data("example_data_1_subject")
 This dataset contains 2915 observations of 3 columns corresponding to the three components listed in the introduction:
 
 * `"id"` - Factor (character string) column for subject identification
-* `"time"` - Factor (character string) column that can be converted to DateTime for measurement timestamp
+* `"time"` - POSIXct column for datetime values
 * `"gl"` - Numeric column for glucose measurement
 
 Data used with iglu functions may have additional columns, but the columns for id, time and glucose values must be named as above.
@@ -73,9 +83,10 @@ str(example_data_5_subject)
 # Calculating time-independent metrics
 
 All the metrics implemented in the package can be divided into two categories: time-independent and time-dependent.
+
 Time-independent metrics do not use any linear interpolation because the time component of the data is not used in their calculations. Because the time component is not necessary, when working with a single subject only a glucose vector is required. If a glucose vector for multiple subjects is supplied, or if a data frame that doesn't have all three columns is supplied, these functions will treat all glucose values as though they are from the same subject.
 
-## Example metrics
+## Example metrics: time-independent
 
 All metric functions in iglu will produce the output in a tibble form. See documentation on tibbles with vignette('tibble') or ?`tbl_df-class`.
 
@@ -103,28 +114,25 @@ above_percent(example_data_1_subject, targets = c(100, 200, 300))
 
 Many metrics have parameters that can be changed. To see available parameters for a given metric, see the documentation i.e. ?above_percent or help(above_percent).  
 
-Not all metric functions return multiple values. Many, like `MAGE()` (Mean Amplitude of Glycemic Excursions), will return just a single value for each subject, producing a column for value and a column for subject id (if a dataframe is passed), as well as a row for each subject.
-
-```{r}
-mage(example_data_5_subject)
-```
-
-Another example of a time-independent metric is Hyperglycemia index , the corresponding `hyper_index` function returns a single value for each subject
+Not all metric functions return multiple values. Many, like the Hyperglycemia index metric (function call: `hyper_index()`) will return just a single value for each subject, producing a column for value and a column for subject id (if a dataframe is passed), with one row for each subject.
 
 ```{r}
 hyper_index(example_data_5_subject)
 ```
+
 In this example, Subject 2 has the largest Hyperglycemia index, indicating the worst hyperglycemia. This is reflected in percent of times Subject 2 spends above fixed glucose target (see results of `above_percent`). 
 
 # Calculating time-dependent metrics
+Unlike time-independent metrics, time-dependent metrics require the input to be a dataframe with subject id's, time, and glucose values. Time-dependent metric functions cannot be passed a vector of glucose values. With timestamped data, a potential challenge arises when timestamps are not on perfect intervals due to missing measurements. To address this challenge, we developed the `CGMS2DayByDay` function.
 
 ## CGMS2DayByDay()
-Observe that the timestamps in the first rows are not evenly due to missing measurements. To address this challenge, we developed `CGMS2DayByDay` function that linearly interpolates glucose measures for each subject on an equally spaced time grid from day to day. To prevent extrapolation, missing values are inserted between the two measurements that are more than `intergap` minutes apart (default value is 45 minutes, can be changed by the user). This function is automatically called by all metrics that require such interpolation, however it is also available to the user directly. The function is designed to work with one subject data at a time, the structure of function output is shown below.
+Observe that the timestamps in the first rows are not even. The `CGMS2DayByDay` function addresses this issue by linearly interpolating glucose measures for each subject on an equally spaced time grid from day to day. To prevent extrapolation, missing values are inserted between any two measurements that are more than `intergap` minutes apart (default value is 45 minutes, can be changed by the user). This function is automatically called by all metrics that require such interpolation, however it is also available to the user directly. The function is designed to work with one subject data at a time, the structure of function output is shown below.
 ```{r}
 str(CGMS2DayByDay(example_data_1_subject))
 ```
 
-The first part of the output, `gd2d`, is the interpolated grid of values. Each row correspond to one day of measurements, and the columns correspond to equi-distant time grid covering 24 hour time span. The grid is chosen to match the frequency of the sensor (5 minutes in this example leading to $(24 * 60)/ 5 = 288$ columns), which is returned as `dt0`. The returned `actual_dates` allow to map the rows in `gd2d` back to the original dates. The achieved alignment of glucose measurement times across the days enables both the calculation of corresponding metrics, and the creation of lasagna plots. The default frequency can be adjusted as follows.
+The first part of the output, `gd2d`, is the interpolated grid of values. Each row corresponds to one day of measurements, and the columns correspond to an equi-distant time grid covering a 24 hour time span. The grid is chosen to match the frequency of the sensor (5 minutes in this example leading to $(24 * 60)/ 5 = 288$ columns), which is returned as `dt0`. The returned `actual_dates` allows one to map the rows in `gd2d` back to the original dates. The achieved alignment of glucose measurement times across the days enables both the calculation of corresponding metrics, and the creation time-dependent visuals such as lasagna plots. The default frequency can be adjusted as follows.
+
 ```{r}
 str(CGMS2DayByDay(example_data_1_subject, dt0 = 10))
 ```
@@ -132,7 +140,7 @@ Note that the final part of the output reflects our input, and there are now onl
 
 The CGMS2DayByDay function also allows specification of the maximum allowable gap to interpolate values across (default is 45 minutes) and a string corresponding to time zone (default is the timezone of the user's system). 
 
-All functions for metrics requiring linear interpolation will accept the following three parameters that are passed on to `CGMS2DayByDay()`:
+Functions for metrics requiring linear interpolation will accept the following three parameters that are passed on to `CGMS2DayByDay()`:
 
 * "`dt0`" - Time frequency (numeric) for interpolation. Default will automatically match the frequency of the data
 * "`inter_gap`" - Maximum allowable gap in minutes (numeric) for interpolation
@@ -146,7 +154,7 @@ CGMS2DayByDay(example_data_1_subject, tz = 'EST')
 
 Examples of proper metric function calls will be shown in the next section.
 
-## Example metrics
+## Example metrics: time-dependent
 
 Some metric functions, like `conga()` (Continuous Overlapping Net Glycemic Action), will return just a single value for each subject,
 resulting in a 2 column tibble (1 column for id and 1 for the single value).
@@ -155,15 +163,13 @@ resulting in a 2 column tibble (1 column for id and 1 for the single value).
 conga(example_data_1_subject, tz = 'EST')
 ```
 
-Note that even though we are working with a single subject, a dataframe with glucose values, time, and subject id's must be passed. Functions for metrics requiring the time component for calculation can not be passed a vector of glucose values.
-
-`sd_measures()`, which computes 6 unique standard deviation subtypes, requires linear interpolation and returns multiple values for each subject.
+Other metrics can return multiple values for a single subject. For example, `sd_measures()`, which requires linear interpolation, computes 6 unique standard deviation subtypes per subject.
 
 ```{r, cache = T}
 sd_measures(example_data_5_subject)
 ```
 
-Notice the high fluctuations in Subject 5, with all but one subtypes of standard deviation being the largest for Subject 5. This provides additional level of CGM data interpretation, since frequent or large glucose fluctuations may contribute to diabetes-related complications independently from chronic hyperglycemia.
+Notice the high fluctuations in Subject 5, with all but one subtypes of standard deviation being the largest for Subject 5. This provides an additional level of CGM data interpretation, since frequent or large glucose fluctuations may contribute to diabetes-related complications independently from chronic hyperglycemia.
 
 ## Episode Calculation
 
@@ -193,29 +199,30 @@ The function will accept the following six parameters that are passed on to `epi
 * "`lv2_hyper`" - Second threshold for what above is considered hyperglycemia. Default is 160 and the units are mg/dL
 * "`color_scheme`" - String corresponding to a color scheme for the plot.Default is dark red for `lv1_hypo`, red for `lv2_hypo`, green for normal, yellow for `lv1_hyper`, and orange for `lv2_hyper`.
 
-
 ```{r, eval = F}
 epicalc_profile(example_data_1_subject, lv1_hypo=100, lv2_hypo=70, lv1_hyper=120, lv2_hyper=160, color_scheme="Color Scheme 1")
 ```
 
-
-
 # Visualizations
 
-The iglu package supports multiple plot types, that are summarized below    
-
+The iglu package supports multiple plot types summarized below:  
 
 | Function call | Visualization description | Main parameters|
 |:------------|:------------------------------|:----------|
-|`plot_glu` | Multiple plot types: time series and lasagna | `plottype, lasagnatype`|
-|`plot_lasagna` | Lasagna plot of glucose values for multiple subjects | `datatype`, `lasagnatype`|
-|`plot_lasagna_1subject` | Lasagna plot of glucose values for a single subject | `lasagnatype`|
+|`plot_glu` | Multiple plot types: time series and lasagna | `plottype`, `lasagnatype`|
 |`plot_roc`| Time series of glucose values colored by rate of change (ROC)| `subjects`, `timelag`|
 |`hist_roc` | Histogram of rate of change (ROC) values | `subjects`, `timelag`|
+|`plot_lasagna` | Lasagna plot of glucose values for multiple subjects | `datatype`, `lasagnatype`|
+|`plot_lasagna_1subject` | Lasagna plot of glucose values for a single subject | `lasagnatype`|
+|`agp` | Ambulatory Glucose Profile (AGP) | `maxd`, `daily` |
+|`epicalc_profile` | Profile of glycemic episodes | `hypo_thresh`, `hyper_thresh` |
+|`mage` | MAGE plot displaying peaks and nadirs | `plot`, `title` |
 
-## Time-series plots
+Time-series and rate of change plots are shown in examples below. For details on the other plotting types, see the specific vignette corresponding to the visualization.
 
-The time series plot is the default type for the function `plot_glu`. This plot type can support both single and multiple subjects.
+## Example plots: time-series
+
+The simplest visual is the time series plot generated using the function `plot_glu`. This plot type can support both single and multiple subjects.
 
 ```{r, fig.width = 7}
 plot_glu(example_data_1_subject, plottype = 'tsplot', tz = "EST")
@@ -236,89 +243,17 @@ The red lines can be shifted to any Lower and Upper Target Range Limits with the
 plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', LLTR = 80, ULTR = 150, tz = "EST")
 ```
 
-## Lasagna plots
+## Example plots: Rate of change 
 
-The `plot_glu` function also supports lasagna plots by changing the 'plottype' parameter. For more on lasagna plots, see [Swihart et al. (2010) "Lasagna Plots: A Saucy Alternative to Spaghetti Plots." ](https://doi.org/10.1097/ede.0b013e3181e5b06a)
+In addition , `iglu` also allows one to visualize local changes in glucose variability as measured by rate of change [Clarke et al. (2009)](https://doi.org/10.1089/dia.2008.0138). There are two types of visualizations associated with rate of change, a time-series plot and a histogram. For both plots, the colors indicate rate of change: white indicates a stable rate of change while red and blue represent times at which the glucose is significantly rising or falling, respectively. Thus colored points represent times of glucose variability, while white points represent glucose stability. The below figure shows a side by side comparison of rate of change time-series plots for two subjects. Subject 1 shows significantly less glucose variability than Subject 5. 
 
-```{r, cache = T, fig.width = 7}
-plot_glu(example_data_5_subject, plottype = 'lasagna', tz = 'EST')
-```
-
-By default, this will produce an unsorted lasagna plot using up to 14 days worth of data displayed separately. To average across days at each time point, we can use `datatype = 'average'`:
-
-```{r, cache = T, fig.width = 7}
-plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average', tz = 'EST')
-```
-
-We can additionally sort the values at each time point across the five subjects by setting `lasagnatype = 'timesorted'`
-
-```{r, cache = T, fig.width = 7}
-plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average', lasagnatype = 'timesorted', tz = 'EST')
-```
-
-When working with a single subject, setting `datatype = single` will produce plots where rows represent days instead of subjects.
-
-```{r, cache = T, fig.width = 7}
-plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = 'single', lasagnatype = 'unsorted', tz = 'EST')
-```
-
-```{r, cache = T, fig.width = 7}
-plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = 'single', lasagnatype = 'timesorted', tz = 'EST')
-
-```
-
-For further customization of lasagna plots, use the `plot_lasagna` and `plot_lasagna_1subject` functions. 
-
-`plot_lasagna` allows for multi-subject lasagna plots with the additional options of sorting the hours by glucose values for each subject, i.e. horizontal sorting, by setting
-`lasagnatype = 'subjectsorted'`.
-
-```{r, cache = T, fig.width = 7}
-plot_lasagna(example_data_5_subject, datatype = 'average', lasagnatype = 'subjectsorted', tz = 'EST')
-```
-
-`plot_lasagna` also supports changing the maximum number of days to display, as well as the upper and lower target range limits (LLTR and ULTR), midpoint, and minimum and maximum values to display, all of which will affect the colorbar.
-
-```{r, cache = T, fig.width = 7}
-plot_lasagna(example_data_5_subject, datatype = 'average', lasagnatype = 'subjectsorted', LLTR = 100, ULTR = 180, midpoint = 150, limits = c(80, 500), tz = 'EST')
-```
-
-`plot_lasagna_1subject` allows for customization of the more detailed single subject lasagna plots. There is no datatype parameter for `plot_lasagna_1subject`, but there are three types of plots available, accessed with the `lasagnatype` parameter.
-
-```{r, cache = T, fig.width = 7}
-plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'unsorted', tz = 'EST')
-```
-
-```{r, cache = T, fig.width = 7}
-plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'timesorted', tz = 'EST')
-```
-
-```{r, cache = T, fig.width = 7}
-plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted', tz = 'EST')
-```
-
-As with the `lasagna_plot` function, changing the LLTR, ULTR, midpoint, and limits parameters will affect the colorbar.
-
-```{r, cache = T, fig.width = 7}
-plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted', midpoint = 150, limits = c(80,500), tz = 'EST')
-```
-
-## Rate of change plots
-
-In addition to visualizing absolute glucose values, `iglu` also allows
-to visualize local changes in glucose variability as measured by rate of change [Clarke et al. (2009)](https://doi.org/10.1089/dia.2008.0138). There are two types of visualizations associated with rate of change. The first is a time series plot of glucose values where each point is colored by the rate of change at that given time. Points colored in white have a stable rate of change, meaning the glucose is neither significantly increasing nor decreasing at that time point. Points colored red or blue represent times at which the glucose is significantly rising or falling, respectively. Thus colored points represent times of glucose variability, while white points represent glucose stability. The below figure shows a side by side comparison of rate of change time-series plots for two subjects. Subject 1 shows significantly less glucose variability than Subject 5. 
 ```{r, cache = T, fig.width = 7}
 plot_roc(example_data_5_subject, subjects = c("Subject 1", "Subject 5"))
 ```
 
-The next figure  shows a side by side comparison of rate of change histogram plots for the same subjects. Once again, the colors show in what direction and how quickly the glucose is changing. The histogram plots allow to immediately assess the variation in rate of change. Extreme values on either end of the histogram indicate very rapid rises or drops in glucose - a high degree of local variability. Here, Subject 1 once again shows lower glucose variability by having a narrower histogram with most values falling between -2 mg/dl/min and 2 mg/dl/min. Subject 5 has a shorter, more widely distributed histogram indicating greater glucose variability.
+The next figure  shows a side by side comparison of rate of change histogram plots for the same subjects. Once again, the colors show in what direction and how quickly the glucose is changing. The histogram plots allow one to immediately assess the variation in rate of change. Extreme values on either end of the histogram indicate very rapid rises or drops in glucose - a high degree of local variability. Here, Subject 1 once again shows lower glucose variability by having a narrower histogram with most values falling between -2 mg/dl/min and 2 mg/dl/min. Subject 5 has a shorter, more widely distributed histogram indicating greater glucose variability.
+
 ```{r, cache = T, fig.width = 7}
 hist_roc(example_data_5_subject, subjects = c("Subject 1", "Subject 5"))
 ```
 
-# Shiny App
-
-The iglu package comes with a shiny app containing all of the metric calculations as well as all plot types of the package itself.
-  
-The full app can be accessed by running `iglu::iglu_shiny()` (iglu must be installed to use the `iglu_shiny` function).
-  
-The app itself has a demo (reduced functionality) available at [https://stevebroll.shinyapps.io/shinyigludemo/](https://stevebroll.shinyapps.io/shinyigludemo/) with data pre-loaded.
