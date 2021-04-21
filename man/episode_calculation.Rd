@@ -4,7 +4,14 @@
 \alias{episode_calculation}
 \title{Calculates the number of Hypo/Hyperglycemic events as well as other statistics}
 \usage{
-episode_calculation(data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, dur_length = 15)
+episode_calculation(
+  data,
+  lv1_hypo = 100,
+  lv2_hypo = 70,
+  lv1_hyper = 120,
+  lv2_hyper = 160,
+  dur_length = 15
+)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl"}
@@ -17,7 +24,7 @@ episode_calculation(data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120.0, lv2_hy
 
 \item{lv2_hyper}{A double specifying a hyperglycemia threshold for level 1}
 
-\item{dur_length}{An integer or a double specfiying a duration length in minutes}
+\item{dur_length}{An integer or a double specifying a duration length in minutes}
 }
 \value{
 Data frame including Average Glucose, number of hypo and hyper episodes, Hypo and hyper mean values, the percentages of low, high and target alerts
@@ -27,7 +34,7 @@ The function episode calculation produces the number of Hypo/Hyperglycemic event
 }
 \examples{
 
-episode_calculation(example_data_5_subject, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, dur_length = 15)
+episode_calculation(example_data_5_subject, lv1_hypo=100, lv1_hyper= 120)
 }
 \author{
 Johnathan Shih, Jung Hoon Seo

@@ -61,9 +61,7 @@ Imports:
     zoo,
     plotly,
     gtable,
-    grid,
-    patchwork,
-    gridExtra
+    grid
 Suggests:
     knitr,
     rmarkdown,

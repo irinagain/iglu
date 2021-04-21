@@ -4,20 +4,27 @@
 \alias{epicalc_profile}
 \title{Display Episode Calculation statistics for selected subject}
 \usage{
-epicalc_profile(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, color_scheme = "Color Scheme 1")
+epicalc_profile(
+  data,
+  lv1_hypo = 100,
+  lv2_hypo = 70,
+  lv1_hyper = 120,
+  lv2_hyper = 160,
+  color_scheme = "Color Scheme 1"
+)
 }
 \arguments{
-\item{data}{data}
+\item{data}{DataFrame object with column names "id", "time", and "gl"}
 
-\item{lv1_hypo}{hypo_thres}
+\item{lv1_hypo}{A double specifying a hypoglycemia threshold for level 1}
 
-\item{lv2_hypo}{hypo_thres}
+\item{lv2_hypo}{A double specifying a hypoglycemia threshold for level 2}
 
-\item{lv1_hyper}{lv1_hyper}
+\item{lv1_hyper}{A double specifying a hyperglycemia threshold for level 1}
 
-\item{lv2_hyper}{lv2_hyper}
+\item{lv2_hyper}{A double specifying a hyperglycemia threshold for level 1}
 
-\item{color_scheme}{color_scheme}
+\item{color_scheme}{String corresponding to the chosen color scheme.}
 }
 \value{
 A plot displaying the varying glucose levels (mg/dL) of the subject in a day as well as the statistics for the episodes.

@@ -195,7 +195,7 @@ The function will accept the following three parameters that are passed on to `e
 * "`color_scheme = c("blue-red", "red-orange")`" - String corresponding to a color scheme for the plot. Default is blue-red
 The 'red-orange' color scheme corresponds to red for hypoglycemia, orange for hyperglycemia, and green for in between. The 'blue-red' corresponds to blue for hypoglycemia, red for hyperglycemia, and white for in between.
 ```{r, eval = F}
-epicalc_profile(example_data_1_subject, 40, 120, color_scheme = ('Option 1'))
+epicalc_profile(example_data_1_subject, lv1_hypo=100, lv2_hypo=70, lv1_hyper=120, lv2_hyper=160, color_scheme="Color Scheme 1")
 
 
 The episode calculation function receives 

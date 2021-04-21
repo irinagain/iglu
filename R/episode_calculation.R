@@ -4,8 +4,6 @@
 #' @description
 #' The function episode calculation produces the number of Hypo/Hyperglycemic events as well as other statistics such as the average glucose level, mean duration, and the percentage of time spent in the ranges.
 #'
-#' @usage
-#' episode_calculation(data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, dur_length = 15)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl"
 #'
@@ -17,7 +15,7 @@
 #'
 #' @param lv2_hyper A double specifying a hyperglycemia threshold for level 1
 #'
-#' @param dur_length An integer or a double specfiying a duration length in minutes
+#' @param dur_length An integer or a double specifying a duration length in minutes
 #'
 #' @return Data frame including Average Glucose, number of hypo and hyper episodes, Hypo and hyper mean values, the percentages of low, high and target alerts
 #'
@@ -27,7 +25,7 @@
 #'
 #' @examples
 #'
-#' episode_calculation(example_data_5_subject, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, dur_length = 15)
+#' episode_calculation(example_data_5_subject, lv1_hypo=100, lv1_hyper= 120)
 # library(iglu)
 # library(ggplot2)
 # library(dplyr)

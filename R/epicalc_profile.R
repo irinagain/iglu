@@ -1,42 +1,39 @@
 #' Display Episode Calculation statistics for selected subject
 #' @name epicalc_profile
 #'
-#' @usage
-#' epicalc_profile(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, color_scheme = "Color Scheme 1")
 #'
-#' @param data data
+#' @param data DataFrame object with column names "id", "time", and "gl"
 #'
-#' @param lv1_hypo hypo_thres
+#' @param lv1_hypo A double specifying a hypoglycemia threshold for level 1
 #'
-#' @param lv2_hypo hypo_thres
+#' @param lv2_hypo A double specifying a hypoglycemia threshold for level 2
 #'
-#' @param lv1_hyper lv1_hyper
+#' @param lv1_hyper A double specifying a hyperglycemia threshold for level 1
 #'
-#' @param lv2_hyper lv2_hyper
+#' @param lv2_hyper A double specifying a hyperglycemia threshold for level 1
 #'
-#' @param color_scheme color_scheme
+#' @param color_scheme String corresponding to the chosen color scheme.
 #'
 #' @return A plot displaying the varying glucose levels (mg/dL) of the subject in a day as well as the statistics for the episodes.
 #'
 #' @export
 #'
-#' @import
-#' gtable
-#' grid
-#' patchwork
-#' gridExtra
 #' @author Johnathan Shih, Jung Hoon Seo
 #'
 #' @examples
 #' epicalc_profile(example_data_1_subject)
 #'
 
-epicalc_profile <- function(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, color_scheme = "Color Scheme 1"){
+epicalc_profile <- function(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hyper=160,color_scheme="Color Scheme 1"){
+
+  #Clean up Global environment
+  id = NULL
+  rm(list = c("id"))
+
 
   #Importing the data
   subject = unique(data$id)
   data_ip = CGMS2DayByDay(data, dt0 = 5)
-
 
   gl_ip = data_ip[[1]]
   test = data_ip$actual_dates
@@ -48,13 +45,16 @@ epicalc_profile <- function(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.
     warning(paste("The provided data have", ns, "subjects. The plot will only be created for subject", subject))
     data = data %>% dplyr::filter(id == subject)
   }
-
   epicalc = episode_calculation(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper)
 
   gl_ip.t = t(gl_ip)
   #Checking for multiple subjects
   subject = unique(data$id)
-
+#
+#   print(epicalc)
+#   print(epicalc[1,2])
+#   print(epicalc[2,2])
+#   print(epicalc[1,]$hyper_duration)
   #Creating table 1(t1) -------------------------------------
   tableStat = data.frame("Hypoglycemia/Hyperglycemia episode metrics")
   tableStat[1, 1] = ""
@@ -84,7 +84,7 @@ epicalc_profile <- function(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.
   tableStat[5, 1] = "Mean duration"
   tableStat[5, 2] = paste0(as.character(format(round(epicalc[1,]$hypo_duration, 2), nsmall = 2)), " min")
   tableStat[5, 3] = paste0(as.character(format(round(epicalc[1,]$hyper_duration, 2), nsmall = 2)), " min")
-  tableStat[5, 4] = paste0(as.character(format(round(epicalc[2,]$hypo_duration,, 2), nsmall = 2)), " min")
+  tableStat[5, 4] = paste0(as.character(format(round(epicalc[2,]$hypo_duration, 2), nsmall = 2)), " min")
   tableStat[5, 5] = paste0(as.character(format(round(epicalc[2,]$hyper_duration, 2), nsmall = 2)), " min")
 
   tableStat[6, 1] = "Avg min (per day)"
@@ -98,34 +98,33 @@ epicalc_profile <- function(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.
   t1 <- gridExtra::tableGrob(tableStat, rows = NULL, cols = NULL, theme = mytheme )
 
   #Adding border(t1)
-  t1 <- gtable_add_grob(t1,
-                        grobs = rectGrob(gp = gpar(fill = NA, lwd = 5)),
+  t1 <- gtable::gtable_add_grob(t1,
+                        grobs = grid::rectGrob(gp = grid::gpar(fill = NA, lwd = 5)),
                         t = 1, b = 6, l = 1, r = 5)
-
   #Adding dotted separator(t1)
   separators <- replicate(ncol(t1) - 2,
-                          segmentsGrob(x1 = unit(0, "npc"), gp=gpar(lty=2)),
+                          grid::segmentsGrob(x1 = unit(0, "npc"), gp=grid::gpar(lty=2)),
                           simplify=FALSE)
 
-  t1 <- gtable_add_grob(t1, grobs = separators,
+  t1 <- gtable::gtable_add_grob(t1, grobs = separators,
                         t = 2, b = nrow(t1), l = seq_len(ncol(t1)-2)+2)
   padding <- unit(0.5,"line")
 
   #Adding title and footnote(t1)
-  title <- textGrob("Episode Metrics",gp=gpar(fontsize=18), x=0, hjust=0)
-  footnote <- textGrob("An episode is >= 15 continuous minutes", x=1, hjust=1,
-
-                       gp=gpar( fontface="italic", fontsize = 8))
+  title <- grid::textGrob("Episode Metrics",gp=grid::gpar(fontsize=18), x=0, hjust=0)
+  footnote <- grid::textGrob("An episode is >= 15 continuous minutes", x=1, hjust=1,
+                       gp=grid::gpar( fontface="italic", fontsize = 8))
 
   padding <- unit(0.5,"line")
-  t1 <- gtable_add_rows(t1,
-                        heights = grobHeight(title) + padding,
+  t1 <- gtable::gtable_add_rows(t1,
+                        heights = grid::grobHeight(title) + padding,
                         pos = 0)
-  t1 <- gtable_add_rows(t1,
-                        heights = grobHeight(footnote)+ padding)
-  t1 <- gtable_add_grob(t1, list(title, footnote),
+  t1 <- gtable::gtable_add_rows(t1,
+                        heights = grid::grobHeight(footnote)+ padding)
+  t1 <- gtable::gtable_add_grob(t1, list(title, footnote),
                         t=c(1, nrow(t1)), l=c(1,2),
                         r=ncol(t1))
+
 
   # Creating overall plot(p1) ---------------------------------
 
@@ -188,17 +187,19 @@ epicalc_profile <- function(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.
     geom_hline(yintercept = lv2_hypo,size = 0.3, linetype = 'dashed', color = color_dashed[1]) +
     geom_hline(yintercept = lv2_hyper,size = 0.3, linetype = 'dashed', color = color_dashed[5]) +
     scale_color_manual(values=color_dots) +
-    scale_x_continuous(breaks = time_break, label = day_label)+
+    scale_x_continuous(breaks = time_break, labels = day_label)+
     theme_bw() +
     theme(axis.text.x = element_text(size = 7, angle = 90), plot.title = element_text(hjust = 0.5), legend.title=element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
           panel.background = element_rect(fill = "grey90"), axis.line = element_line(colour = "black"))
 
   #adding all figures together ---------------------------
 
-  pFinal = (wrap_elements(t1) + plot_layout()) / p1
+  pFinal = (
+
+    wrap_elements(t1) + plot_layout()) / p1
 
   pFinal
 
+
   # }#end Function
 }
-
