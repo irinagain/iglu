@@ -4,7 +4,7 @@
 \alias{episode_calculation}
 \title{Calculates the number of Hypo/Hyperglycemic events as well as other statistics}
 \usage{
-episode_calculation(data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, dur_length = 15)
+episode_calculation(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, dur_length = 15)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl"}

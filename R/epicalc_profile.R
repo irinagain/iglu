@@ -2,7 +2,7 @@
 #' @name epicalc_profile
 #'
 #' @usage
-#' epicalc_profile(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, color_scheme = "Color Scheme 1")
+#' epicalc_profile(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hyper=160,color_scheme="Color Scheme 1")
 #'
 #' @param data data
 #'
@@ -31,7 +31,7 @@
 #' epicalc_profile(example_data_1_subject)
 #'
 
-epicalc_profile <- function(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, color_scheme = "Color Scheme 1"){
+epicalc_profile <- function(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hyper=160,color_scheme="Color Scheme 1"){
 
   #Importing the data
   subject = unique(data$id)
@@ -52,7 +52,11 @@ epicalc_profile <- function(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.
   gl_ip.t = t(gl_ip)
   #Checking for multiple subjects
   subject = unique(data$id)
-
+#
+#   print(epicalc)
+#   print(epicalc[1,2])
+#   print(epicalc[2,2])
+#   print(epicalc[1,]$hyper_duration)
   #Creating table 1(t1) -------------------------------------
   tableStat = data.frame("Hypoglycemia/Hyperglycemia episode metrics")
   tableStat[1, 1] = ""

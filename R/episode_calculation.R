@@ -5,7 +5,7 @@
 #' The function episode calculation produces the number of Hypo/Hyperglycemic events as well as other statistics such as the average glucose level, mean duration, and the percentage of time spent in the ranges.
 #'
 #' @usage
-#' episode_calculation(data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, dur_length = 15)
+#' episode_calculation(data, lv1_hypo=100.0, lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, dur_length = 15)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl"
 #'
