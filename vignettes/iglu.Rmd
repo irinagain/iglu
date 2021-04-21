@@ -180,19 +180,25 @@ In this example, we calculated episodes for multiple subjects. The average numbe
 ## Epicalc_profile function
 
 Visualization of the metrics produced by the `episode_calculation()` function is done with the function `epicalc_profile()`. This function takes the `episode_calculation()` output and displays it as a tables of the episode metrics as well as plots that visualizes the subject's glucose level over time. Like `episode_calculation`, this function is designed to work with one subject data at a time, and the structure of the function output is shown below.
+
 ```{r, eval = F}
 epicalc_profile(example_data_1_subject)
 ```
-The function will accept the following three parameters that are passed on to `epicalc_profile()`. Like `episode_calculation()`, there are options to adjust the hypoglycemia and hyperglycemia thresholds. If the hyperglycemia threshold is lower than the hypoglycemia threshold, a warning will be produced.
-* "`hypo_thres`" - Threshold for what below is considered hypoglycemia. Default is 90 and the units are mg/dL
-* "`hyper_thres`" - Threshold for what above is considered hyperglycemia. Default is 120 and the units are mg/dL
-* "`color_scheme = c("blue-red", "red-orange")`" - String corresponding to a color scheme for the plot. Default is blue-red
-The 'red-orange' color scheme corresponds to red for hypoglycemia, orange for hyperglycemia, and green for in between. The 'blue-red' corresponds to blue for hypoglycemia, red for hyperglycemia, and white for in between.
+
+The function will accept the following six parameters that are passed on to `epicalc_profile()`. Like `episode_calculation()`, there are options to adjust the hypoglycemia and hyperglycemia thresholds. If the hyperglycemia threshold is lower than the hypoglycemia threshold, a warning will be produced.
+
+* "`lv1_hypo`" - First threshold for what below is considered hypoglycemia. Default is 100 and the units are mg/dL
+* "`lv2_hypo`" - Second threshold for what below is considered hypoglycemia. Default is 70 and the units are mg/dL
+* "`lv1_hyper`" - First threshold for what above is considered hyperglycemia. Default is 120 and the units are mg/dL
+* "`lv2_hyper`" - Second threshold for what above is considered hyperglycemia. Default is 160 and the units are mg/dL
+* "`color_scheme`" - String corresponding to a color scheme for the plot.Default is dark red for `lv1_hypo`, red for `lv2_hypo`, green for normal, yellow for `lv1_hyper`, and orange for `lv2_hyper`.
+
+
 ```{r, eval = F}
 epicalc_profile(example_data_1_subject, lv1_hypo=100, lv2_hypo=70, lv1_hyper=120, lv2_hyper=160, color_scheme="Color Scheme 1")
+```
 
 
-The episode calculation function receives 
 
 # Visualizations
 
