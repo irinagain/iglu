@@ -1,3 +1,10 @@
+# iglu 2.2.0
+* Added updated MAGE algorithm
+* Added process_data and read_raw_data to allow reading meter-specific values
+* Shiny app now takes time zone
+* Documentation and vignette updates
+
+
 # iglu 2.1.0
 * Added MAG (Mean Absolute Glucose)
 * Added COGI (COntinuous Glucose monitoring Index)

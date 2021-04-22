@@ -31,11 +31,11 @@ function within the iglu package - all column names and formats comply.
 A helper function to assist in pre-processing the user-supplied
 input data for use with other functions.
 Typically, this function will process the data and return another dataframe.
-This function ensures that the supplied data will be compitable with every
-function within the \code{iglu} package. See Vignette for further details.
+This function ensures that the returned data will be compitable with every
+function within the \code{iglu} package. All NAs will be removed. See Vignette for further details.
 }
 \details{
-A dataframe with the columns "id", "time", and "gl" will be returned.
+A dataframe with the columns "id", "time", and "gl" will be returned. All NAs will be removed.
 If there is a mention of "mmol/l" in the glucose column name, the glucose values will be multipled by 18 to convert to mg/dl
 Based on John Schwenck's data_process for his bp package
 https://github.com/johnschwenck/bp
@@ -44,17 +44,18 @@ https://github.com/johnschwenck/bp
 data("example_data_1_subject")
 
 # Process example data
-processed <- process_data(example_data_1_subject, id = "id",
-timestamp = "time", glu = "gl", time_parser = as.POSIXct)
+processed <- process_data(example_data_1_subject, id = "id", timestamp = "time", glu = "gl")
 
 processed
 
 data("example_data_5_subject")
 
 # Process example data
-processed_multisubject <- process_data(example_data_5_subject,
-id = "id", timestamp = "time", glu = "gl", time_parser = as.POSIXct)
+processed_5subj <- process_data(example_data_5_subject, id = "id", timestamp = "time", glu = "gl")
 
-processed_multisubject
+processed_5subj
 
+}
+\author{
+David Buchanan, John Schwenck
 }
