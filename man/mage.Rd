@@ -4,46 +4,46 @@
 \alias{mage}
 \title{Calculate Mean Amplitude of Glycemic Excursions}
 \usage{
-mage(data, sd_multiplier = 1)
+mage(data, version = c("v2", "v1"), ...)
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl",
-or numeric vector of glucose values.}
+\item{data}{Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector).}
 
-\item{sd_multiplier}{A numeric value that can change the sd value used
-to determine size of glycemic excursions used in the calculation.}
+\item{version}{Optional. Either 'v2' or 'v1'. Chooses which version of the MAGE algorithm to use. Version 2 is default and highly recommended.}
+
+\item{...}{Optional arguments to pass to the MAGE Functions (see "mage_ma_cross_single" for examples)
+\itemize{
+  \item{dateformat: POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of a different format.}
+  \item{short_ma: Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended <15).}
+  \item{long_ma: Integer for period length for the long moving average. Default: 23. (Recommended >20)}
+ \item{plot: Boolean. Returns ggplot if TRUE. Default: FALSE.}
+ \item{interval: Integer for time interval in minutes between glucose readings. Algorithm will auto-magically determine the interval if not specified. Default: NA (Only used to calculate the gaps shown on the ggplot)}
+ \item{title: Title for the ggplot. Default: "Glucose Trace - Subject [ID]"}
+ \item{xlab: Label for x-axis of ggplot. Defaults to "Time"}
+ \item{ylab: Label for y-axis of ggplot. Defaults to "Glucose Level"}
+ \item{sd_multiplier: DEPRECATED. A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation.}
+}}
 }
 \value{
-If a data.frame object is passed, then a tibble object with
-two columns: subject id and corresponding MAGE value is returned. If a vector of glucose
-values is passed, then a tibble object with just the MAGE value is returned.
-as.numeric() can be wrapped around the latter to output just a numeric value.
+A tibble object with two columns: the subject id and corresponding MAGE value. If a vector of glucose values is passed, then a tibble object with just the MAGE value is returned. In version 2, if \code{plot = TRUE}, a "master" ggplot will be returned with glucose traces for all subjects.
 }
 \description{
-The function mage produces MAGE values in a tibble object.
+The function calculates MAGE values and can optionally return a plot of the glucose trace. UPDATED to version 2. Version 1 is accessible for backwards compatibility.
 }
 \details{
-A tibble object with 1 row for each subject, a column for subject id and
-a column for the MAGE values is returned. NA glucose values are
-omitted from the calculation of MAGE.
+The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970).
 
-MAGE is calculated by taking the mean of absolute differences (between
-each value and the mean) that are greater than the standard deviation.
-A multiplier can be added to the standard deviation by the sd_multiplier
-argument.
+Version 2 is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.
+
+In Version 1, MAGE is calculated by taking the mean of absolute differences (between each value and the mean) that are greater than the standard deviation.
+A multiplier can be added to the standard deviation by the sd_multiplier argument.
 }
 \examples{
-
-data(example_data_1_subject)
-mage(example_data_1_subject)
-mage(example_data_1_subject, sd_multiplier = 2)
-
 data(example_data_5_subject)
-mage(example_data_5_subject, sd_multiplier = .9)
-
+mage(example_data_5_subject, version = 'v2')
 }
 \references{
-Service, F. J. & Nelson, R. L. (1980) Characteristics of glycemic stability.
-\emph{Diabetes care} \strong{3} .58-62,
-\doi{10.2337/diacare.3.1.58}.
+Service et al. (1970) Mean amplitude of glycemic excursions, a measure of diabetic instability
+\emph{Diabetes}  \strong{19} .644-655,
+\doi{10.2337/diab.19.9.644}.
 }
