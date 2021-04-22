@@ -31,7 +31,10 @@
 #'
 #' @return A processed dataframe object that cooperates with every other
 #' function within the iglu package - all column names and formats comply.
+#'
 #' @export
+#'
+#' @author David Buchanan, John Schwenck
 #'
 #' @examples
 #' data("example_data_1_subject")

@@ -1,6 +1,6 @@
 ---
 title: "Working in iglu"
-author: "Steve Broll, Elizabeth Chun, Irina Gaynanova"
+author: "Steve Broll, Elizabeth Chun, Irina Gaynanova, David Buchanan"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Working in iglu}
@@ -68,6 +68,38 @@ This dataset contains the same 3 columns as the dataset in the single subject ca
 ```{r}
 dim(example_data_5_subject)
 str(example_data_5_subject)
+```
+
+# Importing and Cleaning data
+
+Iglu comes with its own set of functions for the importing of raw data from several common CGM formats, as well as for the general reformatting of any data to work with the package.
+
+## Importing data
+
+To import raw data from a Dexcom, FreeStyle Libre, Libre Pro, ASC, or iPro monitor, the read_raw_data function can be used. The first parameter should the name of the .csv file you are attempting to read. Note that the function currently only accepts files read.csv can parse. The next parameter is sensor = [sensor name]. Currently the supported values for sensor are "dexcom", "libre", "librepro", "asc" and "ipro". These correspond to the sensor whose format you are attempting to read from. The next parameter is id. This is the value that will be used as the subject's id. This parameter has special values, setting it to "filename" will cause the function to use the filename as the id. Similarly, if this value is set to "read", the function will attempt to read the subject id from the data. A value of "read" is not supported for the "asc" sensor. If no id parameter is passed, the filename will be used. Also, when reading from FreeStyle Libre format, if the phrase "mmol/l" is found in the column names, the glucose values will be multiplied by 18. The read_raw_data function will return a dataframe with three columns, "id", "time", and "gl", corresponding to subject id, time, and glucose readings respectively. Sensor formats change with ongoing development, so these functions may become depreciated. If any issues are encountered, contact the package maintainer. This is currently Irina Gaynanova, who can be reached at irinag@stat.tamu.edu
+
+Ex.:
+
+```{r, eval=FALSE}
+read_raw_data("mydexcomdata.csv", sensor = "dexcom", id = "read")
+```
+
+## Processing data
+
+The process_data function is designed to take a dataframe or tibble with an arbitrary number of columns with arbitrary column names and return a dataframe with only the columns "id" "time" and "gl", which is the format used by iglu. It currently takes five parameters, the data to be processed, id, a string indicating the column name of the subject ids, timestamp, a string matching the column name where the timestamps can be found, glu, a string matching the column name where the glucose readings can be found, and time_parser, a function which is used to parse the time strings into time objects, this currently defaults to as.POSIXct. Currently data, timestamp, and glu are required parameters. If no id parameter is passed an id of 1 will be assigned to all values in the data. If "mmol/l" is found in the column name for glucose readings, the readings will be multipled by 18 in the returned dataframe.
+
+Ex.
+```{r, eval = FALSE}
+process_data(example_data_5_subject, id = "id", timestamp = "time", glu = "gl")
+```
+
+If your times are in a format not parsable by as.POSIXct, you can parse a custom format by passing
+function(time_string) {strptime(time_string, format = [format string])} as the time_parser parameter.
+
+For example, the following call parses datetimes in mm/dd/yyyy hh:mm format. 
+
+```{r, eval = FALSE}
+process_data(data, id = "id", timestamp = "time", glu = "gl", time_parser = function(time_string) {strptime(time_string, format = "%d/%m/%Y %H:%M")})
 ```
 
 # Calculating time-independent metrics
@@ -203,69 +235,7 @@ plot_glu(example_data_5_subject, plottype = 'tsplot', subjects = 'Subject 3', LL
 
 ## Lasagna plots
 
-The `plot_glu` function also supports lasagna plots by changing the 'plottype' parameter. For more on lasagna plots, see [Swihart et al. (2010) "Lasagna Plots: A Saucy Alternative to Spaghetti Plots." ](https://doi.org/10.1097/ede.0b013e3181e5b06a)
-
-```{r, cache = T, fig.width = 7}
-plot_glu(example_data_5_subject, plottype = 'lasagna', tz = 'EST')
-```
-
-By default, this will produce an unsorted lasagna plot using up to 14 days worth of data displayed separately. To average across days at each time point, we can use `datatype = 'average'`:
-
-```{r, cache = T, fig.width = 7}
-plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average', tz = 'EST')
-```
-
-We can additionally sort the values at each time point across the five subjects by setting `lasagnatype = 'timesorted'`
-
-```{r, cache = T, fig.width = 7}
-plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average', lasagnatype = 'timesorted', tz = 'EST')
-```
-
-When working with a single subject, setting `datatype = single` will produce plots where rows represent days instead of subjects.
-
-```{r, cache = T, fig.width = 7}
-plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = 'single', lasagnatype = 'unsorted', tz = 'EST')
-```
-
-```{r, cache = T, fig.width = 7}
-plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = 'single', lasagnatype = 'timesorted', tz = 'EST')
-
-```
-
-For further customization of lasagna plots, use the `plot_lasagna` and `plot_lasagna_1subject` functions. 
-
-`plot_lasagna` allows for multi-subject lasagna plots with the additional options of sorting the hours by glucose values for each subject, i.e. horizontal sorting, by setting
-`lasagnatype = 'subjectsorted'`.
-
-```{r, cache = T, fig.width = 7}
-plot_lasagna(example_data_5_subject, datatype = 'average', lasagnatype = 'subjectsorted', tz = 'EST')
-```
-
-`plot_lasagna` also supports changing the maximum number of days to display, as well as the upper and lower target range limits (LLTR and ULTR), midpoint, and minimum and maximum values to display, all of which will affect the colorbar.
-
-```{r, cache = T, fig.width = 7}
-plot_lasagna(example_data_5_subject, datatype = 'average', lasagnatype = 'subjectsorted', LLTR = 100, ULTR = 180, midpoint = 150, limits = c(80, 500), tz = 'EST')
-```
-
-`plot_lasagna_1subject` allows for customization of the more detailed single subject lasagna plots. There is no datatype parameter for `plot_lasagna_1subject`, but there are three types of plots available, accessed with the `lasagnatype` parameter.
-
-```{r, cache = T, fig.width = 7}
-plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'unsorted', tz = 'EST')
-```
-
-```{r, cache = T, fig.width = 7}
-plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'timesorted', tz = 'EST')
-```
-
-```{r, cache = T, fig.width = 7}
-plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted', tz = 'EST')
-```
-
-As with the `lasagna_plot` function, changing the LLTR, ULTR, midpoint, and limits parameters will affect the colorbar.
-
-```{r, cache = T, fig.width = 7}
-plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted', midpoint = 150, limits = c(80,500), tz = 'EST')
-```
+The `plot_glu` function also supports lasagna plots by changing the 'plottype' parameter. For more on lasagna plots, see [Swihart et al. (2010) "Lasagna Plots: A Saucy Alternative to Spaghetti Plots." ](https://doi.org/10.1097/ede.0b013e3181e5b06a).  The lasagna plots in iglu can be single-subject or multi-subject. For more information see the lasagna_plots vignette. 
 
 ## Rate of change plots
 

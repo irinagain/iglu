@@ -18,11 +18,13 @@
 #'
 #' @export
 #'
+#' @author David Buchanan
+#'
 #' @details A dataframe object with the columns "id", "time" and "gl" and one row per reading will be returned. For the libre reader,
 #' if the phrase "mmol/l" is found in the column names, the glucose values will be multiplied by 18.
 #' Assumes .csv format for all data.
 #' Sensor formats change with ongoing development, so these functions may become depreciated.
-#' If any issues are encountered, contact the package maintainer. This is currently Irina Gayanova,
+#' If any issues are encountered, contact the package maintainer. This is currently Irina Gaynanova,
 #' who can be reached at \email{irinag@@stat.tamu.edu}
 #' Heavily derived from the readers avaiable in the cgmanalysis package's cleandata function.
 #'

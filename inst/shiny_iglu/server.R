@@ -24,12 +24,10 @@ shinyServer(function(input, output) {
   })
   output$downloaddata <- downloadHandler(
     filename = function() {
-      # you can change the filename here. this was for a different project where the input was called compraw
       filename <- paste0(gsub("\\.csv", "",basename(input$datafile$name)), "_processed")
       paste(filename, ".csv", sep = "")
     },
     content = function(file) {
-      # assuming the reactive is still just called data
       write.csv(data(), file, row.names = FALSE)
     }
   )
@@ -44,7 +42,7 @@ shinyServer(function(input, output) {
 
 parameter_type <- reactive({
 
-  if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
+  if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi",
                          "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
     return("none")
   }
@@ -53,7 +51,7 @@ parameter_type <- reactive({
       return("list")
     }
 
-    else if(input$metric %in% c("conga", "grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value",
+    else if(input$metric %in% c("conga", "grade_hyper", "grade_hypo", "hyper_index", "hypo_index", "m_value", "mad_glu",
                                 "mag", "mage", "modd", "roc", "sd_roc", "active_percent")){
       return("value")
     }
@@ -113,7 +111,11 @@ parameter_type <- reactive({
         textInput("parameter", "Specify Reference Value", value = "90")
       }
 
-      else if(input$metric == "mag"){
+      else if(input$metric == "mad_glu"){
+        textInput("parameter", "Specify Parameter", value = "1.4826")
+      }
+
+     else if(input$metric == "mag"){
         textInput("parameter", "Specify Parameter", value = "60")
       }
 
@@ -207,6 +209,10 @@ parameter_type <- reactive({
 
       else if(input$metric == "m_value"){
         helpText("Enter the reference value for normal basal glycemia.")
+      }
+
+      else if(input$metric == "mad_glu"){
+        helpText("Enter the value of the scaling factor.")
       }
 
       else if(input$metric == "mag"){

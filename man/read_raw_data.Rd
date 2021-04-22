@@ -34,7 +34,7 @@ A dataframe object with the columns "id", "time" and "gl" and one row per readin
 if the phrase "mmol/l" is found in the column names, the glucose values will be multiplied by 18.
 Assumes .csv format for all data.
 Sensor formats change with ongoing development, so these functions may become depreciated.
-If any issues are encountered, contact the package maintainer. This is currently Irina Gayanova,
+If any issues are encountered, contact the package maintainer. This is currently Irina Gaynanova,
 who can be reached at \email{irinag@stat.tamu.edu}
 Heavily derived from the readers avaiable in the cgmanalysis package's cleandata function.
 }
@@ -42,4 +42,7 @@ Heavily derived from the readers avaiable in the cgmanalysis package's cleandata
 Vigers et al. (2019) cgmanalysis: An R package for descriptive analysis of continuous glucose monitor data
 \emph{PLoS ONE} \strong{14(10)}: e0216851,
 \doi{10.1371/journal.pone.0216851}
+}
+\author{
+David Buchanan
 }

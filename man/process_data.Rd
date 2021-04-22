@@ -56,3 +56,6 @@ processed_5subj <- process_data(example_data_5_subject, id = "id", timestamp = "
 processed_5subj
 
 }
+\author{
+David Buchanan, John Schwenck
+}

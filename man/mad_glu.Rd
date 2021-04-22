@@ -2,13 +2,16 @@
 % Please edit documentation in R/mad_glu.r
 \name{mad_glu}
 \alias{mad_glu}
-\title{Calculate Mean Absolute Deviation (MAD)}
+\title{Calculate Median Absolute Deviation (MAD)}
 \usage{
 mad_glu(data)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values.}
+
+\item{constant}{Numeric object which will be multipled by the MAD value. Defaults to 1.4826.
+Reasons for this default value can be seen in the details section of the documentation of r's base mad method}
 }
 \value{
 If a data.frame object is passed, then a tibble object with
@@ -25,8 +28,8 @@ a column for MAD values is returned. NA glucose values are
 omitted from the calculation of the MAD.
 
 MAD is calculated by taking the median of the difference of the
-glucose readings from their median
-\eqn{mean(|gl-median(gl)|)}, where gl is the list of Blood Glucose measurements
+glucose readings from their median and multiplying it by a scaling factor
+\eqn{1.4826*median(|gl-median(gl)|)}, where gl is the list of Blood Glucose measurements.
 }
 \examples{
 
