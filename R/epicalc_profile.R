@@ -1,20 +1,3 @@
-#' Display Episode Calculation statistics for selected subject
-#' @name epicalc_profile
-#'
-#' @usage
-#' epicalc_profile(data, maxd = 14, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE)
-#'
-#'
-#' @return A plot displaying the varying glucose levels (mg/dL) of the subject in a day as well as the statistics for the episodes.
-#'
-#'
-#'@author Johnathan Shih, Jung Hoon Seo
-#'
-#' @examples
-#' epicalc_profile(example_data_1_subject)
-#' epicalc_profile(example_data_1_subject, hypo_thresh = #, hyper_thres = #)
-#'
-
 
 epicalc_profile <- function(data, hypo_thres=90.0, hyper_thres= 120.0){
 
@@ -162,8 +145,6 @@ epicalc_profile <- function(data, hypo_thres=90.0, hyper_thres= 120.0){
 
 
   pFinal
-
-
 
 
   # }#end Function
