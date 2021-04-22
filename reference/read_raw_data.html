@@ -73,7 +73,7 @@ for use with the rest of the iglu package. Assumes all data will be readable wit
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iglu</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.0</span>
       </span>
     </div>
 
@@ -102,7 +102,7 @@ for use with the rest of the iglu package. Assumes all data will be readable wit
       <a href="../articles/AGP_and_Episodes.html">AGP and Episodes</a>
     </li>
     <li>
-      <a href="../articles/lasagna_plots.html">Lasagna Plots</a>
+      <a href="../articles/lasagna_plots.html">lasagna_plots</a>
     </li>
     <li>
       <a href="../articles/metrics_list.html">List of metrics implemented in iglu</a>
@@ -160,7 +160,7 @@ Must be one of "dexcom", "libre", "librepro", "asc", or "ipro".</p></td>
       <th>id</th>
       <td><p>String indicating subject id. Defaults to "filename".
 A value of "read" will cause the program to attempt to read the subject id from the file. A value of "filename" will cause the
-program to use the basename of the filename (i.e. filename without any directory information) with anything after the first period removed, as subject id.
+program to use the basename of the filename (i.e. filename without any directory information) with .csv removed, as subject id.
 A value of "default" will cause the program to use whatever the default value associated with the sensor is.
 The asc reader currently does not support id="read"</p></td>
     </tr>
@@ -174,13 +174,18 @@ The asc reader currently does not support id="read"</p></td>
     <p>A dataframe object with the columns "id", "time" and "gl" and one row per reading will be returned. For the libre reader,
 if the phrase "mmol/l" is found in the column names, the glucose values will be multiplied by 18.
 Assumes .csv format for all data.
-Due to limited accessiblity of data, only the import for FreeStyle Libre sensor has been tested on actual data as of 4/7/2021.
-Heavily derived from the readers available in the cgmanalysis package's cleandata function.</p>
+Sensor formats change with ongoing development, so these functions may become depreciated.
+If any issues are encountered, contact the package maintainer. This is currently Irina Gaynanova,
+who can be reached at <a href='mailto:irinag@stat.tamu.edu'>irinag@stat.tamu.edu</a>
+Heavily derived from the readers avaiable in the cgmanalysis package's cleandata function.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Vigers et al. (2019) cgmanalysis: An R package for descriptive analysis of continuous glucose monitor data
 <em>PLoS ONE</em> <strong>14(10)</strong>: e0216851,
 doi: <a href='https://doi.org/10.1371/journal.pone.0216851'>10.1371/journal.pone.0216851</a></p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>David Buchanan</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -193,7 +198,7 @@ doi: <a href='https://doi.org/10.1371/journal.pone.0216851'>10.1371/journal.pone
 
       <footer>
       <div class="copyright">
-  <p>Developed by Steve Broll, Jacek Urbanek, David Buchanan, Elizabeth Chun, John Muschelli, Irina Gaynanova.</p>
+  <p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jacek Urbanek, Irina Gaynanova.</p>
 </div>
 
 <div class="pkgdown">

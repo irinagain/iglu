@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iglu</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.0</span>
       </span>
     </div>
 
@@ -60,7 +60,7 @@
       <a href="../articles/AGP_and_Episodes.html">AGP and Episodes</a>
     </li>
     <li>
-      <a href="../articles/lasagna_plots.html">Lasagna Plots</a>
+      <a href="../articles/lasagna_plots.html">lasagna_plots</a>
     </li>
     <li>
       <a href="../articles/metrics_list.html">List of metrics implemented in iglu</a>
@@ -126,10 +126,10 @@
 <a href="#epicalc_profile-function" class="anchor"></a>Epicalc_profile function</h2>
 <p>Visualization of the metrics produced by the <code><a href="../reference/episode_calculation.html">episode_calculation()</a></code> function is done with the function <code>epicalc_profile()</code>. This function takes the <code><a href="../reference/episode_calculation.html">episode_calculation()</a></code> output and displays it as a tables of the episode metrics as well as plots that visualizes the subject’s glucose level over time. Like <code>episode_calculation</code>, this function is designed to work with one subject data at a time, and the structure of the function output is shown below.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu">epicalc_profile</span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></pre></div>
+<span class="co"># epicalc_profile(example_data_1_subject)</span></pre></div>
 <p>The function will accept the following three parameters that are passed on to <code>epicalc_profile()</code>. Like <code><a href="../reference/episode_calculation.html">episode_calculation()</a></code>, there are options to adjust the hypoglycemia and hyperglycemia thresholds. If the hyperglycemia threshold is lower than the hypoglycemia threshold, a warning will be produced. * “<code>hypo_thres</code>” - Threshold for what below is considered hypoglycemia. Default is 90 and the units are mg/dL * “<code>hyper_thres</code>” - Threshold for what above is considered hyperglycemia. Default is 120 and the units are mg/dL * “<code>color_scheme = c("blue-red", "red-orange")</code>” - String corresponding to a color scheme for the plot. Default is blue-red The ‘red-orange’ color scheme corresponds to red for hypoglycemia, orange for hyperglycemia, and green for in between. The ‘blue-red’ corresponds to blue for hypoglycemia, red for hyperglycemia, and white for in between.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu">epicalc_profile</span><span class="op">(</span><span class="va">example_data_1_subject</span>, <span class="fl">40</span>, <span class="fl">120</span>, color_scheme <span class="op">=</span> <span class="op">(</span><span class="st">'red-orange'</span><span class="op">)</span><span class="op">)</span></pre></div>
+<span class="co"># epicalc_profile(example_data_1_subject, 40, 120, color_scheme = ('red-orange'))</span></pre></div>
 </div>
 </div>
   </div>
@@ -145,7 +145,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Steve Broll, Jacek Urbanek, David Buchanan, Elizabeth Chun, John Muschelli, Irina Gaynanova.</p>
+  <p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jacek Urbanek, Irina Gaynanova.</p>
 </div>
 
 <div class="pkgdown">

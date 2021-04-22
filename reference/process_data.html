@@ -43,8 +43,8 @@
 <meta property="og:description" content="A helper function to assist in pre-processing the user-supplied
 input data for use with other functions.
 Typically, this function will process the data and return another dataframe.
-This function ensures that the supplied data will be compitable with every
-function within the iglu package. See Vignette for further details." />
+This function ensures that the returned data will be compitable with every
+function within the iglu package. All NAs will be removed. See Vignette for further details." />
 
 
 
@@ -76,7 +76,7 @@ function within the iglu package. See Vignette for further details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iglu</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.0</span>
       </span>
     </div>
 
@@ -105,7 +105,7 @@ function within the iglu package. See Vignette for further details." />
       <a href="../articles/AGP_and_Episodes.html">AGP and Episodes</a>
     </li>
     <li>
-      <a href="../articles/lasagna_plots.html">Lasagna Plots</a>
+      <a href="../articles/lasagna_plots.html">lasagna_plots</a>
     </li>
     <li>
       <a href="../articles/metrics_list.html">List of metrics implemented in iglu</a>
@@ -140,8 +140,8 @@ function within the iglu package. See Vignette for further details." />
     <p>A helper function to assist in pre-processing the user-supplied
 input data for use with other functions.
 Typically, this function will process the data and return another dataframe.
-This function ensures that the supplied data will be compitable with every
-function within the <code>iglu</code> package. See Vignette for further details.</p>
+This function ensures that the returned data will be compitable with every
+function within the <code>iglu</code> package. All NAs will be removed. See Vignette for further details.</p>
     </div>
 
     <pre class="usage"><span class='fu'>process_data</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>id</span>, <span class='va'>timestamp</span>, <span class='va'>glu</span>, time_parser <span class='op'>=</span> <span class='va'>as.POSIXct</span><span class='op'>)</span></pre>
@@ -183,17 +183,19 @@ function(time_string) {strptime(time_string, format = &lt;format string&gt;)} as
 function within the iglu package - all column names and formats comply.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A dataframe with the columns "id", "time", and "gl" will be returned.
+    <p>A dataframe with the columns "id", "time", and "gl" will be returned. All NAs will be removed.
 If there is a mention of "mmol/l" in the glucose column name, the glucose values will be multipled by 18 to convert to mg/dl
 Based on John Schwenck's data_process for his bp package
 https://github.com/johnschwenck/bp</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>David Buchanan, John Schwenck</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"example_data_1_subject"</span><span class='op'>)</span>
 
 <span class='co'># Process example data</span>
-<span class='va'>processed</span> <span class='op'>&lt;-</span> <span class='fu'>process_data</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, id <span class='op'>=</span> <span class='st'>"id"</span>,
-timestamp <span class='op'>=</span> <span class='st'>"time"</span>, glu <span class='op'>=</span> <span class='st'>"gl"</span>, time_parser <span class='op'>=</span> <span class='va'>as.POSIXct</span><span class='op'>)</span>
+<span class='va'>processed</span> <span class='op'>&lt;-</span> <span class='fu'>process_data</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, id <span class='op'>=</span> <span class='st'>"id"</span>, timestamp <span class='op'>=</span> <span class='st'>"time"</span>, glu <span class='op'>=</span> <span class='st'>"gl"</span><span class='op'>)</span>
 
 <span class='va'>processed</span>
 </div><div class='output co'>#&gt;             id                time  gl
@@ -3115,10 +3117,9 @@ timestamp <span class='op'>=</span> <span class='st'>"time"</span>, glu <span cl
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"example_data_5_subject"</span><span class='op'>)</span>
 
 <span class='co'># Process example data</span>
-<span class='va'>processed_multisubject</span> <span class='op'>&lt;-</span> <span class='fu'>process_data</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>,
-id <span class='op'>=</span> <span class='st'>"id"</span>, timestamp <span class='op'>=</span> <span class='st'>"time"</span>, glu <span class='op'>=</span> <span class='st'>"gl"</span>, time_parser <span class='op'>=</span> <span class='va'>as.POSIXct</span><span class='op'>)</span>
+<span class='va'>processed_5subj</span> <span class='op'>&lt;-</span> <span class='fu'>process_data</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, id <span class='op'>=</span> <span class='st'>"id"</span>, timestamp <span class='op'>=</span> <span class='st'>"time"</span>, glu <span class='op'>=</span> <span class='st'>"gl"</span><span class='op'>)</span>
 
-<span class='va'>processed_multisubject</span>
+<span class='va'>processed_5subj</span>
 </div><div class='output co'>#&gt;              id                time  gl
 #&gt; 1     Subject 1 2015-06-06 16:50:27 153
 #&gt; 2     Subject 1 2015-06-06 17:05:27 137
@@ -16998,7 +16999,7 @@ id <span class='op'>=</span> <span class='st'>"id"</span>, timestamp <span class
 
       <footer>
       <div class="copyright">
-  <p>Developed by Steve Broll, Jacek Urbanek, David Buchanan, Elizabeth Chun, John Muschelli, Irina Gaynanova.</p>
+  <p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jacek Urbanek, Irina Gaynanova.</p>
 </div>
 
 <div class="pkgdown">

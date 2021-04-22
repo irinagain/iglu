@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate Mean Absolute Deviation (MAD) — mad_glu • iglu</title>
+<title>Calculate Median Absolute Deviation (MAD) — mad_glu • iglu</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Calculate Mean Absolute Deviation (MAD) — mad_glu" />
+<meta property="og:title" content="Calculate Median Absolute Deviation (MAD) — mad_glu" />
 <meta property="og:description" content="The function mad produces MAD values in a tibble object." />
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iglu</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.0</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@
       <a href="../articles/AGP_and_Episodes.html">AGP and Episodes</a>
     </li>
     <li>
-      <a href="../articles/lasagna_plots.html">Lasagna Plots</a>
+      <a href="../articles/lasagna_plots.html">lasagna_plots</a>
     </li>
     <li>
       <a href="../articles/metrics_list.html">List of metrics implemented in iglu</a>
@@ -127,7 +127,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate Mean Absolute Deviation (MAD)</h1>
+    <h1>Calculate Median Absolute Deviation (MAD)</h1>
     
     <div class="hidden name"><code>mad_glu.Rd</code></div>
     </div>
@@ -136,7 +136,7 @@
     <p>The function mad produces MAD values in a tibble object.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mad_glu</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>mad_glu</span><span class='op'>(</span><span class='va'>data</span>, constant <span class='op'>=</span> <span class='fl'>1.4826</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,6 +145,11 @@
       <th>data</th>
       <td><p>DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values.</p></td>
+    </tr>
+    <tr>
+      <th>constant</th>
+      <td><p>Numeric object which will be multipled by the MAD value. Defaults to 1.4826.
+Reasons for this default value can be seen in the details section of the documentation of r's base mad method</p></td>
     </tr>
     </table>
 
@@ -160,8 +165,8 @@ as.numeric() can be wrapped around the latter to output just a numeric value.</p
 a column for MAD values is returned. NA glucose values are
 omitted from the calculation of the MAD.</p>
 <p>MAD is calculated by taking the median of the difference of the
-glucose readings from their median
-\(mean(|gl-median(gl)|)\), where gl is the list of Blood Glucose measurements</p>
+glucose readings from their median and multiplying it by a scaling factor
+\(1.4826*median(|gl-median(gl)|)\), where gl is the list of Blood Glucose measurements.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>David Buchanan, Marielle Hicban</p>
@@ -196,7 +201,7 @@ glucose readings from their median
 
       <footer>
       <div class="copyright">
-  <p>Developed by Steve Broll, Jacek Urbanek, David Buchanan, Elizabeth Chun, John Muschelli, Irina Gaynanova.</p>
+  <p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jacek Urbanek, Irina Gaynanova.</p>
 </div>
 
 <div class="pkgdown">
