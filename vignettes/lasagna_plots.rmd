@@ -2,7 +2,11 @@
 title: "lasagna_plots"
 author: "Steve Broll, Elizabeth Chun, Irina Gaynanova, David Buchanan"
 date: "4/22/2021"
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Lasagna plots in iglu}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 
@@ -11,6 +15,10 @@ output: html_document
 The `plot_glu` function supports lasagna plots by changing the 'plottype' parameter. For more on lasagna plots, see [Swihart et al. (2010) "Lasagna Plots: A Saucy Alternative to Spaghetti Plots." ](https://doi.org/10.1097/ede.0b013e3181e5b06a).  The lasagna plots in iglu can be single-subject or multi-subject. The single-subject lasagna plot has rows corresponding to each day of measurements with a color grid indicating glucose values. 
 
 The highest glucose values are displayed in red, whereas the lowest are displayed in blue. Thus, the numerical glucose values are mapped to color using the gradient from blue to red, which corresponds to the default ‘blue-red’ color scheme. An alternative ‘red-orange’ color scheme can be selected by the user by corresponding modification of the ‘color_scheme’ parameter.
+
+```{r}
+library(iglu)
+```
 
 ```{r, cache = T, fig.width = 7}
 plot_glu(example_data_1_subject, plottype = 'lasagna', datatype = "single", tz = 'EST')
