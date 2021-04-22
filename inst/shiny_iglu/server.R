@@ -7,13 +7,30 @@ shinyServer(function(input, output) {
 
   data <- reactive({
     req(input$datafile)
-    read.csv(input$datafile$datapath)
+    # if input is already processed just read.csv
+    # else select associated sensor type
+    out = switch(input$datatype,
+           "processed" = read.csv(input$datafile$datapath),
+           "FreeStyle Libre" = read_raw_data(input$datafile$datapath, sensor = "libre", id = input$subjid),
+           "Dexcom" = read_raw_data(input$datafile$datapath, sensor = "dexcom", id = input$subjid),
+           "Libre Pro" = read_raw_data(input$datafile$datapath, sensor = "librepro", id = input$subjid),
+           "ASC" = read_raw_data(input$datafile$datapath, sensor = "asc", id = input$subjid),
+           "iPro" = read_raw_data(input$datafile$datapath, sensor = "ipro", id = input$subjid)
+    )
+    return(out)
   })
-
   output$data <- renderTable({
     data()
   })
-
+  output$downloaddata <- downloadHandler(
+    filename = function() {
+      filename <- paste0(gsub("\\.csv", "",basename(input$datafile$name)), "_processed")
+      paste(filename, ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(data(), file, row.names = FALSE)
+    }
+  )
   transform_data <- reactive({
     data = data()
     iglu:::read_df_or_vec(data, id = input$id, time = input$time, gl = input$gl)
@@ -22,10 +39,11 @@ shinyServer(function(input, output) {
 
   ############################# METRIC SECTION ######################################################
 
+
 #add metric based on the parameter it takes in
   parameter_type <- reactive({
     #metric is considered as parameter type "none" if it only requires data as a parameter
-    if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi", "mad_glu",
+    if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi",
                            "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
       return("none")
     }
@@ -38,7 +56,7 @@ shinyServer(function(input, output) {
       return("list")
     }
     #metric is considered as parameter type "value" if it takes in data and a single value as parameters
-    else if(input$metric %in% c("grade_hyper", "grade_hypo","m_value",
+    else if(input$metric %in% c("grade_hyper", "grade_hypo","m_value","mad_glu",
                                "mage", "active_percent")){
       return("value")
     }
@@ -118,7 +136,11 @@ shinyServer(function(input, output) {
         textInput("parameter", "Specify Parameter", value = "24")
       }
 
-      else if(input$metric == "mag"){
+      else if(input$metric == "mad_glu"){
+        textInput("parameter", "Specify Parameter", value = "1.4826")
+      }
+
+     else if(input$metric == "mag"){
         textInput("parameter", "Specify Parameter", value = "60")
       }
       else if(input$metric == "modd"){
@@ -218,6 +240,9 @@ shinyServer(function(input, output) {
     else if(parameter_type =="value_time"){
       if(input$metric == "conga"){
         helpText("Enter the hours between observations for the CONGA calculation.")
+      }
+      else if(input$metric == "mad_glu"){
+        helpText("Enter the value of the scaling factor.")
       }
       else if(input$metric == "mag"){
         helpText("Enter the interval (in minutes) to calculate change in glucose.")

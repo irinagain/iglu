@@ -3,8 +3,8 @@
 #' @description A helper function to assist in pre-processing the user-supplied
 #' input data for use with other functions.
 #' Typically, this function will process the data and return another dataframe.
-#' This function ensures that the supplied data will be compitable with every
-#' function within the \code{iglu} package. See Vignette for further details.
+#' This function ensures that the returned data will be compitable with every
+#' function within the \code{iglu} package. All NAs will be removed. See Vignette for further details.
 #'
 #' @usage process_data(data, id, timestamp, glu, time_parser = as.POSIXct)
 #'
@@ -24,31 +24,32 @@
 #' If your times are in a format not parsable by as.POSIXct, you can parse a custom format by passing
 #' function(time_string) \{strptime(time_string, format = <format string>)\} as the time_parser parameter.
 #'
-#' @details A dataframe with the columns "id", "time", and "gl" will be returned.
+#' @details A dataframe with the columns "id", "time", and "gl" will be returned. All NAs will be removed.
 #' If there is a mention of "mmol/l" in the glucose column name, the glucose values will be multipled by 18 to convert to mg/dl
 #' Based on John Schwenck's data_process for his bp package
 #' https://github.com/johnschwenck/bp
 #'
 #' @return A processed dataframe object that cooperates with every other
 #' function within the iglu package - all column names and formats comply.
+#'
 #' @export
+#'
+#' @author David Buchanan, John Schwenck
 #'
 #' @examples
 #' data("example_data_1_subject")
 #'
 #' # Process example data
-#' processed <- process_data(example_data_1_subject, id = "id",
-#' timestamp = "time", glu = "gl", time_parser = as.POSIXct)
+#' processed <- process_data(example_data_1_subject, id = "id", timestamp = "time", glu = "gl")
 #'
 #' processed
 #'
 #' data("example_data_5_subject")
 #'
 #' # Process example data
-#' processed_multisubject <- process_data(example_data_5_subject,
-#' id = "id", timestamp = "time", glu = "gl", time_parser = as.POSIXct)
+#' processed_5subj <- process_data(example_data_5_subject, id = "id", timestamp = "time", glu = "gl")
 #'
-#' processed_multisubject
+#' processed_5subj
 #'
 
 process_data = function(data,
@@ -74,11 +75,11 @@ process_data = function(data,
     if (is.character(id)) {
       if (tolower(id) %in% colnames(data) == FALSE) {
 
-        warning("Could not find user-defined id argument name in dataset.\nFor example, if the user defines id=\"Subjects\" but no column is named \"Subjects\"\nThen there will be no matches for \"Subject\"\nCheck spelling of id argument.\nIf the dataset is only for one subject and has no id column, set single_subject = TRUE.")
+        warning("Could not find user-defined id argument name in dataset.\nFor example, if the user defines id=\"Subjects\" but no column is named \"Subjects\"\nThen there will be no matches for \"Subject\"\nCheck spelling of id argument.")
 
         if(length(grep(paste("\\bid\\b", sep = ""), names(data))) == 1) {
 
-          stop('Fix user-defined argument name for id. \nNote: A column in the dataset DOES match the name "id": \nIf this is the correct column, indicate as such in function argument. \ni.e. id = "id"\nIf the dataset is only for one subject and has no id column, set single_subject = TRUE.')
+          stop('Fix user-defined argument name for id. \nNote: A column in the dataset DOES match the name "id": \nIf this is the correct column, indicate as such in function argument. \ni.e. id = "id"')
 
         }
       } else {
@@ -119,7 +120,7 @@ process_data = function(data,
           tryCatch({
             data$time <- time_parser(data$time)
             },error=function(cond) {
-              message("Failed to parse times, ensure times are in convertable format and possible.\nSee docs for explanation on how to handle arbitary formats.\nOriginal error message:")
+              message("Failed to parse times, ensure times are in parsable format and possible.\nSee docs for explanation on how to handle arbitary formats.\nOriginal error message:")
               message(cond)
               stop("Error in time conversion.")
               return(NA)
