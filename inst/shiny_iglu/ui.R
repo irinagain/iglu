@@ -1,3 +1,4 @@
+
 #library(shiny)
 #library(DT)
 
@@ -25,20 +26,24 @@ shinyUI(fluidPage(
                             textInput('time', 'Enter column name corresponding to timestamp', value = 'time'),
                             textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl'),
                             downloadButton("downloaddata", "Download Data")
+                            selectInput('tz', 'Select corresponding time zone', choices = c(OlsonNames()))
                ),
                mainPanel(tableOutput("data"))
              )),
+    #full metric name and function name are added in alphabetical order
     tabPanel("Metrics", fluid = TRUE,
              sidebarLayout(
                sidebarPanel(selectInput('metric', 'Choose Metric', choices = c(`Above Percent` = 'above_percent',
                                                                                `Active Percent` = 'active_percent',
                                                                                `ADRR` = 'adrr',
+                                                                               `Area Under Curve` = 'auc',
                                                                                `Below Percent` = 'below_percent',
                                                                                `COGI` = 'cogi',
                                                                                `CONGA` = 'conga',
                                                                                `CV` = 'cv_glu',
                                                                                `CV Subtypes` = 'cv_measures',
                                                                                `eA1C` = 'ea1c',
+                                                                               `Episode Calculation` = 'episode_calculation',
                                                                                `GMI` = 'gmi',
                                                                                `GRADE` = 'grade',
                                                                                `GRADE Euglycemia` = 'grade_eugly',
@@ -70,7 +75,11 @@ shinyUI(fluidPage(
                                                                                `All Metrics` = 'all_metrics'
                )),
                uiOutput("select_parameter"),
-               uiOutput("help_text")),
+               uiOutput("help_text"),
+               uiOutput("select_second_parameter"),
+               uiOutput("second_parameter_helptext"),
+               uiOutput("select_third_parameter"),
+               uiOutput("third_parameter_helptext")),
                mainPanel(DT::dataTableOutput("metric"))
              )),
 
@@ -83,26 +92,26 @@ shinyUI(fluidPage(
                                           `Lasagna Plot (Single Subject)` = 'lasagnasingle',
                                           `Rate of Change (Time Series)` = 'plot_roc',
                                           `Rate of Change (Histogram)` = 'hist_roc'
-               )),
-               uiOutput("plot_lasagnatype"),
-               uiOutput("plot_subjects"),
-               uiOutput("plot_subjects_help_text"),
-               uiOutput("plot_timelag"),
-               uiOutput("plot_maxd"),
-               uiOutput("plot_datatype"),
-               uiOutput("plot_datatype_help_text"),
-               #uiOutput("plot_tz"),
-               #uiOutput("plot_tz_help_text"),
-               uiOutput("plot_TR"),
-               #uiOutput("plot_TR_help_text"),
-               uiOutput("plot_midpoint"),
-               uiOutput('plot_limits'),
-               uiOutput('plot_colorbar_help_text'),
-               uiOutput('plot_color_scheme'),
-               uiOutput('plot_log'),
-               downloadButton(outputId = "pdfButton", label = "PDF"),
-               downloadButton(outputId = "pngButton", label = "PNG"),
-               downloadButton(outputId = "epsButton", label = "EPS")
+                              )),
+                 uiOutput("plot_lasagnatype"),
+                 uiOutput("plot_subjects"),
+                 uiOutput("plot_subjects_help_text"),
+                 uiOutput("plot_timelag"),
+                 uiOutput("plot_maxd"),
+                 uiOutput("plot_datatype"),
+                 uiOutput("plot_datatype_help_text"),
+                 #uiOutput("plot_tz"),
+                 #uiOutput("plot_tz_help_text"),
+                 uiOutput("plot_TR"),
+                 #uiOutput("plot_TR_help_text"),
+                 uiOutput("plot_midpoint"),
+                 uiOutput('plot_limits'),
+                 uiOutput('plot_colorbar_help_text'),
+                 uiOutput('plot_color_scheme'),
+                 uiOutput('plot_log'),
+                 downloadButton(outputId = "pdfButton", label = "PDF"),
+                 downloadButton(outputId = "pngButton", label = "PNG"),
+                 downloadButton(outputId = "epsButton", label = "EPS")
                ),
                mainPanel(plotOutput("plot"))
              )),
@@ -142,4 +151,3 @@ shinyUI(fluidPage(
 
 
 ))
-
