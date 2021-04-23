@@ -24,14 +24,12 @@ The iglu package allows one to generate an Ambulatory Glucose Profile (AGP) repo
 agp(example_data_1_subject)
 ```
 
-
-
-# Episode Calculation
+## Episode Calculation
 
 The Episode_Calculation function measures the number of hypoglycemia and hyperglycemia that occur more than a certain period.
 
 ```{r}
-episode_calculation(example_data_5_subject, hypo_thres=100.0, hyper_thres= 120.0, dur_length = 15)
+episode_calculation(example_data_5_subject,lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, dur_length = 15)
 ```
 
 Users can set certain thresholds for the hypo and hyperglycemia by passing parameters. Here, we are passing 100 for the hypoglycemia threshold and 120 for the hyperglycemia threshold. By setting a duration length to 15 minutes (the last parameter), the function will count the number of episodes that glucose values go below or above the thresholds more than 15 minutes. 
@@ -44,13 +42,13 @@ Visualization of the metrics produced by the `episode_calculation()` function is
 ```{r, eval = F}
 epicalc_profile(example_data_1_subject)
 ```
-
 The function will accept the following three parameters that are passed on to `epicalc_profile()`. Like `episode_calculation()`, there are options to adjust the hypoglycemia and hyperglycemia thresholds. If the hyperglycemia threshold is lower than the hypoglycemia threshold, a warning will be produced.
 * "`hypo_thres`" - Threshold for what below is considered hypoglycemia. Default is 90 and the units are mg/dL
 * "`hyper_thres`" - Threshold for what above is considered hyperglycemia. Default is 120 and the units are mg/dL
 * "`color_scheme = c("blue-red", "red-orange")`" - String corresponding to a color scheme for the plot. Default is blue-red
 The 'red-orange' color scheme corresponds to red for hypoglycemia, orange for hyperglycemia, and green for in between. The 'blue-red' corresponds to blue for hypoglycemia, red for hyperglycemia, and white for in between.
 ```{r, eval = F}
-epicalc_profile(example_data_1_subject, 40, 120, color_scheme = ('red-orange'))
-```
+epicalc_profile(example_data_1_subject, lv1_hypo=100, lv2_hypo=70, lv1_hyper=120, lv2_hyper=160, color_scheme="Color Scheme 1")
 
+
+The episode calculation function receives 
