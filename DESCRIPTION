@@ -59,7 +59,9 @@ Imports:
     tidyr,
     utils,
     zoo,
-    plotly
+    plotly,
+    gtable,
+    grid
 Suggests:
     knitr,
     rmarkdown,

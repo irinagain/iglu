@@ -201,7 +201,7 @@ Other metrics can return multiple values for a single subject. For example, `sd_
 sd_measures(example_data_5_subject)
 ```
 
-Notice the high fluctuations in Subject 5, with all but one subtypes of standard deviation being the largest for Subject 5. This provides an additional level of CGM data interpretation, since frequent or large glucose fluctuations may contribute to diabetes-related complications independently from chronic hyperglycemia.
+Notice the high fluctuations in Subject 5, with all but one subtypes of standard deviation being the largest for Subject 5. This provides additional level of CGM data interpretation, since frequent or large glucose fluctuations may contribute to diabetes-related complications independently from chronic hyperglycemia.
 
 # Visualizations
 

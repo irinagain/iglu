@@ -164,11 +164,14 @@ shinyServer(function(input, output) {
       if(input$metric == "igc"){
         textInput("parameter", "Specify Lower and Upper Limits", value = "70, 180")
       }
+     else if(input$metric == "episode_calculation"){
+        textInput("parameter", "Specify Parameter", value = "100.0, 70")
+     }
     }
-    else if(parameter_type == "nested"){
-      if(input$metric == "in_range_percent"){
-        textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
-      }
+   else if(parameter_type == "nested"){
+    if(input$metric == "in_range_percent"){
+      textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
+
     }
 
   })
@@ -292,6 +295,7 @@ shinyServer(function(input, output) {
       if(input$metric == "igc"){
         textInput("parameter2", "Specify Exponent", value = "1.1, 2")
       }
+
     }
 
   })
@@ -378,9 +382,11 @@ shinyServer(function(input, output) {
         need(parameter_type %in% c("nested", "none","time"), "Please wait - Rendering")
       )
     } else if (!grepl(',', input$parameter)) {
+      print(input$parameter)
       validate(
         need(parameter_type %in% c("value","value1","value_time", "none","time"), "Please wait - Rendering")
       )
+
     }
 
     #loading iglu library and using metric function
@@ -1003,6 +1009,87 @@ shinyServer(function(input, output) {
   output$epsAGP <- downloadHandler(
     filename = function() {
       paste("AGP", '.eps', sep = '')
+    },
+    content = function(file) {
+      postscript(file)
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
+
+
+  ########## Episode calculation section#########
+  ### Get desired subject
+  output$episode_subject <- renderUI({
+    data = transform_data() # bring reactive data input into this renderUI call to default to all subjects
+    subject = unique(data$id)[1]
+    textInput("episode_subject", "Enter Subject ID", value = subject)
+  })
+
+  episode_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
+
+    validate (
+      if (is.null(input$episode_subject)) {
+        need(!is.null(input$episode_subject), "Please wait - Rendering")
+      } else {
+        need(input$episode_subject %in% transform_data()$id, "Please check Subject ID")
+      }
+    )
+
+    data = transform_data()
+    data = data[data$id == input$episode_subject,] # reactively subset data when subjects input is modified
+    return(data)
+  })
+
+  plotEpisodeCalc <- reactive({
+    library(iglu)
+    data = episode_data()
+    lv1_hypo = input$lv1hypoThreshold
+    lv2_hypo = input$lv2hypoThreshold
+    lv1_hyper = input$lv1hyperThreshold
+    lv2_hyper = input$lv2hyperThreshold
+    color_scheme = input$colorScheme
+    string = paste('iglu::epicalc_profile(data = data, lv1_hypo= lv1_hypo, lv2_hypo = lv2_hypo,
+                   lv1_hyper=lv1_hyper,lv2_hyper=lv2_hyper,color_scheme= color_scheme)')
+    eval(parse(text = string))
+  })
+
+  output$plot_episode_calculation <- renderPlot({
+    plotEpisodeCalc()
+  })
+
+  output$pdfEpisode<- downloadHandler(
+    filename = function() {
+      paste("Episode", '.pdf', sep = '')
+    },
+    content = function(file) {
+      cairo_pdf(filename = file, width = 20, height = 18, bg = "transparent")
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
+
+  output$pngEpisode <- downloadHandler(
+
+    filename = function() {
+      paste("Episode", '.png', sep = '')
+    },
+    content = function(file) {
+      png(file)
+      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
+                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      plot(p)
+      dev.off()
+    }
+  )
+
+  output$epsEpisode <- downloadHandler(
+    filename = function() {
+      paste("Episode", '.eps', sep = '')
     },
     content = function(file) {
       postscript(file)
