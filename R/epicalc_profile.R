@@ -30,31 +30,31 @@ epicalc_profile <- function(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hype
   id = NULL
   rm(list = c("id"))
 
-
   #Importing the data
   subject = unique(data$id)
   data_ip = CGMS2DayByDay(data, dt0 = 5)
-
   gl_ip = data_ip[[1]]
-  test = data_ip$actual_dates
-  day_label = as.character(test)
+  gl_ip.t = t(gl_ip)
 
+  #Obtaining dates to use as labels
+  dates = data_ip$actual_dates
+  day_label = as.character(dates)
+
+  #Checking for more than 1 subject
   ns = length(subject)
   if (ns > 1){
     subject = subject[1]
     warning(paste("The provided data have", ns, "subjects. The plot will only be created for subject", subject))
     data = data %>% dplyr::filter(id == subject)
   }
+
+
+  #Calling episode_calculation for data
   epicalc = episode_calculation(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper)
 
-  gl_ip.t = t(gl_ip)
   #Checking for multiple subjects
   subject = unique(data$id)
-#
-#   print(epicalc)
-#   print(epicalc[1,2])
-#   print(epicalc[2,2])
-#   print(epicalc[1,]$hyper_duration)
+
   #Creating table 1(t1) -------------------------------------
   tableStat = data.frame("Hypoglycemia/Hyperglycemia episode metrics")
   tableStat[1, 1] = ""
@@ -93,55 +93,55 @@ epicalc_profile <- function(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hype
   tableStat[6, 4] = paste0(as.character(format(round(epicalc[2,]$hypo_min_avg, 2), nsmall = 2)), " min")
   tableStat[6, 5] = paste0(as.character(format(round(epicalc[2,]$hyper_min_avg, 2), nsmall = 2)), " min")
 
+  #Styling the table
   mytheme <- gridExtra::ttheme_minimal(base_size = 10, padding = unit(c(4,2),"mm"))
-
   t1 <- gridExtra::tableGrob(tableStat, rows = NULL, cols = NULL, theme = mytheme )
 
   #Adding border(t1)
   t1 <- gtable::gtable_add_grob(t1,
-                        grobs = grid::rectGrob(gp = grid::gpar(fill = NA, lwd = 5)),
-                        t = 1, b = 6, l = 1, r = 5)
+                                grobs = grid::rectGrob(gp = grid::gpar(fill = NA, lwd = 5)),
+                                t = 1, b = 6, l = 1, r = 5)
   #Adding dotted separator(t1)
   separators <- replicate(ncol(t1) - 2,
                           grid::segmentsGrob(x1 = unit(0, "npc"), gp=grid::gpar(lty=2)),
                           simplify=FALSE)
 
   t1 <- gtable::gtable_add_grob(t1, grobs = separators,
-                        t = 2, b = nrow(t1), l = seq_len(ncol(t1)-2)+2)
+                                t = 2, b = nrow(t1), l = seq_len(ncol(t1)-2)+2)
   padding <- unit(0.5,"line")
 
   #Adding title and footnote(t1)
   title <- grid::textGrob("Episode Metrics",gp=grid::gpar(fontsize=18), x=0, hjust=0)
   footnote <- grid::textGrob("An episode is >= 15 continuous minutes", x=1, hjust=1,
-                       gp=grid::gpar( fontface="italic", fontsize = 8))
+                             gp=grid::gpar( fontface="italic", fontsize = 8))
 
   padding <- unit(0.5,"line")
   t1 <- gtable::gtable_add_rows(t1,
-                        heights = grid::grobHeight(title) + padding,
-                        pos = 0)
+                                heights = grid::grobHeight(title) + padding,
+                                pos = 0)
   t1 <- gtable::gtable_add_rows(t1,
-                        heights = grid::grobHeight(footnote)+ padding)
+                                heights = grid::grobHeight(footnote)+ padding)
   t1 <- gtable::gtable_add_grob(t1, list(title, footnote),
-                        t=c(1, nrow(t1)), l=c(1,2),
-                        r=ncol(t1))
+                                t=c(1, nrow(t1)), l=c(1,2),
+                                r=ncol(t1))
 
 
   # Creating overall plot(p1) ---------------------------------
 
+  #Organizing the data
   df = as.data.frame(as.table(gl_ip.t))
   gl_data.t = df$Freq
   gl_data.t = as.data.frame(gl_data.t)
   x = cbind(1:length(gl_ip.t))
   x = data.frame(x)
-
   final = cbind(x, gl_data.t)
+
   #Defining thresholds
   final$col <- cut(final$gl_data,
                    breaks = c(-Inf, lv2_hypo,lv1_hypo, lv1_hyper, lv2_hyper, Inf),
                    labels = c("Hypoglycemia(Level 2)","Hypoglycemia(Level 1)", "Normal", "Hyperglycemia(Level 1)","Hyperglycemia(Level 2)" ))
 
   # Select the color scheme
-  color_dots <- c()
   if (color_scheme == "Color Scheme 1"){
     hypo_col2 <- '#8E1B1B'
     hypo_col1 <- '#F92D00'
@@ -152,7 +152,6 @@ epicalc_profile <- function(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hype
     color_dashed <- c(hypo_col2, hypo_col1, norm_col, hyper_col1 , hyper_col2)
   }
   else if (color_scheme == "Color Scheme 2"){
-    #dplyr::mutate(range = factor(range, levels = c("very_high", 'high', 'target', 'low', 'very_low')))
     hypo_col2 <- 'blue'
     hypo_col1 <- 'lightblue'
     norm_col <- 'white'
@@ -160,7 +159,7 @@ epicalc_profile <- function(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hype
     hyper_col2 <-'darkred'
     color_dots <- c(hypo_col2, hypo_col1, norm_col, hyper_col1 , hyper_col2)
     color_dashed <- c(hypo_col2, hypo_col1, norm_col, hyper_col1 , hyper_col2)
- }
+  }
   else if (color_scheme == "Color Scheme 3"){
     hypo_col2 <- 'darkred'
     hypo_col1 <- 'red'
@@ -171,9 +170,8 @@ epicalc_profile <- function(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hype
     color_dashed <- c(hypo_col2, hypo_col1, norm_col, hyper_col1 , hyper_col2)
   }
 
-
+  #Spacing the labels for the days
   time_break <- c(0, 288,576,864,1152,1440,1728,2016,2304,2592,2880,3168,3456,3744)
-  # day_label <- c("Day 1", "Day 2","Day 3", "Day 4","Day 5", "Day 6","Day 7", "Day 8","Day 9", "Day 10","Day 11", "Day 12", "Day 13", "Day 14")
 
   #Creating plot
   p1 <- ggplot(final, aes(x = x, y = gl_data.t)) + geom_point(aes(color = col), size = 1, na.rm=TRUE) +
@@ -203,3 +201,4 @@ epicalc_profile <- function(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hype
 
   # }#end Function
 }
+
