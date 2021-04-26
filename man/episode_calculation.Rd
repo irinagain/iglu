@@ -27,10 +27,10 @@ episode_calculation(
 \item{dur_length}{An integer or a double specifying a duration length in minutes}
 }
 \value{
-Data frame including Average Glucose, number of hypo and hyper episodes, Hypo and hyper mean values, the percentages of low, high and target alerts
+Data frame including number of hypo and hyper episodes, hypo and hyper mean values, mean durations, and average mean values per day
 }
 \description{
-The function episode calculation produces the number of Hypo/Hyperglycemic events as well as other statistics such as the average glucose level, mean duration, and the percentage of time spent in the ranges.
+The function episode calculation produces the number of Hypo/Hyperglycemic events as well as other statistics such as mean duration
 }
 \examples{
 

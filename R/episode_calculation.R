@@ -18,11 +18,16 @@
 #'
 #' @return Data frame including number of hypo and hyper episodes, hypo and hyper mean values, mean durations, and average mean values per day
 #'
+#' @export
+#'
 #' @author Johnathan Shih, Jung Hoon Seo
 #'
 #' @examples
 #'
 #' episode_calculation(example_data_5_subject, lv1_hypo=100, lv1_hyper= 120)
+# library(iglu)
+# library(ggplot2)
+# library(dplyr)
 
 episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, dur_length = 15) {
 
