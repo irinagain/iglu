@@ -18,7 +18,7 @@ Must be one of "dexcom", "libre", "librepro", "asc", or "ipro".}
 
 \item{id}{String indicating subject id. Defaults to "filename".
 A value of "read" will cause the program to attempt to read the subject id from the file. A value of "filename" will cause the
-program to use the basename of the filename (i.e. filename without any directory information) with anything after the first period removed, as subject id.
+program to use the basename of the filename (i.e. filename without any directory information) with .csv removed, as subject id.
 A value of "default" will cause the program to use whatever the default value associated with the sensor is.
 The asc reader currently does not support id="read"}
 }
@@ -33,11 +33,16 @@ for use with the rest of the \code{iglu} package. Assumes all data will be reada
 A dataframe object with the columns "id", "time" and "gl" and one row per reading will be returned. For the libre reader,
 if the phrase "mmol/l" is found in the column names, the glucose values will be multiplied by 18.
 Assumes .csv format for all data.
-Due to limited accessiblity of data, only the import for FreeStyle Libre sensor has been tested on actual data as of 4/7/2021.
-Heavily derived from the readers available in the cgmanalysis package's cleandata function.
+Sensor formats change with ongoing development, so these functions may become depreciated.
+If any issues are encountered, contact the package maintainer. This is currently Irina Gaynanova,
+who can be reached at \email{irinag@stat.tamu.edu}
+Heavily derived from the readers avaiable in the cgmanalysis package's cleandata function.
 }
 \references{
 Vigers et al. (2019) cgmanalysis: An R package for descriptive analysis of continuous glucose monitor data
 \emph{PLoS ONE} \strong{14(10)}: e0216851,
 \doi{10.1371/journal.pone.0216851}
+}
+\author{
+David Buchanan
 }

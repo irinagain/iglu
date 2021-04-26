@@ -42,7 +42,7 @@ In this example, we calculated episodes for subject 1. The average numbers of hy
 Visualization of the metrics produced by the `episode_calculation()` function is done with the function `epicalc_profile()`. This function takes the `episode_calculation()` output and displays it as a tables of the episode metrics as well as plots that visualizes the subject's glucose level over time. Like `episode_calculation`, this function is designed to work with one subject data at a time, and the structure of the function output is shown below.
 
 ```{r, eval = F}
-epicalc_profile(example_data_1_subject)
+# epicalc_profile(example_data_1_subject)
 ```
 
 The function will accept the following six parameters that are passed on to `epicalc_profile()`. Like `episode_calculation()`, there are options to adjust the hypoglycemia and hyperglycemia thresholds. If the hyperglycemia threshold is lower than the hypoglycemia threshold, a warning will be produced.

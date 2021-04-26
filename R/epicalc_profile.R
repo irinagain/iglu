@@ -30,6 +30,8 @@ epicalc_profile <- function(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hype
   id = NULL
   rm(list = c("id"))
 
+epicalc_profile <- function(data, hypo_thres=90.0, hyper_thres= 120.0){
+
   #Importing the data
   subject = unique(data$id)
   data_ip = CGMS2DayByDay(data, dt0 = 5)
