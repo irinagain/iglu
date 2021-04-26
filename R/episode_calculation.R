@@ -36,6 +36,9 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
   episode_calculator <- function(data, params){
 
     ##################### Input Processing        #####################
+
+    data_ip = gl_by_id_ip = NULL
+    rm(list = c("data_ip", "gl_by_id_ip"))
     data_ip = CGMS2DayByDay(data, dt0 = 5)
     gl_by_id_ip = data_ip[[1]]
     dt0 = data_ip[[3]]
@@ -210,6 +213,8 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
       dplyr::summarise(episode_calculator(data.frame(id, time, gl), params))
   }
 
+  df1 = df2 = out = out2 = NULL
+  rm(list = c("df1", "df2"))
   # This returns episode values for hypo and hyper level 1
   out = wrapper_function(data,params)
 
@@ -218,6 +223,7 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
 
   # This returns episode values for hypo and hyper level 2
   out2 = wrapper_function(data,params)
+
 
   df1 = data.frame(out)
   df2 = data.frame(out2)
