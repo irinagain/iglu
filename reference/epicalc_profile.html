@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculates the number of Hypo/Hyperglycemic events as well as other statistics — episode_calculation • iglu</title>
+<title>Display Episode Calculation statistics for selected subject — epicalc_profile • iglu</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Calculates the number of Hypo/Hyperglycemic events as well as other statistics — episode_calculation" />
-<meta property="og:description" content="The function episode calculation produces the number of Hypo/Hyperglycemic events as well as other statistics such as mean duration" />
+<meta property="og:title" content="Display Episode Calculation statistics for selected subject — epicalc_profile" />
+<meta property="og:description" content="Display Episode Calculation statistics for selected subject" />
 
 
 
@@ -127,22 +127,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculates the number of Hypo/Hyperglycemic events as well as other statistics</h1>
+    <h1>Display Episode Calculation statistics for selected subject</h1>
     
-    <div class="hidden name"><code>episode_calculation.Rd</code></div>
+    <div class="hidden name"><code>epicalc_profile.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The function episode calculation produces the number of Hypo/Hyperglycemic events as well as other statistics such as mean duration</p>
+    <p>Display Episode Calculation statistics for selected subject</p>
     </div>
 
-    <pre class="usage"><span class='fu'>episode_calculation</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>epicalc_profile</span><span class='op'>(</span>
   <span class='va'>data</span>,
   lv1_hypo <span class='op'>=</span> <span class='fl'>100</span>,
   lv2_hypo <span class='op'>=</span> <span class='fl'>70</span>,
   lv1_hyper <span class='op'>=</span> <span class='fl'>120</span>,
   lv2_hyper <span class='op'>=</span> <span class='fl'>160</span>,
-  dur_length <span class='op'>=</span> <span class='fl'>15</span>
+  color_scheme <span class='op'>=</span> <span class='st'>"Color Scheme 1"</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -169,43 +169,22 @@
       <td><p>A double specifying a hyperglycemia threshold for level 1</p></td>
     </tr>
     <tr>
-      <th>dur_length</th>
-      <td><p>An integer or a double specifying a duration length in minutes</p></td>
+      <th>color_scheme</th>
+      <td><p>String corresponding to the chosen color scheme.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Data frame including number of hypo and hyper episodes, hypo and hyper mean values, mean durations, and average mean values per day</p>
+    <p>A plot displaying the varying glucose levels (mg/dL) of the subject in a day as well as the statistics for the episodes.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Johnathan Shih, Jung Hoon Seo</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'>episode_calculation</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, lv1_hypo<span class='op'>=</span><span class='fl'>100</span>, lv1_hyper<span class='op'>=</span> <span class='fl'>120</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                 id Hypo_ep Hyper_ep hypo_duration hyper_duration low_alert
-#&gt; 1  Subject 1 (Lv1)    2.79     2.64        111.26         196.90     23.91
-#&gt; 2  Subject 2 (Lv1)    0.08     1.15         50.00         964.62      0.27
-#&gt; 3  Subject 3 (Lv1)    1.14     3.71         66.67         287.91      7.36
-#&gt; 4  Subject 4 (Lv1)    2.43     4.71         93.29         218.66     15.27
-#&gt; 5  Subject 5 (Lv1)    1.00     2.42         96.56         534.49      8.74
-#&gt; 6  Subject 1 (Lv2)    0.07     1.50         25.00         111.62      0.16
-#&gt; 7  Subject 2 (Lv2)    0.00     2.08           NaN         600.29      0.00
-#&gt; 8  Subject 3 (Lv2)    0.14     2.71         25.00         154.13      0.25
-#&gt; 9  Subject 4 (Lv2)    0.14     2.57         25.00          87.95      0.39
-#&gt; 10 Subject 5 (Lv2)    0.08     4.00         15.00         172.26      0.09
-#&gt;    high_alert target_range hypo_min_avg hyper_min_avg
-#&gt; 1       43.90        32.18       200.36        100.38
-#&gt; 2       97.45         2.29       961.54        495.00
-#&gt; 3       81.16        11.47       148.57        300.83
-#&gt; 4       63.28        21.45       142.86        150.71
-#&gt; 5       82.41         8.85       296.67        366.50
-#&gt; 6       13.51        86.34       107.08        105.00
-#&gt; 7       85.09        14.91       635.77        230.00
-#&gt; 8       34.89        64.87       132.14        149.17
-#&gt; 9       17.55        82.07        72.73         71.88
-#&gt; 10      50.80        49.12       184.17        113.18</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>epicalc_profile</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
+</div><div class='img'><img src='epicalc_profile-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
