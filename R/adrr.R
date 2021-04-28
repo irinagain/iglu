@@ -55,7 +55,7 @@ adrr <- function(data){
       ) %>%
       dplyr::summarise(drr = mean(min+max)) %>%
       dplyr::group_by(id) %>%
-      dplyr::summarise(adrr = mean(drr))
+      dplyr::summarise(ADRR = mean(drr))
     return(out)
   }
 

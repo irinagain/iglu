@@ -49,7 +49,7 @@ cv_glu <- function(data){
   out = data %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      cv = sd(gl, na.rm = TRUE) / mean(gl, na.rm = TRUE) * 100
+      CV = sd(gl, na.rm = TRUE) / mean(gl, na.rm = TRUE) * 100
     )
   if (is_vector) {
     out$id = NULL

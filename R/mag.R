@@ -60,7 +60,7 @@ mag <- function (data, n = 60, dt0 = NULL, inter_gap = 45, tz = "") {
   out = data %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      mag = mag_single(data.frame(id, time, gl))
+      MAG = mag_single(data.frame(id, time, gl))
     )
   return(out)
 

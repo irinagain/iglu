@@ -67,7 +67,7 @@ gvp = function(data) {
   out = data %>%
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
-    dplyr::summarise(gvp = gvp_single(data.frame(id,time,gl)))
+    dplyr::summarise(GVP = gvp_single(data.frame(id,time,gl)))
 
   return(out)
 }

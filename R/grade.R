@@ -60,7 +60,7 @@ grade <- function(data){
     dplyr::mutate(grade = grade_formula(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      grade = mean(grade, na.rm = TRUE)
+      GRADE = mean(grade, na.rm = TRUE)
     )
   if (is_vector) {
     out$id = NULL

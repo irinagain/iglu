@@ -69,7 +69,7 @@ cogi <- function(data, targets = c(70,180), weights = c(.5,.35,.15)){
   }
   ir = in_range_percent(data, list(targets))[,2]
   br = below_percent(data, targets_below = targets[1])[,2]
-  stddev = sd_glu(data)$sd
+  stddev = sd_glu(data)$SD
   weighted_features = weight_features(ir,c(0,100),weight = weights[1], increasing = TRUE)+weight_features(br,c(0,15),weight = weights[2])+weight_features(stddev,c(18,108),weight = weights[3])
   out = dplyr::tibble(weighted_features)
   out$id = sd_glu(data)$id

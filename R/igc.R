@@ -52,7 +52,7 @@ igc <- function(data, LLTR = 80, ULTR = 140, a = 1.1, b = 2, c = 30, d = 30){
 
   out <- dplyr::inner_join(out_hyper, out_hypo, by = "id")%>%
     dplyr::group_by(id)%>%
-    dplyr::summarize(igc = hyper_index + hypo_index)
+    dplyr::summarize(IGC = hyper_index + hypo_index)
 
   return(out)
 }

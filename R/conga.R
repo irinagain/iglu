@@ -61,7 +61,7 @@ conga <- function(data, n = 24, tz = ""){
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      conga = conga_single(data.frame(id, time, gl), hours = n, tz = tz)
+      CONGA = conga_single(data.frame(id, time, gl), hours = n, tz = tz)
     )
   if (is_vector) {
     out$id = NULL
