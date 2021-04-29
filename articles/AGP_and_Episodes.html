@@ -105,40 +105,53 @@
 <div id="episode-calculation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#episode-calculation" class="anchor"></a>Episode Calculation</h2>
-<p>The Episode_Calculation function measures the number of hypoglycemia and hyperglycemia that occur more than a certain period.</p>
+<p>The Episode_Calculation function measures the number of episodes that hypoglycemia and hyperglycemia that occur more than a certain period.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="../reference/episode_calculation.html">episode_calculation</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>,lv1_hypo<span class="op">=</span><span class="fl">100.0</span>,lv2_hypo <span class="op">=</span> <span class="fl">70</span>, lv1_hyper<span class="op">=</span> <span class="fl">120.0</span>, lv2_hyper <span class="op">=</span> <span class="fl">180</span>, dur_length <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>
-<span class="co">#&gt;                 id Hypo_ep Hyper_ep hypo_duration hyper_duration low_alert</span>
-<span class="co">#&gt; 1  Subject 1 (Lv1)    2.79     2.64        111.26         196.90     23.91</span>
-<span class="co">#&gt; 2  Subject 2 (Lv1)    0.08     1.15         50.00         964.62      0.27</span>
-<span class="co">#&gt; 3  Subject 3 (Lv1)    1.14     3.71         66.67         287.91      7.36</span>
-<span class="co">#&gt; 4  Subject 4 (Lv1)    2.43     4.71         93.29         218.66     15.27</span>
-<span class="co">#&gt; 5  Subject 5 (Lv1)    1.00     2.42         96.56         534.49      8.74</span>
-<span class="co">#&gt; 6  Subject 1 (Lv2)    0.07     1.14         25.00          85.79      0.16</span>
-<span class="co">#&gt; 7  Subject 2 (Lv2)    0.00     2.54           NaN         306.38      0.00</span>
-<span class="co">#&gt; 8  Subject 3 (Lv2)    0.14     1.57         25.00         136.79      0.25</span>
-<span class="co">#&gt; 9  Subject 4 (Lv2)    0.14     1.07         25.00          50.72      0.39</span>
-<span class="co">#&gt; 10 Subject 5 (Lv2)    0.08     3.25         15.00         137.86      0.09</span>
-<span class="co">#&gt;    high_alert target_range hypo_min_avg hyper_min_avg</span>
-<span class="co">#&gt; 1       43.90        32.18       200.36        100.38</span>
-<span class="co">#&gt; 2       97.45         2.29       961.54        495.00</span>
-<span class="co">#&gt; 3       81.16        11.47       148.57        300.83</span>
-<span class="co">#&gt; 4       63.28        21.45       142.86        150.71</span>
-<span class="co">#&gt; 5       82.41         8.85       296.67        366.50</span>
-<span class="co">#&gt; 6        7.90        91.95        85.50         76.25</span>
-<span class="co">#&gt; 7       68.39        31.61       321.15        239.00</span>
-<span class="co">#&gt; 8       18.79        80.96       127.86        108.00</span>
-<span class="co">#&gt; 9        6.24        93.37        42.50         36.00</span>
-<span class="co">#&gt; 10      34.45        65.46       154.09        117.27</span></pre></div>
-<p>Users can set certain thresholds for the hypo and hyperglycemia by passing parameters, lv1_hypo, lv2_hypo, hy1_hyper, lv2_hpyer. Here, we are passing 70 for the hypoglycemia threshold level 2 threshold and 180 for the hyperglycemia level 2 threshold. By setting a duration length to 15 minutes (the last parameter), the function will count the number of episodes that glucose values go below or above the thresholds more than 15 minutes.</p>
-<p>In this example, we calculated episodes for subject 1. The average numbers of hypo and hyperglycemia for subject 1 (level 1) are 2.7 and 2.6 respectively. It occurred for 111 minutes and 196 minutes in average. You can also see other values such as the mean average values for hypoglycemia and hyperglycemia, and this function can be used for multiple subjects as well.</p>
+<span class="fu"><a href="../reference/episode_calculation.html">episode_calculation</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>,lv2_hypo <span class="op">=</span> <span class="fl">70</span>, lv1_hypo <span class="op">=</span> <span class="fl">120</span>, lv2_hyper <span class="op">=</span> <span class="fl">180</span>, dur_length <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>
+<span class="co">#&gt;                id Hypo_ep Hyper_ep hypo_duration hyper_duration low_alert</span>
+<span class="co">#&gt; 1 Subject 1 (Lv1)    3.14     2.64         243.8         196.90     54.89</span>
+<span class="co">#&gt; 2 Subject 1 (Lv2)    0.07     1.14          25.0          85.79      0.16</span>
+<span class="co">#&gt;   high_alert target_range hypo_min_avg hyper_min_avg</span>
+<span class="co">#&gt; 1       43.9         1.21         0.55          0.44</span>
+<span class="co">#&gt; 2        7.9        91.95         0.00          0.08</span></pre></div>
+<p>In this example, example_data_1_subject contains multiple days, and episode_calculation function calculate the number of episodes across days.</p>
+<div id="parameters" class="section level3">
+<h3 class="hasAnchor">
+<a href="#parameters" class="anchor"></a>Parameters</h3>
+<div id="data" class="section level4">
+<h4 class="hasAnchor">
+<a href="#data" class="anchor"></a>data</h4>
+<p>DataFrame object with column names “id”, “time”, and “gl”. Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.</p>
+</div>
+<div id="lv1_hypo-lv2_hypo-hy1_hyper-lv2_hpyer" class="section level4">
+<h4 class="hasAnchor">
+<a href="#lv1_hypo-lv2_hypo-hy1_hyper-lv2_hpyer" class="anchor"></a>lv1_hypo, lv2_hypo, hy1_hyper, lv2_hpyer</h4>
+<p>Users can set certain thresholds for the hypo and hyperglycemia by passing parameters, lv1_hypo, lv2_hypo, hy1_hyper, lv2_hpyer. Level 2 indicates more severe states than level 1 so the threshold value for the lv2_hypo value should be lower than hy1_hypo value, and the threshold for the lv2_hyper value should higher than lv1_hyper value. Otherwise, the warning will be produced. Here, we are passing 70 for the hypoglycemia threshold level 2 threshold, 120 for hypoglycemia threshold, and 180 for the hyperglycemia level 2 threshold.</p>
+</div>
+<div id="dur_length" class="section level4">
+<h4 class="hasAnchor">
+<a href="#dur_length" class="anchor"></a>dur_length</h4>
+<p>By setting a duration length to 15 minutes (the last parameter), the function will count the number of episodes that glucose values go below or above the thresholds more than 15 minutes.</p>
+</div>
+</div>
+<div id="return-value" class="section level3">
+<h3 class="hasAnchor">
+<a href="#return-value" class="anchor"></a>Return value</h3>
+<p>The function returns a dataframe including number of hypo and hyper episodes, hypo and hyper mean values, mean durations (Minutes), and average mean values per day (%).</p>
+</div>
+<div id="example" class="section level3">
+<h3 class="hasAnchor">
+<a href="#example" class="anchor"></a>Example</h3>
+<p>In this example, we calculated episodes for subject 1. The average numbers of hypo and hyperglycemia for subject 1 (level 1) are 3.14 and 2.64 respectively. The mean duration for hypoglycemia is 243.8 minutes and 196.9 minutes for hyperglycemia. You can also see other values such as the mean average values for hypoglycemia and hyperglycemia, and this function can be used for multiple subjects as well (check by setting the parameter, data =example_data_5_subject).</p>
+</div>
 </div>
 <div id="epicalc_profile-function" class="section level2">
 <h2 class="hasAnchor">
 <a href="#epicalc_profile-function" class="anchor"></a>Epicalc_profile function</h2>
 <p>Visualization of the metrics produced by the <code><a href="../reference/episode_calculation.html">episode_calculation()</a></code> function is done with the function <code><a href="../reference/epicalc_profile.html">epicalc_profile()</a></code>. This function takes the <code><a href="../reference/episode_calculation.html">episode_calculation()</a></code> output and displays it as a tables of the episode metrics as well as plots that visualizes the subject’s glucose level over time. Like <code>episode_calculation</code>, this function is designed to work with one subject data at a time, and the structure of the function output is shown below.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># epicalc_profile(example_data_1_subject)</span></pre></div>
+<span class="fu"><a href="../reference/epicalc_profile.html">epicalc_profile</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></pre></div>
+<p><img src="AGP_and_Episodes_files/figure-html/unnamed-chunk-3-1.png" width="768"></p>
 <p>The function will accept the following six parameters that are passed on to <code><a href="../reference/epicalc_profile.html">epicalc_profile()</a></code>. Like <code><a href="../reference/episode_calculation.html">episode_calculation()</a></code>, there are options to adjust the hypoglycemia and hyperglycemia thresholds. If the hyperglycemia threshold is lower than the hypoglycemia threshold, a warning will be produced.</p>
 <ul>
 <li>“<code>lv1_hypo</code>” - First threshold for what below is considered hypoglycemia. Default is 100 and the units are mg/dL</li>
@@ -149,6 +162,7 @@
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="fu"><a href="../reference/epicalc_profile.html">epicalc_profile</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lv1_hypo<span class="op">=</span><span class="fl">100</span>, lv2_hypo<span class="op">=</span><span class="fl">70</span>, lv1_hyper<span class="op">=</span><span class="fl">120</span>, lv2_hyper<span class="op">=</span><span class="fl">160</span>, color_scheme<span class="op">=</span><span class="st">"Color Scheme 1"</span><span class="op">)</span></pre></div>
+<p><img src="AGP_and_Episodes_files/figure-html/unnamed-chunk-4-1.png" width="768"></p>
 </div>
 </div>
   </div>

@@ -166,7 +166,7 @@
     </tr>
     <tr>
       <th>lv2_hyper</th>
-      <td><p>A double specifying a hyperglycemia threshold for level 1</p></td>
+      <td><p>A double specifying a hyperglycemia threshold for level 2</p></td>
     </tr>
     <tr>
       <th>dur_length</th>
@@ -176,14 +176,23 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Data frame including number of hypo and hyper episodes, hypo and hyper mean values, mean durations, and average mean values per day</p>
+    <p>A dataframe with</p>
+<dt>Hypo_ep</dt><dd><p>A mean value that counts the number of hypogyclemia episodes per days</p></dd>
+<dt>Hyper_ep</dt><dd><p>A mean value that counts the number of hypergyclemia episodes per days</p></dd>
+<dt>hypo_duration</dt><dd><p>A mean value of the hypoglycemia durations per days</p></dd>
+<dt>hyper_duration</dt><dd><p>A mean value of the hyperclycemia durations per days</p></dd>
+<dt>low_alert</dt><dd><p>A mean percentage of time in level 1 and 2 hypoglycemic range</p></dd>
+<dt>target_range</dt><dd><p>A mean percentage of time in target range</p></dd>
+<dt>high_alert</dt><dd><p>A mean percentage of time in level 1 and 2 hyperglycemic ranges</p></dd>
+<dt>hypo_min_avg</dt><dd><p>A mean percentage of time for the hypoglycemia per days</p></dd>
+<dt>hyper_min_avg</dt><dd><p>A mean Percentage of time for the hyperglycemia per days</p></dd>
+
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Johnathan Shih, Jung Hoon Seo</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'>episode_calculation</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, lv1_hypo<span class='op'>=</span><span class='fl'>100</span>, lv1_hyper<span class='op'>=</span> <span class='fl'>120</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'>episode_calculation</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, lv1_hypo<span class='op'>=</span><span class='fl'>100</span>, lv1_hyper<span class='op'>=</span> <span class='fl'>120</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                 id Hypo_ep Hyper_ep hypo_duration hyper_duration low_alert
 #&gt; 1  Subject 1 (Lv1)    2.79     2.64        111.26         196.90     23.91
 #&gt; 2  Subject 2 (Lv1)    0.08     1.15         50.00         964.62      0.27
@@ -196,16 +205,17 @@
 #&gt; 9  Subject 4 (Lv2)    0.14     2.57         25.00          87.95      0.39
 #&gt; 10 Subject 5 (Lv2)    0.08     4.00         15.00         172.26      0.09
 #&gt;    high_alert target_range hypo_min_avg hyper_min_avg
-#&gt; 1       43.90        32.18       200.36        100.38
-#&gt; 2       97.45         2.29       961.54        495.00
-#&gt; 3       81.16        11.47       148.57        300.83
-#&gt; 4       63.28        21.45       142.86        150.71
-#&gt; 5       82.41         8.85       296.67        366.50
-#&gt; 6       13.51        86.34       107.08        105.00
-#&gt; 7       85.09        14.91       635.77        230.00
-#&gt; 8       34.89        64.87       132.14        149.17
-#&gt; 9       17.55        82.07        72.73         71.88
-#&gt; 10      50.80        49.12       184.17        113.18</div></pre>
+#&gt; 1       43.90        32.18         0.24          0.44
+#&gt; 2       97.45         2.29         0.00          0.97
+#&gt; 3       81.16        11.47         0.07          0.81
+#&gt; 4       63.28        21.45         0.15          0.63
+#&gt; 5       82.41         8.85         0.09          0.82
+#&gt; 6       13.51        86.34         0.00          0.14
+#&gt; 7       85.09        14.91         0.00          0.85
+#&gt; 8       34.89        64.87         0.00          0.35
+#&gt; 9       17.55        82.07         0.00          0.18
+#&gt; 10      50.80        49.12         0.00          0.51</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
