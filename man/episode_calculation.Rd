@@ -22,19 +22,28 @@ episode_calculation(
 
 \item{lv1_hyper}{A double specifying a hyperglycemia threshold for level 1}
 
-\item{lv2_hyper}{A double specifying a hyperglycemia threshold for level 1}
+\item{lv2_hyper}{A double specifying a hyperglycemia threshold for level 2}
 
 \item{dur_length}{An integer or a double specifying a duration length in minutes}
 }
 \value{
-Data frame including number of hypo and hyper episodes, hypo and hyper mean values, mean durations, and average mean values per day
+A dataframe with
+\item{Hypo_ep}{A mean value that counts the number of hypogyclemia episodes per days}
+\item{Hyper_ep}{A mean value that counts the number of hypergyclemia episodes per days}
+\item{hypo_duration}{A mean value of the hypoglycemia durations per days}
+\item{hyper_duration}{A mean value of the hyperclycemia durations per days}
+\item{low_alert}{A mean percentage of time in level 1 and 2 hypoglycemic range}
+\item{target_range}{A mean percentage of time in target range}
+\item{high_alert}{A mean percentage of time in level 1 and 2 hyperglycemic ranges}
+\item{hypo_min_avg}{A mean percentage of time for the hypoglycemia per days}
+\item{hyper_min_avg}{A mean Percentage of time for the hyperglycemia per days}
 }
 \description{
 The function episode calculation produces the number of Hypo/Hyperglycemic events as well as other statistics such as mean duration
 }
 \examples{
-
 episode_calculation(example_data_5_subject, lv1_hypo=100, lv1_hyper= 120)
+
 }
 \author{
 Johnathan Shih, Jung Hoon Seo

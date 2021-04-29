@@ -1,18 +1,9 @@
 #' Display Episode Calculation statistics for selected subject
 #' @name epicalc_profile
 #'
-#'
-#' @param data DataFrame object with column names "id", "time", and "gl"
-#'
-#' @param lv1_hypo A double specifying a hypoglycemia threshold for level 1
-#'
-#' @param lv2_hypo A double specifying a hypoglycemia threshold for level 2
-#'
-#' @param lv1_hyper A double specifying a hyperglycemia threshold for level 1
-#'
-#' @param lv2_hyper A double specifying a hyperglycemia threshold for level 1
-#'
-#' @param color_scheme String corresponding to the chosen color scheme.
+#' @inheritParams episode_calculation
+#' @param color_scheme String corresponding to the chosen color scheme. Acceptable choices are: "Color Scheme 1", "Color Scheme 2", and
+#' "Color Scheme 3". Color Scheme 1 is orange/green/red. Color Scheme 2 is red/white/blue. Color Scheme 3 is orange/green/red.
 #'
 #' @return A plot displaying the varying glucose levels (mg/dL) of the subject in a day as well as the statistics for the episodes.
 #'
@@ -88,10 +79,10 @@ epicalc_profile <- function(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hype
   tableStat[5, 5] = paste0(as.character(format(round(epicalc[2,]$hyper_duration, 2), nsmall = 2)), " min")
 
   tableStat[6, 1] = "Avg min (per day)"
-  tableStat[6, 2] = paste0(as.character(format(round(epicalc[1,]$hypo_min_avg, 2), nsmall = 2)), " min")
-  tableStat[6, 3] = paste0(as.character(format(round(epicalc[1,]$hyper_min_avg, 2), nsmall = 2)), " min")
-  tableStat[6, 4] = paste0(as.character(format(round(epicalc[2,]$hypo_min_avg, 2), nsmall = 2)), " min")
-  tableStat[6, 5] = paste0(as.character(format(round(epicalc[2,]$hyper_min_avg, 2), nsmall = 2)), " min")
+  tableStat[6, 2] = paste0(as.character(format(round(epicalc[1,]$hypo_min_avg, 2), nsmall = 2)), " %")
+  tableStat[6, 3] = paste0(as.character(format(round(epicalc[1,]$hyper_min_avg, 2), nsmall = 2)), " %")
+  tableStat[6, 4] = paste0(as.character(format(round(epicalc[2,]$hypo_min_avg, 2), nsmall = 2)), " %")
+  tableStat[6, 5] = paste0(as.character(format(round(epicalc[2,]$hyper_min_avg, 2), nsmall = 2)), " %")
 
   #Styling the table
   mytheme <- gridExtra::ttheme_minimal(base_size = 10, padding = unit(c(4,2),"mm"))

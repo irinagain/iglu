@@ -22,9 +22,10 @@ epicalc_profile(
 
 \item{lv1_hyper}{A double specifying a hyperglycemia threshold for level 1}
 
-\item{lv2_hyper}{A double specifying a hyperglycemia threshold for level 1}
+\item{lv2_hyper}{A double specifying a hyperglycemia threshold for level 2}
 
-\item{color_scheme}{String corresponding to the chosen color scheme.}
+\item{color_scheme}{String corresponding to the chosen color scheme. Acceptable choices are: "Color Scheme 1", "Color Scheme 2", and
+"Color Scheme 3". Color Scheme 1 is orange/green/red. Color Scheme 2 is red/white/blue. Color Scheme 3 is orange/green/red.}
 }
 \value{
 A plot displaying the varying glucose levels (mg/dL) of the subject in a day as well as the statistics for the episodes.
