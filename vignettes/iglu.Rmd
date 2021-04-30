@@ -203,6 +203,53 @@ sd_measures(example_data_5_subject)
 
 Notice the high fluctuations in Subject 5, with all but one subtypes of standard deviation being the largest for Subject 5. This provides an additional level of CGM data interpretation, since frequent or large glucose fluctuations may contribute to diabetes-related complications independently from chronic hyperglycemia.
 
+# Calculating metrics for sleep or wake periods
+
+Iglu provides a function for calculating metrics over a given time-range. The calculate_sleep_wake function allows the user to apply an arbitrary function to given data after it has been filtered by time of day. It supports calculating on inside the time range, outside the time range, or both separately. 
+
+## Using calculate_day_night
+
+To use this function, pass it the data you want and the function or name of the function you want to apply. For example, to calculate the standard deviation of glucose readings from 12-6am, the function's default time period, the following call will work.
+
+```{r}
+calculate_sleep_wake(example_data_1_subject, sd_glu, calculate = "sleep")
+```
+
+A custom time period can be defined with the sleep_start and sleep_end parameters. The values of these parameters should be real numbers between 0-24. If an integer is passed to sleep_start, the whole hour will be included. If an integer is passed to sleep_end, everything up to but not including that hour will be included.
+The following call will calculate the metrics for readings between 2:00-7:59am.  
+
+```{r}
+calculate_sleep_wake(example_data_5_subject, sd_measures, sleep_start = 2, sleep_end = 8, calculate = "sleep")
+```
+
+There is an option to calculate for either sleep, wake, or both periods. By default, the metric will be calculated for the sleep period. To calculate for the wake period, set the "calculate" parameter to "wake".
+The following call will calculate the metric for all readings outside of 11pm-6:59am
+
+```{r}
+calculate_sleep_wake(example_data_5_subject, grade, sleep_start = 23, sleep_end = 7, calculate = "wake")
+```
+
+
+To calculate for sleep and wake periods separately and return both of those values, labeled accordingly, set the 'calculate' parameter to 'both'.
+
+```{r}
+calculate_sleep_wake(example_data_5_subject, gmi, calculate = "both")
+```
+
+Custom parameters can still be passed to the applied function. Any parameters with different names from calculate_sleep_wake's parameters will be passed on to the function.
+The following call applies COGI with the custom defined targets and weights.
+
+```{r}
+calculate_sleep_wake(example_data_5_subject, cogi, calculate = "sleep", targets = c(80, 150), weights = c(.3,.2,.5))
+```
+
+All of these options can be combined 
+
+```{r}
+calculate_sleep_wake(example_data_5_subject, grade_eugly, sleep_start = 1, sleep_end = 9, calculate = "both", lower = 80, upper = 150)
+```
+
+
 # Visualizations
 
 The iglu package supports multiple plot types summarized below:  

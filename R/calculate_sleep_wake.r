@@ -1,15 +1,15 @@
 #' Calculate metrics for values inside and/or outside a specified time range.
 #'
 #' @description
-#' This function applies a given function to a subset of data filtered by time of day
+#' This function applies a given function to a subset of data filtered by time of day.
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl".
 #'
 #' @param FUN Function to be applied to the filtered data.
 #'
-#' @param after_hour Numeric between 0-24 signifying the hour at which the time range should start.
+#' @param sleep_start Numeric between 0-24 signifying the hour at which the time range should start.
 #'
-#' @param before_hour Numeric between 0-24 signifying the hour at which the time range should end.
+#' @param sleep_end Numeric between 0-24 signifying the hour at which the time range should end.
 #'
 #' @param calculate String determining whether FUN should be applied to values inside or outside the time range. Both separately is an option
 #'
@@ -29,36 +29,37 @@
 #' specifying a function to be searched for from the environment of the call to apply.
 #' Arguments in ... cannot have the same name as any of the other arguments, and care may be needed to avoid partial matching to FUN.
 #' FUN is applied to the data after the data is filtered based on whether its hour falls within the given range.
-#' If after_hour is an integer, all times within that hour will be included in the range, but if before_hour is an integer
+#' If sleep_start is an integer, all times within that hour will be included in the range, but if sleep_end is an integer
 #' only times up to that hour will be included in the range.
+#' If sleep_start is after sleep_end, the data will be filtered to include all hours after sleep_start and all times before sleep_end.
 #'
 #'
 #' @examples
 #'
 #' data(example_data_1_subject)
-#' calculate_day_night(example_data_1_subject, sd_glu)
+#' calculate_sleep_wake(example_data_1_subject, sd_glu)
 #'
 #' data(example_data_5_subject)
-#' calculate_day_night(example_data_5_subject, cogi, targets = c(80, 150), weights = c(.3,.2,.5))
-#' calculate_day_night(example_data_5_subject, sd_measures, after_hour = 2, before_hour = 8, calculate = "both")
+#' calculate_sleep_wake(example_data_5_subject, cogi, targets = c(80, 150), weights = c(.3,.2,.5))
+#' calculate_sleep_wake(example_data_5_subject, sd_measures, sleep_start = 2, sleep_end = 8, calculate = "both")
 #'
 
 
-#param names need to be redone, very unclear
-calculate_day_night = function(data, FUN, after_hour = 0, before_hour = 6, calculate = c("inside", "outside", "both"), ...) {
+calculate_sleep_wake = function(data, FUN, sleep_start = 0, sleep_end = 6, calculate = c("sleep", "wake", "both"), ...) {
   append_str = function(str_vec, to_append) {
     sapply(str_vec, FUN = function (x) {paste0(x, to_append)})
   }
-  if (after_hour > before_hour) {
-    stop("after_hour after before_hour. after_hour should be the hour after which (inclusive) you want times to be included.\nIf you want to calculate values for e.g. 6am-1am, consider using calculate = 'outside'\nand setting after_time = 1am, before_time = 6am")
-  }
   FUN = match.fun(FUN)
   calculate = tolower(calculate)
-  filter_gate = (lubridate::hour(data$time) >= after_hour & lubridate::hour(data$time) < before_hour)
-  if (calculate == "inside") {
+  if (sleep_start > sleep_end) {
+    filter_gate = (lubridate::hour(data$time) >= sleep_start | lubridate::hour(data$time) < sleep_end)
+  } else {
+    filter_gate = (lubridate::hour(data$time) >= sleep_start & lubridate::hour(data$time) < sleep_end)
+  }
+  if (calculate == "sleep") {
     filtered_data = dplyr::filter(data, filter_gate)
     out = FUN(filtered_data, ...)
-  } else if (calculate == "outside") {
+  } else if (calculate == "wake") {
     filtered_data = dplyr::filter(data, !filter_gate)
     out = FUN(filtered_data, ...)
   } else if (calculate == "both") {
@@ -71,13 +72,13 @@ calculate_day_night = function(data, FUN, after_hour = 0, before_hour = 6, calcu
     if (is.vector(data)) {
       out = inside
       out$outside = outside
-      colnames(out) = c(append_str(innames[2:length(innames)]," in range"), append_str(outnames[2:length(outnames)]," out of range"))
+      colnames(out) = c(append_str(innames[2:length(innames)]," sleep"), append_str(outnames[2:length(outnames)]," wake"))
       return(out)
     }
     out = dplyr::left_join(inside, outside, by = "id")
-    colnames(out) = c("id", append_str(innames[2:length(innames)]," in range"), append_str(outnames[2:length(outnames)]," out of range"))
+    colnames(out) = c("id", append_str(innames[2:length(innames)]," sleep"), append_str(outnames[2:length(outnames)]," wake"))
   } else {
-    stop("Please enter one of 'inside', 'outside', 'both' for calculate.")
+    stop("Please enter one of 'sleep', 'wake', 'both' for calculate.")
   }
   return(out)
 }
