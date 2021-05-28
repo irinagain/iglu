@@ -25,7 +25,7 @@ shinyUI(fluidPage(
                             textInput('id', 'Enter column name corresponding to subject ID', value = 'id'),
                             textInput('time', 'Enter column name corresponding to timestamp', value = 'time'),
                             textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl'),
-                            downloadButton("downloaddata", "Download Data")
+                            downloadButton("downloaddata", "Download Data"),
                             selectInput('tz', 'Select corresponding time zone', choices = c(OlsonNames()))
                ),
                mainPanel(tableOutput("data"))
@@ -79,9 +79,17 @@ shinyUI(fluidPage(
                uiOutput("select_second_parameter"),
                uiOutput("second_parameter_helptext"),
                uiOutput("select_third_parameter"),
-               uiOutput("third_parameter_helptext")),
-               mainPanel(DT::dataTableOutput("metric"))
-             )),
+               uiOutput("third_parameter_helptext"),
+               checkboxInput("filter_sleep_wake", "Calculate metric for sleeping/waking hours?", value = FALSE, width = NULL),
+               conditionalPanel(
+                 condition = "input.filter_sleep_wake",
+                 numericInput("sleep_start", "Sleep start time", 0, min = 0, max = 24),
+                 numericInput("sleep_end", "Sleep end time", 6, min = 0, max = 24),
+                 uiOutput("sleep_wake_help"),
+                 selectInput("sleep_or_wake", "Calculate for sleep, wake, or both?", choices = c("Sleep" = "sleep", "Wake" = "wake", "Both" = "both"), selected = "Sleep"))
+               ),
+               mainPanel(DT::dataTableOutput("metric")))
+    ),
 
     tabPanel("Plots", fluid = TRUE,
              sidebarLayout(
