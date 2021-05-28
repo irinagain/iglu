@@ -295,6 +295,77 @@
 <p>Notice the high fluctuations in Subject 5, with all but one subtypes of standard deviation being the largest for Subject 5. This provides additional level of CGM data interpretation, since frequent or large glucose fluctuations may contribute to diabetes-related complications independently from chronic hyperglycemia.</p>
 </div>
 </div>
+<div id="calculating-metrics-for-sleep-or-wake-periods" class="section level1">
+<h1 class="hasAnchor">
+<a href="#calculating-metrics-for-sleep-or-wake-periods" class="anchor"></a>Calculating metrics for sleep or wake periods</h1>
+<p>Iglu provides a function for calculating metrics over a given time-range. The calculate_sleep_wake function allows the user to apply an arbitrary function to given data after it has been filtered by time of day. It supports calculating on inside the time range, outside the time range, or both separately.</p>
+<div id="using-calculate_sleep_wake" class="section level2">
+<h2 class="hasAnchor">
+<a href="#using-calculate_sleep_wake" class="anchor"></a>Using calculate_sleep_wake</h2>
+<p>To use this function, pass it the data you want and the function or name of the function you want to apply. For example, to calculate the standard deviation of glucose readings from 12-6am, the function’s default time period, the following call will work.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit">
+<span class="fu"><a href="../reference/calculate_sleep_wake.html">calculate_sleep_wake</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, <span class="va">sd_glu</span>, calculate <span class="op">=</span> <span class="st">"sleep"</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 1 x 2</span>
+<span class="co">#&gt;   id           SD</span>
+<span class="co">#&gt;   &lt;fct&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Subject 1  25.4</span></pre></div>
+<p>A custom time period can be defined with the sleep_start and sleep_end parameters. The values of these parameters should be real numbers between 0-24. If an integer is passed to sleep_start, the whole hour will be included. If an integer is passed to sleep_end, everything up to but not including that hour will be included. The following call will calculate the metrics for readings between 2:00-7:59am.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="fu"><a href="../reference/calculate_sleep_wake.html">calculate_sleep_wake</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, <span class="va">sd_measures</span>, sleep_start <span class="op">=</span> <span class="fl">2</span>, sleep_end <span class="op">=</span> <span class="fl">8</span>, calculate <span class="op">=</span> <span class="st">"sleep"</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 5 x 7</span>
+<span class="co">#&gt;   id          SDw SDhhmm SDwsh  SDdm   SDb SDbdm</span>
+<span class="co">#&gt;   &lt;fct&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Subject 1  10.2   3.02  3.15  21.3  23.9  12.2</span>
+<span class="co">#&gt; 2 Subject 2  18.9  12.8   6.22  41.9  43.6  18.2</span>
+<span class="co">#&gt; 3 Subject 3  17.6   9.99  4.86  20.1  32.7  26.8</span>
+<span class="co">#&gt; 4 Subject 4  10.8   3.98  3.43  12.2  17.3  12.0</span>
+<span class="co">#&gt; 5 Subject 5  28.1  10.7   5.88  29.4  38.4  27.2</span></pre></div>
+<p>There is an option to calculate for either sleep, wake, or both periods. By default, the metric will be calculated for the sleep period. To calculate for the wake period, set the “calculate” parameter to “wake”. The following call will calculate the metric for all readings outside of 11pm-6:59am</p>
+<div class="sourceCode" id="cb19"><pre class="downlit">
+<span class="fu"><a href="../reference/calculate_sleep_wake.html">calculate_sleep_wake</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, <span class="va">grade</span>, sleep_start <span class="op">=</span> <span class="fl">23</span>, sleep_end <span class="op">=</span> <span class="fl">7</span>, calculate <span class="op">=</span> <span class="st">"wake"</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 5 x 2</span>
+<span class="co">#&gt;   id        GRADE</span>
+<span class="co">#&gt;   &lt;fct&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Subject 1  4.44</span>
+<span class="co">#&gt; 2 Subject 2 15.5 </span>
+<span class="co">#&gt; 3 Subject 3  7.28</span>
+<span class="co">#&gt; 4 Subject 4  3.51</span>
+<span class="co">#&gt; 5 Subject 5 11.7</span></pre></div>
+<p>To calculate for sleep and wake periods separately and return both of those values, labeled accordingly, set the ‘calculate’ parameter to ‘both’.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit">
+<span class="fu"><a href="../reference/calculate_sleep_wake.html">calculate_sleep_wake</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, <span class="va">gmi</span>, calculate <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 5 x 3</span>
+<span class="co">#&gt;   id        `GMI sleep` `GMI wake`</span>
+<span class="co">#&gt;   &lt;fct&gt;           &lt;dbl&gt;      &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Subject 1        5.97       6.41</span>
+<span class="co">#&gt; 2 Subject 2        8.58       8.52</span>
+<span class="co">#&gt; 3 Subject 3        7.05       6.98</span>
+<span class="co">#&gt; 4 Subject 4        6.70       6.31</span>
+<span class="co">#&gt; 5 Subject 5        6.94       7.69</span></pre></div>
+<p>Custom parameters can still be passed to the applied function. Any parameters with different names from calculate_sleep_wake’s parameters will be passed on to the function. The following call applies COGI with the custom defined targets and weights.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit">
+<span class="fu"><a href="../reference/calculate_sleep_wake.html">calculate_sleep_wake</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, <span class="va">cogi</span>, calculate <span class="op">=</span> <span class="st">"sleep"</span>, targets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">150</span><span class="op">)</span>, weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.3</span>,<span class="fl">.2</span>,<span class="fl">.5</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 5 x 2</span>
+<span class="co">#&gt;   id         COGI</span>
+<span class="co">#&gt;   &lt;fct&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Subject 1 0.914</span>
+<span class="co">#&gt; 2 Subject 2 0.524</span>
+<span class="co">#&gt; 3 Subject 3 0.778</span>
+<span class="co">#&gt; 4 Subject 4 0.894</span>
+<span class="co">#&gt; 5 Subject 5 0.638</span></pre></div>
+<p>All of these options can be combined</p>
+<div class="sourceCode" id="cb22"><pre class="downlit">
+<span class="fu"><a href="../reference/calculate_sleep_wake.html">calculate_sleep_wake</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, <span class="va">grade_eugly</span>, sleep_start <span class="op">=</span> <span class="fl">1</span>, sleep_end <span class="op">=</span> <span class="fl">9</span>, calculate <span class="op">=</span> <span class="st">"both"</span>, lower <span class="op">=</span> <span class="fl">80</span>, upper <span class="op">=</span> <span class="fl">150</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 5 x 3</span>
+<span class="co">#&gt;   id        `GRADE_eugly sleep` `GRADE_eugly wake`</span>
+<span class="co">#&gt;   &lt;fct&gt;                   &lt;dbl&gt;              &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 Subject 1               59.0               31.0 </span>
+<span class="co">#&gt; 2 Subject 2                1.32               1.38</span>
+<span class="co">#&gt; 3 Subject 3               41.0               21.6 </span>
+<span class="co">#&gt; 4 Subject 4               55.7               37.4 </span>
+<span class="co">#&gt; 5 Subject 5               25.3                6.99</span></pre></div>
+</div>
+</div>
 <div id="visualizations" class="section level1">
 <h1 class="hasAnchor">
 <a href="#visualizations" class="anchor"></a>Visualizations</h1>
@@ -372,21 +443,21 @@
 <h2 class="hasAnchor">
 <a href="#example-plots-time-series" class="anchor"></a>Example plots: time-series</h2>
 <p>The simplest visual is the time series plot generated using the function <code>plot_glu</code>. This plot type can support both single and multiple subjects.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
+<div class="sourceCode" id="cb23"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span> <span class="st">'tsplot'</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
+<p><img src="iglu_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
+<div class="sourceCode" id="cb24"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'tsplot'</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-17-2.png" width="672"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-23-2.png" width="672"></p>
 <p>We set the ‘tz’ (timezone) parameter to be EST because the data was collected in the eastern time zone. If left blank, the time zone used for plotting will be the system’s time zone. Time zone is mainly an issue in cases where daylight savings time might make it appear as though there were duplicate values at some time points.</p>
 <p>To just plot a single subject of interest from the grid of time series plots, set the ‘subjects’ parameter to be that subject’s ID.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
+<div class="sourceCode" id="cb25"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'tsplot'</span>, subjects <span class="op">=</span> <span class="st">'Subject 3'</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
 <p>The red lines can be shifted to any Lower and Upper Target Range Limits with the ‘LLTR’ and ‘ULTR’ arguments.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
+<div class="sourceCode" id="cb26"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'tsplot'</span>, subjects <span class="op">=</span> <span class="st">'Subject 3'</span>, LLTR <span class="op">=</span> <span class="fl">80</span>, ULTR <span class="op">=</span> <span class="fl">150</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-25-1.png" width="672"></p>
 </div>
 <div id="lasagna-plots" class="section level2">
 <h2 class="hasAnchor">
@@ -397,13 +468,13 @@
 <h2 class="hasAnchor">
 <a href="#example-plots-rate-of-change" class="anchor"></a>Example plots: Rate of change</h2>
 <p>In addition , <code>iglu</code> also allows one to visualize local changes in glucose variability as measured by rate of change <a href="https://doi.org/10.1089/dia.2008.0138">Clarke et al. (2009)</a>. There are two types of visualizations associated with rate of change, a time-series plot and a histogram. For both plots, the colors indicate rate of change: white indicates a stable rate of change while red and blue represent times at which the glucose is significantly rising or falling, respectively. Thus colored points represent times of glucose variability, while white points represent glucose stability. The below figure shows a side by side comparison of rate of change time-series plots for two subjects. Subject 1 shows significantly less glucose variability than Subject 5.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
+<div class="sourceCode" id="cb27"><pre class="downlit">
 <span class="fu"><a href="../reference/plot_roc.html">plot_roc</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, subjects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Subject 1"</span>, <span class="st">"Subject 5"</span><span class="op">)</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-26-1.png" width="672"></p>
 <p>The next figure shows a side by side comparison of rate of change histogram plots for the same subjects. Once again, the colors show in what direction and how quickly the glucose is changing. The histogram plots allow one to immediately assess the variation in rate of change. Extreme values on either end of the histogram indicate very rapid rises or drops in glucose - a high degree of local variability. Here, Subject 1 once again shows lower glucose variability by having a narrower histogram with most values falling between -2 mg/dl/min and 2 mg/dl/min. Subject 5 has a shorter, more widely distributed histogram indicating greater glucose variability.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit">
+<div class="sourceCode" id="cb28"><pre class="downlit">
 <span class="fu"><a href="../reference/hist_roc.html">hist_roc</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, subjects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Subject 1"</span>, <span class="st">"Subject 5"</span><span class="op">)</span><span class="op">)</span></pre></div>
-<p><img src="iglu_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
+<p><img src="iglu_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 </div>
 </div>
   </div>

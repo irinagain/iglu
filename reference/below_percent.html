@@ -186,34 +186,34 @@ doi: <a href='https://doi.org/10.1089/dia.2008.0132'>10.1089/dia.2008.0132</a>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 
 <span class='fu'>below_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 3</span>
 #&gt;   id        below_54 below_70
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1        0    0.137</div><div class='input'><span class='fu'>below_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, targets_below <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>50</span>, <span class='fl'>100</span>, <span class='fl'>180</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 4</span><span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1        0    0.137</div><div class='input'><span class='fu'>below_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, targets_below <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>50</span>, <span class='fl'>100</span>, <span class='fl'>180</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 4</span>
 #&gt;   id        below_100 below_180 below_50
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1      27.3      91.8        0</div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1      27.3      91.8        0</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
 
 <span class='fu'>below_percent</span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 3</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 3</span>
 #&gt;   id        below_54 below_70
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1   0         0.137
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Subject 2   0         0    
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Subject 3   0         0.391
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Subject 4   0.081</span><span style='text-decoration: underline;'>9</span><span>    0.355
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> Subject 5   0         0.103</div><div class='input'><span class='fu'>below_percent</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, targets_below <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>80</span>, <span class='fl'>180</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 3</span><span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1   0         0.137
+#&gt; <span style='color: #BCBCBC;'>2</span> Subject 2   0         0    
+#&gt; <span style='color: #BCBCBC;'>3</span> Subject 3   0         0.391
+#&gt; <span style='color: #BCBCBC;'>4</span> Subject 4   0.081<span style='text-decoration: underline;'>9</span>    0.355
+#&gt; <span style='color: #BCBCBC;'>5</span> Subject 5   0         0.103</div><div class='input'><span class='fu'>below_percent</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, targets_below <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>80</span>, <span class='fl'>180</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 3</span>
 #&gt;   id        below_180 below_80
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1      91.8    0.652
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Subject 2      26.4    0    
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Subject 3      81.7    0.913
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Subject 4      95.4    2.05 
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> Subject 5      62.2    1.13 </div><div class='input'>
-</div></span></pre>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1      91.8    0.652
+#&gt; <span style='color: #BCBCBC;'>2</span> Subject 2      26.4    0    
+#&gt; <span style='color: #BCBCBC;'>3</span> Subject 3      81.7    0.913
+#&gt; <span style='color: #BCBCBC;'>4</span> Subject 4      95.4    2.05 
+#&gt; <span style='color: #BCBCBC;'>5</span> Subject 5      62.2    1.13 </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

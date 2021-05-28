@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate High Blood Glucose Index (HBGI) — hbgi • iglu</title>
+<title>Calculate metrics for values inside and/or outside a specified time range. — calculate_sleep_wake • iglu</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Calculate High Blood Glucose Index (HBGI) — hbgi" />
-<meta property="og:description" content="The function hbgi produces HBGI values in a tibble object." />
+<meta property="og:title" content="Calculate metrics for values inside and/or outside a specified time range. — calculate_sleep_wake" />
+<meta property="og:description" content="This function applies a given function to a subset of data filtered by time of day." />
 
 
 
@@ -127,68 +127,99 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate High Blood Glucose Index (HBGI)</h1>
+    <h1>Calculate metrics for values inside and/or outside a specified time range.</h1>
     
-    <div class="hidden name"><code>hbgi.Rd</code></div>
+    <div class="hidden name"><code>calculate_sleep_wake.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The function hbgi produces HBGI values in a tibble object.</p>
+    <p>This function applies a given function to a subset of data filtered by time of day.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>hbgi</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>calculate_sleep_wake</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  <span class='va'>FUN</span>,
+  sleep_start <span class='op'>=</span> <span class='fl'>0</span>,
+  sleep_end <span class='op'>=</span> <span class='fl'>6</span>,
+  calculate <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sleep"</span>, <span class='st'>"wake"</span>, <span class='st'>"both"</span><span class='op'>)</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>DataFrame object with column names "id", "time", and "gl",
-or numeric vector of glucose values.</p></td>
+      <td><p>DataFrame object with column names "id", "time", and "gl".</p></td>
+    </tr>
+    <tr>
+      <th>FUN</th>
+      <td><p>Function to be applied to the filtered data.</p></td>
+    </tr>
+    <tr>
+      <th>sleep_start</th>
+      <td><p>Numeric between 0-24 signifying the hour at which the time range should start.</p></td>
+    </tr>
+    <tr>
+      <th>sleep_end</th>
+      <td><p>Numeric between 0-24 signifying the hour at which the time range should end.</p></td>
+    </tr>
+    <tr>
+      <th>calculate</th>
+      <td><p>String determining whether FUN should be applied to values inside or outside the time range. Both separately is an option</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Optional arguments which will be passed to FUN</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If a data.frame object is passed, then a tibble object with
-two columns: subject id and corresponding HBGI value is returned. If a vector of glucose
-values is passed, then a tibble object with just the HBGI value is returned.
-as.numeric() can be wrapped around the latter to output just a numeric value.</p>
+    <p>An object of the same return type as FUN, with columns corresponding to the values returned by FUN. Separated for values inside or outside the time range, if calculate = both.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A tibble object with 1 row for each subject, a column for subject id and
-a column for HBGI values is returned. NA glucose values are
-omitted from the calculation of the HBGI.</p>
-<p>HBGI is calculated by \(1/n * \sum (10 * fbg_i ^2)\),
-where \(fbg_i = max(0, 1.509 * (log(BG_i)^{1.084} - 5.381)\),
-BG_i is the ith Blood Glucose measurement for a subject, and
-n is the total number of measurements for that subject.</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Kovatchev et al. (2006) Evaluation of a New Measure of Blood Glucose Variability in,
-Diabetes
-<em>Diabetes care</em> <strong>29</strong> .2433-2438,
-doi: <a href='https://doi.org/10.2337/dc06-1085'>10.2337/dc06-1085</a>
-.</p>
+    <p>An object of the same return type as FUN, with the same column names as FUN will be returned.
+If calculate = "both", there will be columns for FUN applied to both inside and outside values,
+with either "in range" or "out of range" append to signify whether the statistic was calculated on values
+which were inside the time range or outside the range.</p>
+<p>FUN is found by a call to match.fun and typically is either a function or a character string
+specifying a function to be searched for from the environment of the call to apply.
+Arguments in ... cannot have the same name as any of the other arguments, and care may be needed to avoid partial matching to FUN.
+FUN is applied to the data after the data is filtered based on whether its hour falls within the given range.
+If sleep_start is an integer, all times within that hour will be included in the range, but if sleep_end is an integer
+only times up to that hour will be included in the range.
+If sleep_start is after sleep_end, the data will be filtered to include all hours after sleep_start and all times before sleep_end.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-<span class='fu'>hbgi</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
+<span class='fu'>calculate_sleep_wake</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, <span class='va'>sd_glu</span>, calculate <span class='op'>=</span> <span class='st'>"sleep"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 2</span>
-#&gt;   id         HBGI
+#&gt;   id           SD
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1  1.81</div><div class='input'>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1  25.4</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-<span class='fu'>hbgi</span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
+<span class='fu'>calculate_sleep_wake</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, <span class='va'>cogi</span>, targets <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>80</span>, <span class='fl'>150</span><span class='op'>)</span>, weights <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>.3</span>,<span class='fl'>.2</span>,<span class='fl'>.5</span><span class='op'>)</span>, calculate <span class='op'>=</span> <span class='st'>"wake"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 2</span>
-#&gt;   id         HBGI
+#&gt;   id         COGI
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1  1.81
-#&gt; <span style='color: #BCBCBC;'>2</span> Subject 2 16.2 
-#&gt; <span style='color: #BCBCBC;'>3</span> Subject 3  5.11
-#&gt; <span style='color: #BCBCBC;'>4</span> Subject 4  1.87
-#&gt; <span style='color: #BCBCBC;'>5</span> Subject 5  8.90</div><div class='input'>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1 0.824
+#&gt; <span style='color: #BCBCBC;'>2</span> Subject 2 0.525
+#&gt; <span style='color: #BCBCBC;'>3</span> Subject 3 0.694
+#&gt; <span style='color: #BCBCBC;'>4</span> Subject 4 0.822
+#&gt; <span style='color: #BCBCBC;'>5</span> Subject 5 0.559</div><div class='input'><span class='fu'>calculate_sleep_wake</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, <span class='va'>sd_measures</span>, sleep_start <span class='op'>=</span> <span class='fl'>2</span>, sleep_end <span class='op'>=</span> <span class='fl'>8</span>, calculate <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 13</span>
+#&gt;   id        `SDw sleep` `SDhhmm sleep` `SDwsh sleep` `SDdm sleep` `SDb sleep`
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1        10.2           3.02          3.15         21.3        23.9
+#&gt; <span style='color: #BCBCBC;'>2</span> Subject 2        18.9          12.8           6.22         41.9        43.6
+#&gt; <span style='color: #BCBCBC;'>3</span> Subject 3        17.6           9.99          4.86         20.1        32.7
+#&gt; <span style='color: #BCBCBC;'>4</span> Subject 4        10.8           3.98          3.43         12.2        17.3
+#&gt; <span style='color: #BCBCBC;'>5</span> Subject 5        28.1          10.7           5.88         29.4        38.4
+#&gt; <span style='color: #949494;'># … with 7 more variables: SDbdm sleep &lt;dbl&gt;, SDw wake &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   SDhhmm wake &lt;dbl&gt;, SDwsh wake &lt;dbl&gt;, SDdm wake &lt;dbl&gt;, SDb wake &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   SDbdm wake &lt;dbl&gt;</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

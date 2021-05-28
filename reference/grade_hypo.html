@@ -179,33 +179,33 @@ doi: <a href='https://doi.org/10.1111/j.1464-5491.2007.02119.x'>10.1111/j.1464-5
     <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 <span class='fu'>grade_hypo</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 2</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 2</span>
 #&gt;   id        GRADE_hypo
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1      0.221</div><div class='input'><span class='fu'>grade_hypo</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, lower <span class='op'>=</span> <span class='fl'>70</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 2</span><span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1      0.221</div><div class='input'><span class='fu'>grade_hypo</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, lower <span class='op'>=</span> <span class='fl'>70</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 2</span>
 #&gt;   id        GRADE_hypo
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1      0.118</div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1      0.118</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
 <span class='fu'>grade_hypo</span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 2</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 2</span>
 #&gt;   id        GRADE_hypo
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1      0.221
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Subject 2      0    
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Subject 3      0.287
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Subject 4      0.702
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> Subject 5      0.109</div><div class='input'><span class='fu'>grade_hypo</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, lower <span class='op'>=</span> <span class='fl'>65</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 2</span><span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1      0.221
+#&gt; <span style='color: #BCBCBC;'>2</span> Subject 2      0    
+#&gt; <span style='color: #BCBCBC;'>3</span> Subject 3      0.287
+#&gt; <span style='color: #BCBCBC;'>4</span> Subject 4      0.702
+#&gt; <span style='color: #BCBCBC;'>5</span> Subject 5      0.109</div><div class='input'><span class='fu'>grade_hypo</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, lower <span class='op'>=</span> <span class='fl'>65</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 2</span>
 #&gt;   id        GRADE_hypo
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1      0    
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Subject 2      0    
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Subject 3      0.191
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Subject 4      0.297
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> Subject 5      0    </div><div class='input'>
-</div></span></pre>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1      0    
+#&gt; <span style='color: #BCBCBC;'>2</span> Subject 2      0    
+#&gt; <span style='color: #BCBCBC;'>3</span> Subject 3      0.191
+#&gt; <span style='color: #BCBCBC;'>4</span> Subject 4      0.297
+#&gt; <span style='color: #BCBCBC;'>5</span> Subject 5      0    </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

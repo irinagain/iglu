@@ -174,37 +174,37 @@ to 0-1.</p>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 
 <span class='fu'>quantile_glu</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 6</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   id [1]</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 6</span>
+#&gt; <span style='color: #949494;'># Groups:   id [1]</span>
 #&gt;   id          `0`  `25`  `50`  `75` `100`
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1    66    99   112   143   276</div><div class='input'><span class='fu'>quantile_glu</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, quantiles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>33</span>, <span class='fl'>66</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 5</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   id [1]</span><span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1    66    99   112   143   276</div><div class='input'><span class='fu'>quantile_glu</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, quantiles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>33</span>, <span class='fl'>66</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 5</span>
+#&gt; <span style='color: #949494;'># Groups:   id [1]</span>
 #&gt;   id          `0`  `33`  `66` `100`
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1    66   104   128   276</div><div class='input'>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1    66   104   128   276</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
 
 <span class='fu'>quantile_glu</span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 6</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   id [5]</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 6</span>
+#&gt; <span style='color: #949494;'># Groups:   id [5]</span>
 #&gt;   id          `0`  `25`  `50`  `75` `100`
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1    66    99   112   143   276
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Subject 2    90   179   211   253   400
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Subject 3    60   125   140   173   304
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Subject 4    50   109   126   149   232
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> Subject 5    66   134   164   211   398</div><div class='input'><span class='fu'>quantile_glu</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, quantiles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>90</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 5</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   id [5]</span><span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1    66    99   112   143   276
+#&gt; <span style='color: #BCBCBC;'>2</span> Subject 2    90   179   211   253   400
+#&gt; <span style='color: #BCBCBC;'>3</span> Subject 3    60   125   140   173   304
+#&gt; <span style='color: #BCBCBC;'>4</span> Subject 4    50   109   126   149   232
+#&gt; <span style='color: #BCBCBC;'>5</span> Subject 5    66   134   164   211   398</div><div class='input'><span class='fu'>quantile_glu</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, quantiles <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>90</span>, <span class='fl'>100</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 5</span>
+#&gt; <span style='color: #949494;'># Groups:   id [5]</span>
 #&gt;   id          `0`  `10`  `90` `100`
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Subject 1    66    92  172    276
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Subject 2    90   160  293    400
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Subject 3    60   110  226.   304
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Subject 4    50    94  167    232
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> Subject 5    66   104  259    398</div></span></pre>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1    66    92  172    276
+#&gt; <span style='color: #BCBCBC;'>2</span> Subject 2    90   160  293    400
+#&gt; <span style='color: #BCBCBC;'>3</span> Subject 3    60   110  226.   304
+#&gt; <span style='color: #BCBCBC;'>4</span> Subject 4    50    94  167    232
+#&gt; <span style='color: #BCBCBC;'>5</span> Subject 5    66   104  259    398</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
