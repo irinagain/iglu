@@ -37,10 +37,10 @@
 #' @examples
 #'
 #' data(example_data_1_subject)
-#' calculate_sleep_wake(example_data_1_subject, sd_glu)
+#' calculate_sleep_wake(example_data_1_subject, sd_glu, calculate = "sleep")
 #'
 #' data(example_data_5_subject)
-#' calculate_sleep_wake(example_data_5_subject, cogi, targets = c(80, 150), weights = c(.3,.2,.5))
+#' calculate_sleep_wake(example_data_5_subject, cogi, targets = c(80, 150), weights = c(.3,.2,.5), calculate = "wake")
 #' calculate_sleep_wake(example_data_5_subject, sd_measures, sleep_start = 2, sleep_end = 8, calculate = "both")
 #'
 
