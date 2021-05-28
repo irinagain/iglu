@@ -207,7 +207,7 @@ Notice the high fluctuations in Subject 5, with all but one subtypes of standard
 
 Iglu provides a function for calculating metrics over a given time-range. The calculate_sleep_wake function allows the user to apply an arbitrary function to given data after it has been filtered by time of day. It supports calculating on inside the time range, outside the time range, or both separately. 
 
-## Using calculate_day_night
+## Using calculate_sleep_wake
 
 To use this function, pass it the data you want and the function or name of the function you want to apply. For example, to calculate the standard deviation of glucose readings from 12-6am, the function's default time period, the following call will work.
 
