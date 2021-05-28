@@ -358,6 +358,11 @@ shinyServer(function(input, output) {
     }
 
   })
+
+  output$sleep_wake_help <- renderUI({
+    helpText("Enter a real number 0-24.")
+  })
+
 #reactive function
   metric_table <- reactive({
     parameter_type = parameter_type()
@@ -393,38 +398,29 @@ shinyServer(function(input, output) {
     library(iglu)
     if(is.null(input$parameter) | parameter_type == "none"){
       string = paste("iglu::", input$metric, "(data)", sep = "")
-      eval(parse(text = string))
     }
     else if(is.null(input$parameter) | parameter_type == "time"){
       string = paste("iglu::", input$metric, "(data,", "tz=","'",input$tz,"')",sep = "")
-      eval(parse(text = string))
     }
 
     else if(parameter_type == "list"){
       string = paste("iglu::", input$metric, "(data, c(", input$parameter, "))", sep = "")
-      eval(parse(text = string))
     }
 
     else if(parameter_type == "value"){
       string = paste("iglu::", input$metric, "(data, ", input$parameter, ")", sep = "")
-      eval(parse(text = string))
     }
     else if(parameter_type == "value1"){
       string = paste("iglu::", input$metric, "(data, ", input$parameter, ",",input$parameter2,",",input$parameter3, ")", sep = "")
-      eval(parse(text = string))
     }
     else if(parameter_type == "value_time"){
       string = paste("iglu::", input$metric, "(data, ", input$parameter, ",","tz=" ,"'", input$tz,"'" ,")", sep = "")
-      eval(parse(text = string))
     }
-
     else if(parameter_type == "lwrupr"){
       string = paste("iglu::", input$metric, "(data, " , input$parameter, ")", sep = "")
-      eval(parse(text = string))
     }
     else if(parameter_type == "lwrupr1"){
       string = paste("iglu::", input$metric, "(data, " , input$parameter,",",input$parameter2,",",input$parameter3, ")", sep = "")
-      eval(parse(text = string))
     }
     else if(parameter_type == "nested"){
       strlist = strsplit(input$parameter, ")")[[1]]
@@ -443,10 +439,42 @@ shinyServer(function(input, output) {
         paramstr = paste(paramstr, collapse = ", ")
       }
       string = paste("iglu::", input$metric, "(data, list(", paramstr, "))", sep= "")
-      eval(parse(text = string))
-
     }
+
+    if (input$filter_sleep_wake) {
+      if (parameter_type == "none") {
+        out_str = paste0("iglu::calculate_sleep_wake(data, FUN = ", input$metric, ", calculate = \'", input$sleep_or_wake, "\', sleep_start = ", input$sleep_start, ", sleep_end = ", input$sleep_end, ")")
+      }
+      else if (parameter_type == "list") {
+        param_string = strsplit(string, "\\(data, c\\(")[[1]][2]
+        argname = formalArgs(input$metric)
+        out_str = paste0("iglu::calculate_sleep_wake(data, FUN = ", input$metric, ", calculate = \'", input$sleep_or_wake, "\', sleep_start = ", input$sleep_start, ", sleep_end = ", input$sleep_end, ", ", argname[2], " = c(", param_string)
+      }
+      else if (parameter_type == "nested") {
+        param_string = strsplit(string, "\\(data, list\\(")[[1]][2]
+        argname = formalArgs(input$metric)
+        out_str = paste0("iglu::calculate_sleep_wake(data, FUN = ", input$metric, ", calculate = \'", input$sleep_or_wake, "\', sleep_start = ", input$sleep_start, ", sleep_end = ", input$sleep_end, ", ", argname[2], " = list(", paramstr, "))")
+      } else if (parameter_type == "time") {
+        out_str = paste0("iglu::calculate_sleep_wake(data, FUN = ", input$metric, ", calculate = \'", input$sleep_or_wake, "\', sleep_start = ", input$sleep_start, ", sleep_end = ", input$sleep_end, ", ", "tz='", input$tz, "')")
+      }
+      else {
+        param_string = strsplit(string, "\\(data")[[1]][2]
+        list_of_params = strsplit(param_string, ", ")[[1]]
+        list_of_params = list_of_params[2:length(list_of_params)]
+        build_str = c(paste0("iglu::calculate_sleep_wake(data, FUN = ", input$metric, ", calculate = \'", input$sleep_or_wake, "\', sleep_start = ", input$sleep_start, ", sleep_end = ", input$sleep_end))
+        argnames = formalArgs(input$metric)
+        for (index in 1:length(list_of_params)) {
+          build_str = c(build_str, paste0(argnames[index+1], " = ", list_of_params[index]))
+        }
+        out_str = paste(build_str, collapse = ", ")
+      }
+      string = out_str
+    }
+
+    eval(parse(text = string))
+
   })
+
 
   output$metric <- DT::renderDataTable(metric_table(), extensions = "Buttons",
                                        options = list(dom = "Btip",
