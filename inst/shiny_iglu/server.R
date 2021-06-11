@@ -173,6 +173,7 @@ shinyServer(function(input, output) {
       textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
 
     }
+   }
 
   })
 
