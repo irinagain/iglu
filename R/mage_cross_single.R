@@ -15,6 +15,7 @@
 #' @param title Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"
 #' @param xlab Label for x-axis of ggplot. Defaults to "Time"
 #' @param ylab Label for y-axis of ggplot. Defaults to "Glucose Level"
+#' @param show_ma Whether to show the moving average lines on the plot or not
 #'
 #' @return The numeric MAGE value for the inputted glucose values or a ggplot if \code{plot = TRUE}
 #'
@@ -38,10 +39,11 @@
 #'    interval=15,
 #'    title="Patient X",
 #'    xlab="Time",
-#'    ylab="Glucose Level (mg/dL)")
+#'    ylab="Glucose Level (mg/dL)",
+#'    show_ma=FALSE)
 
 
-mage_cross_single <- function(data, short_ma = 5, long_ma = 23,type=c('auto','plus','minus'), plot = FALSE, interval=NA, dateformat="%Y-%m-%d %H:%M:%S", title = NA, xlab=NA,ylab = NA) {
+mage_cross_single <- function(data, short_ma = 5, long_ma = 23,type=c('auto','plus','minus'), plot = FALSE, interval=NA, dateformat="%Y-%m-%d %H:%M:%S", title = NA, xlab=NA,ylab = NA, show_ma=FALSE) {
 
   ## 1. Preprocessing
   # 1a. Clean up Global Environment
@@ -226,14 +228,12 @@ mage_cross_single <- function(data, short_ma = 5, long_ma = 23,type=c('auto','pl
   #  .ymax <- max(.data$gl)
 
     # 4c. Generate ggplot
-    colors <- c("Short MA" = "#D55E00", "Long MA" = "#009E73","Nadir" = "blue", "Peak"="red", "Gap"="purple")
-
+    colors <- c("Short MA" = "#009E73", "Long MA" = "#D55E00","Nadir" = "blue", "Peak"="red")
+    gap_colors <- c("Gap"="purple")
     .p <- ggplot2::ggplot(.data, ggplot2::aes(x=time, y=gl)) +
       ggplot2::ggtitle(title) +
       ggplot2::geom_point() +
       ggplot2::geom_point(data = subset(.data, .data$TP != ""), ggplot2::aes(color = TP), fill='white', size=2) +
-     # ggplot2::geom_line(ggplot2::aes(y = MA_Short, group = 1, color="Short MA")) + #Exclude for now because ggplot becomes too crowded
-     # ggplot2::geom_line(ggplot2::aes(y = MA_Long, group = 2, color="Long MA")) +
       ggplot2::geom_rect(data=.gaps, ggplot2::aes(
         xmin=.xmin,
         xmax=.xmax,
@@ -245,8 +245,13 @@ mage_cross_single <- function(data, short_ma = 5, long_ma = 23,type=c('auto','pl
         legend.title = ggplot2::element_blank(),
         ) +
       ggplot2::scale_color_manual(values = colors) +
-      ggplot2::scale_fill_manual(values=colors) +
+      ggplot2::scale_fill_manual(values=gap_colors) +
       ggplot2::labs(x=ifelse(!is.na(xlab), xlab, "Time"), y=ifelse(!is.na(ylab), ylab, 'Glucose Level'))
+
+    if(show_ma == TRUE) {
+      .p <- .p + ggplot2::geom_line(ggplot2::aes(y = MA_Short, group = 1, color="Short MA")) + #Exclude for now because ggplot becomes too crowded
+            ggplot2::geom_line(ggplot2::aes(y = MA_Long, group = 2, color="Long MA"))
+    }
 
     # 4d. Return plot
     return(.p)
