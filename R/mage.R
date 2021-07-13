@@ -17,6 +17,7 @@
 #'  \item{title: Title for the ggplot. Default: "Glucose Trace - Subject [ID]"}
 #'  \item{xlab: Label for x-axis of ggplot. Defaults to "Time"}
 #'  \item{ylab: Label for y-axis of ggplot. Defaults to "Glucose Level"}
+#'  \item{show_ma: Whether to show the moving average lines on the plot or not. Default: FALSE}
 #'  \item{sd_multiplier: DEPRECATED. A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation.}
 #' }
 #'

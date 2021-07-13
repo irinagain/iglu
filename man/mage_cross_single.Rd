@@ -14,7 +14,8 @@ mage_cross_single(
   dateformat = "\%Y-\%m-\%d \%H:\%M:\%S",
   title = NA,
   xlab = NA,
-  ylab = NA
+  ylab = NA,
+  show_ma = FALSE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ mage_cross_single(
 \item{xlab}{Label for x-axis of ggplot. Defaults to "Time"}
 
 \item{ylab}{Label for y-axis of ggplot. Defaults to "Glucose Level"}
+
+\item{show_ma}{Whether to show the moving average lines on the plot or not}
 }
 \value{
 The numeric MAGE value for the inputted glucose values or a ggplot if \code{plot = TRUE}
@@ -65,7 +68,8 @@ mage_cross_single(
    interval=15,
    title="Patient X",
    xlab="Time",
-   ylab="Glucose Level (mg/dL)")
+   ylab="Glucose Level (mg/dL)",
+   show_ma=FALSE)
 }
 \author{
 Nathaniel Fernandes
