@@ -4,14 +4,14 @@
 \alias{mage}
 \title{Calculate Mean Amplitude of Glycemic Excursions}
 \usage{
-mage(data, version = c("v2", "v1"), ...)
+mage(data, version = c("ma", "naive"), ...)
 }
 \arguments{
 \item{data}{Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector).}
 
-\item{version}{Optional. Either 'v2' or 'v1'. Chooses which version of the MAGE algorithm to use. Version 2 is default and highly recommended.}
+\item{version}{Optional. Either 'ma' or 'naive'. Chooses which version of the MAGE algorithm to use. Version "ma" is default and highly recommended.}
 
-\item{...}{Optional arguments to pass to the MAGE Functions (see "mage_ma_cross_single" for examples)
+\item{...}{Optional arguments to pass to the MAGE Functions (see "mage_ma_single" for examples)
 \itemize{
   \item{dateformat: POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of a different format.}
   \item{short_ma: Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended <15).}
@@ -34,14 +34,14 @@ The function calculates MAGE values and can optionally return a plot of the gluc
 \details{
 The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970).
 
-Version 2 is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.
+Version 2 (i.e. "ma") is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.
 
-In Version 1, MAGE is calculated by taking the mean of absolute differences (between each value and the mean) that are greater than the standard deviation.
+In Version 1 (i.e. "naive"), MAGE is calculated by taking the mean of absolute differences (between each value and the mean) that are greater than the standard deviation.
 A multiplier can be added to the standard deviation by the sd_multiplier argument.
 }
 \examples{
 data(example_data_5_subject)
-mage(example_data_5_subject, version = 'v2')
+mage(example_data_5_subject, version = 'ma')
 }
 \references{
 Service et al. (1970) Mean amplitude of glycemic excursions, a measure of diabetic instability
