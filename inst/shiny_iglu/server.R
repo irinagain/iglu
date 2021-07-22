@@ -19,9 +19,21 @@ shinyServer(function(input, output) {
     )
     return(out)
   })
+
   output$data <- renderTable({
-    data()
+
+    validate(
+      need(input$demodata != '', "Please select Dataset")
+    )
+
+    if (input$demodata == "user_data") {
+      out <- data()
+    } else if (input$demodata == "example_data") {
+      out <- iglu::example_data_5_subject
+    }
+    return(out)
   })
+
   output$downloaddata <- downloadHandler(
     filename = function() {
       filename <- paste0(gsub("\\.csv", "",basename(input$datafile$name)), "_processed")
@@ -31,8 +43,17 @@ shinyServer(function(input, output) {
       write.csv(data(), file, row.names = FALSE)
     }
   )
+
   transform_data <- reactive({
-    data = data()
+
+    req(input$demodata)
+
+    if (input$demodata == "user_data") {
+      data = data()
+    } else if (input$demodata == "example_data") {
+      data = iglu::example_data_5_subject
+    }
+
     iglu:::read_df_or_vec(data, id = input$id, time = input$time, gl = input$gl)
   })
 
@@ -43,7 +64,7 @@ shinyServer(function(input, output) {
 #add metric based on the parameter it takes in
   parameter_type <- reactive({
     #metric is considered as parameter type "none" if it only requires data as a parameter
-    if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi",
+    if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "episode_calculation", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi",
                            "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
       return("none")
     }
