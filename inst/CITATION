@@ -1,5 +1,7 @@
-bibentry("Article",
-         title       = "Interpreting blood glucose data with {R} package iglu",
+citHeader("To cite iglu in publications use:")
+
+citEntry(entry = "Article",
+         title       = "Interpreting blood glucose data with {R} package {iglu}",
          author      = c(person(given = "Steven", family = "Broll"),
                         person("Jacek", "Urbanek"),
                         person("David", "Buchanan"),
@@ -13,15 +15,16 @@ bibentry("Article",
                           comment = c(ORCID = "0000-0002-4116-0268"))),
          journal     = "PloS One",
          year        = "2021",
-	 volume      = "16",
-	 number      = "4",
-	 pages       = "e0248560",
-  doi         = "10.1371/journal.pone.0248560",
-	 header     = "To cite iglu in publications use:"
+	       volume      = "16",
+	       number      = "4",
+	       pages       = "e0248560",
+         doi         = "10.1371/journal.pone.0248560",
+
+         textVersion = paste("Broll S, Urbanek J, Buchanan D, Chun E, Muschelli J, Punjabi N and Gaynanova I (2021).", "Interpreting blood glucose data with R package iglu.", "PLoS One, 16(4), e0248560.", "URL https://doi.org/10.1371/journal.pone.0248560")
 )
 
-bibentry("Manual",
-         title       = "iglu: Interpreting Glucose Data from Continuous Glucose Monitors",
+citEntry(entry = "Manual",
+         title       = "{iglu:} Interpreting Glucose Data from Continuous Glucose Monitors",
          author      = c(person(given = "Steven", family = "Broll"),
                         person("David", "Buchanan"),
                         person("Elizabeth", "Chun"),
@@ -38,5 +41,7 @@ bibentry("Manual",
                           comment = c(ORCID = "0000-0002-4116-0268"))),
          year        = "2021",
       	 note = "R package version 3.0.0",
-         header      = "If referring specifically to current package version, please also cite:"
+
+      	 textVersion = paste("Broll S, Buchanan D, Chun E, Muschelli J, Fernandes N, Seo J, Shih J, Urbanek J, Schwenck J, Gaynanova I (2021).","iglu: Interpreting
+Glucose Data from Continuous Glucose Monitors.","R package version 3.0.0.")
 )
