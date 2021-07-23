@@ -85,6 +85,3 @@ iglu_shiny()
 ```
 or globally at [https://irinagain.shinyapps.io/shiny_iglu/](https://irinagain.shinyapps.io/shiny_iglu/). As new functionality gets added, local version will be slightly ahead of the global one.
 
--- For a Shiny App demo of the package in a point and click interface, click the link below for pre-loaded dataset. 
-
- [https://stevebroll.shinyapps.io/shinyigludemo/](https://stevebroll.shinyapps.io/shinyigludemo/) 
