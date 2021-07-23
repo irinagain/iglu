@@ -10,12 +10,12 @@ shinyServer(function(input, output) {
     # if input is already processed just read.csv
     # else select associated sensor type
     out = switch(input$datatype,
-           "processed" = read.csv(input$datafile$datapath),
-           "FreeStyle Libre" = read_raw_data(input$datafile$datapath, sensor = "libre", id = input$subjid),
-           "Dexcom" = read_raw_data(input$datafile$datapath, sensor = "dexcom", id = input$subjid),
-           "Libre Pro" = read_raw_data(input$datafile$datapath, sensor = "librepro", id = input$subjid),
-           "ASC" = read_raw_data(input$datafile$datapath, sensor = "asc", id = input$subjid),
-           "iPro" = read_raw_data(input$datafile$datapath, sensor = "ipro", id = input$subjid)
+                 "processed" = read.csv(input$datafile$datapath),
+                 "FreeStyle Libre" = read_raw_data(input$datafile$datapath, sensor = "libre", id = input$subjid),
+                 "Dexcom" = read_raw_data(input$datafile$datapath, sensor = "dexcom", id = input$subjid),
+                 "Libre Pro" = read_raw_data(input$datafile$datapath, sensor = "librepro", id = input$subjid),
+                 "ASC" = read_raw_data(input$datafile$datapath, sensor = "asc", id = input$subjid),
+                 "iPro" = read_raw_data(input$datafile$datapath, sensor = "ipro", id = input$subjid)
     )
     return(out)
   })
@@ -61,7 +61,7 @@ shinyServer(function(input, output) {
   ############################# METRIC SECTION ######################################################
 
 
-#add metric based on the parameter it takes in
+  #add metric based on the parameter it takes in
   parameter_type <- reactive({
     #metric is considered as parameter type "none" if it only requires data as a parameter
     if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "episode_calculation", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi",
@@ -78,7 +78,7 @@ shinyServer(function(input, output) {
     }
     #metric is considered as parameter type "value" if it takes in data and a single value as parameters
     else if(input$metric %in% c("grade_hyper", "grade_hypo","m_value","mad_glu",
-                               "mage", "active_percent")){
+                                "mage", "active_percent")){
       return("value")
     }
     else if(input$metric %in% c("hyper_index", "hypo_index")){
@@ -100,7 +100,7 @@ shinyServer(function(input, output) {
       return("nested")
     }
   })
-#specify first parameter and the default values
+  #specify first parameter and the default values
   output$select_parameter <- renderUI({
     parameter_type = parameter_type()
 
@@ -136,7 +136,7 @@ shinyServer(function(input, output) {
       }
 
       else if(input$metric == "mage"){
-        textInput("parameter", "Specify Parameter", value = "1")
+        textInput("parameter", "Specify Parameter", value = "'ma'")
       }
 
       else if(input$metric == "active_percent"){
@@ -161,7 +161,7 @@ shinyServer(function(input, output) {
         textInput("parameter", "Specify Parameter", value = "1.4826")
       }
 
-     else if(input$metric == "mag"){
+      else if(input$metric == "mag"){
         textInput("parameter", "Specify Parameter", value = "60")
       }
       else if(input$metric == "modd"){
@@ -185,16 +185,16 @@ shinyServer(function(input, output) {
       if(input$metric == "igc"){
         textInput("parameter", "Specify Lower and Upper Limits", value = "70, 180")
       }
-     else if(input$metric == "episode_calculation"){
+      else if(input$metric == "episode_calculation"){
         textInput("parameter", "Specify Parameter", value = "100.0, 70")
-     }
+      }
     }
-   else if(parameter_type == "nested"){
-    if(input$metric == "in_range_percent"){
-      textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
+    else if(parameter_type == "nested"){
+      if(input$metric == "in_range_percent"){
+        textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
 
+      }
     }
-   }
 
   })
 
@@ -246,7 +246,7 @@ shinyServer(function(input, output) {
       }
 
       else if(input$metric == "mage"){
-        helpText("Enter the multiple of SD used to determine glycemic excursions.")
+        helpText("Enter algorithm version in single quotes: 'ma' (default) or 'naive'")
       }
 
       else if(input$metric == "active_percent"){
@@ -375,7 +375,7 @@ shinyServer(function(input, output) {
 
     else if(parameter_type == "lwrupr1"){
       if(input$metric == "igc"){
-        helpText("Enter the scarling factors separated by a comma with the upper limit as the first input and the lower limit as the second input.")
+        helpText("Enter the scaling factors separated by a comma with the upper limit as the first input and the lower limit as the second input.")
       }
     }
 
@@ -385,14 +385,19 @@ shinyServer(function(input, output) {
     helpText("Enter a real number 0-24.")
   })
 
-#reactive function
+  # reactive function
   metric_table <- reactive({
     parameter_type = parameter_type()
     data = transform_data()
 
+
     if (is.null(input$parameter)) {
       validate(
         need(!is.null(input$parameter), "Please wait - Rendering")
+      )
+    } else if (input$parameter %in% c("'ma'", "'naive'")) {
+      validate (
+        need (input$metric == "mage", "Please wait - Rendering")
       )
     } else if (grepl(',', input$parameter) & !grepl("\\(", input$parameter)) {
       if (length(strsplit(input$parameter, split = ",")[[1]]) != 2) {
@@ -413,7 +418,14 @@ shinyServer(function(input, output) {
       validate(
         need(parameter_type %in% c("value","value1","value_time", "none","time"), "Please wait - Rendering")
       )
+    }
 
+    # because MAGE input is unique (character)
+    if (input$metric == 'mage') {
+      validate(
+        # print message instead of warning
+        need(input$parameter %in% c("'ma'", "'naive'"), "Parameter must be one of 'ma', or 'naive'")
+      )
     }
 
     #loading iglu library and using metric function
