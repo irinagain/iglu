@@ -10,7 +10,7 @@ status](https://api.travis-ci.com/irinagain/iglu.svg?branch=master)](https://tra
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/irinagain/iglu?branch=master&svg=true)](https://ci.appveyor.com/project/irinagain/iglu)
 
-[![](http://cranlogs.r-pkg.org/badges/iglu)](http://cran.rstudio.com/web/packages/iglu/index.html)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/iglu)](https://cran.r-project.org/package=iglu)[![](https://cranlogs.r-pkg.org/badges/iglu)](https://CRAN.R-project.org/package=iglu)
 <!-- badges: end -->
 
 # iglu: Interpreting data from Continuous Glucose Monitors (CGMs)
@@ -19,7 +19,8 @@ The R package ‘iglu’ provides functions for outputting relevant metrics
 for data collected from Continuous Glucose Monitors (CGM). For
 reference, see [“Interpretation of continuous glucose monitoring data:
 glycemic variability and quality of glycemic control.” Rodbard
-(2009)](https://www.ncbi.nlm.nih.gov/pubmed/19469679).
+(2009)](https://doi.org/10.1089/dia.2008.0132). For more information on
+the package, see [package website](https://irinagain.github.io/iglu/).
 
 iglu comes with two example datasets: example\_data\_1\_subject and
 example\_data\_5\_subject. These data are collected using Dexcom G4 CGM
@@ -29,6 +30,9 @@ subset of the 5 subject data. See the examples below for loading and
 using the data.
 
 ## Installation
+
+The R package ‘iglu’ is available from CRAN, use the commands below to
+install the most recent Github version.
 
 ``` r
 # Plain installation
@@ -116,9 +120,22 @@ mage(example_data_5_subject)
 #> 5 Subject 5  90.0
 ```
 
+## Shiny App
+
+The Shiny App can be accessed locally via
+
+``` r
+library(iglu)
+iglu_shiny()
+```
+
+or globally at <https://irinagain.shinyapps.io/shiny_iglu/>. As new
+functionality gets added, the local version will be slightly ahead of the
+global one.
+
 ## Shiny Demonstration
 
-For a demonstration of the package in a point and click interface, click
+For a demonstration of the package in a point-and-click interface, click
 the link below.
 
 <https://stevebroll.shinyapps.io/shinyigludemo/>
