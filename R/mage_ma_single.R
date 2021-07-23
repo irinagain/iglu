@@ -23,17 +23,17 @@
 #'
 #' @examples
 #' data(example_data_5_subject)
-#' mage_cross_single(
+#' mage_ma_single(
 #'    example_data_5_subject,
 #'    short_ma = 4,
 #'    long_ma = 24,
 #'    type = 'plus')
 #'
-#' mage_cross_single(
+#' mage_ma_single(
 #'    example_data_5_subject,
 #'    dateformat="%m-%d-%Y %H:%M:%S")
 #'
-#' mage_cross_single(
+#' mage_ma_single(
 #'    example_data_5_subject,
 #'    plot=TRUE,
 #'    interval=15,
@@ -43,7 +43,7 @@
 #'    show_ma=FALSE)
 
 
-mage_cross_single <- function(data, short_ma = 5, long_ma = 23,type=c('auto','plus','minus'), plot = FALSE, interval=NA, dateformat="%Y-%m-%d %H:%M:%S", title = NA, xlab=NA,ylab = NA, show_ma=FALSE) {
+mage_ma_single <- function(data, short_ma = 5, long_ma = 23,type=c('auto','plus','minus'), plot = FALSE, interval=NA, dateformat="%Y-%m-%d %H:%M:%S", title = NA, xlab=NA,ylab = NA, show_ma=FALSE) {
 
   ## 1. Preprocessing
   # 1a. Clean up Global Environment
