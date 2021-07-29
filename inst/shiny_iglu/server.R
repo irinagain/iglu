@@ -34,6 +34,7 @@ shinyServer(function(input, output) {
     return(out)
   })
 
+
   output$downloaddata <- downloadHandler(
     filename = function() {
       filename <- paste0(gsub("\\.csv", "",basename(input$datafile$name)), "_processed")
@@ -131,8 +132,13 @@ shinyServer(function(input, output) {
       else if(input$metric == "grade_hypo"){
         textInput("parameter", "Specify Parameter", value = "80")
       }
+
       else if(input$metric == "m_value"){
         textInput("parameter", "Specify Reference Value", value = "90")
+      }
+
+      else if(input$metric == "mad_glu"){
+        textInput("parameter", "Specify Parameter", value = "1.4826")
       }
 
       else if(input$metric == "mage"){
@@ -155,10 +161,6 @@ shinyServer(function(input, output) {
     else if(parameter_type == "value_time"){
       if(input$metric == "conga"){
         textInput("parameter", "Specify Parameter", value = "24")
-      }
-
-      else if(input$metric == "mad_glu"){
-        textInput("parameter", "Specify Parameter", value = "1.4826")
       }
 
       else if(input$metric == "mag"){
@@ -233,7 +235,11 @@ shinyServer(function(input, output) {
 
     else if(parameter_type == "value"){
 
-      if(input$metric == "grade_hyper"){
+      if(input$metric == "active_percent"){
+        helpText("Enter CGM frequency in minutes.")
+      }
+
+      else if(input$metric == "grade_hyper"){
         helpText("Enter the upper bound hyperglycemia cutoff value.")
       }
 
@@ -245,13 +251,14 @@ shinyServer(function(input, output) {
         helpText("Enter the reference value for normal basal glycemia.")
       }
 
+      else if(input$metric == "mad_glu"){
+        helpText("Enter the value of the scaling factor.")
+      }
+
       else if(input$metric == "mage"){
         helpText("Enter algorithm version in single quotes: 'ma' (default) or 'naive'")
       }
 
-      else if(input$metric == "active_percent"){
-        helpText("Enter CGM frequency in minutes.")
-      }
     }
     else if(parameter_type == "value1"){
       if(input$metric == "hyper_index"){
@@ -265,9 +272,6 @@ shinyServer(function(input, output) {
     else if(parameter_type =="value_time"){
       if(input$metric == "conga"){
         helpText("Enter the hours between observations for the CONGA calculation.")
-      }
-      else if(input$metric == "mad_glu"){
-        helpText("Enter the value of the scaling factor.")
       }
       else if(input$metric == "mag"){
         helpText("Enter the interval (in minutes) to calculate change in glucose.")
@@ -391,13 +395,15 @@ shinyServer(function(input, output) {
     data = transform_data()
 
 
+    #### Validate catches for parameter 1 #####
     if (is.null(input$parameter)) {
       validate(
         need(!is.null(input$parameter), "Please wait - Rendering")
       )
     } else if (input$parameter %in% c("'ma'", "'naive'")) {
       validate (
-        need (input$metric == "mage", "Please wait - Rendering")
+        need (input$metric == "mage" | parameter_type == "none",
+              "Please wait - Rendering")
       )
     } else if (grepl(',', input$parameter) & !grepl("\\(", input$parameter)) {
       if (length(strsplit(input$parameter, split = ",")[[1]]) != 2) {
@@ -414,12 +420,18 @@ shinyServer(function(input, output) {
         need(parameter_type %in% c("nested", "none","time"), "Please wait - Rendering")
       )
     } else if (!grepl(',', input$parameter)) {
-      print(input$parameter)
+      # print(input$parameter) # un-comment for bug-fixing
       validate(
-        need(parameter_type %in% c("value","value1","value_time", "none","time"), "Please wait - Rendering")
+        need(parameter_type %in% c("value", "value1", "value_time", "none","time"),
+             "Please wait - Rendering")
       )
+      if (input$metric == "mag") {
+        validate(
+          # mag requires integer input
+          need(!grepl("\\.", input$parameter), "Please wait - Rendering")
+        )
+      }
     }
-
     # because MAGE input is unique (character)
     if (input$metric == 'mage') {
       validate(
@@ -427,6 +439,18 @@ shinyServer(function(input, output) {
         need(input$parameter %in% c("'ma'", "'naive'"), "Parameter must be one of 'ma', or 'naive'")
       )
     }
+
+    ##### Validate for parameters2/3 ####
+
+    ## parameter2 and parameter3 currently (7/29/21) include the same 3 metrics
+    ## hyper index, hypo index, and igc
+
+    if (input$metric %in% c("hyper_index", "hypo_index")) {
+      validate(
+        need(!grepl(",", input$parameter3), "Please wait - Rendering")
+      )
+    }
+
 
     #loading iglu library and using metric function
     library(iglu)
