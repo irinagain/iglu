@@ -34,7 +34,7 @@ shinyUI(fluidPage(
                               selectInput('tz', 'Select corresponding time zone', choices = c(OlsonNames()))
                             ),
                ),
-               mainPanel(tableOutput("data"))
+               mainPanel(DT::dataTableOutput("data"))
              )),
     #full metric name and function name are added in alphabetical order
     tabPanel("Metrics", fluid = TRUE,

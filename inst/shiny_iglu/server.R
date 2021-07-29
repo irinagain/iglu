@@ -20,20 +20,27 @@ shinyServer(function(input, output) {
     return(out)
   })
 
-  output$data <- renderTable({
+  output$data <- DT::renderDataTable({
 
     validate(
       need(input$demodata != '', "Please select Dataset")
     )
 
-    if (input$demodata == "user_data") {
-      out <- data()
-    } else if (input$demodata == "example_data") {
-      out <- iglu::example_data_5_subject
-    }
-    return(out)
-  })
+    DT::datatable(
+      (if (input$demodata == "user_data") {
+        out <- data()
+      } else if (input$demodata == "example_data") {
+        out <- iglu::example_data_5_subject
+        out$time <- as.character(out$time)
+        out
+      }),
+      extensions = "Buttons",
+      options = list(dom = "Btip",
+                     buttons = c("copy", "csv", "excel", "pdf", "print"),
+                     paging = FALSE)
+    )
 
+  })
 
   output$downloaddata <- downloadHandler(
     filename = function() {
