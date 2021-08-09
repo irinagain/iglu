@@ -53,6 +53,11 @@ calculate_sleep_wake = function(data, FUN, sleep_start = 0, sleep_end = 6, calcu
   }
   FUN = match.fun(FUN)
   calculate = tolower(calculate)
+
+  if (sleep_start == sleep_end) {
+    stop("Sleep start cannot equal sleep end, please change one of the inputs")
+  }
+
   if (sleep_start > sleep_end) {
     filter_gate = (lubridate::hour(data$time) >= sleep_start | lubridate::hour(data$time) < sleep_end)
   } else {

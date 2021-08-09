@@ -341,6 +341,7 @@ shinyServer(function(input, output) {
       }
     }
   })
+
   #add description of second parameter
   output$second_parameter_helptext <- renderUI({
     parameter_type = parameter_type()
@@ -365,6 +366,7 @@ shinyServer(function(input, output) {
     }
 
   })
+
   #specify third parameter and its default value
   output$select_third_parameter <- renderUI({
     parameter_type = parameter_type()
@@ -389,6 +391,7 @@ shinyServer(function(input, output) {
       }
     }
   })
+
   #add description on third parameter
   output$third_parameter_helptext <- renderUI({
     parameter_type = parameter_type()
@@ -524,6 +527,11 @@ shinyServer(function(input, output) {
     }
 
     if (input$filter_sleep_wake) {
+
+      validate (
+        need(input$sleep_start != input$sleep_end, "Sleep start cannot equal sleep end, please change one of the inputs")
+      )
+
       if (parameter_type == "none") {
         out_str = paste0("iglu::calculate_sleep_wake(data, FUN = ", input$metric, ", calculate = \'", input$sleep_or_wake, "\', sleep_start = ", input$sleep_start, ", sleep_end = ", input$sleep_end, ")")
       }
