@@ -82,7 +82,13 @@ calculate_sleep_wake = function(data, FUN, sleep_start = 0, sleep_end = 6, calcu
       colnames(out) = c(append_str(innames[2:length(innames)]," sleep"), append_str(outnames[2:length(outnames)]," wake"))
       return(out)
     }
-    out = dplyr::left_join(inside, outside, by = "id")
+
+    # bind cols, by id if not roc
+    if (any(colnames(outside) == "roc")) {
+      inside$row = outside$row = 1:length(inside$id)
+      out = dplyr::left_join(inside, outside[, 2:3], by = "row") %>%
+        dplyr::select(-row)
+    } else {out = dplyr::left_join(inside, outside, by = "id")}
     colnames(out) = c("id", append_str(innames[2:length(innames)]," sleep"), append_str(outnames[2:length(outnames)]," wake"))
   } else {
     stop("Please enter one of 'sleep', 'wake', 'both' for calculate.")
