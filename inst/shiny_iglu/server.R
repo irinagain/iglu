@@ -56,9 +56,11 @@ shinyServer(function(input, output) {
       return("list")
     }
     #metric is considered as parameter type "value" if it takes in data and a single value as parameters
-    else if(input$metric %in% c("grade_hyper", "grade_hypo","m_value","mad_glu",
-                               "mage", "active_percent")){
+    else if(input$metric %in% c("grade_hyper", "grade_hypo","m_value","mad_glu", "active_percent")){
       return("value")
+    }
+    else if(input$metric %in% c('mage')) {
+      return("mage")
     }
     else if(input$metric %in% c("hyper_index", "hypo_index")){
       return("value1")
@@ -100,7 +102,11 @@ shinyServer(function(input, output) {
         textInput("parameter", "Specify Parameter", value = "0, 25, 50, 75, 100")
       }
     }
-
+    else if(parameter_type == "mage") {
+      if(input$metric == "mage") {
+        radioButtons("parameter", "Mage Version", choiceNames=c('Version 2: ma', 'Version 1: naive'),choiceValues=c("ma","naive"))
+      }
+    }
     else if(parameter_type == "value"){
 
       if(input$metric == "grade_hyper"){
@@ -113,11 +119,6 @@ shinyServer(function(input, output) {
       else if(input$metric == "m_value"){
         textInput("parameter", "Specify Reference Value", value = "90")
       }
-
-      else if(input$metric == "mage"){
-        textInput("parameter", "Specify Parameter", value = "1")
-      }
-
       else if(input$metric == "active_percent"){
         textInput("parameter", "Specify Parameter", value = "5")
       }
@@ -168,7 +169,7 @@ shinyServer(function(input, output) {
         textInput("parameter", "Specify Parameter", value = "100.0, 70")
      }
     }
-   else if(parameter_type == "nested"){
+    else if(parameter_type == "nested"){
     if(input$metric == "in_range_percent"){
       textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
 
@@ -222,10 +223,6 @@ shinyServer(function(input, output) {
 
       else if(input$metric == "m_value"){
         helpText("Enter the reference value for normal basal glycemia.")
-      }
-
-      else if(input$metric == "mage"){
-        helpText("Enter the multiple of SD used to determine glycemic excursions.")
       }
 
       else if(input$metric == "active_percent"){
@@ -298,7 +295,11 @@ shinyServer(function(input, output) {
       }
 
     }
-
+    else if(parameter_type == "mage") {
+      if(input$parameter == "ma") {
+        textInput("parameter2", "Short MA length", value="5")
+      }
+    }
   })
   #add description of second parameter
   output$second_parameter_helptext <- renderUI({
@@ -337,7 +338,11 @@ shinyServer(function(input, output) {
         textInput("parameter3", "Specify Scaling Factor", value = "30,30")
       }
     }
-
+    else if(parameter_type == "mage") {
+      if(input$parameter == "ma") {
+        textInput("parameter3", "Long MA length", value="32")
+      }
+    }
   })
   #add description on third parameter
   output$third_parameter_helptext <- renderUI({
@@ -366,31 +371,37 @@ shinyServer(function(input, output) {
 
 #reactive function
   metric_table <- reactive({
+    string = ""
     parameter_type = parameter_type()
     data = transform_data()
 
     if (is.null(input$parameter)) {
+      print("1")
       validate(
         need(!is.null(input$parameter), "Please wait - Rendering")
       )
     } else if (grepl(',', input$parameter) & !grepl("\\(", input$parameter)) {
       if (length(strsplit(input$parameter, split = ",")[[1]]) != 2) {
+        print('2')
         validate (
           need(parameter_type %in% c("list", "none","time"), "Please wait - Rendering")
         )
       } else {
+        print("3")
         validate(
           need(parameter_type %in% c("list", "lwrupr","lwrupr1","none","time"), "Please wait - Rendering")
         )
       }
     } else if (grepl("\\(", input$parameter)) {
+      print("4")
       validate(
         need(parameter_type %in% c("nested", "none","time"), "Please wait - Rendering")
       )
     } else if (!grepl(',', input$parameter)) {
+      print("4")
       print(input$parameter)
       validate(
-        need(parameter_type %in% c("value","value1","value_time", "none","time"), "Please wait - Rendering")
+        need(parameter_type %in% c("value","value1","value_time", "none","time", "mage"), "Please wait - Rendering")
       )
 
     }
@@ -422,6 +433,14 @@ shinyServer(function(input, output) {
     }
     else if(parameter_type == "lwrupr1"){
       string = paste("iglu::", input$metric, "(data, " , input$parameter,",",input$parameter2,",",input$parameter3, ")", sep = "")
+    }
+    else if(parameter_type == "mage"){
+      if(input$parameter == "ma") {
+        string = paste("iglu::", input$metric, "(data, version='",input$parameter, "', short_ma=", input$parameter2,", long_ma=",input$parameter3,")", sep="")
+      }
+      else if(input$parameter == "naive") {
+        string = paste("iglu::", input$metric, "(data, version='",input$parameter,"')", sep="")
+      }
     }
     else if(parameter_type == "nested"){
       strlist = strsplit(input$parameter, ")")[[1]]
@@ -472,10 +491,10 @@ shinyServer(function(input, output) {
       string = out_str
     }
 
+    print(string)
     eval(parse(text = string))
 
   })
-
 
   output$metric <- DT::renderDataTable(metric_table(), extensions = "Buttons",
                                        options = list(dom = "Btip",
@@ -501,6 +520,9 @@ shinyServer(function(input, output) {
     else if(input$plottype == "hist_roc"){
       return("hist_roc")
     }
+    else if(input$plottype == "mage") {
+      return("mage")
+    }
   })
 
   ### Get Lasagna Type (lasagnatype)
@@ -508,7 +530,10 @@ shinyServer(function(input, output) {
   output$plot_lasagnatype <- renderUI({
     plottype = plottype()
     if(plottype == "tsplot"){
-      NULL # lasagnatype doesn"t matter for tsplot, so no input UI is necessary
+      NULL # lasagnatype doesn't matter for tsplot, so no input UI is necessary
+    }
+    else if(plottype == "mage") {
+      NULL
     }
     else if(plottype == "lasagnamulti"){
       radioButtons("plot_lasagnatype", "Lasagna Plot Type",
@@ -555,6 +580,9 @@ shinyServer(function(input, output) {
     else if(plottype == "hist_roc"){
       subject = unique(data$id)[1]
       textInput("plot_subjects", "Enter Subject ID", value = subject)
+    }
+    else if(plottype == "mage") {
+      NULL
     }
   })
 
@@ -878,6 +906,15 @@ shinyServer(function(input, output) {
       string = paste('iglu::hist_roc(data = data',
                      ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
       eval(parse(text = string))
+    }
+    else if(plottype == "mage"){
+      if(input$parameter == "naive"){
+        NULL
+      }
+      data=subset_data()
+      print(data)
+      string = paste("iglu::", input$metric, "(data, version='ma', short_ma=", input$parameter2,", long_ma=",input$parameter3,", plot=TRUE)", sep="")
+      eval(parse(text=string))
     }
 
   })

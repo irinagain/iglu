@@ -99,7 +99,8 @@ shinyUI(fluidPage(
                                           `Lasagna Plot (Multiple Subject)` = 'lasagnamulti',
                                           `Lasagna Plot (Single Subject)` = 'lasagnasingle',
                                           `Rate of Change (Time Series)` = 'plot_roc',
-                                          `Rate of Change (Histogram)` = 'hist_roc'
+                                          `Rate of Change (Histogram)` = 'hist_roc',
+                                          `Mean Amplitude of Glycemic Excursions (MAGE)` = 'mage'
                               )),
                  uiOutput("plot_lasagnatype"),
                  uiOutput("plot_subjects"),
