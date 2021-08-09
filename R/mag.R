@@ -57,6 +57,12 @@ mag <- function (data, n = 60, dt0 = NULL, inter_gap = 45, tz = "") {
   rm(list = c("id", "mag"))
   data = check_data_columns(data)
 
+  if (!is.integer(n)) {
+    n <- round(n)
+    message("Parameter n must be an integer, input has been rounded to nearest
+            integer")
+  }
+
   out = data %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(

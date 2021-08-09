@@ -433,7 +433,7 @@ shinyServer(function(input, output) {
       validate(
         need(!is.null(input$parameter), "Please wait - Rendering")
       )
-    } else if (input$parameter %in% c("'ma'", "'naive'")) {
+    } else if (input$parameter %in% c("ma", "naive")) {
       validate (
         need (input$metric == "mage" | parameter_type == "none",
               "Please wait - Rendering")
@@ -455,7 +455,15 @@ shinyServer(function(input, output) {
     } else if (!grepl(',', input$parameter)) {
       # print(input$parameter) # un-comment for bug-fixing
       validate(
-        need(parameter_type %in% c("value","value1","value_time", "none","time", "mage"), "Please wait - Rendering")
+       need(parameter_type %in% c("value", "value1", "value_time", "none","time"),
+             "Please wait - Rendering")
+      )
+    }
+    # because MAGE input is unique (character)
+    if (input$metric == 'mage') {
+      validate(
+        # print message instead of warning
+        need(input$parameter %in% c("ma", "naive"), "Parameter must be one of ma, or naive")
       )
     }
 
