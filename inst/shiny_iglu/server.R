@@ -11,11 +11,11 @@ shinyServer(function(input, output) {
     # else select associated sensor type
     out = switch(input$datatype,
                  "processed" = read.csv(input$datafile$datapath),
-                 "FreeStyle Libre" = read_raw_data(input$datafile$datapath, sensor = "libre", id = input$subjid),
-                 "Dexcom" = read_raw_data(input$datafile$datapath, sensor = "dexcom", id = input$subjid),
-                 "Libre Pro" = read_raw_data(input$datafile$datapath, sensor = "librepro", id = input$subjid),
-                 "ASC" = read_raw_data(input$datafile$datapath, sensor = "asc", id = input$subjid),
-                 "iPro" = read_raw_data(input$datafile$datapath, sensor = "ipro", id = input$subjid)
+                 "FreeStyle Libre" = iglu::read_raw_data(input$datafile$datapath, sensor = "libre", id = input$subjid),
+                 "Dexcom" = iglu::read_raw_data(input$datafile$datapath, sensor = "dexcom", id = input$subjid),
+                 "Libre Pro" = iglu::read_raw_data(input$datafile$datapath, sensor = "librepro", id = input$subjid),
+                 "ASC" = iglu::read_raw_data(input$datafile$datapath, sensor = "asc", id = input$subjid),
+                 "iPro" = iglu::read_raw_data(input$datafile$datapath, sensor = "ipro", id = input$subjid)
     )
     return(out)
   })
@@ -1209,8 +1209,7 @@ shinyServer(function(input, output) {
     },
     content = function(file) {
       cairo_pdf(filename = file, width = 20, height = 18, bg = "transparent")
-      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
-                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      p = plotEpisodeCalc()
       plot(p)
       dev.off()
     }
@@ -1223,8 +1222,7 @@ shinyServer(function(input, output) {
     },
     content = function(file) {
       png(file)
-      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
-                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      p = plotEpisodeCalc()
       plot(p)
       dev.off()
     }
@@ -1236,8 +1234,7 @@ shinyServer(function(input, output) {
     },
     content = function(file) {
       postscript(file)
-      p = gridExtra::grid.arrange(gridExtra::arrangeGrob(gridExtra::tableGrob(agpMetrics(), rows = NULL),
-                                                         plotRanges(), ncol = 2), plotAGP(), plotDaily())
+      p = plotEpisodeCalc()
       plot(p)
       dev.off()
     }
