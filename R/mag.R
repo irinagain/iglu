@@ -44,6 +44,7 @@
 #'
 
 mag <- function (data, n = 60, dt0 = NULL, inter_gap = 45, tz = "") {
+
   mag_single <- function (data) {
     data_ip = CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
     idx = seq(1, ncol(data_ip[[1]]), by = round(n/data_ip[[3]]))

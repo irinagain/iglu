@@ -614,8 +614,13 @@ shinyServer(function(input, output) {
 
   output$plot_lasagnatype <- renderUI({
     plottype = plottype()
-    if(plottype %in% c("tsplot", "mage")){
-      NULL # lasagnatype doesn't matter for tsplot, so no input UI is necessary
+# <<<<<<< HEAD
+#     if(plottype %in% c("tsplot", "mage")){
+#       NULL # lasagnatype doesn't matter for tsplot, so no input UI is necessary
+# =======
+    if(plottype %in% c("tsplot", "plot_roc", "hist_roc", "mage")) {
+      NULL # lasagnatype doesn"t matter for these, so no input UI is necessary
+# >>>>>>> 53855d74 (make minor ui modifications)
     }
 
     else if(plottype == "lasagnamulti"){
@@ -630,12 +635,12 @@ shinyServer(function(input, output) {
                    choices = c(`Unsorted` = "unsorted",
                                `Time-sorted` = "timesorted"))
     }
-    else if(plottype == "plot_roc"){
-      NULL
-    }
-    else if(plottype == "hist_roc"){
-      NULL
-    }
+    # else if(plottype == "plot_roc"){
+    #   NULL
+    # }
+    # else if(plottype == "hist_roc"){
+    #   NULL
+    # }
   })
   output$plot_mage <- renderUI({
     plottype = plottype()
@@ -661,8 +666,26 @@ shinyServer(function(input, output) {
   output$plot_subjects <- renderUI({
     data = transform_data() # bring reactive data input into this renderUI call to default to all subjects
     plottype = plottype() # bring reactive input variable into this renderUI call
-
+# <<<<<<< HEAD
+#
     if(plottype %in% c('lasagnasingle', 'plot_roc', 'hist_roc', 'mage')) {
+# =======
+#     if(plottype %in% c("tsplot", "lasagnamulti")){
+#       NULL
+#     }
+#     # else if(plottype == "lasagnamulti"){
+#     #   NULL
+#     # }
+#     else if(plottype == "lasagnasingle"){
+#       subject = unique(data$id)[1]
+#       textInput("plot_subjects", "Enter Subject ID", value = subject)
+#     }
+#     else if(plottype == "lasagnasingle"){
+#       subject = unique(data$id)[1]
+#       textInput("plot_subjects", "Enter Subject ID", value = subject)
+#     }
+#     else if(plottype == "plot_roc"){
+# >>>>>>> 53855d74 (make minor ui modifications)
       subject = unique(data$id)[1]
       textInput("plot_subjects", "Enter Subject ID", value = subject)
     }
@@ -674,9 +697,16 @@ shinyServer(function(input, output) {
   output$plot_subjects_help_text <- renderUI({
     data = transform_data()
     plottype = plottype()
+# <<<<<<< HEAD
     if(plottype %in% c("tsplot", "lasagnamulti")){
+# =======
+    # if(plottype %in% c("tsplot", "lasagnamulti")) {
+# >>>>>>> 53855d74 (make minor ui modifications)
       NULL
     }
+    # else if(plottype == "lasagnamulti"){
+    #   NULL
+    # }
     else if(plottype == "lasagnasingle"){
       helpText("Enter the ID of a subject to display their individualized lasagna plot")
     }
@@ -698,40 +728,58 @@ shinyServer(function(input, output) {
   ### Get time lag for Rate of Change plots
   output$plot_timelag <- renderUI({
     plottype = plottype() # bring reactive input variable into this renderUI call
-    if(plottype == "tsplot"){
+    if(plottype %in% c("tsplot", "lasagnamulti", "lasagnasingle")) {
       NULL # time lag is only for ROC plots
     }
-    else if(plottype == "lasagnamulti"){
-      NULL
-    }
-    else if(plottype == "lasagnasingle"){
-      NULL
-    }
-    else if(plottype == "plot_roc"){
+    # else if(plottype == "lasagnamulti"){
+    #   NULL
+    # }
+    # else if(plottype == "lasagnasingle"){
+    #   NULL
+    # }
+    else if(plottype %in% c("plot_roc", "hist_roc")) {
       textInput("plot_timelag", "Enter Timelag for ROC calculation", value = 15)
     }
-    else if(plottype == "hist_roc"){
-      textInput("plot_timelag", "Enter Timelag for ROC calculation", value = 15)
-    }
+    # else if(plottype == "hist_roc"){
+    #   textInput("plot_timelag", "Enter Timelag for ROC calculation", value = 15)
+    # }
   })
 
   ### Get max days to plot (maxd)
   output$plot_maxd <- renderUI({
     plottype = plottype() # bring reactive input variable into this renderUI call
+# <<<<<<< HEAD
     if(plottype == "lasagnamulti"){
       textInput("plot_maxd", "Enter Maximum # of Days to Plot", value = 14)
     }
     else {
       NULL
     }
+# =======
+#     if(plottype %in% c("tsplot", "lasagnasingle", "plot_roc", "hist_roc")) {
+#       NULL
+#     }
+#     else if(plottype == "lasagnamulti"){
+#       textInput("plot_maxd", "Enter Maximum # of Days to Plot", value = 14)
+#     }
+#     # else if(plottype == "lasagnasingle"){
+#     #   NULL
+#     # }
+#     # else if(plottype == "plot_roc"){
+#     #   NULL
+#     # }
+#     # else if(plottype == "hist_roc"){
+#     #   NULL
+#     # }
+# >>>>>>> 53855d74 (make minor ui modifications)
   })
 
   ### Get datatype
 
   output$plot_datatype <- renderUI({  # Request input parameters depending on type of plot
     plottype = plottype() # bring reactive input variable into this renderUI call
-    if(plottype == "tsplot"){
-      NULL # datatype doesn"t matter for tsplot, so no input is necessary
+    if(plottype %in% c("tsplot", "lasagnasingle", "plot_roc", "hist_roc")) {
+      NULL # datatype doesn"t matter for these, so no input is necessary
     }
     else if(plottype == "lasagnamulti"){
       radioButtons("plot_datatype", "Data Aggregation Type",
@@ -739,35 +787,35 @@ shinyServer(function(input, output) {
                                `All data points` = "all"
                    ))
     }
-    else if(plottype == "lasagnasingle"){
-      NULL  # datatype doesn"t matter for single subject lasagna plots, so no input is necessary
-    }
-    else if(plottype == "plot_roc"){
-      NULL
-    }
-    else if(plottype == "hist_roc"){
-      NULL
-    }
+    # else if(plottype == "lasagnasingle"){
+    #   NULL  # datatype doesn"t matter for single subject lasagna plots, so no input is necessary
+    # }
+    # else if(plottype == "plot_roc"){
+    #   NULL
+    # }
+    # else if(plottype == "hist_roc"){
+    #   NULL
+    # }
   })
 
   output$plot_datatype_help_text <- renderUI({  # Request input parameters depending on type of plot
     plottype = plottype() # bring reactive input variable into this renderUI call
-    if(plottype == "tsplot"){
-      NULL # datatype doesn"t matter for tsplot, so no input is necessary
+    if(plottype %in% c("tsplot", "lasagnasingle", "plot_roc", "hist_roc")) {
+      NULL # datatype doesn"t matter for these, so no input is necessary
     }
     else if(plottype == "lasagnamulti"){
       helpText("Select whether to use all data points in the first maxd days, or whether
                to take the average value at each time point across the first maxd days")
     }
-    else if(plottype == "lasagnasingle"){
-      NULL # datatype doesn"t matter for single lasagna plot, so no input is necessary
-    }
-    else if(plottype == "plot_roc"){
-      NULL
-    }
-    else if(plottype == "hist_roc"){
-      NULL
-    }
+    # else if(plottype == "lasagnasingle"){
+    #   NULL # datatype doesn"t matter for single lasagna plot, so no input is necessary
+    # }
+    # else if(plottype == "plot_roc"){
+    #   NULL
+    # }
+    # else if(plottype == "hist_roc"){
+    #   NULL
+    # }
   })
 
   ### Get time zone (tz)
@@ -810,111 +858,111 @@ shinyServer(function(input, output) {
 
   output$plot_midpoint <- renderUI({
     plottype = plottype() # bring reactive input variable into this renderUI call
-    if(plottype == "tsplot"){
+    if(plottype %in% c("tsplot", "plot_roc", "hist_roc")) {
       NULL
     }
-    else if(plottype == "lasagnamulti"){
+    else if(plottype %in% c("lasagnamulti", "lasagnasingle")) {
       textInput("plot_midpoint", "Enter Midpoint Glucose Value for Color Scale", value = 105)
     }
-    else if(plottype == "lasagnasingle"){
-      textInput("plot_midpoint", "Enter Midpoint Glucose Value for Color Scale", value = 105)
-    }
-    else if(plottype == "plot_roc"){
-      NULL
-    }
-    else if(plottype == "hist_roc"){
-      NULL
-    }
+    # else if(plottype == "lasagnasingle"){
+    #   textInput("plot_midpoint", "Enter Midpoint Glucose Value for Color Scale", value = 105)
+    # }
+    # else if(plottype == "plot_roc"){
+    #   NULL
+    # }
+    # else if(plottype == "hist_roc"){
+    #   NULL
+    # }
   })
 
   ### Get color bar limits (limits)
 
   output$plot_limits <- renderUI({
     plottype = plottype() # bring reactive input variable into this renderUI call
-    if(plottype == "tsplot"){
+    if(plottype %in% c("tsplot", 'plot_roc', "hist_roc")){
       NULL
     }
-    else if(plottype == "lasagnamulti"){
+    else if(plottype %in% c("lasagnamulti", "lasagnasingle")) {
       textInput("plot_limits", "Enter Limit Glucose Values for Color Scale Separated by a Comma", value = "50, 500")
     }
-    else if(plottype == "lasagnasingle"){
-      textInput("plot_limits", "Enter Limit Glucose Values for Color Scale Separated by a Comma", value = "50, 500")
-    }
-    else if(plottype == "plot_roc"){
-      NULL
-    }
-    else if(plottype == "hist_roc"){
-      NULL
-    }
+    # else if(plottype == "lasagnasingle"){
+    #   textInput("plot_limits", "Enter Limit Glucose Values for Color Scale Separated by a Comma", value = "50, 500")
+    # }
+    # else if(plottype == "plot_roc"){
+    #   NULL
+    # }
+    # else if(plottype == "hist_roc"){
+    #   NULL
+    # }
   })
 
   ### Color Bar help text
 
   output$plot_colorbar_help_text <- renderUI({ # render help text below color bar options
     plottype = plottype() # bring reactive input variable into this renderUI call
-    if(plottype == "tsplot"){ # tsplot doesn"t make use of a colorbar, no helptext necessary
+    if(plottype %in% c("tsplot", "plot_roc", "hist_roc")){ # tsplot doesn"t make use of a colorbar, no helptext necessary
       NULL
     }
-    else if(plottype == "lasagnamulti"){
+    else if(plottype %in% c("lasagnamulti", "lasagnasingle")) {
       helpText("The color bar can be modified by changing the values of the target range, the midpoint,
                and the color bar limits")
     }
-    else if(plottype == "lasagnasingle"){
-      helpText("The color bar can be modified by changing the values of the target range, the midpoint,
-               and the color bar limits")
-    }
-    else if(plottype == "plot_roc"){
-      NULL
-    }
-    else if(plottype == "hist_roc"){
-      NULL
-    }
+    # else if(plottype == "lasagnasingle"){
+    #   helpText("The color bar can be modified by changing the values of the target range, the midpoint,
+    #            and the color bar limits")
+    # }
+    # else if(plottype == "plot_roc"){
+    #   NULL
+    # }
+    # else if(plottype == "hist_roc"){
+    #   NULL
+    # }
   })
 
   ### Get color scheme
   output$plot_color_scheme <- renderUI({
     plottype = plottype()
-    if(plottype == "tsplot"){
+    if(plottype %in% c("tsplot", "plot_roc", "hist_roc")) {
       NULL
     }
-    else if(plottype == "lasagnamulti"){
+    else if(plottype %in% c("lasagnamulti", "lasagnasingle")) {
       radioButtons('plot_color_scheme', 'Transformation type',
                    choices = c(`Blue/Red` = '"blue-red"', `Red/Orange` = '"red-orange"'))
     }
-    else if(plottype == "lasagnasingle"){
-      radioButtons('plot_color_scheme', 'Transformation type',
-                   choices = c(`Blue/Red` = '"blue-red"', `Red/Orange` = '"red-orange"'))
-    }
-    else if(plottype == "plot_roc"){
-      NULL
-    }
-    else if(plottype == "hist_roc"){
-      NULL
-    }
+    # else if(plottype == "lasagnasingle"){
+    #   radioButtons('plot_color_scheme', 'Transformation type',
+    #                choices = c(`Blue/Red` = '"blue-red"', `Red/Orange` = '"red-orange"'))
+    # }
+    # else if(plottype == "plot_roc"){
+    #   NULL
+    # }
+    # else if(plottype == "hist_roc"){
+    #   NULL
+    # }
   })
 
   ### Get log boolean
 
   output$plot_log <- renderUI({
     plottype = plottype()
-    if(plottype == "tsplot"){
+    if(plottype %in% c("tsplot", "lasagnamulti", "lasagnasingle")){
       radioButtons('plot_log', 'Transformation type',
                    choices = c(`None` = 'FALSE', `Log10` = 'TRUE'))
     }
-    else if(plottype == "lasagnamulti"){
-      radioButtons('plot_log', 'Transformation type',
-                   choices = c(`None` = 'FALSE', `Log10` = 'TRUE'))
-    }
-    else if(plottype == "lasagnasingle"){
-      radioButtons('plot_log', 'Transformation type',
-                   choices = c(`None` = 'FALSE', `Log10` = 'TRUE'))
-    }
-    else if(plottype == "plot_roc"){
+    # else if(plottype == "lasagnamulti"){
+    #   radioButtons('plot_log', 'Transformation type',
+    #                choices = c(`None` = 'FALSE', `Log10` = 'TRUE'))
+    # }
+    # else if(plottype == "lasagnasingle"){
+    #   radioButtons('plot_log', 'Transformation type',
+    #                choices = c(`None` = 'FALSE', `Log10` = 'TRUE'))
+    # }
+    else if(plottype %in% c("plot_roc", "hist_roc")){
       NULL
     }
-    else if(plottype == "hist_roc"){
-      NULL
-    }
+    # else if(plottype == "hist_roc"){
+    #   NULL
+    # }
   })
 
   ### Render Plot
