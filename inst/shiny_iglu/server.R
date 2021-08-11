@@ -567,14 +567,14 @@ shinyServer(function(input, output) {
     tags$div(
       textInput("mage_short_ma", "Short MA length", value="5"),
       textInput("mage_long_ma", "Long MA length", value="32"),
-      # textInput("mage_interval", "Interval between glucose readings"),
-      # radioButtons("mage_show_ma", "Show Moving Averages on Plot", c(
-      #   "Yes" = TRUE,
-      #   "No" = FALSE
-      # ), inline=TRUE, selected = "No"),
-      # textInput("mage_title", "Title", value = NULL),
-      # textInput("mage_xlab", "X Label", value = NULL),
-      # textInput("mage_ylab", "Y Label", value = NULL)
+      textInput("mage_interval", "Interval between glucose readings"),
+      radioButtons("mage_show_ma", "Show Moving Averages on Plot", c(
+        "Yes" = TRUE,
+        "No" = FALSE
+      ), inline=TRUE, selected = "No"),
+      textInput("mage_title", "Title", value = "default"),
+      textInput("mage_xlab", "X Label", value = "default"),
+      textInput("mage_ylab", "Y Label", value = "default")
     )
   })
 
@@ -639,19 +639,10 @@ shinyServer(function(input, output) {
   ### Get max days to plot (maxd)
   output$plot_maxd <- renderUI({
     plottype = plottype() # bring reactive input variable into this renderUI call
-    if(plottype == "tsplot"){
-      NULL
-    }
-    else if(plottype == "lasagnamulti"){
+    if(plottype == "lasagnamulti"){
       textInput("plot_maxd", "Enter Maximum # of Days to Plot", value = 14)
     }
-    else if(plottype == "lasagnasingle"){
-      NULL
-    }
-    else if(plottype == "plot_roc"){
-      NULL
-    }
-    else if(plottype == "hist_roc"){
+    else {
       NULL
     }
   })
@@ -909,17 +900,14 @@ shinyServer(function(input, output) {
     }
     else if(plottype == "mage"){
       data = subset_data() # subset data to only user-specified subject
-      View(data)
 
-      validate (
-        input$mage_short_ma
-      )
+      mage_title = ifelse(tolower(input$mage_title) == "default", NA, paste0("'",input$mage_title,"'"))
+      mage_xlab = ifelse(tolower(input$mage_xlab) == "default", NA, paste0("'",input$mage_xlab,"'"))
+      mage_ylab = ifelse(tolower(input$mage_ylab) == "default", NA, paste0("'",input$mage_ylab,"'"))
 
-      string = paste0("iglu::mage_ma_single(data,plot=TRUE)")
-      # string = paste0("iglu::mage_ma_single(data, version='ma', plot=TRUE, short_ma='", input$mage_short_ma, "', long_ma='",
-      #                input$mage_long_ma, "', interval='", input$mage_interval, "', show_ma='", input$mage_show_ma, "', title='",
-      #                input$mage_title, "', xlab='", input$mage_xlab, "', ylab='", input$mage_ylab,"')")
-      print(string)
+      string = paste0("iglu::mage_ma_single(data=data,plot=TRUE,short_ma=",input$mage_short_ma,",long_ma=",
+                      input$long_ma,",interval=",input$mage_interval,",show_ma=", input$mage_show_ma,",
+                      ,title=",mage_title,",xlab=", mage_xlab,",ylab=",mage_ylab,")")
       eval(parse(text=string))
     }
 
