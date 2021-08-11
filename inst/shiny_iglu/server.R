@@ -582,32 +582,13 @@ shinyServer(function(input, output) {
   output$plot_subjects <- renderUI({
     data = transform_data() # bring reactive data input into this renderUI call to default to all subjects
     plottype = plottype() # bring reactive input variable into this renderUI call
-    if(plottype == "tsplot"){
+
+    if(plottype %in% c('lasagnasingle', 'plot_roc', 'hist_roc', 'mage')) {
+      subject = unique(data$id)[1]
+      textInput("plot_subjects", "Enter Subject ID", value = subject)
+    }
+    else {
       NULL
-    }
-    else if(plottype == "lasagnamulti"){
-      NULL
-    }
-    # the code below this could be refactored into a single if statement
-    else if(plottype == "lasagnasingle"){
-      subject = unique(data$id)[1]
-      textInput("plot_subjects", "Enter Subject ID", value = subject)
-    }
-    else if(plottype == "lasagnasingle"){
-      subject = unique(data$id)[1]
-      textInput("plot_subjects", "Enter Subject ID", value = subject)
-    }
-    else if(plottype == "plot_roc"){
-      subject = unique(data$id)[1]
-      textInput("plot_subjects", "Enter Subject ID", value = subject)
-    }
-    else if(plottype == "hist_roc"){
-      subject = unique(data$id)[1]
-      textInput("plot_subjects", "Enter Subject ID", value = subject)
-    }
-    else if(plottype == "mage") {
-      subject = unique(data$id)[1]
-      textInput("plot_subjects", "Enter Subject ID", value = subject)
     }
   })
 
@@ -873,8 +854,11 @@ shinyServer(function(input, output) {
 
   plotFunc <- reactive({
 
-    plottype = plottype() # bring reactive input variable into this renderPlot call
     library(iglu)
+
+    plottype = plottype() # bring reactive input variable into this renderPlot call
+    data = subset_data() # subset data to only user-specified subject
+
 
     if(plottype == "tsplot"){
       #plot_glu(data, plottype = "tsplot")
@@ -883,7 +867,6 @@ shinyServer(function(input, output) {
         need(all(!is.null(input$plot_log)),
              "Please wait - Rendering")
       )
-
 
       data = transform_data()
       string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
@@ -910,7 +893,6 @@ shinyServer(function(input, output) {
         need(!is.null(input$plot_subjects), "Please wait - Rendering")
       )
 
-      data = subset_data() # subset data to only user-specified subject
       string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
                      input$plot_lasagnatype, '", limits = c(', input$plot_limits, ') ,',
                      input$plot_midpoint, ', ', input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "",',
@@ -918,13 +900,11 @@ shinyServer(function(input, output) {
       eval(parse(text = string))
     }
     else if(plottype == "plot_roc"){
-      data = subset_data() # subset data to only user-specified subject
       string = paste('iglu::plot_roc(data = data',
                      ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
       eval(parse(text = string))
     }
     else if(plottype == "hist_roc"){
-      data = subset_data() # subset data to only user-specified subject
       string = paste('iglu::hist_roc(data = data',
                      ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
       eval(parse(text = string))
@@ -933,8 +913,6 @@ shinyServer(function(input, output) {
       validate (
         input$mage_short_ma
       )
-
-      data=subset_data()
       string = paste0("iglu::mage(data, version='ma', plot=TRUE, short_ma='", input$mage_short_ma, "', long_ma='",
                      input$mage_long_ma, "', interval='", input$mage_interval, "', show_ma='", input$mage_show_ma, "', title='",
                      input$mage_title, "', xlab='", input$mage_xlab, "', ylab='", input$mage_ylab,"')")
