@@ -595,10 +595,7 @@ shinyServer(function(input, output) {
   output$plot_subjects_help_text <- renderUI({
     data = transform_data()
     plottype = plottype()
-    if(plottype == "tsplot"){
-      NULL
-    }
-    else if(plottype == "lasagnamulti"){
+    if(plottype %in% c("tsplot", "lasagnamulti")){
       NULL
     }
     else if(plottype == "lasagnasingle"){
@@ -857,8 +854,6 @@ shinyServer(function(input, output) {
     library(iglu)
 
     plottype = plottype() # bring reactive input variable into this renderPlot call
-    data = subset_data() # subset data to only user-specified subject
-
 
     if(plottype == "tsplot"){
       #plot_glu(data, plottype = "tsplot")
@@ -893,6 +888,7 @@ shinyServer(function(input, output) {
         need(!is.null(input$plot_subjects), "Please wait - Rendering")
       )
 
+      data = subset_data() # subset data to only user-specified subject
       string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
                      input$plot_lasagnatype, '", limits = c(', input$plot_limits, ') ,',
                      input$plot_midpoint, ', ', input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "",',
@@ -900,22 +896,29 @@ shinyServer(function(input, output) {
       eval(parse(text = string))
     }
     else if(plottype == "plot_roc"){
+      data = subset_data() # subset data to only user-specified subject
       string = paste('iglu::plot_roc(data = data',
                      ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
       eval(parse(text = string))
     }
     else if(plottype == "hist_roc"){
+      data = subset_data() # subset data to only user-specified subject
       string = paste('iglu::hist_roc(data = data',
                      ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
       eval(parse(text = string))
     }
     else if(plottype == "mage"){
+      data = subset_data() # subset data to only user-specified subject
+      View(data)
+
       validate (
         input$mage_short_ma
       )
-      string = paste0("iglu::mage(data, version='ma', plot=TRUE, short_ma='", input$mage_short_ma, "', long_ma='",
-                     input$mage_long_ma, "', interval='", input$mage_interval, "', show_ma='", input$mage_show_ma, "', title='",
-                     input$mage_title, "', xlab='", input$mage_xlab, "', ylab='", input$mage_ylab,"')")
+
+      string = paste0("iglu::mage_ma_single(data,plot=TRUE)")
+      # string = paste0("iglu::mage_ma_single(data, version='ma', plot=TRUE, short_ma='", input$mage_short_ma, "', long_ma='",
+      #                input$mage_long_ma, "', interval='", input$mage_interval, "', show_ma='", input$mage_show_ma, "', title='",
+      #                input$mage_title, "', xlab='", input$mage_xlab, "', ylab='", input$mage_ylab,"')")
       print(string)
       eval(parse(text=string))
     }
