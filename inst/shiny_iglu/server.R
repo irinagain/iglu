@@ -318,6 +318,9 @@ shinyServer(function(input, output) {
         helpText("Enter the exponents separated by a comma with the upper limit as the first input and the lower limit as the second input.")
       }
     }
+    else if(parameter_type == "mage"){
+      helpText("Optimal values are between 5 and 15")
+    }
 
   })
   #specify third parameter and its default value
@@ -361,6 +364,9 @@ shinyServer(function(input, output) {
       if(input$metric == "igc"){
         helpText("Enter the scarling factors separated by a comma with the upper limit as the first input and the lower limit as the second input.")
       }
+    }
+    else if(parameter_type == "mage"){
+      helpText("Optimal values are between 20 and 40.")
     }
 
   })
@@ -529,12 +535,10 @@ shinyServer(function(input, output) {
 
   output$plot_lasagnatype <- renderUI({
     plottype = plottype()
-    if(plottype == "tsplot"){
+    if(plottype %in% c("tsplot", "mage")){
       NULL # lasagnatype doesn't matter for tsplot, so no input UI is necessary
     }
-    else if(plottype == "mage") {
-      NULL
-    }
+
     else if(plottype == "lasagnamulti"){
       radioButtons("plot_lasagnatype", "Lasagna Plot Type",
                    choices = c(`Unsorted` = "unsorted",
@@ -554,6 +558,25 @@ shinyServer(function(input, output) {
       NULL
     }
   })
+  output$plot_mage <- renderUI({
+    plottype = plottype()
+    if(plottype != "mage"){
+      return(NULL)
+    }
+
+    tags$div(
+      textInput("mage_short_ma", "Short MA length", value="5"),
+      textInput("mage_long_ma", "Long MA length", value="32"),
+      # textInput("mage_interval", "Interval between glucose readings"),
+      # radioButtons("mage_show_ma", "Show Moving Averages on Plot", c(
+      #   "Yes" = TRUE,
+      #   "No" = FALSE
+      # ), inline=TRUE, selected = "No"),
+      # textInput("mage_title", "Title", value = NULL),
+      # textInput("mage_xlab", "X Label", value = NULL),
+      # textInput("mage_ylab", "Y Label", value = NULL)
+    )
+  })
 
   ### Get desired subjects
   output$plot_subjects <- renderUI({
@@ -565,6 +588,7 @@ shinyServer(function(input, output) {
     else if(plottype == "lasagnamulti"){
       NULL
     }
+    # the code below this could be refactored into a single if statement
     else if(plottype == "lasagnasingle"){
       subject = unique(data$id)[1]
       textInput("plot_subjects", "Enter Subject ID", value = subject)
@@ -582,7 +606,8 @@ shinyServer(function(input, output) {
       textInput("plot_subjects", "Enter Subject ID", value = subject)
     }
     else if(plottype == "mage") {
-      NULL
+      subject = unique(data$id)[1]
+      textInput("plot_subjects", "Enter Subject ID", value = subject)
     }
   })
 
@@ -607,14 +632,11 @@ shinyServer(function(input, output) {
 
   })
 
-
   subset_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
-
     data = transform_data()
     data = data[data$id == input$plot_subjects,] # reactively subset data when subjects input is modified
     return(data)
   })
-
 
   ### Get time lag for Rate of Change plots
   output$plot_timelag <- renderUI({
@@ -908,12 +930,15 @@ shinyServer(function(input, output) {
       eval(parse(text = string))
     }
     else if(plottype == "mage"){
-      if(input$parameter == "naive"){
-        NULL
-      }
+      validate (
+        input$mage_short_ma
+      )
+
       data=subset_data()
-      print(data)
-      string = paste("iglu::", input$metric, "(data, version='ma', short_ma=", input$parameter2,", long_ma=",input$parameter3,", plot=TRUE)", sep="")
+      string = paste0("iglu::mage(data, version='ma', plot=TRUE, short_ma='", input$mage_short_ma, "', long_ma='",
+                     input$mage_long_ma, "', interval='", input$mage_interval, "', show_ma='", input$mage_show_ma, "', title='",
+                     input$mage_title, "', xlab='", input$mage_xlab, "', ylab='", input$mage_ylab,"')")
+      print(string)
       eval(parse(text=string))
     }
 

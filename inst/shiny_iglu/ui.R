@@ -105,6 +105,7 @@ shinyUI(fluidPage(
                  uiOutput("plot_lasagnatype"),
                  uiOutput("plot_subjects"),
                  uiOutput("plot_subjects_help_text"),
+                 uiOutput("plot_mage"),
                  uiOutput("plot_timelag"),
                  uiOutput("plot_maxd"),
                  uiOutput("plot_datatype"),
