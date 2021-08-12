@@ -629,9 +629,9 @@ shinyServer(function(input, output) {
       textInput("mage_long_ma", "Long MA length", value="32"),
       textInput("mage_interval", "Interval between glucose readings"),
       radioButtons("mage_show_ma", "Show Moving Averages on Plot", c(
-        "Yes" = TRUE,
-        "No" = FALSE
-      ), inline=TRUE, selected = "No"),
+        "No" = FALSE,
+        "Yes" = TRUE
+      ), inline=TRUE),
       textInput("mage_title", "Title", value = "default"),
       textInput("mage_xlab", "X Label", value = "default"),
       textInput("mage_ylab", "Y Label", value = "default")
@@ -959,6 +959,10 @@ shinyServer(function(input, output) {
       eval(parse(text = string))
     }
     else if(plottype == "mage"){
+      validate (
+        need(all(!is.null(input$mage_short_ma), !is.null(input$mage_long_ma)), "Please wait - Rendering")
+      )
+
       data = subset_data() # subset data to only user-specified subject
 
       mage_title = ifelse(tolower(input$mage_title) == "default", NA, paste0("'",input$mage_title,"'"))
@@ -966,7 +970,7 @@ shinyServer(function(input, output) {
       mage_ylab = ifelse(tolower(input$mage_ylab) == "default", NA, paste0("'",input$mage_ylab,"'"))
 
       string = paste0("iglu::mage_ma_single(data=data,plot=TRUE,short_ma=",input$mage_short_ma,",long_ma=",
-                      input$long_ma,",interval=",input$mage_interval,",show_ma=", input$mage_show_ma,",
+                      input$mage_long_ma,",interval=",input$mage_interval,",show_ma=", input$mage_show_ma,",
                       ,title=",mage_title,",xlab=", mage_xlab,",ylab=",mage_ylab,")")
       eval(parse(text=string))
     }
