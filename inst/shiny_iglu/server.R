@@ -153,7 +153,7 @@ shinyServer(function(input, output) {
       else if(input$metric == "mad_glu"){
         textInput("parameter", "Specify Parameter", value = "1.4826")
       }
-        
+
       else if(input$metric == "active_percent"){
         textInput("parameter", "Specify Parameter", value = "5")
       }
@@ -359,7 +359,9 @@ shinyServer(function(input, output) {
       }
     }
     else if(parameter_type == "mage"){
-      helpText("Optimal values are between 5 and 15")
+      if(input$parameter == "ma") {
+        helpText("Optimal values are between 5 and 15")
+      }
     }
 
   })
@@ -406,9 +408,10 @@ shinyServer(function(input, output) {
       }
     }
     else if(parameter_type == "mage"){
-      helpText("Optimal values are between 20 and 40.")
+      if(input$parameter == "ma") {
+        helpText("Optimal values are between 20 and 40.")
+      }
     }
-
   })
 
   output$sleep_wake_help <- renderUI({
