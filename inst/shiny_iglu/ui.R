@@ -112,30 +112,10 @@ shinyUI(fluidPage(
                                           `Rate of Change (Histogram)` = 'hist_roc',
                                           `Mean Amplitude of Glycemic Excursions (MAGE)` = 'mage'
                               )),
-#  <<<<<<< HEAD
-#                  uiOutput("plot_lasagnatype"),
-#                  uiOutput("plot_subjects"),
-#                  uiOutput("plot_subjects_help_text"),
-#                  uiOutput("plot_mage"),
-#                  uiOutput("plot_timelag"),
-#                  uiOutput("plot_maxd"),
-#                  uiOutput("plot_datatype"),
-#                  uiOutput("plot_datatype_help_text"),
-#                  #uiOutput("plot_tz"),
-#                  #uiOutput("plot_tz_help_text"),
-#                  uiOutput("plot_TR"),
-#                  #uiOutput("plot_TR_help_text"),
-#                  uiOutput("plot_midpoint"),
-#                  uiOutput('plot_limits'),
-#                  uiOutput('plot_colorbar_help_text'),
-#                  uiOutput('plot_color_scheme'),
-#                  uiOutput('plot_log'),
-# =======
                  uiOutput("lasagna_sidebar"),
                  uiOutput("tsplot_sidebar"),
                  uiOutput("rocplots_sidebar"),
                  uiOutput("plot_mage"),
-# >>>>>>> 8c965229 (consolidate plot i/o using taglist)
                  downloadButton(outputId = "pdfButton", label = "PDF"),
                  downloadButton(outputId = "pngButton", label = "PNG"),
                  downloadButton(outputId = "epsButton", label = "EPS")
