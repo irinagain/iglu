@@ -461,7 +461,6 @@ shinyServer(function(input, output) {
     }
     # because MAGE input is unique (character)
     if (input$metric == "mage") {
-      print("test")
       validate(
         # print message instead of warning
         need(input$parameter %in% c("ma", "naive"), "Parameter must be one of ma, or naive")
@@ -473,7 +472,7 @@ shinyServer(function(input, output) {
     ## parameter2 and parameter3 currently (7/29/21) include the same 3 metrics
     ## hyper index, hypo index, and igc
 
-    if (input$metric %in% c("hyper_index", "hypo_index")) {
+    if (input$metric %in% c("hyper_index", "hypo_index", "mage")) {
       validate(
         need(!grepl(",", input$parameter3), "Please wait - Rendering")
       )
