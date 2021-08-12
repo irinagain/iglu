@@ -88,7 +88,7 @@ shinyServer(function(input, output) {
     else if(input$metric %in% c("grade_hyper", "grade_hypo","m_value","mad_glu", "active_percent")){
       return("value")
     }
-    else if(input$metric %in% c('mage')) {
+    else if(input$metric == 'mage') {
       return("mage")
     }
     else if(input$metric %in% c("hyper_index", "hypo_index")){
@@ -153,7 +153,7 @@ shinyServer(function(input, output) {
       else if(input$metric == "mad_glu"){
         textInput("parameter", "Specify Parameter", value = "1.4826")
       }
-        
+
       else if(input$metric == "active_percent"){
         textInput("parameter", "Specify Parameter", value = "5")
       }
@@ -359,7 +359,9 @@ shinyServer(function(input, output) {
       }
     }
     else if(parameter_type == "mage"){
-      helpText("Optimal values are between 5 and 15")
+      if(input$parameter == "ma") {
+        helpText("Optimal values are between 5 and 15")
+      }
     }
 
   })
@@ -406,9 +408,10 @@ shinyServer(function(input, output) {
       }
     }
     else if(parameter_type == "mage"){
-      helpText("Optimal values are between 20 and 40.")
+      if(input$parameter == "ma") {
+        helpText("Optimal values are between 20 and 40.")
+      }
     }
-
   })
 
   output$sleep_wake_help <- renderUI({
@@ -424,7 +427,6 @@ shinyServer(function(input, output) {
 
     #### Validate catches for parameter 1 #####
     if (is.null(input$parameter)) {
-      print("1")
       validate(
         need(!is.null(input$parameter), "Please wait - Rendering")
       )
@@ -435,18 +437,15 @@ shinyServer(function(input, output) {
       )
     } else if (grepl(',', input$parameter) & !grepl("\\(", input$parameter)) {
       if (length(strsplit(input$parameter, split = ",")[[1]]) != 2) {
-        print('2')
         validate (
           need(parameter_type %in% c("list", "none","time"), "Please wait - Rendering")
         )
       } else {
-        print("3")
         validate(
           need(parameter_type %in% c("list", "lwrupr","lwrupr1","none","time"), "Please wait - Rendering")
         )
       }
     } else if (grepl("\\(", input$parameter)) {
-      print("4")
       validate(
         need(parameter_type %in% c("nested", "none","time"), "Please wait - Rendering")
       )
@@ -539,6 +538,14 @@ shinyServer(function(input, output) {
         out_str = paste0("iglu::calculate_sleep_wake(data, FUN = ", input$metric, ", calculate = \'", input$sleep_or_wake, "\', sleep_start = ", input$sleep_start, ", sleep_end = ", input$sleep_end, ", ", argname[2], " = list(", paramstr, "))")
       } else if (parameter_type == "time") {
         out_str = paste0("iglu::calculate_sleep_wake(data, FUN = ", input$metric, ", calculate = \'", input$sleep_or_wake, "\', sleep_start = ", input$sleep_start, ", sleep_end = ", input$sleep_end, ", ", "tz='", input$tz, "')")
+      } else if (parameter_type == "mage") {
+        if(input$parameter == "ma") {
+          out_str = paste0("iglu::calculate_sleep_wake(data, FUN = ",input$metric," , calculate = '",input$sleep_or_wake,"' , sleep_start=",input$sleep_start,",sleep_end=",input$sleep_end,
+                           ", version='",input$parameter, "', short_ma=", input$parameter2,", long_ma=",input$parameter3,")")
+        }
+        else if(input$parameter == "naive") {
+          out_str = paste0("iglu::calculate_sleep_wake(data, FUN = ",input$metric," , calculate = '",input$sleep_or_wake,"' , sleep_start=",input$sleep_start,",sleep_end=",input$sleep_end, ", version='naive')")
+        }
       }
       else {
         param_string = strsplit(string, "\\(data")[[1]][2]
@@ -554,7 +561,6 @@ shinyServer(function(input, output) {
       string = out_str
     }
 
-    print(string)
     eval(parse(text = string))
 
   })
@@ -626,9 +632,9 @@ shinyServer(function(input, output) {
       textInput("mage_long_ma", "Long MA length", value="32"),
       textInput("mage_interval", "Interval between glucose readings"),
       radioButtons("mage_show_ma", "Show Moving Averages on Plot", c(
-        "Yes" = TRUE,
-        "No" = FALSE
-      ), inline=TRUE, selected = "No"),
+        "No" = FALSE,
+        "Yes" = TRUE
+      ), inline=TRUE),
       textInput("mage_title", "Title", value = "default"),
       textInput("mage_xlab", "X Label", value = "default"),
       textInput("mage_ylab", "Y Label", value = "default")
@@ -956,6 +962,10 @@ shinyServer(function(input, output) {
       eval(parse(text = string))
     }
     else if(plottype == "mage"){
+      validate (
+        need(all(!is.null(input$mage_short_ma), !is.null(input$mage_long_ma)), "Please wait - Rendering")
+      )
+
       data = subset_data() # subset data to only user-specified subject
 
       mage_title = ifelse(tolower(input$mage_title) == "default", NA, paste0("'",input$mage_title,"'"))
@@ -963,7 +973,7 @@ shinyServer(function(input, output) {
       mage_ylab = ifelse(tolower(input$mage_ylab) == "default", NA, paste0("'",input$mage_ylab,"'"))
 
       string = paste0("iglu::mage_ma_single(data=data,plot=TRUE,short_ma=",input$mage_short_ma,",long_ma=",
-                      input$long_ma,",interval=",input$mage_interval,",show_ma=", input$mage_show_ma,",
+                      input$mage_long_ma,",interval=",input$mage_interval,",show_ma=", input$mage_show_ma,",
                       ,title=",mage_title,",xlab=", mage_xlab,",ylab=",mage_ylab,")")
       eval(parse(text=string))
     }
