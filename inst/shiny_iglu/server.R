@@ -88,7 +88,7 @@ shinyServer(function(input, output) {
     else if(input$metric %in% c("grade_hyper", "grade_hypo","m_value","mad_glu", "active_percent")){
       return("value")
     }
-    else if(input$metric %in% c('mage')) {
+    else if(input$metric == 'mage') {
       return("mage")
     }
     else if(input$metric %in% c("hyper_index", "hypo_index")){
@@ -427,7 +427,6 @@ shinyServer(function(input, output) {
 
     #### Validate catches for parameter 1 #####
     if (is.null(input$parameter)) {
-      print("1")
       validate(
         need(!is.null(input$parameter), "Please wait - Rendering")
       )
@@ -438,18 +437,15 @@ shinyServer(function(input, output) {
       )
     } else if (grepl(',', input$parameter) & !grepl("\\(", input$parameter)) {
       if (length(strsplit(input$parameter, split = ",")[[1]]) != 2) {
-        print('2')
         validate (
           need(parameter_type %in% c("list", "none","time"), "Please wait - Rendering")
         )
       } else {
-        print("3")
         validate(
           need(parameter_type %in% c("list", "lwrupr","lwrupr1","none","time"), "Please wait - Rendering")
         )
       }
     } else if (grepl("\\(", input$parameter)) {
-      print("4")
       validate(
         need(parameter_type %in% c("nested", "none","time"), "Please wait - Rendering")
       )
@@ -542,6 +538,14 @@ shinyServer(function(input, output) {
         out_str = paste0("iglu::calculate_sleep_wake(data, FUN = ", input$metric, ", calculate = \'", input$sleep_or_wake, "\', sleep_start = ", input$sleep_start, ", sleep_end = ", input$sleep_end, ", ", argname[2], " = list(", paramstr, "))")
       } else if (parameter_type == "time") {
         out_str = paste0("iglu::calculate_sleep_wake(data, FUN = ", input$metric, ", calculate = \'", input$sleep_or_wake, "\', sleep_start = ", input$sleep_start, ", sleep_end = ", input$sleep_end, ", ", "tz='", input$tz, "')")
+      } else if (parameter_type == "mage") {
+        if(input$parameter == "ma") {
+          out_str = paste0("iglu::calculate_sleep_wake(data, FUN = ",input$metric," , calculate = '",input$sleep_or_wake,"' , sleep_start=",input$sleep_start,",sleep_end=",input$sleep_end,
+                           ", version='",input$parameter, "', short_ma=", input$parameter2,", long_ma=",input$parameter3,")")
+        }
+        else if(input$parameter == "naive") {
+          out_str = paste0("iglu::calculate_sleep_wake(data, FUN = ",input$metric," , calculate = '",input$sleep_or_wake,"' , sleep_start=",input$sleep_start,",sleep_end=",input$sleep_end, ", version='naive')")
+        }
       }
       else {
         param_string = strsplit(string, "\\(data")[[1]][2]
@@ -557,7 +561,6 @@ shinyServer(function(input, output) {
       string = out_str
     }
 
-    print(string)
     eval(parse(text = string))
 
   })
