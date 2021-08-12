@@ -85,9 +85,11 @@ shinyServer(function(input, output) {
       return("list")
     }
     #metric is considered as parameter type "value" if it takes in data and a single value as parameters
-    else if(input$metric %in% c("grade_hyper", "grade_hypo","m_value","mad_glu",
-                                "mage", "active_percent")){
+    else if(input$metric %in% c("grade_hyper", "grade_hypo","m_value","mad_glu", "active_percent")){
       return("value")
+    }
+    else if(input$metric %in% c('mage')) {
+      return("mage")
     }
     else if(input$metric %in% c("hyper_index", "hypo_index")){
       return("value1")
@@ -129,7 +131,11 @@ shinyServer(function(input, output) {
         textInput("parameter", "Specify Parameter", value = "0, 25, 50, 75, 100")
       }
     }
-
+    else if(parameter_type == "mage") {
+      if(input$metric == "mage") {
+        radioButtons("parameter", "Mage Version", choiceNames=c('Version 2: ma', 'Version 1: naive'),choiceValues=c("ma","naive"))
+      }
+    }
     else if(parameter_type == "value"){
 
       if(input$metric == "grade_hyper"){
@@ -147,11 +153,7 @@ shinyServer(function(input, output) {
       else if(input$metric == "mad_glu"){
         textInput("parameter", "Specify Parameter", value = "1.4826")
       }
-
-      else if(input$metric == "mage"){
-        textInput("parameter", "Specify Parameter", value = "'ma'")
-      }
-
+        
       else if(input$metric == "active_percent"){
         textInput("parameter", "Specify Parameter", value = "5")
       }
@@ -199,9 +201,9 @@ shinyServer(function(input, output) {
       }
     }
     else if(parameter_type == "nested"){
+
       if(input$metric == "in_range_percent"){
         textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
-
       }
     }
 
@@ -258,6 +260,9 @@ shinyServer(function(input, output) {
         helpText("Enter the reference value for normal basal glycemia.")
       }
 
+      else if(input$metric == "active_percent"){
+        helpText("Enter CGM frequency in minutes.")
+      }
       else if(input$metric == "mad_glu"){
         helpText("Enter the value of the scaling factor.")
       }
@@ -330,7 +335,11 @@ shinyServer(function(input, output) {
       }
 
     }
-
+    else if(parameter_type == "mage") {
+      if(input$parameter == "ma") {
+        textInput("parameter2", "Short MA length", value="5")
+      }
+    }
   })
   #add description of second parameter
   output$second_parameter_helptext <- renderUI({
@@ -348,6 +357,9 @@ shinyServer(function(input, output) {
       if(input$metric == "igc"){
         helpText("Enter the exponents separated by a comma with the upper limit as the first input and the lower limit as the second input.")
       }
+    }
+    else if(parameter_type == "mage"){
+      helpText("Optimal values are between 5 and 15")
     }
 
   })
@@ -369,7 +381,11 @@ shinyServer(function(input, output) {
         textInput("parameter3", "Specify Scaling Factor", value = "30,30")
       }
     }
-
+    else if(parameter_type == "mage") {
+      if(input$parameter == "ma") {
+        textInput("parameter3", "Long MA length", value="32")
+      }
+    }
   })
   #add description on third parameter
   output$third_parameter_helptext <- renderUI({
@@ -389,6 +405,9 @@ shinyServer(function(input, output) {
         helpText("Enter the scaling factors separated by a comma with the upper limit as the first input and the lower limit as the second input.")
       }
     }
+    else if(parameter_type == "mage"){
+      helpText("Optimal values are between 20 and 40.")
+    }
 
   })
 
@@ -398,12 +417,14 @@ shinyServer(function(input, output) {
 
   # reactive function
   metric_table <- reactive({
+    string = ""
     parameter_type = parameter_type()
     data = transform_data()
 
 
     #### Validate catches for parameter 1 #####
     if (is.null(input$parameter)) {
+      print("1")
       validate(
         need(!is.null(input$parameter), "Please wait - Rendering")
       )
@@ -414,36 +435,25 @@ shinyServer(function(input, output) {
       )
     } else if (grepl(',', input$parameter) & !grepl("\\(", input$parameter)) {
       if (length(strsplit(input$parameter, split = ",")[[1]]) != 2) {
+        print('2')
         validate (
           need(parameter_type %in% c("list", "none","time"), "Please wait - Rendering")
         )
       } else {
+        print("3")
         validate(
           need(parameter_type %in% c("list", "lwrupr","lwrupr1","none","time"), "Please wait - Rendering")
         )
       }
     } else if (grepl("\\(", input$parameter)) {
+      print("4")
       validate(
         need(parameter_type %in% c("nested", "none","time"), "Please wait - Rendering")
       )
     } else if (!grepl(',', input$parameter)) {
       # print(input$parameter) # un-comment for bug-fixing
       validate(
-        need(parameter_type %in% c("value", "value1", "value_time", "none","time"),
-             "Please wait - Rendering")
-      )
-      if (input$metric == "mag") {
-        validate(
-          # mag requires integer input
-          need(!grepl("\\.", input$parameter), "Please wait - Rendering")
-        )
-      }
-    }
-    # because MAGE input is unique (character)
-    if (input$metric == 'mage') {
-      validate(
-        # print message instead of warning
-        need(input$parameter %in% c("'ma'", "'naive'"), "Parameter must be one of 'ma', or 'naive'")
+        need(parameter_type %in% c("value","value1","value_time", "none","time", "mage"), "Please wait - Rendering")
       )
     }
 
@@ -486,6 +496,14 @@ shinyServer(function(input, output) {
     }
     else if(parameter_type == "lwrupr1"){
       string = paste("iglu::", input$metric, "(data, " , input$parameter,",",input$parameter2,",",input$parameter3, ")", sep = "")
+    }
+    else if(parameter_type == "mage"){
+      if(input$parameter == "ma") {
+        string = paste("iglu::", input$metric, "(data, version='",input$parameter, "', short_ma=", input$parameter2,", long_ma=",input$parameter3,")", sep="")
+      }
+      else if(input$parameter == "naive") {
+        string = paste("iglu::", input$metric, "(data, version='",input$parameter,"')", sep="")
+      }
     }
     else if(parameter_type == "nested"){
       strlist = strsplit(input$parameter, ")")[[1]]
@@ -536,10 +554,10 @@ shinyServer(function(input, output) {
       string = out_str
     }
 
+    print(string)
     eval(parse(text = string))
 
   })
-
 
   output$metric <- DT::renderDataTable(metric_table(), extensions = "Buttons",
                                        options = list(dom = "Btip",
@@ -565,15 +583,19 @@ shinyServer(function(input, output) {
     else if(input$plottype == "hist_roc"){
       return("hist_roc")
     }
+    else if(input$plottype == "mage") {
+      return("mage")
+    }
   })
 
   ### Get Lasagna Type (lasagnatype)
 
   output$plot_lasagnatype <- renderUI({
     plottype = plottype()
-    if(plottype == "tsplot"){
-      NULL # lasagnatype doesn"t matter for tsplot, so no input UI is necessary
+    if(plottype %in% c("tsplot", "mage")){
+      NULL # lasagnatype doesn't matter for tsplot, so no input UI is necessary
     }
+
     else if(plottype == "lasagnamulti"){
       radioButtons("plot_lasagnatype", "Lasagna Plot Type",
                    choices = c(`Unsorted` = "unsorted",
@@ -593,42 +615,44 @@ shinyServer(function(input, output) {
       NULL
     }
   })
+  output$plot_mage <- renderUI({
+    plottype = plottype()
+    if(plottype != "mage"){
+      return(NULL)
+    }
+
+    tags$div(
+      textInput("mage_short_ma", "Short MA length", value="5"),
+      textInput("mage_long_ma", "Long MA length", value="32"),
+      textInput("mage_interval", "Interval between glucose readings"),
+      radioButtons("mage_show_ma", "Show Moving Averages on Plot", c(
+        "Yes" = TRUE,
+        "No" = FALSE
+      ), inline=TRUE, selected = "No"),
+      textInput("mage_title", "Title", value = "default"),
+      textInput("mage_xlab", "X Label", value = "default"),
+      textInput("mage_ylab", "Y Label", value = "default")
+    )
+  })
 
   ### Get desired subjects
   output$plot_subjects <- renderUI({
     data = transform_data() # bring reactive data input into this renderUI call to default to all subjects
     plottype = plottype() # bring reactive input variable into this renderUI call
-    if(plottype == "tsplot"){
+
+    if(plottype %in% c('lasagnasingle', 'plot_roc', 'hist_roc', 'mage')) {
+      subject = unique(data$id)[1]
+      textInput("plot_subjects", "Enter Subject ID", value = subject)
+    }
+    else {
       NULL
-    }
-    else if(plottype == "lasagnamulti"){
-      NULL
-    }
-    else if(plottype == "lasagnasingle"){
-      subject = unique(data$id)[1]
-      textInput("plot_subjects", "Enter Subject ID", value = subject)
-    }
-    else if(plottype == "lasagnasingle"){
-      subject = unique(data$id)[1]
-      textInput("plot_subjects", "Enter Subject ID", value = subject)
-    }
-    else if(plottype == "plot_roc"){
-      subject = unique(data$id)[1]
-      textInput("plot_subjects", "Enter Subject ID", value = subject)
-    }
-    else if(plottype == "hist_roc"){
-      subject = unique(data$id)[1]
-      textInput("plot_subjects", "Enter Subject ID", value = subject)
     }
   })
 
   output$plot_subjects_help_text <- renderUI({
     data = transform_data()
     plottype = plottype()
-    if(plottype == "tsplot"){
-      NULL
-    }
-    else if(plottype == "lasagnamulti"){
+    if(plottype %in% c("tsplot", "lasagnamulti")){
       NULL
     }
     else if(plottype == "lasagnasingle"){
@@ -643,14 +667,11 @@ shinyServer(function(input, output) {
 
   })
 
-
   subset_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
-
     data = transform_data()
     data = data[data$id == input$plot_subjects,] # reactively subset data when subjects input is modified
     return(data)
   })
-
 
   ### Get time lag for Rate of Change plots
   output$plot_timelag <- renderUI({
@@ -675,19 +696,10 @@ shinyServer(function(input, output) {
   ### Get max days to plot (maxd)
   output$plot_maxd <- renderUI({
     plottype = plottype() # bring reactive input variable into this renderUI call
-    if(plottype == "tsplot"){
-      NULL
-    }
-    else if(plottype == "lasagnamulti"){
+    if(plottype == "lasagnamulti"){
       textInput("plot_maxd", "Enter Maximum # of Days to Plot", value = 14)
     }
-    else if(plottype == "lasagnasingle"){
-      NULL
-    }
-    else if(plottype == "plot_roc"){
-      NULL
-    }
-    else if(plottype == "hist_roc"){
+    else {
       NULL
     }
   })
@@ -887,8 +899,9 @@ shinyServer(function(input, output) {
 
   plotFunc <- reactive({
 
-    plottype = plottype() # bring reactive input variable into this renderPlot call
     library(iglu)
+
+    plottype = plottype() # bring reactive input variable into this renderPlot call
 
     if(plottype == "tsplot"){
       #plot_glu(data, plottype = "tsplot")
@@ -897,7 +910,6 @@ shinyServer(function(input, output) {
         need(all(!is.null(input$plot_log)),
              "Please wait - Rendering")
       )
-
 
       data = transform_data()
       string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
@@ -942,6 +954,18 @@ shinyServer(function(input, output) {
       string = paste('iglu::hist_roc(data = data',
                      ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
       eval(parse(text = string))
+    }
+    else if(plottype == "mage"){
+      data = subset_data() # subset data to only user-specified subject
+
+      mage_title = ifelse(tolower(input$mage_title) == "default", NA, paste0("'",input$mage_title,"'"))
+      mage_xlab = ifelse(tolower(input$mage_xlab) == "default", NA, paste0("'",input$mage_xlab,"'"))
+      mage_ylab = ifelse(tolower(input$mage_ylab) == "default", NA, paste0("'",input$mage_ylab,"'"))
+
+      string = paste0("iglu::mage_ma_single(data=data,plot=TRUE,short_ma=",input$mage_short_ma,",long_ma=",
+                      input$long_ma,",interval=",input$mage_interval,",show_ma=", input$mage_show_ma,",
+                      ,title=",mage_title,",xlab=", mage_xlab,",ylab=",mage_ylab,")")
+      eval(parse(text=string))
     }
 
   })
