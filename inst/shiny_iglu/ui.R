@@ -9,26 +9,32 @@ shinyUI(fluidPage(
   tabsetPanel(
     tabPanel("Data", fluid = TRUE,
              sidebarLayout(
-               sidebarPanel(fileInput("datafile", "Choose a CSV File",
-                                      multiple =  FALSE,
-                                      accept = ".csv"),
-                            selectInput("datatype",
-                                        "Choose what format this .csv file is in",
-                                        c("Processed" = "processed",
-                                          "Dexcom" = "Dexcom",
-                                          "FreeStyle Libre" = "FreeStyle Libre",
-                                          "FreeStyle Libre Pro" = "Libre Pro",
-                                          "ASC" = "ASC",
-                                          "iPro" = "iPro"),
-                                        selected = "Processed"),
-                            textInput("subjid", "Enter subject id (for non processed formats, if id in data leave as default)", value = "default"),
-                            textInput('id', 'Enter column name corresponding to subject ID', value = 'id'),
-                            textInput('time', 'Enter column name corresponding to timestamp', value = 'time'),
-                            textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl'),
-                            downloadButton("downloaddata", "Download Data"),
-                            selectInput('tz', 'Select corresponding time zone', choices = c(OlsonNames()))
+               sidebarPanel(selectInput("demodata", label = "Select Dataset",
+                                        choices = c('', `User Datafile` = 'user_data',
+                                                    `Example Data` = 'example_data')),
+                            conditionalPanel(
+                              condition = "input.demodata == 'user_data'",
+                              fileInput("datafile", "Choose a CSV File",
+                                        multiple =  FALSE,
+                                        accept = ".csv"),
+                              selectInput("datatype",
+                                          "Choose what format this .csv file is in",
+                                          c("Processed" = "processed",
+                                            "Dexcom" = "Dexcom",
+                                            "FreeStyle Libre" = "FreeStyle Libre",
+                                            "FreeStyle Libre Pro" = "Libre Pro",
+                                            "ASC" = "ASC",
+                                            "iPro" = "iPro"),
+                                          selected = "Processed"),
+                              textInput("subjid", "Enter subject id (for non processed formats, if id in data leave as default)", value = "default"),
+                              textInput('id', 'Enter column name corresponding to subject ID', value = 'id'),
+                              textInput('time', 'Enter column name corresponding to timestamp', value = 'time'),
+                              textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl'),
+                              downloadButton("downloaddata", "Download Data"),
+                              selectInput('tz', 'Select corresponding time zone', choices = c(OlsonNames()))
+                            ),
                ),
-               mainPanel(tableOutput("data"))
+               mainPanel(DT::dataTableOutput("data"))
              )),
     #full metric name and function name are added in alphabetical order
     tabPanel("Metrics", fluid = TRUE,
@@ -169,7 +175,7 @@ shinyUI(fluidPage(
                  numericInput(inputId = "lv2hyperThreshold", label = "\nEnter a value for HyperThreshold (level2)",
                               value = 180),
                  numericInput(inputId = "lv1hypoThreshold", label = "\nEnter a value for HypoThreshold (level1)",
-                           value = 100),
+                              value = 100),
                  numericInput(inputId = "lv2hypoThreshold", label = "\nEnter a value for HypoThreshold (level2)",
                               value = 70),
                  radioButtons("colorScheme", "Color Scheme", c("Color Scheme 1", "Color Scheme 2", "Color Scheme 3"))
@@ -183,7 +189,7 @@ shinyUI(fluidPage(
                    column(12, plotOutput("plot_episode_calculation"))
                  )
                )
-            ))
+             ))
   )
 
 

@@ -10,18 +10,38 @@ shinyServer(function(input, output) {
     # if input is already processed just read.csv
     # else select associated sensor type
     out = switch(input$datatype,
-           "processed" = read.csv(input$datafile$datapath),
-           "FreeStyle Libre" = read_raw_data(input$datafile$datapath, sensor = "libre", id = input$subjid),
-           "Dexcom" = read_raw_data(input$datafile$datapath, sensor = "dexcom", id = input$subjid),
-           "Libre Pro" = read_raw_data(input$datafile$datapath, sensor = "librepro", id = input$subjid),
-           "ASC" = read_raw_data(input$datafile$datapath, sensor = "asc", id = input$subjid),
-           "iPro" = read_raw_data(input$datafile$datapath, sensor = "ipro", id = input$subjid)
+                 "processed" = read.csv(input$datafile$datapath),
+                 "FreeStyle Libre" = read_raw_data(input$datafile$datapath, sensor = "libre", id = input$subjid),
+                 "Dexcom" = read_raw_data(input$datafile$datapath, sensor = "dexcom", id = input$subjid),
+                 "Libre Pro" = read_raw_data(input$datafile$datapath, sensor = "librepro", id = input$subjid),
+                 "ASC" = read_raw_data(input$datafile$datapath, sensor = "asc", id = input$subjid),
+                 "iPro" = read_raw_data(input$datafile$datapath, sensor = "ipro", id = input$subjid)
     )
     return(out)
   })
-  output$data <- renderTable({
-    data()
+
+  output$data <- DT::renderDataTable({
+
+    validate(
+      need(input$demodata != '', "Please select Dataset")
+    )
+
+    DT::datatable(
+      (if (input$demodata == "user_data") {
+        out <- data()
+      } else if (input$demodata == "example_data") {
+        out <- iglu::example_data_5_subject
+        out$time <- as.character(out$time)
+        out
+      }),
+      extensions = "Buttons",
+      options = list(dom = "Btip",
+                     buttons = c("copy", "csv", "excel", "pdf", "print"),
+                     paging = FALSE)
+    )
+
   })
+
   output$downloaddata <- downloadHandler(
     filename = function() {
       filename <- paste0(gsub("\\.csv", "",basename(input$datafile$name)), "_processed")
@@ -31,8 +51,17 @@ shinyServer(function(input, output) {
       write.csv(data(), file, row.names = FALSE)
     }
   )
+
   transform_data <- reactive({
-    data = data()
+
+    req(input$demodata)
+
+    if (input$demodata == "user_data") {
+      data = data()
+    } else if (input$demodata == "example_data") {
+      data = iglu::example_data_5_subject
+    }
+
     iglu:::read_df_or_vec(data, id = input$id, time = input$time, gl = input$gl)
   })
 
@@ -40,10 +69,10 @@ shinyServer(function(input, output) {
   ############################# METRIC SECTION ######################################################
 
 
-#add metric based on the parameter it takes in
+  #add metric based on the parameter it takes in
   parameter_type <- reactive({
     #metric is considered as parameter type "none" if it only requires data as a parameter
-    if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi",
+    if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "episode_calculation", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi",
                            "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
       return("none")
     }
@@ -81,7 +110,7 @@ shinyServer(function(input, output) {
       return("nested")
     }
   })
-#specify first parameter and the default values
+  #specify first parameter and the default values
   output$select_parameter <- renderUI({
     parameter_type = parameter_type()
 
@@ -116,9 +145,15 @@ shinyServer(function(input, output) {
       else if(input$metric == "grade_hypo"){
         textInput("parameter", "Specify Parameter", value = "80")
       }
+
       else if(input$metric == "m_value"){
         textInput("parameter", "Specify Reference Value", value = "90")
       }
+
+      else if(input$metric == "mad_glu"){
+        textInput("parameter", "Specify Parameter", value = "1.4826")
+      }
+        
       else if(input$metric == "active_percent"){
         textInput("parameter", "Specify Parameter", value = "5")
       }
@@ -137,11 +172,7 @@ shinyServer(function(input, output) {
         textInput("parameter", "Specify Parameter", value = "24")
       }
 
-      else if(input$metric == "mad_glu"){
-        textInput("parameter", "Specify Parameter", value = "1.4826")
-      }
-
-     else if(input$metric == "mag"){
+      else if(input$metric == "mag"){
         textInput("parameter", "Specify Parameter", value = "60")
       }
       else if(input$metric == "modd"){
@@ -165,16 +196,16 @@ shinyServer(function(input, output) {
       if(input$metric == "igc"){
         textInput("parameter", "Specify Lower and Upper Limits", value = "70, 180")
       }
-     else if(input$metric == "episode_calculation"){
+      else if(input$metric == "episode_calculation"){
         textInput("parameter", "Specify Parameter", value = "100.0, 70")
-     }
+      }
     }
     else if(parameter_type == "nested"){
-    if(input$metric == "in_range_percent"){
-      textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
 
+      if(input$metric == "in_range_percent"){
+        textInput("parameter", "Specify Parameter", value = "(80, 200), (70, 180), (70,140)")
+      }
     }
-   }
 
   })
 
@@ -213,7 +244,11 @@ shinyServer(function(input, output) {
 
     else if(parameter_type == "value"){
 
-      if(input$metric == "grade_hyper"){
+      if(input$metric == "active_percent"){
+        helpText("Enter CGM frequency in minutes.")
+      }
+
+      else if(input$metric == "grade_hyper"){
         helpText("Enter the upper bound hyperglycemia cutoff value.")
       }
 
@@ -228,6 +263,14 @@ shinyServer(function(input, output) {
       else if(input$metric == "active_percent"){
         helpText("Enter CGM frequency in minutes.")
       }
+      else if(input$metric == "mad_glu"){
+        helpText("Enter the value of the scaling factor.")
+      }
+
+      else if(input$metric == "mage"){
+        helpText("Enter algorithm version in single quotes: 'ma' (default) or 'naive'")
+      }
+
     }
     else if(parameter_type == "value1"){
       if(input$metric == "hyper_index"){
@@ -241,9 +284,6 @@ shinyServer(function(input, output) {
     else if(parameter_type =="value_time"){
       if(input$metric == "conga"){
         helpText("Enter the hours between observations for the CONGA calculation.")
-      }
-      else if(input$metric == "mad_glu"){
-        helpText("Enter the value of the scaling factor.")
       }
       else if(input$metric == "mag"){
         helpText("Enter the interval (in minutes) to calculate change in glucose.")
@@ -362,7 +402,7 @@ shinyServer(function(input, output) {
 
     else if(parameter_type == "lwrupr1"){
       if(input$metric == "igc"){
-        helpText("Enter the scarling factors separated by a comma with the upper limit as the first input and the lower limit as the second input.")
+        helpText("Enter the scaling factors separated by a comma with the upper limit as the first input and the lower limit as the second input.")
       }
     }
     else if(parameter_type == "mage"){
@@ -375,16 +415,23 @@ shinyServer(function(input, output) {
     helpText("Enter a real number 0-24.")
   })
 
-#reactive function
+  # reactive function
   metric_table <- reactive({
     string = ""
     parameter_type = parameter_type()
     data = transform_data()
 
+
+    #### Validate catches for parameter 1 #####
     if (is.null(input$parameter)) {
       print("1")
       validate(
         need(!is.null(input$parameter), "Please wait - Rendering")
+      )
+    } else if (input$parameter %in% c("'ma'", "'naive'")) {
+      validate (
+        need (input$metric == "mage" | parameter_type == "none",
+              "Please wait - Rendering")
       )
     } else if (grepl(',', input$parameter) & !grepl("\\(", input$parameter)) {
       if (length(strsplit(input$parameter, split = ",")[[1]]) != 2) {
@@ -404,13 +451,23 @@ shinyServer(function(input, output) {
         need(parameter_type %in% c("nested", "none","time"), "Please wait - Rendering")
       )
     } else if (!grepl(',', input$parameter)) {
-      print("4")
-      print(input$parameter)
+      # print(input$parameter) # un-comment for bug-fixing
       validate(
         need(parameter_type %in% c("value","value1","value_time", "none","time", "mage"), "Please wait - Rendering")
       )
-
     }
+
+    ##### Validate for parameters2/3 ####
+
+    ## parameter2 and parameter3 currently (7/29/21) include the same 3 metrics
+    ## hyper index, hypo index, and igc
+
+    if (input$metric %in% c("hyper_index", "hypo_index")) {
+      validate(
+        need(!grepl(",", input$parameter3), "Please wait - Rendering")
+      )
+    }
+
 
     #loading iglu library and using metric function
     library(iglu)

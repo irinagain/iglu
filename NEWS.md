@@ -1,3 +1,9 @@
+# iglu 3.0.0
+* Added functions for hypo- and hyper-glycemic episodes calculation with visualization profile
+* Updated main vignette, expanded additional vignettes on lasagna plots and episode calculation as part of AGP
+* Updated documentation for MAD with an option to change constant parameter
+* Updated MAGE algorithm to allow separate calculation of MAGE+ and MAGE-
+
 # iglu 2.2.0
 * Added updated MAGE algorithm
 * Added process_data and read_raw_data to allow reading meter-specific values
