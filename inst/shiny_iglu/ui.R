@@ -26,12 +26,16 @@ shinyUI(fluidPage(
                                             "ASC" = "ASC",
                                             "iPro" = "iPro"),
                                           selected = "Processed"),
-                              textInput("subjid", "Enter subject id (for non processed formats, if id in data leave as default)", value = "default"),
+                              conditionalPanel(
+                                condition = "input.datatype != 'processed'",
+                                textInput("subjid", "Enter subject id", value = "default"),
+                              ),
                               textInput('id', 'Enter column name corresponding to subject ID', value = 'id'),
                               textInput('time', 'Enter column name corresponding to timestamp', value = 'time'),
                               textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl'),
                               downloadButton("downloaddata", "Download Data"),
-                              selectInput('tz', 'Select corresponding time zone', choices = c(OlsonNames()))
+                              selectInput('tz', 'Select corresponding time zone', choices = c(OlsonNames()),
+                                          selected = "UTC")
                             ),
                ),
                mainPanel(DT::dataTableOutput("data"))
@@ -108,23 +112,10 @@ shinyUI(fluidPage(
                                           `Rate of Change (Histogram)` = 'hist_roc',
                                           `Mean Amplitude of Glycemic Excursions (MAGE)` = 'mage'
                               )),
-                 uiOutput("plot_lasagnatype"),
-                 uiOutput("plot_subjects"),
-                 uiOutput("plot_subjects_help_text"),
+                 uiOutput("lasagna_sidebar"),
+                 uiOutput("tsplot_sidebar"),
+                 uiOutput("rocplots_sidebar"),
                  uiOutput("plot_mage"),
-                 uiOutput("plot_timelag"),
-                 uiOutput("plot_maxd"),
-                 uiOutput("plot_datatype"),
-                 uiOutput("plot_datatype_help_text"),
-                 #uiOutput("plot_tz"),
-                 #uiOutput("plot_tz_help_text"),
-                 uiOutput("plot_TR"),
-                 #uiOutput("plot_TR_help_text"),
-                 uiOutput("plot_midpoint"),
-                 uiOutput('plot_limits'),
-                 uiOutput('plot_colorbar_help_text'),
-                 uiOutput('plot_color_scheme'),
-                 uiOutput('plot_log'),
                  downloadButton(outputId = "pdfButton", label = "PDF"),
                  downloadButton(outputId = "pngButton", label = "PNG"),
                  downloadButton(outputId = "epsButton", label = "EPS")
@@ -167,9 +158,6 @@ shinyUI(fluidPage(
              sidebarLayout(
                sidebarPanel(
                  uiOutput("episode_subject"),
-                 downloadButton(outputId = "pdfEpisode", label = "pdf"),
-                 downloadButton(outputId = "pngEpisode", label = "png"),
-                 downloadButton(outputId = "epsEpisode", label = "eps"),
                  numericInput(inputId = "lv1hyperThreshold", label = "\nEnter a value for HyperThreshold (level1)",
                               value = 120),
                  numericInput(inputId = "lv2hyperThreshold", label = "\nEnter a value for HyperThreshold (level2)",
@@ -178,7 +166,10 @@ shinyUI(fluidPage(
                               value = 100),
                  numericInput(inputId = "lv2hypoThreshold", label = "\nEnter a value for HypoThreshold (level2)",
                               value = 70),
-                 radioButtons("colorScheme", "Color Scheme", c("Color Scheme 1", "Color Scheme 2", "Color Scheme 3"))
+                 radioButtons("colorScheme", "Color Scheme", c("Color Scheme 1", "Color Scheme 2", "Color Scheme 3")),
+                 downloadButton(outputId = "pdfEpisode", label = "pdf"),
+                 downloadButton(outputId = "pngEpisode", label = "png"),
+                 downloadButton(outputId = "epsEpisode", label = "eps")
                ),
                mainPanel(
                  fluidRow(
