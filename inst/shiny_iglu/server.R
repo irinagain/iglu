@@ -133,7 +133,7 @@ shinyServer(function(input, output) {
     }
     else if(parameter_type == "mage") {
       if(input$metric == "mage") {
-        radioButtons("parameter", "Mage Version", choiceNames=c('Version 2: ma', 'Version 1: naive'),choiceValues=c("ma","naive"))
+        radioButtons("parameter", "Mage Version", choiceNames=c('Version 2: ma (recommended)', 'Version 1: naive (superseded)'),choiceValues=c("ma","naive"))
       }
     }
     else if(parameter_type == "value"){
@@ -361,7 +361,7 @@ shinyServer(function(input, output) {
     }
     else if(parameter_type == "mage"){
       if(input$parameter == "ma") {
-        helpText("Optimal values are between 5 and 15")
+        helpText("Allowable values between 5 and 15. (5 recommended)")
       }
     }
 
@@ -412,7 +412,7 @@ shinyServer(function(input, output) {
     }
     else if(parameter_type == "mage"){
       if(input$parameter == "ma") {
-        helpText("Optimal values are between 20 and 40.")
+        helpText("Allowable values between 20 and 40. (32 recommended)")
       }
     }
   })
