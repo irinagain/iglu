@@ -186,18 +186,18 @@ doi: <a href='https://doi.org/10.1089/dia.2008.0132'>10.1089/dia.2008.0132</a>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 
 <span class='fu'>above_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 4</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 4</span>
 #&gt;   id        above_140 above_180 above_250
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> Subject 1      26.7      8.40     0.446</div><div class='input'><span class='fu'>above_percent</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, targets_above <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>150</span>, <span class='fl'>180</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 4</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 4</span>
 #&gt;   id        above_100 above_150 above_180
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> Subject 1      74.4      20.8      8.40</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
 
 <span class='fu'>above_percent</span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 4</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 4</span>
 #&gt;   id        above_140 above_180 above_250
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> Subject 1      26.7      8.40     0.446
@@ -205,7 +205,7 @@ doi: <a href='https://doi.org/10.1089/dia.2008.0132'>10.1089/dia.2008.0132</a>
 #&gt; <span style='color: #BCBCBC;'>3</span> Subject 3      51.5     18.9      5.74 
 #&gt; <span style='color: #BCBCBC;'>4</span> Subject 4      32.9      4.97     0    
 #&gt; <span style='color: #BCBCBC;'>5</span> Subject 5      70.8     38.1     11.6  </div><div class='input'><span class='fu'>above_percent</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, targets_above <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>70</span>, <span class='fl'>170</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 3</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 3</span>
 #&gt;   id        above_170 above_70
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> Subject 1     10.7      99.9

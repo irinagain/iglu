@@ -195,13 +195,13 @@ If sleep_start is after sleep_end, the data will be filtered to include all hour
     <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 <span class='fu'>calculate_sleep_wake</span><span class='op'>(</span><span class='va'>example_data_1_subject</span>, <span class='va'>sd_glu</span>, calculate <span class='op'>=</span> <span class='st'>"sleep"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 2</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 2</span>
 #&gt;   id           SD
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> Subject 1  25.4</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
 <span class='fu'>calculate_sleep_wake</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, <span class='va'>cogi</span>, targets <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>80</span>, <span class='fl'>150</span><span class='op'>)</span>, weights <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>.3</span>,<span class='fl'>.2</span>,<span class='fl'>.5</span><span class='op'>)</span>, calculate <span class='op'>=</span> <span class='st'>"wake"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 2</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 2</span>
 #&gt;   id         COGI
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> Subject 1 0.824
@@ -209,7 +209,7 @@ If sleep_start is after sleep_end, the data will be filtered to include all hour
 #&gt; <span style='color: #BCBCBC;'>3</span> Subject 3 0.694
 #&gt; <span style='color: #BCBCBC;'>4</span> Subject 4 0.822
 #&gt; <span style='color: #BCBCBC;'>5</span> Subject 5 0.559</div><div class='input'><span class='fu'>calculate_sleep_wake</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, <span class='va'>sd_measures</span>, sleep_start <span class='op'>=</span> <span class='fl'>2</span>, sleep_end <span class='op'>=</span> <span class='fl'>8</span>, calculate <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 13</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 13</span>
 #&gt;   id        `SDw sleep` `SDhhmm sleep` `SDwsh sleep` `SDdm sleep` `SDb sleep`
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> Subject 1        10.2           3.02          3.15         21.3        23.9
