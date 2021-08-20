@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate glucose level iqr — iqr_glu • iglu</title>
+<title>Calculates Mean Amplitude of Glycemic Excursions (see "mage") — mage_ma_single • iglu</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Calculate glucose level iqr — iqr_glu" />
-<meta property="og:description" content="The function iqr_glu outputs the distance between the 25th
-percentile and the 25th percentile of the glucose values in a tibble object." />
+<meta property="og:title" content="Calculates Mean Amplitude of Glycemic Excursions (see "mage") — mage_ma_single" />
+<meta property="og:description" content="This function is an internal function used by &quot;mage&quot;. The function will calculate the Mean Amplitude of Glycemic Excursions (MAGE) on all the values of the inputted data set. To calculate separate MAGE values for a group of subjects, use the &quot;mage&quot; function." />
 
 
 
@@ -128,58 +127,109 @@ percentile and the 25th percentile of the glucose values in a tibble object." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate glucose level iqr</h1>
+    <h1>Calculates Mean Amplitude of Glycemic Excursions (see "mage")</h1>
     
-    <div class="hidden name"><code>iqr_glu.Rd</code></div>
+    <div class="hidden name"><code>mage_ma_single.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The function iqr_glu outputs the distance between the 25th
-percentile and the 25th percentile of the glucose values in a tibble object.</p>
+    <p>This function is an internal function used by "mage". The function will calculate the Mean Amplitude of Glycemic Excursions (MAGE) on <strong>all</strong> the values of the inputted data set. To calculate separate MAGE values for a group of subjects, use the "mage" function.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>iqr_glu</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>mage_ma_single</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  short_ma <span class='op'>=</span> <span class='fl'>5</span>,
+  long_ma <span class='op'>=</span> <span class='fl'>23</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"auto"</span>, <span class='st'>"plus"</span>, <span class='st'>"minus"</span><span class='op'>)</span>,
+  plot <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  interval <span class='op'>=</span> <span class='cn'>NA</span>,
+  dateformat <span class='op'>=</span> <span class='st'>"%Y-%m-%d %H:%M:%S"</span>,
+  title <span class='op'>=</span> <span class='cn'>NA</span>,
+  xlab <span class='op'>=</span> <span class='cn'>NA</span>,
+  ylab <span class='op'>=</span> <span class='cn'>NA</span>,
+  show_ma <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>DataFrame object with column names "id", "time", and "gl",
-or numeric vector of glucose values.</p></td>
+      <td><p>Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector)</p></td>
+    </tr>
+    <tr>
+      <th>short_ma</th>
+      <td><p>Integer for period length of the short moving average. Must be positive and less than "long_ma". (Recommended &lt;15)</p></td>
+    </tr>
+    <tr>
+      <th>long_ma</th>
+      <td><p>Integer for period length for the long moving average. (Recommended &gt;20)</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.</p></td>
+    </tr>
+    <tr>
+      <th>plot</th>
+      <td><p>Boolean. Returns ggplot if TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>interval</th>
+      <td><p>Integer for time interval in minutes between glucose readings. Function will auto-magically determine the interval if not specified. (Only used to calculate the gaps shown on the ggplot)</p></td>
+    </tr>
+    <tr>
+      <th>dateformat</th>
+      <td><p>POSIXct time format for time of glucose readings. Highly recommended to set if glucose times are in a different format.</p></td>
+    </tr>
+    <tr>
+      <th>title</th>
+      <td><p>Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"</p></td>
+    </tr>
+    <tr>
+      <th>xlab</th>
+      <td><p>Label for x-axis of ggplot. Defaults to "Time"</p></td>
+    </tr>
+    <tr>
+      <th>ylab</th>
+      <td><p>Label for y-axis of ggplot. Defaults to "Glucose Level"</p></td>
+    </tr>
+    <tr>
+      <th>show_ma</th>
+      <td><p>Whether to show the moving average lines on the plot or not</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If a data.frame object is passed, then a tibble object with
-two columns: subject id and corresponding IQR value is returned. If a vector of glucose
-values is passed, then a tibble object with just the IQR value is returned.
-as.numeric() can be wrapped around the latter to output just a numeric value.</p>
+    <p>The numeric MAGE value for the inputted glucose values or a ggplot if <code>plot = TRUE</code></p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A tibble object with 1 row for each subject, a column for subject id and
-a column for the IQR values is returned. NA glucose values are
-omitted from the calculation of the IQR.</p>
+    <p>See "mage".</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Nathaniel Fernandes</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-<span class='fu'>iqr_glu</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 2</span>
-#&gt;   id          IQR
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1    44</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-<span class='fu'>iqr_glu</span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 2</span>
-#&gt;   id          IQR
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> Subject 1    44
-#&gt; <span style='color: #BCBCBC;'>2</span> Subject 2    74
-#&gt; <span style='color: #BCBCBC;'>3</span> Subject 3    48
-#&gt; <span style='color: #BCBCBC;'>4</span> Subject 4    40
-#&gt; <span style='color: #BCBCBC;'>5</span> Subject 5    77</div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
+<span class='fu'>mage_ma_single</span><span class='op'>(</span>
+   <span class='va'>example_data_5_subject</span>,
+   short_ma <span class='op'>=</span> <span class='fl'>4</span>,
+   long_ma <span class='op'>=</span> <span class='fl'>24</span>,
+   type <span class='op'>=</span> <span class='st'>'plus'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 122.5248</div><div class='input'>
+<span class='fu'>mage_ma_single</span><span class='op'>(</span>
+   <span class='va'>example_data_5_subject</span>,
+   dateformat<span class='op'>=</span><span class='st'>"%m-%d-%Y %H:%M:%S"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 122.67</div><div class='input'>
+<span class='fu'>mage_ma_single</span><span class='op'>(</span>
+   <span class='va'>example_data_5_subject</span>,
+   plot<span class='op'>=</span><span class='cn'>TRUE</span>,
+   interval<span class='op'>=</span><span class='fl'>15</span>,
+   title<span class='op'>=</span><span class='st'>"Patient X"</span>,
+   xlab<span class='op'>=</span><span class='st'>"Time"</span>,
+   ylab<span class='op'>=</span><span class='st'>"Glucose Level (mg/dL)"</span>,
+   show_ma<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='img'><img src='mage_ma_single-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

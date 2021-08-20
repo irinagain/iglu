@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iglu</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -200,7 +200,8 @@ If sleep_start is after sleep_end, the data will be filtered to include all hour
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> Subject 1  25.4</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-<span class='fu'>calculate_sleep_wake</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, <span class='va'>cogi</span>, targets <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>80</span>, <span class='fl'>150</span><span class='op'>)</span>, weights <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>.3</span>,<span class='fl'>.2</span>,<span class='fl'>.5</span><span class='op'>)</span>, calculate <span class='op'>=</span> <span class='st'>"wake"</span><span class='op'>)</span>
+<span class='fu'>calculate_sleep_wake</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, <span class='va'>cogi</span>, targets <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>80</span>, <span class='fl'>150</span><span class='op'>)</span>,
+weights <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>.3</span>,<span class='fl'>.2</span>,<span class='fl'>.5</span><span class='op'>)</span>, calculate <span class='op'>=</span> <span class='st'>"wake"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 2</span>
 #&gt;   id         COGI
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
@@ -208,7 +209,8 @@ If sleep_start is after sleep_end, the data will be filtered to include all hour
 #&gt; <span style='color: #BCBCBC;'>2</span> Subject 2 0.525
 #&gt; <span style='color: #BCBCBC;'>3</span> Subject 3 0.694
 #&gt; <span style='color: #BCBCBC;'>4</span> Subject 4 0.822
-#&gt; <span style='color: #BCBCBC;'>5</span> Subject 5 0.559</div><div class='input'><span class='fu'>calculate_sleep_wake</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, <span class='va'>sd_measures</span>, sleep_start <span class='op'>=</span> <span class='fl'>2</span>, sleep_end <span class='op'>=</span> <span class='fl'>8</span>, calculate <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span>
+#&gt; <span style='color: #BCBCBC;'>5</span> Subject 5 0.559</div><div class='input'><span class='fu'>calculate_sleep_wake</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, <span class='va'>sd_measures</span>, sleep_start <span class='op'>=</span> <span class='fl'>2</span>,
+sleep_end <span class='op'>=</span> <span class='fl'>8</span>, calculate <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 13</span>
 #&gt;   id        `SDw sleep` `SDhhmm sleep` `SDwsh sleep` `SDdm sleep` `SDb sleep`
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
@@ -232,7 +234,7 @@ If sleep_start is after sleep_end, the data will be filtered to include all hour
 
       <footer>
       <div class="copyright">
-  <p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jacek Urbanek, Irina Gaynanova.</p>
+  <p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jung Hoon Seo, Johnathan Shih, Jacek Urbanek, John Schwenck, Irina Gaynanova.</p>
 </div>
 
 <div class="pkgdown">

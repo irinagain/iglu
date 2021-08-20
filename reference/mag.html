@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iglu</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -191,13 +191,15 @@ doi: <a href='https://doi.org/10.1097/CCM.0b013e3181cc4be9'>10.1097/CCM.0b013e31
     <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
 <span class='fu'>mag</span><span class='op'>(</span><span class='va'>example_data_1_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 2</span>
+</div><div class='output co'>#&gt; <span class='message'>Parameter n must be an integer, input has been rounded to nearest</span>
+#&gt; <span class='message'>            integer</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 2</span>
 #&gt;   id          MAG
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> Subject 1  17.0</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
 <span class='fu'>mag</span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 2</span>
+</div><div class='output co'>#&gt; <span class='message'>Parameter n must be an integer, input has been rounded to nearest</span>
+#&gt; <span class='message'>            integer</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 2</span>
 #&gt;   id          MAG
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> Subject 1  17.0
@@ -217,7 +219,7 @@ doi: <a href='https://doi.org/10.1097/CCM.0b013e3181cc4be9'>10.1097/CCM.0b013e31
 
       <footer>
       <div class="copyright">
-  <p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jacek Urbanek, Irina Gaynanova.</p>
+  <p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jung Hoon Seo, Johnathan Shih, Jacek Urbanek, John Schwenck, Irina Gaynanova.</p>
 </div>
 
 <div class="pkgdown">

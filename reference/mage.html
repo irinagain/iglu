@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Calculate Mean Amplitude of Glycemic Excursions — mage" />
-<meta property="og:description" content="The function calculates MAGE values and can optionally return a plot of the glucose trace. UPDATED to version 2. Version 1 is accessible for backwards compatibility." />
+<meta property="og:description" content="The function calculates MAGE values and can optionally return a plot of the glucose trace." />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iglu</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.0.0</span>
       </span>
     </div>
 
@@ -133,10 +133,10 @@
     </div>
 
     <div class="ref-description">
-    <p>The function calculates MAGE values and can optionally return a plot of the glucose trace. UPDATED to version 2. Version 1 is accessible for backwards compatibility.</p>
+    <p>The function calculates MAGE values and can optionally return a plot of the glucose trace.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mage</span><span class='op'>(</span><span class='va'>data</span>, version <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"v2"</span>, <span class='st'>"v1"</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>mage</span><span class='op'>(</span><span class='va'>data</span>, version <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ma"</span>, <span class='st'>"naive"</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,11 +147,11 @@
     </tr>
     <tr>
       <th>version</th>
-      <td><p>Optional. Either 'v2' or 'v1'. Chooses which version of the MAGE algorithm to use. Version 2 is default and highly recommended.</p></td>
+      <td><p>Either <code>'ma'</code> or <code>'naive'</code>. Chooses which version of the MAGE algorithm to use. <code>'ma'</code> algorithm is more accurate, and is the default. Earlier versions of iglu package (&lt;=2.0.0) used <code>'naive'</code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Optional arguments to pass to the MAGE Functions (see "mage_ma_cross_single" for examples)</p><ul>
+      <td><p>Optional arguments to pass to the MAGE Functions (see <code><a href='mage_ma_single.html'>mage_ma_single</a></code>)</p><ul>
 <li><p>dateformat: POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of a different format.</p></li>
 <li><p>short_ma: Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended &lt;15).</p></li>
 <li><p>long_ma: Integer for period length for the long moving average. Default: 23. (Recommended &gt;20)</p></li>
@@ -161,7 +161,7 @@
 <li><p>xlab: Label for x-axis of ggplot. Defaults to "Time"</p></li>
 <li><p>ylab: Label for y-axis of ggplot. Defaults to "Glucose Level"</p></li>
 <li><p>show_ma: Whether to show the moving average lines on the plot or not. Default: FALSE</p></li>
-<li><p>sd_multiplier: DEPRECATED. A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation.</p></li>
+<li><p>sd_multiplier: A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation. This parameter is only used when <code>version = "naive"</code>, ans is ignored otherwise.</p></li>
 </ul></td>
     </tr>
     </table>
@@ -172,9 +172,8 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970).</p>
-<p>Version 2 is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.</p>
-<p>In Version 1, MAGE is calculated by taking the mean of absolute differences (between each value and the mean) that are greater than the standard deviation.
-A multiplier can be added to the standard deviation by the sd_multiplier argument.</p>
+<p><code>'ma'</code> is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.</p>
+<p><code>'naive'</code> algorithm calculates MAGE by taking the mean of absolute glucose differences (between each value and the mean) that are greater than the standard deviation. A multiplier can be added to the standard deviation using the <code>sd_multiplier</code> argument.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Service et al. (1970) Mean amplitude of glycemic excursions, a measure of diabetic instability
@@ -184,7 +183,7 @@ doi: <a href='https://doi.org/10.2337/diab.19.9.644'>10.2337/diab.19.9.644</a>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>example_data_5_subject</span><span class='op'>)</span>
-<span class='fu'>mage</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, version <span class='op'>=</span> <span class='st'>'v2'</span><span class='op'>)</span>
+<span class='fu'>mage</span><span class='op'>(</span><span class='va'>example_data_5_subject</span>, version <span class='op'>=</span> <span class='st'>'ma'</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 2</span>
 #&gt; <span style='color: #949494;'># Rowwise: </span>
 #&gt;   id         MAGE
@@ -205,7 +204,7 @@ doi: <a href='https://doi.org/10.2337/diab.19.9.644'>10.2337/diab.19.9.644</a>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jacek Urbanek, Irina Gaynanova.</p>
+  <p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jung Hoon Seo, Johnathan Shih, Jacek Urbanek, John Schwenck, Irina Gaynanova.</p>
 </div>
 
 <div class="pkgdown">
