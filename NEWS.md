@@ -1,3 +1,7 @@
+# iglu 3.1.0
+* Minor bug corrections to shiny app
+* Correct bug wtih reading raw data from iglu pro
+
 # iglu 3.0.0
 * Added functions for hypo- and hyper-glycemic episodes calculation with visualization profile
 * Updated main vignette, expanded additional vignettes on lasagna plots and episode calculation as part of AGP
