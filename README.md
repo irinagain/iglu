@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Travis build
-status](https://api.travis-ci.com/irinagain/iglu.svg?branch=master)](https://travis-ci.com/github/irinagain/iglu)
+status](https://api.travis-ci.com/irinagain/iglu.svg?branch=master)](https://app.travis-ci.com:443/github/irinagain/iglu)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/irinagain/iglu?branch=master&svg=true)](https://ci.appveyor.com/project/irinagain/iglu)
 
