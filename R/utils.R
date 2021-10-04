@@ -116,6 +116,14 @@ CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
     timediff = difftime(tr[timeindex], tr[timeindex - 1], units = "mins")
   }
 
+  if (any(timediff == 0)){
+    warning(paste("Subject", unique(data$id), "has repeated glucose measuremements at exactly the same times. Only the last one of repeated values is used in calculations."))
+    index = which(timediff == 0)
+    tr = tr[-index]
+    g = g[-index]
+    timediff = timediff[-index]
+  }
+
   ### Automatically identify grid width dt0
   if (is.null(dt0)){
     dt0 = as.double(round(median(timediff, na.rm = TRUE)))
