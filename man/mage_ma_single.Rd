@@ -7,7 +7,7 @@
 mage_ma_single(
   data,
   short_ma = 5,
-  long_ma = 23,
+  long_ma = 32,
   type = c("auto", "plus", "minus"),
   plot = FALSE,
   interval = NA,
@@ -21,9 +21,9 @@ mage_ma_single(
 \arguments{
 \item{data}{Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector)}
 
-\item{short_ma}{Integer for period length of the short moving average. Must be positive and less than "long_ma". (Recommended <15)}
+\item{short_ma}{Integer for period length of the short moving average. Must be positive and less than "long_ma", default value is 5. (Recommended <15)}
 
-\item{long_ma}{Integer for period length for the long moving average. (Recommended >20)}
+\item{long_ma}{Integer for period length for the long moving average, default value is 32. (Recommended >20)}
 
 \item{type}{One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.}
 
@@ -51,19 +51,19 @@ This function is an internal function used by "mage". The function will calculat
 See "mage".
 }
 \examples{
-data(example_data_5_subject)
+data(example_data_1_subject)
 mage_ma_single(
-   example_data_5_subject,
+   example_data_1_subject,
    short_ma = 4,
    long_ma = 24,
    type = 'plus')
 
 mage_ma_single(
-   example_data_5_subject,
+   example_data_1_subject,
    dateformat="\%m-\%d-\%Y \%H:\%M:\%S")
 
 mage_ma_single(
-   example_data_5_subject,
+   example_data_1_subject,
    plot=TRUE,
    interval=15,
    title="Patient X",

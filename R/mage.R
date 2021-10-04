@@ -6,7 +6,9 @@
 #'
 #' @param version Either \code{'ma'} or \code{'naive'}. Chooses which version of the MAGE algorithm to use. \code{'ma'} algorithm is more accurate, and is the default. Earlier versions of iglu package (<=2.0.0) used \code{'naive'}.
 #'
-#' @param ... Optional arguments to pass to the MAGE Functions (see \code{\link{mage_ma_single}})
+#' @param sd_multiplier A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation. This parameter is only used when \code{version = "naive"}, ans is ignored otherwise.
+#'
+#' @param ... Optional arguments to pass to the MAGE Function when \code{'ma'} algorithm is selected (see \code{\link{mage_ma_single}})
 #' \itemize{
 #'   \item{dateformat: POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of a different format.}
 #'   \item{short_ma: Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended <15).}
@@ -17,7 +19,6 @@
 #'  \item{xlab: Label for x-axis of ggplot. Defaults to "Time"}
 #'  \item{ylab: Label for y-axis of ggplot. Defaults to "Glucose Level"}
 #'  \item{show_ma: Whether to show the moving average lines on the plot or not. Default: FALSE}
-#'  \item{sd_multiplier: A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation. This parameter is only used when \code{version = "naive"}, ans is ignored otherwise.}
 #' }
 #'
 #' @return A tibble object with two columns: the subject id and corresponding MAGE value. If a vector of glucose values is passed, then a tibble object with just the MAGE value is returned. In version 2, if \code{plot = TRUE}, a "master" ggplot will be returned with glucose traces for all subjects.
@@ -40,14 +41,14 @@
 
 
 
-mage <- function(data, version = c('ma', 'naive'), ...) {
+mage <- function(data, version = c('ma', 'naive'), sd_multiplier = 1, ...) {
 
   # Match version
   version = match.arg(version)
 
   if(version == 'naive') {
-    warning("You are the naive version of the iglu mage algorithm. It is included for backward compatibility with earlier versions of iglu and is less accurate than the ma algorithm.")
-    return(mage_sd(data, ...))
+    warning("You use the naive version of the iglu mage algorithm. It is included for backward compatibility with earlier versions of iglu and is less accurate than the ma algorithm.")
+    return(mage_sd(data, sd_multiplier = sd_multiplier))
   }
 
   return(mage_ma(data, ...))
@@ -66,7 +67,7 @@ mage_ma <- function(data, ...) {
     dplyr::do(MAGE = mage_ma_single(., ...))
 
   # Check if a ggplot or number in list is returned - convert the latter to a number
-  if(is.numeric(out$MAGE[[1]])) {
+  if(is.numeric(out$MAGE[[1]])|is.na(out$MAGE[[1]])) {
     out <- out %>% dplyr::mutate(MAGE = as.numeric(MAGE))
   }
 

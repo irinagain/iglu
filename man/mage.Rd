@@ -4,14 +4,16 @@
 \alias{mage}
 \title{Calculate Mean Amplitude of Glycemic Excursions}
 \usage{
-mage(data, version = c("ma", "naive"), ...)
+mage(data, version = c("ma", "naive"), sd_multiplier = 1, ...)
 }
 \arguments{
 \item{data}{Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector).}
 
 \item{version}{Either \code{'ma'} or \code{'naive'}. Chooses which version of the MAGE algorithm to use. \code{'ma'} algorithm is more accurate, and is the default. Earlier versions of iglu package (<=2.0.0) used \code{'naive'}.}
 
-\item{...}{Optional arguments to pass to the MAGE Functions (see \code{\link{mage_ma_single}})
+\item{sd_multiplier}{A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation. This parameter is only used when \code{version = "naive"}, ans is ignored otherwise.}
+
+\item{...}{Optional arguments to pass to the MAGE Function when \code{'ma'} algorithm is selected (see \code{\link{mage_ma_single}})
 \itemize{
   \item{dateformat: POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of a different format.}
   \item{short_ma: Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended <15).}
@@ -22,7 +24,6 @@ mage(data, version = c("ma", "naive"), ...)
  \item{xlab: Label for x-axis of ggplot. Defaults to "Time"}
  \item{ylab: Label for y-axis of ggplot. Defaults to "Glucose Level"}
  \item{show_ma: Whether to show the moving average lines on the plot or not. Default: FALSE}
- \item{sd_multiplier: A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation. This parameter is only used when \code{version = "naive"}, ans is ignored otherwise.}
 }}
 }
 \value{

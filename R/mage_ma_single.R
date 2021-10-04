@@ -6,8 +6,8 @@
 #' @details See "mage".
 #'
 #' @param data Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector)
-#' @param short_ma Integer for period length of the short moving average. Must be positive and less than "long_ma". (Recommended <15)
-#' @param long_ma Integer for period length for the long moving average. (Recommended >20)
+#' @param short_ma Integer for period length of the short moving average. Must be positive and less than "long_ma", default value is 5. (Recommended <15)
+#' @param long_ma Integer for period length for the long moving average, default value is 32. (Recommended >20)
 #' @param type One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.
 #' @param plot Boolean. Returns ggplot if TRUE.
 #' @param interval Integer for time interval in minutes between glucose readings. Function will auto-magically determine the interval if not specified. (Only used to calculate the gaps shown on the ggplot)
@@ -22,19 +22,19 @@
 #' @export
 #'
 #' @examples
-#' data(example_data_5_subject)
+#' data(example_data_1_subject)
 #' mage_ma_single(
-#'    example_data_5_subject,
+#'    example_data_1_subject,
 #'    short_ma = 4,
 #'    long_ma = 24,
 #'    type = 'plus')
 #'
 #' mage_ma_single(
-#'    example_data_5_subject,
+#'    example_data_1_subject,
 #'    dateformat="%m-%d-%Y %H:%M:%S")
 #'
 #' mage_ma_single(
-#'    example_data_5_subject,
+#'    example_data_1_subject,
 #'    plot=TRUE,
 #'    interval=15,
 #'    title="Patient X",
@@ -43,21 +43,58 @@
 #'    show_ma=FALSE)
 
 
-mage_ma_single <- function(data, short_ma = 5, long_ma = 23,type=c('auto','plus','minus'), plot = FALSE, interval=NA, dateformat="%Y-%m-%d %H:%M:%S", title = NA, xlab=NA,ylab = NA, show_ma=FALSE) {
+mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'plus', 'minus'), plot = FALSE, interval = NA, dateformat = "%Y-%m-%d %H:%M:%S", title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
 
   ## 1. Preprocessing
   # 1a. Clean up Global Environment
-  MA_Short = MA_Long = DIFF = TP = .xmin = .xmax = NULL
-  rm(list = c("MA_Short", "MA_Long", "DIFF", "TP", ".xmin", ".xmax"))
+  MA_Short = MA_Long = DIFF = TP = id = .xmin = .xmax = NULL
+  rm(list = c("MA_Short", "MA_Long", "DIFF", "TP", ".xmin", ".xmax", "id"))
 
   # 1b. Sanitize the input data
   data = check_data_columns(data)
 
+  # Make sure calculation is only for one subject
+  subject = unique(data$id)
+  ns = length(subject)
+  if (ns > 1){
+    subject = subject[1]
+    warning(paste("The provided data have", ns, "subjects. MAGE will only be calculated for subject", subject))
+    data = data %>% dplyr::filter(id == subject)
+  }
+
+  # Check whether need to adjust long_ma depending on the size
+  nmeasurements = nrow(data)
+  if (nmeasurements < 7){
+    warning("The number of measurements is too small for MAGE calculation.")
+    return(NA)
+  }else if (nmeasurements < long_ma){
+    warning("The total number of measurements is smaller than the default value of long moving average. The value is adjusted to match.")
+    long_ma = nmeasurements
+  }
+
+  if (short_ma >= long_ma){
+    warning("The short moving average window size should be smaller than the long moving average window size for correct MAGE calculation. Return NA.")
+    return(NA)
+  }
+
+  # Check that the time is in increasing order
+  .data <- data %>%
+    dplyr::mutate(time = as.POSIXct(time, format = dateformat))
+
+  timeindex = 2:nmeasurements
+  timediff = difftime(.data$time[timeindex], .data$time[timeindex - 1], units = "mins")
+
+  ### Check for time sorting
+  if (min(timediff) < 0){
+    warning(paste("The times for subject", unique(data$id), "are not in increasing order! The times will be sorted automatically."))
+    index = order(.data$time)
+   .data = .data[index, ]
+  }
+
   ## 2. Process the Data
   # 2a. Calculate the moving average values
   .data <- data %>%
-    dplyr::mutate(time = as.POSIXct(time, format = dateformat),
-                  MA_Short = zoo::rollmean(gl, short_ma, align = 'right', fill = NA),
+    dplyr::mutate(MA_Short = zoo::rollmean(gl, short_ma, align = 'right', fill = NA),
                   MA_Long  = zoo::rollmean(gl, long_ma,  align = 'right', fill = NA),
                   MA_Short = replace(MA_Short, 1:short_ma, MA_Short[short_ma]),
                   MA_Long  = replace(MA_Long, 1:long_ma, MA_Long[long_ma]),
