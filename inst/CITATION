@@ -1,4 +1,4 @@
-citHeader("To cite iglu in publications use:")
+citHeader("To cite/acknowledge iglu, please use:")
 
 citEntry(entry = "Article",
          title       = "Interpreting blood glucose data with {R} package {iglu}",
