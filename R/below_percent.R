@@ -62,7 +62,7 @@ below_percent <- function(data, targets_below = c(54,70)){
     function(target_val) {
       data = data %>%
         dplyr::group_by(id) %>%
-        dplyr::summarise(x = mean(gl <= target_val, na.rm = TRUE) * 100) %>%
+        dplyr::summarise(x = mean(gl < target_val, na.rm = TRUE) * 100) %>%
         dplyr::mutate(target_val = paste0("below_", target_val))
       data
     })
