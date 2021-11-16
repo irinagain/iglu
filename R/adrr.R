@@ -59,7 +59,7 @@ adrr <- function(data){
     return(out)
   }
 
-  if (class(data) == 'data.frame' && nrow(data) != 1){
+  if ('data.frame' %in% class(data) && nrow(data) != 1){
     out = adrr_multi(data)
   } else{
     stop("Data must be in a data.frame structure

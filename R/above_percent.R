@@ -58,7 +58,7 @@ above_percent <- function(data, targets_above = c(140, 180, 250)){
     function(target_val) {
       data = data %>%
         dplyr::group_by(id) %>%
-        dplyr::summarise(x = mean(gl >= target_val, na.rm = TRUE) * 100) %>%
+        dplyr::summarise(x = mean(gl > target_val, na.rm = TRUE) * 100) %>%
         dplyr::mutate(target_val = paste0("above_", target_val))
       data
     })
