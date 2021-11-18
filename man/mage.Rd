@@ -4,30 +4,56 @@
 \alias{mage}
 \title{Calculate Mean Amplitude of Glycemic Excursions}
 \usage{
-mage(data, version = c("ma", "naive"), sd_multiplier = 1, ...)
+mage(
+  data,
+  version = c("ma", "naive"),
+  sd_multiplier = 1,
+  short_ma = 5,
+  long_ma = 32,
+  type = c("auto", "plus", "minus"),
+  plot = FALSE,
+  interval = NA,
+  dateformat = "\%Y-\%m-\%d \%H:\%M:\%S",
+  title = NA,
+  xlab = NA,
+  ylab = NA,
+  show_ma = FALSE
+)
 }
 \arguments{
 \item{data}{Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector).}
 
 \item{version}{Either \code{'ma'} or \code{'naive'}. Chooses which version of the MAGE algorithm to use. \code{'ma'} algorithm is more accurate, and is the default. Earlier versions of iglu package (<=2.0.0) used \code{'naive'}.}
 
-\item{sd_multiplier}{A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation. This parameter is only used when \code{version = "naive"}, ans is ignored otherwise.}
+\item{sd_multiplier}{A numeric value that can change the sd value used to determine size of
+glycemic excursions used in the calculation. This is the only parameter that
+can be specified for \code{version = "naive"}, and it is ignored if \code{version = "ma"}.}
 
-\item{...}{Optional arguments to pass to the MAGE Function when \code{'ma'} algorithm is selected (see \code{\link{mage_ma_single}})
-\itemize{
-  \item{dateformat: POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of a different format.}
-  \item{short_ma: Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended <15).}
-  \item{long_ma: Integer for period length for the long moving average. Default: 23. (Recommended >20)}
- \item{plot: Boolean. Returns ggplot if TRUE. Default: FALSE.}
- \item{interval: Integer for time interval in minutes between glucose readings. Algorithm will auto-magically determine the interval if not specified. Default: NA (Only used to calculate the gaps shown on the ggplot)}
- \item{title: Title for the ggplot. Default: "Glucose Trace - Subject [ID]"}
- \item{xlab: Label for x-axis of ggplot. Defaults to "Time"}
- \item{ylab: Label for y-axis of ggplot. Defaults to "Glucose Level"}
- \item{show_ma: Whether to show the moving average lines on the plot or not. Default: FALSE}
-}}
+\item{short_ma}{Integer for period length of the short moving average. Must be positive and less than "long_ma", default value is 5. (Recommended <15)}
+
+\item{long_ma}{Integer for period length for the long moving average, default value is 32. (Recommended >20)}
+
+\item{type}{One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.}
+
+\item{plot}{Boolean. Returns ggplot if TRUE.}
+
+\item{interval}{Integer for time interval in minutes between glucose readings. Function will auto-magically determine the interval if not specified. (Only used to calculate the gaps shown on the ggplot)}
+
+\item{dateformat}{POSIXct time format for time of glucose readings. Highly recommended to set if glucose times are in a different format.}
+
+\item{title}{Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"}
+
+\item{xlab}{Label for x-axis of ggplot. Defaults to "Time"}
+
+\item{ylab}{Label for y-axis of ggplot. Defaults to "Glucose Level"}
+
+\item{show_ma}{Whether to show the moving average lines on the plot or not}
 }
 \value{
-A tibble object with two columns: the subject id and corresponding MAGE value. If a vector of glucose values is passed, then a tibble object with just the MAGE value is returned. In version 2, if \code{plot = TRUE}, a "master" ggplot will be returned with glucose traces for all subjects.
+A tibble object with two columns: the subject id and corresponding MAGE value.
+If a vector of glucose values is passed, then a tibble object with just the MAGE value
+is returned. In \code{version = "ma"}, if \code{plot = TRUE}, a list of ggplots will
+be returned with one plot per subject.
 }
 \description{
 The function calculates MAGE values and can optionally return a plot of the glucose trace.
