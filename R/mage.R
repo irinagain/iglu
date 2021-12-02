@@ -2,7 +2,7 @@
 #'
 #' @description The function calculates MAGE values and can optionally return a plot of the glucose trace.
 #'
-#' @param data Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector).
+#' @param data Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (numeric vector allowed for version \code{'naive'} only).
 #'
 #' @param version Either \code{'ma'} or \code{'naive'}. Chooses which version of the MAGE algorithm to use. \code{'ma'} algorithm is more accurate, and is the default. Earlier versions of iglu package (<=2.0.0) used \code{'naive'}.
 #'
@@ -18,9 +18,9 @@
 #' be returned with one plot per subject.
 #' @export
 #'
-#' @details The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970).
+#' @details If version \code{'ma'} is selected, the function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970). For this version, glucose values will be interpolated over a uniform time grid prior to calculation.
 #'
-#' \code{'ma'} is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.
+#' \code{'ma'} is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* (not moving average) glucose values.
 #'
 #' \code{'naive'} algorithm calculates MAGE by taking the mean of absolute glucose differences (between each value and the mean) that are greater than the standard deviation. A multiplier can be added to the standard deviation using the \code{sd_multiplier} argument.
 #'
@@ -37,24 +37,24 @@
 
 mage <- function(data, version = c('ma', 'naive'), sd_multiplier = 1,
                  short_ma = 5, long_ma = 32, type = c('auto', 'plus', 'minus'),
-                 plot = FALSE, interval = NA, dateformat = "%Y-%m-%d %H:%M:%S",
+                 plot = FALSE, dt0 = NULL, inter_gap = 45, tz = "",
                  title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
 
   # Match version
   version = match.arg(version)
 
   if(version == 'naive') {
-    warning("You use the naive version of the iglu mage algorithm. It is included for backward compatibility with earlier versions of iglu and is less accurate than the ma algorithm.")
+    warning("You are using the naive version of the iglu mage algorithm. It is included for backward compatibility with earlier versions of iglu and is less accurate than the ma algorithm.")
     return(mage_sd(data, sd_multiplier = sd_multiplier))
   }
 
   return(mage_ma(data, short_ma = short_ma, long_ma = long_ma, type = type,
-                 plot = plot, interval = interval, dateformat = dateformat,
+                 plot = plot, dt0 = dt0, inter_gap = inter_gap, tz = tz,
                  title = title, xlab = xlab, ylab = ylab, show_ma = show_ma))
 }
 
 mage_ma <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'plus', 'minus'),
-                    plot = FALSE, interval = NA, dateformat = "%Y-%m-%d %H:%M:%S",
+                    plot = FALSE, dt0 = NULL, inter_gap = 45, tz = "",
                     title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
   id = . = MAGE = NULL
   rm(list = c("id", ".", "MAGE"))
@@ -66,7 +66,7 @@ mage_ma <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'plus', '
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::do(MAGE = mage_ma_single(., short_ma = short_ma, long_ma = long_ma, type = type,
-                                    plot = plot, interval = interval, dateformat = dateformat,
+                                    plot = plot, dt0 = dt0, inter_gap = inter_gap, tz = tz,
                                     title = title, xlab = xlab, ylab = ylab, show_ma = show_ma))
 
   # Check if a ggplot or number in list is returned - convert the latter to a number

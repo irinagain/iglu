@@ -630,7 +630,6 @@ shinyServer(function(input, output) {
       helpText("Enter the ID of a subject to display their MAGE plot"),
       textInput("mage_short_ma", "Short MA length", value="5"),
       textInput("mage_long_ma", "Long MA length", value="32"),
-      textInput("mage_interval", "Interval between glucose readings"),
       radioButtons("mage_show_ma", "Show Moving Averages on Plot", c(
         "No" = FALSE,
         "Yes" = TRUE
@@ -788,7 +787,7 @@ shinyServer(function(input, output) {
       mage_ylab = ifelse(tolower(input$mage_ylab) == "default", NA, paste0("'",input$mage_ylab,"'"))
 
       string = paste0("iglu::mage_ma_single(data=data,plot=TRUE,short_ma=",input$mage_short_ma,",long_ma=",
-                      input$mage_long_ma,",interval=",input$mage_interval,",show_ma=", input$mage_show_ma,",
+                      input$mage_long_ma,",show_ma=", input$mage_show_ma,",
                       ,title=",mage_title,",xlab=", mage_xlab,",ylab=",mage_ylab,")")
       eval(parse(text=string))
     }

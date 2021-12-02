@@ -12,8 +12,9 @@ mage(
   long_ma = 32,
   type = c("auto", "plus", "minus"),
   plot = FALSE,
-  interval = NA,
-  dateformat = "\%Y-\%m-\%d \%H:\%M:\%S",
+  dt0 = NULL,
+  inter_gap = 45,
+  tz = "",
   title = NA,
   xlab = NA,
   ylab = NA,
@@ -21,7 +22,7 @@ mage(
 )
 }
 \arguments{
-\item{data}{Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector).}
+\item{data}{Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (numeric vector allowed for version \code{'naive'} only).}
 
 \item{version}{Either \code{'ma'} or \code{'naive'}. Chooses which version of the MAGE algorithm to use. \code{'ma'} algorithm is more accurate, and is the default. Earlier versions of iglu package (<=2.0.0) used \code{'naive'}.}
 
@@ -37,9 +38,11 @@ can be specified for \code{version = "naive"}, and it is ignored if \code{versio
 
 \item{plot}{Boolean. Returns ggplot if TRUE.}
 
-\item{interval}{Integer for time interval in minutes between glucose readings. Function will auto-magically determine the interval if not specified. (Only used to calculate the gaps shown on the ggplot)}
+\item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
-\item{dateformat}{POSIXct time format for time of glucose readings. Highly recommended to set if glucose times are in a different format.}
+\item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 
 \item{title}{Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"}
 
@@ -59,9 +62,9 @@ be returned with one plot per subject.
 The function calculates MAGE values and can optionally return a plot of the glucose trace.
 }
 \details{
-The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970).
+If version \code{'ma'} is selected, the function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970). For this version, glucose values will be interpolated over a uniform time grid prior to calculation.
 
-\code{'ma'} is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.
+\code{'ma'} is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* (not moving average) glucose values.
 
 \code{'naive'} algorithm calculates MAGE by taking the mean of absolute glucose differences (between each value and the mean) that are greater than the standard deviation. A multiplier can be added to the standard deviation using the \code{sd_multiplier} argument.
 }
