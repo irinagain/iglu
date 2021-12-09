@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">iglu</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="articles/iglu.html">Get started</a>
 </li>
@@ -84,48 +80,48 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<div id="iglu" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#iglu" class="anchor"></a>iglu</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="iglu">iglu<a class="anchor" aria-label="anchor" href="#iglu"></a>
+</h1></div>
 <!-- badges: start -->
 
 
 <!-- badges: end -->
 </div>
-<div id="iglu-interpreting-data-from-continuous-glucose-monitors-cgms" class="section level1">
-<h1 class="hasAnchor">
-<a href="#iglu-interpreting-data-from-continuous-glucose-monitors-cgms" class="anchor"></a>iglu: Interpreting data from Continuous Glucose Monitors (CGMs)</h1>
-<p>The R package ‘iglu’ provides functions for outputting relevant metrics for data collected from Continuous Glucose Monitors (CGM). For reference, see <a href="https://doi.org/10.1089/dia.2008.0132">“Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control.” Rodbard (2009)</a>. For more information on the package, see <a href="https://irinagain.github.io/iglu/">package website</a>.</p>
+<div class="section level1">
+<h1 id="iglu-interpreting-data-from-continuous-glucose-monitors-cgms">iglu: Interpreting data from Continuous Glucose Monitors (CGMs)<a class="anchor" aria-label="anchor" href="#iglu-interpreting-data-from-continuous-glucose-monitors-cgms"></a>
+</h1>
+<p>The R package ‘iglu’ provides functions for outputting relevant metrics for data collected from Continuous Glucose Monitors (CGM). For reference, see <a href="https://doi.org/10.1089/dia.2008.0132" class="external-link">“Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control.” Rodbard (2009)</a>. For more information on the package, see <a href="https://irinagain.github.io/iglu/" class="external-link">package website</a>.</p>
 <p>To cite:</p>
 <ul>
-<li><p>Broll S, Urbanek J, Buchanan D, Chun E, Muschelli J, Punjabi N and Gaynanova I (2021). <a href="https://doi.org/10.1371/journal.pone.0248560">Interpreting blood glucose data with R package iglu.</a> <em>PLoS One</em>, Vol. 16, No. 4, e0248560.</p></li>
+<li><p>Broll S, Urbanek J, Buchanan D, Chun E, Muschelli J, Punjabi N and Gaynanova I (2021). <a href="https://doi.org/10.1371/journal.pone.0248560" class="external-link">Interpreting blood glucose data with R package iglu.</a> <em>PLoS One</em>, Vol. 16, No. 4, e0248560.</p></li>
 <li><p>Broll S, Buchanan D, Chun E, Muschelli J, Fernandes N, Seo J, Shih J, Urbanek J, Schwenck J, Gaynanova I (2021). iglu: Interpreting Glucose Data from Continuous Glucose Monitors. R package version 3.0.0.</p></li>
 </ul>
 <p>iglu comes with two example datasets: example_data_1_subject and example_data_5_subject. These data are collected using Dexcom G4 CGM on subjects with Type II diabetes. Each dataset follows the structure iglu’s functions are designed around. Note that the 1 subject data is a subset of the 5 subject data. See the examples below for loading and using the data.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>The R package ‘iglu’ is available from CRAN, use the commands below to install the most recent Github version.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co"># Plain installation</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Plain installation</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"irinagain/iglu"</span><span class="op">)</span> <span class="co"># iglu package</span>
 
 <span class="co"># For installation with vignette</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"irinagain/iglu"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"irinagain/iglu"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">iglu</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span> <span class="co"># Load single subject data</span>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">iglu</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span> <span class="co"># Load single subject data</span>
 <span class="co">## Plot data</span>
 
 <span class="co"># Use plot on dataframe with time and glucose values for time series plot</span>
-<span class="fu"><a href="reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="co"># Summary statistics and some metrics</span>
 <span class="fu"><a href="reference/summary_glu.html">summary_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 7</span>
@@ -140,7 +136,7 @@
 <span class="co">#&gt;   &lt;fct&gt;               &lt;dbl&gt;           &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 Subject 1            73.9            91.7</span>
 
-<span class="fu"><a href="reference/above_percent.html">above_percent</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, targets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">140</span>,<span class="fl">200</span>,<span class="fl">250</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="reference/above_percent.html">above_percent</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, targets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">140</span>,<span class="fl">200</span>,<span class="fl">250</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 5</span>
 <span class="co">#&gt;   id        above_140 above_200 above_250 above_80</span>
 <span class="co">#&gt;   &lt;fct&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span>
@@ -159,13 +155,13 @@
 <span class="co">#&gt; 1 Subject 1  37.0</span>
 
 <span class="co"># Load multiple subject data</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">example_data_5_subject</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_data_5_subject</span><span class="op">)</span>
 
-<span class="fu"><a href="reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">'average'</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">'average'</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-3-2.png" width="100%"></p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-
-<span class="fu"><a href="reference/below_percent.html">below_percent</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, targets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">170</span>,<span class="fl">260</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="fu"><a href="reference/below_percent.html">below_percent</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, targets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">170</span>,<span class="fl">260</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 5 x 4</span>
 <span class="co">#&gt;   id        below_170 below_260 below_80</span>
 <span class="co">#&gt;   &lt;fct&gt;         &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span>
@@ -184,16 +180,16 @@
 <span class="co">#&gt; 2 Subject 2 118. </span>
 <span class="co">#&gt; 3 Subject 3 116. </span>
 <span class="co">#&gt; 4 Subject 4  72.4</span>
-<span class="co">#&gt; 5 Subject 5 144.</span></pre></div>
+<span class="co">#&gt; 5 Subject 5 144.</span></code></pre></div>
 </div>
-<div id="shiny-app" class="section level2">
-<h2 class="hasAnchor">
-<a href="#shiny-app" class="anchor"></a>Shiny App</h2>
+<div class="section level2">
+<h2 id="shiny-app">Shiny App<a class="anchor" aria-label="anchor" href="#shiny-app"></a>
+</h2>
 <p>Shiny App can be accessed locally via</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">iglu</span><span class="op">)</span>
-<span class="fu"><a href="reference/iglu_shiny.html">iglu_shiny</a></span><span class="op">(</span><span class="op">)</span></pre></div>
-<p>or globally at <a href="https://irinagain.shinyapps.io/shiny_iglu/" class="uri">https://irinagain.shinyapps.io/shiny_iglu/</a>. As new functionality gets added, local version will be slightly ahead of the global one.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">iglu</span><span class="op">)</span>
+<span class="fu"><a href="reference/iglu_shiny.html">iglu_shiny</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>or globally at <a href="https://irinagain.shinyapps.io/shiny_iglu/" class="external-link uri">https://irinagain.shinyapps.io/shiny_iglu/</a>. As new functionality gets added, local version will be slightly ahead of the global one.</p>
 </div>
 </div>
 
@@ -201,60 +197,66 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=iglu">https://​cloud.r-project.org/​package=iglu</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=iglu" class="external-link">View on CRAN</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a></li>
+<li><a href="https://www.r-project.org/Licenses/GPL-2" class="external-link">GPL-2</a></li>
 </ul>
 </div>
+
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html">Citing iglu</a></li>
+<li><a href="authors.html#citation">Citing iglu</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Steve Broll <br><small class="roles"> Author </small>  </li>
 <li>David Buchanan <br><small class="roles"> Author </small>  </li>
 <li>Elizabeth Chun <br><small class="roles"> Author </small>  </li>
-<li>John Muschelli <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-6469-1750" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>John Muschelli <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-6469-1750" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Nathaniel Fernandes <br><small class="roles"> Author </small>  </li>
 <li>Jung Hoon Seo <br><small class="roles"> Author </small>  </li>
 <li>Johnathan Shih <br><small class="roles"> Author </small>  </li>
 <li>Jacek Urbanek <br><small class="roles"> Author </small>  </li>
 <li>John Schwenck <br><small class="roles"> Author </small>  </li>
-<li>Irina Gaynanova <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-4116-0268" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li><a href="authors.html">All authors...</a></li>
+<li>Irina Gaynanova <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-4116-0268" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://app.travis-ci.com:443/github/irinagain/iglu"><img src="https://api.travis-ci.com/irinagain/iglu.svg?branch=master" alt="Travis build status"></a></li>
-<li><a href="https://ci.appveyor.com/project/irinagain/iglu"><img src="https://ci.appveyor.com/api/projects/status/github/irinagain/iglu?branch=master&amp;svg=true" alt="AppVeyor build status"></a></li>
-<li><a href="https://cran.r-project.org/package=iglu"><img src="https://www.r-pkg.org/badges/version/iglu" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://CRAN.R-project.org/package=iglu"><img src="https://cranlogs.r-pkg.org/badges/iglu"></a></li>
+<li><a href="https://app.travis-ci.com:443/github/irinagain/iglu" class="external-link"><img src="https://api.travis-ci.com/irinagain/iglu.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://ci.appveyor.com/project/irinagain/iglu" class="external-link"><img src="https://ci.appveyor.com/api/projects/status/github/irinagain/iglu?branch=master&amp;svg=true" alt="AppVeyor build status"></a></li>
+<li><a href="https://cran.r-project.org/package=iglu" class="external-link"><img src="https://www.r-pkg.org/badges/version/iglu" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://CRAN.R-project.org/package=iglu" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/iglu"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jung Hoon Seo, Johnathan Shih, Jacek Urbanek, John Schwenck, Irina Gaynanova.</p>
+  <p></p>
+<p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jung Hoon Seo, Johnathan Shih, Jacek Urbanek, John Schwenck, Irina Gaynanova.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -262,6 +264,8 @@
 
   
 
+
+  
 
   </body>
 </html>

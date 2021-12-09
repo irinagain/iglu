@@ -1,10 +1,10 @@
 pandoc: '2.2'
-pkgdown: 1.6.1
+pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
   AGP_and_Episodes: AGP_and_Episodes.html
   iglu: iglu.html
   lasagna_plots: lasagna_plots.html
   metrics_list: metrics_list.html
-last_built: 2021-08-25T20:43Z
+last_built: 2021-12-09T19:59Z
 

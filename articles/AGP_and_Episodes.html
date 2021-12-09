@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iglu</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.2.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/iglu.html">Get started</a>
 </li>
@@ -95,62 +91,62 @@
     
     
 <p>The iglu package includes two single page reports - an ambulatory glucose profile (AGP), and an episode calculation report.</p>
-<div id="ambulatory-glucose-profile-agp" class="section level1">
-<h1 class="hasAnchor">
-<a href="#ambulatory-glucose-profile-agp" class="anchor"></a>Ambulatory Glucose Profile (AGP)</h1>
-<p>The iglu package allows one to generate an Ambulatory Glucose Profile (AGP) report - see <a href="https://doi.org/10.1089/dia.2019.0034">Johnson (2019) “Utilizing the ambulatory glucose profile to standardize and implement continuous glucose monitoring in clinical practice.”</a>. Below is an example report for Subject 1, which includes information on data collection period, time spent in standardized glycemic ranges (cutoffs of 54, 70, 180 and 250 mg/dL) displayed as a stacked bar chart, glucose variability as measured by %CV, and visualization of quantiles of the glucose profile across days together with daily glucose views.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="../reference/agp.html">agp</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></pre></div>
+<div class="section level1">
+<h1 id="ambulatory-glucose-profile-agp">Ambulatory Glucose Profile (AGP)<a class="anchor" aria-label="anchor" href="#ambulatory-glucose-profile-agp"></a>
+</h1>
+<p>The iglu package allows one to generate an Ambulatory Glucose Profile (AGP) report - see <a href="https://doi.org/10.1089/dia.2019.0034" class="external-link">Johnson (2019) “Utilizing the ambulatory glucose profile to standardize and implement continuous glucose monitoring in clinical practice.”</a>. Below is an example report for Subject 1, which includes information on data collection period, time spent in standardized glycemic ranges (cutoffs of 54, 70, 180 and 250 mg/dL) displayed as a stacked bar chart, glucose variability as measured by %CV, and visualization of quantiles of the glucose profile across days together with daily glucose views.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/agp.html">agp</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></code></pre></div>
 <p><img src="AGP_and_Episodes_files/figure-html/unnamed-chunk-1-1.png" width="600px" height="500px"></p>
-<div id="episode-calculation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#episode-calculation" class="anchor"></a>Episode Calculation</h2>
+<div class="section level2">
+<h2 id="episode-calculation">Episode Calculation<a class="anchor" aria-label="anchor" href="#episode-calculation"></a>
+</h2>
 <p>The Episode_Calculation function measures the number of episodes that hypoglycemia and hyperglycemia that occur more than a certain period.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="../reference/episode_calculation.html">episode_calculation</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>,lv2_hypo <span class="op">=</span> <span class="fl">70</span>, lv1_hypo <span class="op">=</span> <span class="fl">120</span>, lv2_hyper <span class="op">=</span> <span class="fl">180</span>, dur_length <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/episode_calculation.html">episode_calculation</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>,lv2_hypo <span class="op">=</span> <span class="fl">70</span>, lv1_hypo <span class="op">=</span> <span class="fl">120</span>, lv2_hyper <span class="op">=</span> <span class="fl">180</span>, dur_length <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>
 <span class="co">#&gt;                id Hypo_ep Hyper_ep hypo_duration hyper_duration low_alert</span>
 <span class="co">#&gt; 1 Subject 1 (Lv1)    3.14     2.64         243.8         196.90     54.89</span>
 <span class="co">#&gt; 2 Subject 1 (Lv2)    0.07     1.14          25.0          85.79      0.16</span>
 <span class="co">#&gt;   high_alert target_range hypo_min_avg hyper_min_avg</span>
 <span class="co">#&gt; 1       43.9         1.21         0.55          0.44</span>
-<span class="co">#&gt; 2        7.9        91.95         0.00          0.08</span></pre></div>
+<span class="co">#&gt; 2        7.9        91.95         0.00          0.08</span></code></pre></div>
 <p>In this example, example_data_1_subject contains multiple days, and episode_calculation function calculate the number of episodes across days.</p>
-<div id="parameters" class="section level3">
-<h3 class="hasAnchor">
-<a href="#parameters" class="anchor"></a>Parameters</h3>
-<div id="data" class="section level4">
-<h4 class="hasAnchor">
-<a href="#data" class="anchor"></a>data</h4>
+<div class="section level3">
+<h3 id="parameters">Parameters<a class="anchor" aria-label="anchor" href="#parameters"></a>
+</h3>
+<div class="section level4">
+<h4 id="data">data<a class="anchor" aria-label="anchor" href="#data"></a>
+</h4>
 <p>DataFrame object with column names “id”, “time”, and “gl”. Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.</p>
 </div>
-<div id="lv1_hypo-lv2_hypo-hy1_hyper-lv2_hpyer" class="section level4">
-<h4 class="hasAnchor">
-<a href="#lv1_hypo-lv2_hypo-hy1_hyper-lv2_hpyer" class="anchor"></a>lv1_hypo, lv2_hypo, hy1_hyper, lv2_hpyer</h4>
+<div class="section level4">
+<h4 id="lv1_hypo-lv2_hypo-hy1_hyper-lv2_hpyer">lv1_hypo, lv2_hypo, hy1_hyper, lv2_hpyer<a class="anchor" aria-label="anchor" href="#lv1_hypo-lv2_hypo-hy1_hyper-lv2_hpyer"></a>
+</h4>
 <p>Users can set certain thresholds for the hypo and hyperglycemia by passing parameters, lv1_hypo, lv2_hypo, hy1_hyper, lv2_hpyer. Level 2 indicates more severe states than level 1 so the threshold value for the lv2_hypo value should be lower than hy1_hypo value, and the threshold for the lv2_hyper value should higher than lv1_hyper value. Otherwise, the warning will be produced. Here, we are passing 70 for the hypoglycemia threshold level 2 threshold, 120 for hypoglycemia threshold, and 180 for the hyperglycemia level 2 threshold.</p>
 </div>
-<div id="dur_length" class="section level4">
-<h4 class="hasAnchor">
-<a href="#dur_length" class="anchor"></a>dur_length</h4>
+<div class="section level4">
+<h4 id="dur_length">dur_length<a class="anchor" aria-label="anchor" href="#dur_length"></a>
+</h4>
 <p>By setting a duration length to 15 minutes (the last parameter), the function will count the number of episodes that glucose values go below or above the thresholds more than 15 minutes.</p>
 </div>
 </div>
-<div id="return-value" class="section level3">
-<h3 class="hasAnchor">
-<a href="#return-value" class="anchor"></a>Return value</h3>
+<div class="section level3">
+<h3 id="return-value">Return value<a class="anchor" aria-label="anchor" href="#return-value"></a>
+</h3>
 <p>The function returns a dataframe including number of hypo and hyper episodes, hypo and hyper mean values, mean durations (Minutes), and average mean values per day (%).</p>
 </div>
-<div id="example" class="section level3">
-<h3 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h3>
+<div class="section level3">
+<h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h3>
 <p>In this example, we calculated episodes for subject 1. The average numbers of hypo and hyperglycemia for subject 1 (level 1) are 3.14 and 2.64 respectively. The mean duration for hypoglycemia is 243.8 minutes and 196.9 minutes for hyperglycemia. You can also see other values such as the mean average values for hypoglycemia and hyperglycemia, and this function can be used for multiple subjects as well (check by setting the parameter, data =example_data_5_subject).</p>
 </div>
 </div>
-<div id="epicalc_profile-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#epicalc_profile-function" class="anchor"></a>Epicalc_profile function</h2>
+<div class="section level2">
+<h2 id="epicalc_profile-function">Epicalc_profile function<a class="anchor" aria-label="anchor" href="#epicalc_profile-function"></a>
+</h2>
 <p>Visualization of the metrics produced by the <code><a href="../reference/episode_calculation.html">episode_calculation()</a></code> function is done with the function <code><a href="../reference/epicalc_profile.html">epicalc_profile()</a></code>. This function takes the <code><a href="../reference/episode_calculation.html">episode_calculation()</a></code> output and displays it as a tables of the episode metrics as well as plots that visualizes the subject’s glucose level over time. Like <code>episode_calculation</code>, this function is designed to work with one subject data at a time, and the structure of the function output is shown below.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="../reference/epicalc_profile.html">epicalc_profile</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/epicalc_profile.html">epicalc_profile</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></code></pre></div>
 <p><img src="AGP_and_Episodes_files/figure-html/unnamed-chunk-3-1.png" width="768"></p>
 <p>The function will accept the following six parameters that are passed on to <code><a href="../reference/epicalc_profile.html">epicalc_profile()</a></code>. Like <code><a href="../reference/episode_calculation.html">episode_calculation()</a></code>, there are options to adjust the hypoglycemia and hyperglycemia thresholds. If the hyperglycemia threshold is lower than the hypoglycemia threshold, a warning will be produced.</p>
 <ul>
@@ -160,8 +156,8 @@
 <li>“<code>lv2_hyper</code>” - Second threshold for what above is considered hyperglycemia. Default is 160 and the units are mg/dL</li>
 <li>“<code>color_scheme</code>” - String corresponding to a color scheme for the plot.Default is dark red for <code>lv1_hypo</code>, red for <code>lv2_hypo</code>, green for normal, yellow for <code>lv1_hyper</code>, and orange for <code>lv2_hyper</code>.</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="../reference/epicalc_profile.html">epicalc_profile</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lv1_hypo<span class="op">=</span><span class="fl">100</span>, lv2_hypo<span class="op">=</span><span class="fl">70</span>, lv1_hyper<span class="op">=</span><span class="fl">120</span>, lv2_hyper<span class="op">=</span><span class="fl">160</span>, color_scheme<span class="op">=</span><span class="st">"Color Scheme 1"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/epicalc_profile.html">epicalc_profile</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lv1_hypo<span class="op">=</span><span class="fl">100</span>, lv2_hypo<span class="op">=</span><span class="fl">70</span>, lv1_hyper<span class="op">=</span><span class="fl">120</span>, lv2_hyper<span class="op">=</span><span class="fl">160</span>, color_scheme<span class="op">=</span><span class="st">"Color Scheme 1"</span><span class="op">)</span></code></pre></div>
 <p><img src="AGP_and_Episodes_files/figure-html/unnamed-chunk-4-1.png" width="768"></p>
 </div>
 </div>
@@ -178,11 +174,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jung Hoon Seo, Johnathan Shih, Jacek Urbanek, John Schwenck, Irina Gaynanova.</p>
+  <p></p>
+<p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jung Hoon Seo, Johnathan Shih, Jacek Urbanek, John Schwenck, Irina Gaynanova.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -190,6 +188,8 @@
 
   
 
+
+  
 
   </body>
 </html>
