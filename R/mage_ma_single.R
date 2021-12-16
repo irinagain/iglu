@@ -68,9 +68,19 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   short_ma = round(short_ma*5/data_ip$dt0)
   long_ma = round(long_ma*5/data_ip$dt0)
 
+  ## 2. Process the Data
+
+  # change to interpolated data (times and glucose)
+  .data <- data %>%
+    # change data into id, interpolated times, interpolated glucose (t to get rowwise)
+    dplyr::summarise(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d))) %>%
+    # drop NA rows before first glucose reading
+    dplyr::slice(which(!is.na(gl))[1]:dplyr::n()) %>%
+    # then drop NA rows after last glucose reading
+    dplyr::slice(1:utils::tail(which(!is.na(.data$gl)), 1))
+
   # Check whether need to adjust long_ma depending on the size
-  # nrow(data) gives the original data length (not interpolated)
-  nmeasurements = nrow(data)
+  nmeasurements = nrow(.data)
   if (nmeasurements < 7){
     warning("The number of measurements is too small for MAGE calculation.")
     return(NA)
@@ -83,17 +93,6 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     warning("The short moving average window size should be smaller than the long moving average window size for correct MAGE calculation. Return NA.")
     return(NA)
   }
-
-  ## 2. Process the Data
-
-  # change to interpolated data (times and glucose)
-  .data <- data %>%
-    # change data into id, interpolated times, interpolated glucose (t to get rowwise)
-    dplyr::summarise(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d))) %>%
-    # drop NA rows before first glucose reading
-    dplyr::slice(which(!is.na(gl))[1]:dplyr::n()) %>%
-    # then drop NA rows after last glucose reading
-    dplyr::slice(1:utils::tail(which(!is.na(.data$gl)), 1))
 
   # check if interpolation creates large gaps (longer than long_ma)
   gaps <- .data %>%

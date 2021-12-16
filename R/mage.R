@@ -70,7 +70,7 @@ mage_ma <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'plus', '
                                     title = title, xlab = xlab, ylab = ylab, show_ma = show_ma))
 
   # Check if a ggplot or number in list is returned - convert the latter to a number
-  if(class(out$MAGE[[1]])[1] == "numeric") {
+  if(class(out$MAGE[[1]])[1] == "numeric" | is.na(out$MAGE[[1]][1])) {
     out <- out %>% dplyr::mutate(MAGE = as.numeric(MAGE))
   }
   # else must be ggplot output

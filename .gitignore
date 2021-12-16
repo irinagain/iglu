@@ -8,3 +8,5 @@ packrat/lib*/
 .RData
 docs/
 iglu.Rproj
+/doc/
+/Meta/
