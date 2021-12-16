@@ -1,7 +1,6 @@
 ---
-title: "lasagna_plots"
+title: "Lasagna Plots in iglu"
 author: "Steve Broll, Elizabeth Chun, Irina Gaynanova, David Buchanan"
-date: "4/22/2021"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Lasagna plots in iglu}
@@ -9,8 +8,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
-# Lasagna plots
 
 The `plot_glu` function supports lasagna plots by changing the 'plottype' parameter. For more on lasagna plots, see [Swihart et al. (2010) "Lasagna Plots: A Saucy Alternative to Spaghetti Plots." ](https://doi.org/10.1097/ede.0b013e3181e5b06a).  The lasagna plots in iglu can be single-subject or multi-subject. The single-subject lasagna plot has rows corresponding to each day of measurements with a color grid indicating glucose values. 
 
