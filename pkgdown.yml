@@ -3,8 +3,9 @@ pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
   AGP_and_Episodes: AGP_and_Episodes.html
+  MAGE: MAGE.html
   iglu: iglu.html
   lasagna_plots: lasagna_plots.html
   metrics_list: metrics_list.html
-last_built: 2021-12-09T19:59Z
+last_built: 2021-12-16T23:19Z
 
