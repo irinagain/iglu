@@ -94,7 +94,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     return(NA)
   }
 
-  # check if interpolation creates large gaps (longer than long_ma)
+  # check if interpolation creates large gaps (longer than 12 hours)
   gaps <- .data %>%
     # label NA glucose as gap (gap = 1)
     dplyr::mutate(gap = dplyr::if_else(is.na(gl), 1, 0))
@@ -102,10 +102,11 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   runlen <- rle(gaps$gap)
   # subset to only runs corresponding to gaps
   runlen <- runlen$lengths[runlen$values == 1]
-  # if any gap run is longer than long_ma, return warning
-  if (any(runlen > long_ma)) {
-    warning(paste0("Gap found in data for subject id: ", .data$id[1], ", that
-    exceeds long moving average. Double check glucose data."))
+  # if any gap run is longer than 12 hours, return message
+  # since runlen counts by measurements, compare to number of measurements corresponding to 12hrs (720 mins)
+  # take ceiling and add 1 to make edge cases less likely to give this message
+  if (any(runlen > (ceiling(720/data_ip$dt0) + 1))) {
+    message(paste0("Gap found in data for subject id: ", .data$id[1], ", that exceeds 12 hours."))
   }
 
   # 2a. Calculate the moving average values
