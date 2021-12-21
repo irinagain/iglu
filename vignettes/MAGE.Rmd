@@ -190,7 +190,7 @@ A new algorithm for MAGE calculation that significantly outperforms existing alg
 
 [5]	Hill NR, Oliver NS, Choudhary P, Levy JC, Hindmarsh P, Matthews DR. Normal reference range for mean tissue glucose and glycemic variability derived from continuous glucose monitoring for subjects without diabetes in different ethnic groups. Diabetes technology & therapeutics. 2011 Sep 1;13(9):921-8. 
 
-[6]	Pagacz K, Stawiski K, Szadkowska A, Mlynarski W, Fendler W. GlyCulator2: an update on a web application for calculation of glycemic variability indices. Acta diabetologica. 2018 Aug;55(8):877-80. https://apps.konsta.com.pl/app/glyculator/ Date Accessed: March 11, 2021. 
+[6]	Pagacz K, Stawiski K, Szadkowska A, Mlynarski W, Fendler W. GlyCulator2: an update on a web application for calculation of glycemic variability indices. Acta diabetologica. 2018 Aug;55(8):877-80. <!--https://apps.konsta.com.pl/app/glyculator/ Date Accessed: March 11, 2021. -->
 
 [7]	Vigers T, Chan CL, Snell-Bergeon J, Bjornstad P, Zeitler PS, Forlenza G, Pyle L. cgmanalysis: an R package for descriptive analysis of continuous glucose monitor data. Plos one. 2019 Oct 11;14(10):e0216851. 
 
