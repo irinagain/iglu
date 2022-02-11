@@ -1,7 +1,7 @@
 Package: iglu
 Type: Package
 Title: Interpreting Glucose Data from Continuous Glucose Monitors
-Version: 3.3.0
+Version: 3.3.1
 Authors@R: c(person("Steve", "Broll",
             email = "stevebroll@tamu.edu",
             role = c("aut")),
@@ -65,7 +65,6 @@ Imports:
     tidyr,
     utils,
     zoo,
-    plotly,
     gtable,
     grid
 Suggests:

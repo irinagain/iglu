@@ -74,6 +74,11 @@ read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
 #'
 CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
 
+  # complete.cases only works with POSIXct, not POSIXlt, so check for correct time format
+  if (!lubridate::is.POSIXct(data$time)){
+    tr = as.character(data$time)
+    data$time = as.POSIXct(tr, format='%Y-%m-%d %H:%M:%S', tz = tz)
+  }
   data = data[complete.cases(data),]
 
   ns = length(unique(data$id))

@@ -1,4 +1,8 @@
-# iglu 3.2.0
+
+# iglu 3.3.1
+* Correct bug that makes mage not work on data with time supplied as POSIXlt instead of POSIXct
+
+# iglu 3.3.0
 * MAGE vignette
 * MAGE default parameters for short and long moving averages are automatically adjusted in case of short length of glucose trace
 * MAGE automatically adapts to given meter frequency
