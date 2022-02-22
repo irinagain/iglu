@@ -67,21 +67,21 @@ epicalc_profile <- function(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hype
   tableStat[3, 5] = paste0(">", as.character(lv2_hyper), " mg/dL")
 
   tableStat[4, 1] = "(Mean)Episodes/Day"
-  tableStat[4, 2] = as.character(format(round(epicalc[1,]$Hypo_ep, 2), nsmall = 2))
-  tableStat[4, 3] = as.character(format(round(epicalc[1,]$Hyper_ep, 2), nsmall = 2))
-  tableStat[4, 4] = as.character(format(round(epicalc[2,]$Hypo_ep, 2), nsmall = 2))
+  tableStat[4, 2] = as.character(format(round(epicalc[2,]$Hypo_ep, 2), nsmall = 2))
+  tableStat[4, 3] = as.character(format(round(epicalc[1,]$Hypo_ep, 2), nsmall = 2))
+  tableStat[4, 4] = as.character(format(round(epicalc[1,]$Hyper_ep, 2), nsmall = 2))
   tableStat[4, 5] = as.character(format(round(epicalc[2,]$Hyper_ep, 2), nsmall = 2))
 
   tableStat[5, 1] = "Mean duration"
-  tableStat[5, 2] = paste0(as.character(format(round(epicalc[1,]$hypo_duration, 2), nsmall = 2)), " min")
-  tableStat[5, 3] = paste0(as.character(format(round(epicalc[1,]$hyper_duration, 2), nsmall = 2)), " min")
-  tableStat[5, 4] = paste0(as.character(format(round(epicalc[2,]$hypo_duration, 2), nsmall = 2)), " min")
+  tableStat[5, 2] = paste0(as.character(format(round(epicalc[2,]$hypo_duration, 2), nsmall = 2)), " min")
+  tableStat[5, 3] = paste0(as.character(format(round(epicalc[1,]$hypo_duration, 2), nsmall = 2)), " min")
+  tableStat[5, 4] = paste0(as.character(format(round(epicalc[1,]$hyper_duration, 2), nsmall = 2)), " min")
   tableStat[5, 5] = paste0(as.character(format(round(epicalc[2,]$hyper_duration, 2), nsmall = 2)), " min")
 
   tableStat[6, 1] = "Avg min (per day)"
-  tableStat[6, 2] = paste0(as.character(format(round(epicalc[1,]$hypo_min_avg, 2), nsmall = 2)), " %")
-  tableStat[6, 3] = paste0(as.character(format(round(epicalc[1,]$hyper_min_avg, 2), nsmall = 2)), " %")
-  tableStat[6, 4] = paste0(as.character(format(round(epicalc[2,]$hypo_min_avg, 2), nsmall = 2)), " %")
+  tableStat[6, 2] = paste0(as.character(format(round(epicalc[2,]$hypo_min_avg, 2), nsmall = 2)), " %")
+  tableStat[6, 3] = paste0(as.character(format(round(epicalc[1,]$hypo_min_avg, 2), nsmall = 2)), " %")
+  tableStat[6, 4] = paste0(as.character(format(round(epicalc[1,]$hyper_min_avg, 2), nsmall = 2)), " %")
   tableStat[6, 5] = paste0(as.character(format(round(epicalc[2,]$hyper_min_avg, 2), nsmall = 2)), " %")
 
   #Styling the table
