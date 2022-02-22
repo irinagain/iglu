@@ -12,19 +12,27 @@
 #'
 #' @param lv1_hyper A double specifying a hyperglycemia threshold for level 1
 #'
-#' @param lv2_hyper A double specifying a hyperglycemia threshold for level 1
+#' @param lv2_hyper A double specifying a hyperglycemia threshold for level 2
 #'
 #' @param dur_length An integer or a double specifying a duration length in minutes
 #'
-#' @return Data frame including number of hypo and hyper episodes, hypo and hyper mean values, mean durations, and average mean values per day
+#' @return A dataframe with
+#' \item{Hypo_ep}{A mean value that counts the number of hypogyclemia episodes per days}
+#' \item{Hyper_ep}{A mean value that counts the number of hypergyclemia episodes per days}
+#' \item{hypo_duration}{A mean value of the hypoglycemia durations per days}
+#' \item{hyper_duration}{A mean value of the hyperclycemia durations per days}
+#' \item{low_alert}{A mean percentage of time in level 1 and 2 hypoglycemic range}
+#' \item{target_range}{A mean percentage of time in target range}
+#' \item{high_alert}{A mean percentage of time in level 1 and 2 hyperglycemic ranges}
+#' \item{hypo_min_avg}{A mean percentage of time for the hypoglycemia per days}
+#' \item{hyper_min_avg}{A mean Percentage of time for the hyperglycemia per days}
 #'
 #' @export
 #'
 #' @author Johnathan Shih, Jung Hoon Seo
 #'
-#' @examples
+#' @examples episode_calculation(example_data_5_subject, lv1_hypo=100, lv1_hyper= 120)
 #'
-#' episode_calculation(example_data_5_subject, lv1_hypo=100, lv1_hyper= 120)
 # library(iglu)
 # library(ggplot2)
 # library(dplyr)
@@ -148,8 +156,8 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
       avg_Min_hypo = 0
       avg_Min_hyper = 0
       if(!all(is.na(gl_by_id_ip))){
-        avg_Min_hypo = hypo_dur_length * dt0
-        avg_Min_hyper = hyper_dur_length * dt0
+        avg_Min_hypo = sum(hypo_dur_length * dt0) / (length(gl_by_id_ip) * 5)
+        avg_Min_hyper = sum(hyper_dur_length * dt0) / (length(gl_by_id_ip) * 5)
       }
 
       Min_avg = c(avg_Min_hypo, avg_Min_hyper)
@@ -187,7 +195,8 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
           low_alert = c(low_alert, temp$low_alert); high_alert = c(high_alert, temp$high_alert); target_range = c(target_range, temp$target_range);
 
           hypo_min_avg = c(hypo_min_avg, temp$Min_hypo); hyper_min_avg = c(hyper_min_avg, temp$Min_hyper)
-          dataframe <- data.frame("Hypo_ep" = mean(Hypo_ep, na.rm= TRUE), "Hyper_ep" = mean(Hyper_ep, na.rm= TRUE),
+
+          df_multiday <- data.frame("Hypo_ep" = mean(Hypo_ep, na.rm= TRUE), "Hyper_ep" = mean(Hyper_ep, na.rm= TRUE),
                                   "hypo_duration" = mean(hypo_duration, na.rm= TRUE), "hyper_duration" = mean(hyper_duration, na.rm= TRUE), check.names = FALSE,
                                   "low_alert" = mean(low_alert, na.rm= TRUE), "high_alert" = mean(high_alert, na.rm= TRUE),
                                   "target_range" = mean(target_range, na.rm= TRUE),
@@ -195,38 +204,42 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
         }
         i = i + 1
       }
-      dataframe <- round(dataframe, digits = 2)
-      return (dataframe)
+      df_multiday <- round(df_multiday, digits = 2)
+      return (df_multiday)
     }
     ##################### Eipsode computation for multidays END ###############
     result = 0
     result = multidays(data_ip, params)
     return (result)
   }
+
   id = NULL
   rm("id")
 
   #####################         Wrapper Function         ####################
   wrapper_function <-function(data,params){
+    out = NULL
+    rm("out")
     out <- data %>%
       dplyr::group_by(id) %>%
       dplyr::summarise(episode_calculator(data.frame(id, time, gl), params))
   }
 
-  df1 = df2 = out = out2 = NULL
-  rm(list = c("df1", "df2"))
+  df1 = df2 = out = out2 = result1 = result2 = final =NULL
+  rm(list = c("df1", "df2", "out", "out2", "result1", "result2", "final"))
+
   # This returns episode values for hypo and hyper level 1
-  out = wrapper_function(data,params)
+  result1 = wrapper_function(data,params)
 
   # Changing parameters for level 2
   params = list(lv2_hypo, lv2_hyper, dur_length)
 
   # This returns episode values for hypo and hyper level 2
-  out2 = wrapper_function(data,params)
+  result2 = wrapper_function(data,params)
 
 
-  df1 = data.frame(out)
-  df2 = data.frame(out2)
+  df1 = data.frame(result1)
+  df2 = data.frame(result2)
 
   i <- 1
 

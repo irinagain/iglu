@@ -9,26 +9,36 @@ shinyUI(fluidPage(
   tabsetPanel(
     tabPanel("Data", fluid = TRUE,
              sidebarLayout(
-               sidebarPanel(fileInput("datafile", "Choose a CSV File",
-                                      multiple =  FALSE,
-                                      accept = ".csv"),
-                            selectInput("datatype",
-                                        "Choose what format this .csv file is in",
-                                        c("Processed" = "processed",
-                                          "Dexcom" = "Dexcom",
-                                          "FreeStyle Libre" = "FreeStyle Libre",
-                                          "FreeStyle Libre Pro" = "Libre Pro",
-                                          "ASC" = "ASC",
-                                          "iPro" = "iPro"),
-                                        selected = "Processed"),
-                            textInput("subjid", "Enter subject id (for non processed formats, if id in data leave as default)", value = "default"),
-                            textInput('id', 'Enter column name corresponding to subject ID', value = 'id'),
-                            textInput('time', 'Enter column name corresponding to timestamp', value = 'time'),
-                            textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl'),
-                            downloadButton("downloaddata", "Download Data")
-                            selectInput('tz', 'Select corresponding time zone', choices = c(OlsonNames()))
+               sidebarPanel(selectInput("demodata", label = "Select Dataset",
+                                        choices = c('', `User Datafile` = 'user_data',
+                                                    `Example Data` = 'example_data')),
+                            conditionalPanel(
+                              condition = "input.demodata == 'user_data'",
+                              fileInput("datafile", "Choose a CSV File",
+                                        multiple =  FALSE,
+                                        accept = ".csv"),
+                              selectInput("datatype",
+                                          "Choose what format this .csv file is in",
+                                          c("Processed" = "processed",
+                                            "Dexcom" = "Dexcom",
+                                            "FreeStyle Libre" = "FreeStyle Libre",
+                                            "FreeStyle Libre Pro" = "Libre Pro",
+                                            "ASC" = "ASC",
+                                            "iPro" = "iPro"),
+                                          selected = "Processed"),
+                              conditionalPanel(
+                                condition = "input.datatype != 'processed'",
+                                textInput("subjid", "Enter subject id", value = "default"),
+                              ),
+                              textInput('id', 'Enter column name corresponding to subject ID', value = 'id'),
+                              textInput('time', 'Enter column name corresponding to timestamp', value = 'time'),
+                              textInput('gl', 'Enter column name corresponding to glucose values', value = 'gl'),
+                              downloadButton("downloaddata", "Download Data"),
+                              selectInput('tz', 'Select corresponding time zone', choices = c(OlsonNames()),
+                                          selected = "UTC")
+                            ),
                ),
-               mainPanel(tableOutput("data"))
+               mainPanel(DT::dataTableOutput("data"))
              )),
     #full metric name and function name are added in alphabetical order
     tabPanel("Metrics", fluid = TRUE,
@@ -79,9 +89,17 @@ shinyUI(fluidPage(
                uiOutput("select_second_parameter"),
                uiOutput("second_parameter_helptext"),
                uiOutput("select_third_parameter"),
-               uiOutput("third_parameter_helptext")),
-               mainPanel(DT::dataTableOutput("metric"))
-             )),
+               uiOutput("third_parameter_helptext"),
+               checkboxInput("filter_sleep_wake", "Calculate metric for sleeping/waking hours?", value = FALSE, width = NULL),
+               conditionalPanel(
+                 condition = "input.filter_sleep_wake",
+                 numericInput("sleep_start", "Sleep start time", 0, min = 0, max = 24),
+                 numericInput("sleep_end", "Sleep end time", 6, min = 0, max = 24),
+                 uiOutput("sleep_wake_help"),
+                 selectInput("sleep_or_wake", "Calculate for sleep, wake, or both?", choices = c("Sleep" = "sleep", "Wake" = "wake", "Both" = "both"), selected = "Sleep"))
+               ),
+               mainPanel(DT::dataTableOutput("metric")))
+    ),
 
     tabPanel("Plots", fluid = TRUE,
              sidebarLayout(
@@ -91,24 +109,13 @@ shinyUI(fluidPage(
                                           `Lasagna Plot (Multiple Subject)` = 'lasagnamulti',
                                           `Lasagna Plot (Single Subject)` = 'lasagnasingle',
                                           `Rate of Change (Time Series)` = 'plot_roc',
-                                          `Rate of Change (Histogram)` = 'hist_roc'
+                                          `Rate of Change (Histogram)` = 'hist_roc',
+                                          `Mean Amplitude of Glycemic Excursions (MAGE)` = 'mage'
                               )),
-                 uiOutput("plot_lasagnatype"),
-                 uiOutput("plot_subjects"),
-                 uiOutput("plot_subjects_help_text"),
-                 uiOutput("plot_timelag"),
-                 uiOutput("plot_maxd"),
-                 uiOutput("plot_datatype"),
-                 uiOutput("plot_datatype_help_text"),
-                 #uiOutput("plot_tz"),
-                 #uiOutput("plot_tz_help_text"),
-                 uiOutput("plot_TR"),
-                 #uiOutput("plot_TR_help_text"),
-                 uiOutput("plot_midpoint"),
-                 uiOutput('plot_limits'),
-                 uiOutput('plot_colorbar_help_text'),
-                 uiOutput('plot_color_scheme'),
-                 uiOutput('plot_log'),
+                 uiOutput("lasagna_sidebar"),
+                 uiOutput("tsplot_sidebar"),
+                 uiOutput("rocplots_sidebar"),
+                 uiOutput("plot_mage"),
                  downloadButton(outputId = "pdfButton", label = "PDF"),
                  downloadButton(outputId = "pngButton", label = "PNG"),
                  downloadButton(outputId = "epsButton", label = "EPS")
@@ -151,18 +158,18 @@ shinyUI(fluidPage(
              sidebarLayout(
                sidebarPanel(
                  uiOutput("episode_subject"),
-                 downloadButton(outputId = "pdfEpisode", label = "pdf"),
-                 downloadButton(outputId = "pngEpisode", label = "png"),
-                 downloadButton(outputId = "epsEpisode", label = "eps"),
                  numericInput(inputId = "lv1hyperThreshold", label = "\nEnter a value for HyperThreshold (level1)",
                               value = 120),
                  numericInput(inputId = "lv2hyperThreshold", label = "\nEnter a value for HyperThreshold (level2)",
                               value = 180),
                  numericInput(inputId = "lv1hypoThreshold", label = "\nEnter a value for HypoThreshold (level1)",
-                           value = 100),
+                              value = 100),
                  numericInput(inputId = "lv2hypoThreshold", label = "\nEnter a value for HypoThreshold (level2)",
                               value = 70),
-                 radioButtons("colorScheme", "Color Scheme", c("Color Scheme 1", "Color Scheme 2", "Color Scheme 3"))
+                 radioButtons("colorScheme", "Color Scheme", c("Color Scheme 1", "Color Scheme 2", "Color Scheme 3")),
+                 downloadButton(outputId = "pdfEpisode", label = "pdf"),
+                 downloadButton(outputId = "pngEpisode", label = "png"),
+                 downloadButton(outputId = "epsEpisode", label = "eps")
                ),
                mainPanel(
                  fluidRow(
@@ -173,7 +180,7 @@ shinyUI(fluidPage(
                    column(12, plotOutput("plot_episode_calculation"))
                  )
                )
-            ))
+             ))
   )
 
 

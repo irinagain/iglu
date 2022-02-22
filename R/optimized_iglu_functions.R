@@ -5,9 +5,11 @@
 #' metrics by extracting the CGMS2DayByDay calculation and passing the result into each function.
 #'
 #' @usage
-#' optimized_iglu_functions(data)
+#' optimized_iglu_functions(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15, lag = 1)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl".
+#' @inheritParams sd_roc
+#' @inheritParams modd
 #'
 #' @return
 #' If a data.frame object is passed, then a tibble object with 1 row for each subject
@@ -24,20 +26,23 @@
 #' data(example_data_1_subject)
 #' optimized_iglu_functions(example_data_1_subject)
 #'
+#' # Pass some arguments to possibly change the defaults
+#' optimized_iglu_functions(example_data_1_subject, dt0 = 5, inter_gap = 30)
+#'
 #' data(example_data_5_subject)
 #' optimized_iglu_functions(example_data_5_subject)
 #'
 
 
-optimized_iglu_functions <- function(data) {
+optimized_iglu_functions <- function(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15, lag = 1) {
 
   gl = id = NULL
   rm(list = c("gl", "id"))
   data = check_data_columns(data)
 
   ## Passes CGMS2DayByDay data to individual functions
-  function_call <- function(data, hours) {
-    conga_single_O <- function(.data_ip, hours = 24, tz = "") {
+  function_call <- function(data, hours = 24, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15, lag = 1) {
+    conga_single_O <- function(.data_ip, hours = 24) {
       gl_by_id_ip = .data_ip[[1]]
       dt0 = .data_ip[[3]]
       hourly_readings = round(60 / dt0, digits = 0)
@@ -61,7 +66,7 @@ optimized_iglu_functions <- function(data) {
       return(mean(abs(diff(gl_by_id_ip, lag = lag)), na.rm = TRUE))
     }
 
-    sd_roc_O <- function(.data_ip, timelag = 15, dt0 = NULL, inter_gap = 45, tz = "") {
+    sd_roc_O <- function(.data_ip, timelag = 15) {
 
       gl_ip_vec = as.vector(t(.data_ip[[1]]))
       dt0 = .data_ip[[3]]
@@ -71,7 +76,7 @@ optimized_iglu_functions <- function(data) {
       return(sd(roc, na.rm = TRUE))
     }
 
-    cv_measures_mean_O <- function(.data_ip, dt = NULL, inter_gap = 45, tz = "") {
+    cv_measures_mean_O <- function(.data_ip) {
       cv<- function(data, na.rm = FALSE ){
         return((sd(data, na.rm = TRUE)/mean(data, na.rm = TRUE))*100)
       }
@@ -81,7 +86,7 @@ optimized_iglu_functions <- function(data) {
         mean( na.rm = TRUE)
     }
 
-    cv_measures_sd_O <- function(.data_ip, dt = NULL, inter_gap = 45, tz = "") {
+    cv_measures_sd_O <- function(.data_ip) {
       cv<- function(data, na.rm = FALSE ){
         return((sd(data, na.rm = TRUE)/mean(data, na.rm = TRUE))*100)
       }
@@ -91,7 +96,7 @@ optimized_iglu_functions <- function(data) {
         sd( na.rm = TRUE)
     }
 
-    auc_single_O <- function(.data_ip, tz = "") {
+    auc_single_O <- function(.data_ip) {
 
       each_area = daily_area = NULL
       rm(list = c("each_area", "daily_area"))
@@ -162,7 +167,7 @@ optimized_iglu_functions <- function(data) {
       SdBDM = mean(apply(.data_ip$gd2d - med, 2, sd, na.rm = TRUE), na.rm = TRUE)
     }
 
-    .data_ip = CGMS2DayByDay(data, tz = "")
+    .data_ip = CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
     out <- data.frame("Conga" = numeric(), "GVP" = numeric(), "MODD" = numeric(),
                       "SD Roc" = numeric(), "CV_Measures_Mean" = numeric(),
                       "CV_Measures_SD" = numeric(), "AUC" = numeric(), "MAG" = numeric(),
@@ -172,16 +177,16 @@ optimized_iglu_functions <- function(data) {
     outrow <- c(1:14)
 
     ## conga
-    outrow[1] = conga_single_O(.data_ip)
+    outrow[1] = conga_single_O(.data_ip, hours = hours)
 
     ## GVP
     outrow[2] = gvp_single_O(.data_ip)
 
     ## MODD
-    outrow[3] = modd_single_O(.data_ip)
+    outrow[3] = modd_single_O(.data_ip, lag = lag)
 
     ## SD Roc
-    outrow[4] = sd_roc_O(.data_ip)
+    outrow[4] = sd_roc_O(.data_ip, timelag = timelag)
 
     ## CV Measures
     outrow[5] = cv_measures_mean_O(.data_ip)
@@ -214,7 +219,7 @@ optimized_iglu_functions <- function(data) {
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::summarise(
-      function_call(data.frame(id,time,gl), hours = 24), .groups = "drop"
+      function_call(data.frame(id, time, gl), hours=24, dt0, inter_gap, tz, timelag, lag), .groups = "drop"
     )
 
   return(out)

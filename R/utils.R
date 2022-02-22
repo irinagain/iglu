@@ -74,6 +74,11 @@ read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
 #'
 CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
 
+  # complete.cases only works with POSIXct, not POSIXlt, so check for correct time format
+  if (!lubridate::is.POSIXct(data$time)){
+    tr = as.character(data$time)
+    data$time = as.POSIXct(tr, format='%Y-%m-%d %H:%M:%S', tz = tz)
+  }
   data = data[complete.cases(data),]
 
   ns = length(unique(data$id))
@@ -114,6 +119,14 @@ CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
     tr = tr[index]
     g = g[index]
     timediff = difftime(tr[timeindex], tr[timeindex - 1], units = "mins")
+  }
+
+  if (any(timediff == 0)){
+    warning(paste("Subject", unique(data$id), "has repeated glucose measuremements at exactly the same times. Only the last one of repeated values is used in calculations."))
+    index = which(timediff == 0)
+    tr = tr[-index]
+    g = g[-index]
+    timediff = timediff[-index]
   }
 
   ### Automatically identify grid width dt0

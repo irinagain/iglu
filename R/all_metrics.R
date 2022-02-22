@@ -5,10 +5,10 @@
 #' one column per metric.
 #'
 #' @usage
-#' all_metrics(data)
+#' all_metrics(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15, lag = 1)
 #'
-#' @param
-#' data DataFrame object with column names "id", "time", and "gl".
+#' @param data DataFrame object with column names "id", "time", and "gl".
+#' @inheritParams optimized_iglu_functions
 #'
 #' @return
 #' A tibble object with 1 row per subject and one column per metric is returned.
@@ -25,11 +25,15 @@
 #' data(example_data_1_subject)
 #' all_metrics(example_data_1_subject)
 #'
+#'
+#' # Specify the meter frequency and change the interpolation gap to 30 min
+#' all_metrics(example_data_1_subject, dt0 = 5, inter_gap = 30)
+#'
 
 
 # function calls all metrics on a dataset.
 # returns a list
-all_metrics <- function(data){
+all_metrics <- function(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15, lag = 1){
   . = NULL
   rm(".")
 
@@ -59,9 +63,9 @@ all_metrics <- function(data){
              "Range" = range_glu(data),
              "SD_GLU" = sd_glu(data),
              "Summary" = summary_glu(data),
-             optimized_iglu_functions(data))
+             optimized_iglu_functions(data, dt0, inter_gap, tz, timelag, lag))
   outTable <- out %>%
-    Reduce(function(dtf1,dtf2) dplyr::left_join(dtf1,dtf2,by="id"), .)
+    Reduce(function(dtf1,dtf2) dplyr::left_join(dtf1, dtf2, by = "id"), .)
   return(outTable)
 }
 

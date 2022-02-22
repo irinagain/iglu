@@ -1,7 +1,7 @@
 Package: iglu
 Type: Package
 Title: Interpreting Glucose Data from Continuous Glucose Monitors
-Version: 2.2.0
+Version: 3.3.1
 Authors@R: c(person("Steve", "Broll",
             email = "stevebroll@tamu.edu",
             role = c("aut")),
@@ -16,31 +16,37 @@ Authors@R: c(person("Steve", "Broll",
             person("Nathaniel", "Fernandes",
             role = c("aut"), 
             email="njfernandes24@tamu.edu"),
+            person("Jung Hoon", "Seo",
+            role = c("aut")),
+            person("Johnathan", "Shih",
+            role = c("aut")),
+            person("Jacek", "Urbanek",
+            role = c("aut")),
             person("John", "Schwenck",
-            role = c("ctb"),
+            role = c("aut"),
             email = "jschwenck@stat.tamu.edu"),
             person("Marielle", "Hicban",
             role = c("ctb"),
             email = "marbhic@tamu.edu"),
-            person("Jacek", "Urbanek",
-            role = c("aut")),
             person("Mary", "Martin",
             role = c("ctb"),
             email = "marymartin16@tamu.edu"),
             person("Pratik", "Patel",
             role = c("ctb"),
             email = "p.pratik99@tamu.edu"),
+            person("Meyappan", "Ashok",
+            role = c("ctb")),
             person("Nhan", "Nguyen",
             role = c("ctb"),
             email = "nhannguyen993@tamu.edu"),
             person("Irina", "Gaynanova",
             email = "irinag@stat.tamu.edu",role = c("aut", "cre"),
             comment = c(ORCID = "0000-0002-4116-0268")))
-Description: Implements a wide range of metrics for measuring glucose control and glucose variability based on continuous glucose monitoring data. The list of implemented metrics is summarized in Rodbard (2009) <doi:10.1089/dia.2009.0015>. Additional visualization tools include time-series and lasagna plots. 
+Description: Implements a wide range of metrics for measuring glucose control and glucose variability based on continuous glucose monitoring data. The list of implemented metrics is summarized in Rodbard (2009) <doi:10.1089/dia.2009.0015>. Additional visualization tools include time-series plots, lasagna plots and ambulatory glucose profile report. 
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Depends: R (>= 3.1.0)
 Imports:
     caTools,
@@ -59,7 +65,6 @@ Imports:
     tidyr,
     utils,
     zoo,
-    plotly,
     gtable,
     grid
 Suggests:

@@ -5,59 +5,121 @@
 #' @author Nathaniel Fernandes
 #' @details See "mage".
 #'
-#' @param data Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector)
-#' @param short_ma Integer for period length of the short moving average. Must be positive and less than "long_ma". (Recommended <15)
-#' @param long_ma Integer for period length for the long moving average. (Recommended >20)
+#' @inheritParams CGMS2DayByDay
+#' @param short_ma Integer for period length of the short moving average. Must be positive and less than "long_ma", default value is 5. (Recommended <15)
+#' @param long_ma Integer for period length for the long moving average, default value is 32. (Recommended >20)
 #' @param type One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.
 #' @param plot Boolean. Returns ggplot if TRUE.
-#' @param interval Integer for time interval in minutes between glucose readings. Function will auto-magically determine the interval if not specified. (Only used to calculate the gaps shown on the ggplot)
-#' @param dateformat POSIXct time format for time of glucose readings. Highly recommended to set if glucose times are in a different format.
 #' @param title Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"
 #' @param xlab Label for x-axis of ggplot. Defaults to "Time"
 #' @param ylab Label for y-axis of ggplot. Defaults to "Glucose Level"
+#' @param show_ma Whether to show the moving average lines on the plot or not
 #'
 #' @return The numeric MAGE value for the inputted glucose values or a ggplot if \code{plot = TRUE}
 #'
 #' @export
 #'
 #' @examples
-#' data(example_data_5_subject)
-#' mage_cross_single(
-#'    example_data_5_subject,
+#' data(example_data_1_subject)
+#' mage_ma_single(
+#'    example_data_1_subject,
 #'    short_ma = 4,
 #'    long_ma = 24,
 #'    type = 'plus')
 #'
-#' mage_cross_single(
-#'    example_data_5_subject,
-#'    dateformat="%m-%d-%Y %H:%M:%S")
+#' mage_ma_single(
+#'    example_data_1_subject,
+#'    inter_gap = 300)
 #'
-#' mage_cross_single(
-#'    example_data_5_subject,
+#' mage_ma_single(
+#'    example_data_1_subject,
 #'    plot=TRUE,
-#'    interval=15,
 #'    title="Patient X",
 #'    xlab="Time",
-#'    ylab="Glucose Level (mg/dL)")
+#'    ylab="Glucose Level (mg/dL)",
+#'    show_ma=FALSE)
 
 
-mage_cross_single <- function(data, short_ma = 5, long_ma = 23,type=c('auto','plus','minus'), plot = FALSE, interval=NA, dateformat="%Y-%m-%d %H:%M:%S", title = NA, xlab=NA,ylab = NA) {
+mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'plus', 'minus'),
+                           plot = FALSE, dt0 = NULL, inter_gap = 45, tz = "",
+                           title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
 
   ## 1. Preprocessing
   # 1a. Clean up Global Environment
-  MA_Short = MA_Long = DIFF = TP = .xmin = .xmax = NULL
-  rm(list = c("MA_Short", "MA_Long", "DIFF", "TP", ".xmin", ".xmax"))
+  MA_Short = MA_Long = DIFF = TP = id = .xmin = .xmax = NULL
+  rm(list = c("MA_Short", "MA_Long", "DIFF", "TP", ".xmin", ".xmax", "id"))
 
   # 1b. Sanitize the input data
   data = check_data_columns(data)
 
+  # use cgms2daybyday to interpolate over uniform grid
+  data_ip <- CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
+  # find first day and number of days
+  day_one = lubridate::as_datetime(data_ip[[2]][1])
+  ndays = length(data_ip[[2]])
+  # generate grid times by starting from day one and cumulatively summing
+  time_ip =  day_one + lubridate::minutes(cumsum(
+    # replicate dt0 by number of measurements (total minutes/dt0)
+    rep(data_ip$dt0, ndays * 24 * 60 /data_ip$dt0)))
+
+  # recalculate short_ma and long_ma because short and long are based on 5 minutes originally
+  # so multiply by 5 to get length in min and divide by dt0 to get rounded number
+  # of measurements that are roughly equal to short/long ma original definition
+  short_ma = round(short_ma*5/data_ip$dt0)
+  long_ma = round(long_ma*5/data_ip$dt0)
+
   ## 2. Process the Data
-  # 2a. Calculate the moving average values
+
+  # change to interpolated data (times and glucose)
   .data <- data %>%
-    dplyr::mutate(time = as.POSIXct(time, format = dateformat),
-                  MA_Short = zoo::rollmean(gl, short_ma, align = 'right', fill = NA),
-                  MA_Long  = zoo::rollmean(gl, long_ma,  align = 'right', fill = NA),
-                  MA_Short = replace(MA_Short, 1:short_ma, MA_Short[short_ma]),
+    # change data into id, interpolated times, interpolated glucose (t to get rowwise)
+    dplyr::summarise(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d))) %>%
+    # drop NA rows before first glucose reading
+    dplyr::slice(which(!is.na(gl))[1]:dplyr::n()) %>%
+    # then drop NA rows after last glucose reading
+    dplyr::slice(1:utils::tail(which(!is.na(.data$gl)), 1))
+
+  # Check whether need to adjust long_ma depending on the size
+  nmeasurements = nrow(.data)
+  if (nmeasurements < 7){
+    warning("The number of measurements is too small for MAGE calculation.")
+    return(NA)
+  }else if (nmeasurements < long_ma){
+    warning("The total number of measurements is smaller than the long moving average. The value is adjusted to match.")
+    long_ma = nmeasurements
+  }
+
+  if (short_ma >= long_ma){
+    warning("The short moving average window size should be smaller than the long moving average window size for correct MAGE calculation. Return NA.")
+    return(NA)
+  }
+
+  # check if interpolation creates large gaps (longer than 12 hours)
+  gaps <- .data %>%
+    # label NA glucose as gap (gap = 1)
+    dplyr::mutate(gap = dplyr::if_else(is.na(gl), 1, 0))
+  # find run length encoding of gap column
+  runlen <- rle(gaps$gap)
+  # subset to only runs corresponding to gaps
+  runlen <- runlen$lengths[runlen$values == 1]
+  # if any gap run is longer than 12 hours, return message
+  # since runlen counts by measurements, compare to number of measurements corresponding to 12hrs (720 mins)
+  # take ceiling and add 1 to make edge cases less likely to give this message
+  if (any(runlen > (ceiling(720/data_ip$dt0) + 1))) {
+    message(paste0("Gap found in data for subject id: ", .data$id[1], ", that exceeds 12 hours."))
+  }
+
+  # 2a. Calculate the moving average values
+  .data <- .data %>%
+    # rollmean doesn't work for NA's, switch to rollapply
+    dplyr::mutate(MA_Short = zoo::rollapply(gl, width = short_ma, FUN = mean,
+                                            # apply na.rm = TRUE to function mean
+                                            align = 'right', fill = NA, na.rm = TRUE),
+                  MA_Long  = zoo::rollapply(gl, width = long_ma, FUN = mean,
+                                            # apply na.rm = TRUE to function mean
+                                            align = 'right', fill = NA, na.rm = TRUE)) %>%
+    # fill in leading NA's from using rolling mean
+    dplyr::mutate(MA_Short = replace(MA_Short, 1:short_ma, MA_Short[short_ma]),
                   MA_Long  = replace(MA_Long, 1:long_ma, MA_Long[long_ma]),
                   DIFF = MA_Short - MA_Long)
 
@@ -101,10 +163,11 @@ mage_cross_single <- function(data, short_ma = 5, long_ma = 23,type=c('auto','pl
     s2 <- crosses[i+1,1]
 
     if(crosses[i, "type"] == 0) {
-      minmax <- append(minmax, min(.data$gl[s1:s2]))
+      minmax <- append(minmax, min(.data$gl[s1:s2], na.rm = TRUE))
+      # which.min/max will ignore NAs (index includes NAs but not counted max/min)
       indexes <- append(indexes,which.min(.data$gl[s1:s2])+s1-1) # append index to array
     } else {
-      minmax <- append(minmax, max(.data$gl[s1:s2]))
+      minmax <- append(minmax, max(.data$gl[s1:s2], na.rm = TRUE))
       indexes <- append(indexes, which.max(.data$gl[s1:s2])+s1-1)
     }
   }
@@ -120,6 +183,7 @@ mage_cross_single <- function(data, short_ma = 5, long_ma = 23,type=c('auto','pl
   #     - tp_indexes: vector that will contain tp from valid excursions
   heights <- numeric()
   type <- match.arg(type)
+
   nadir2peak <- if(type == "plus") {
     1
   } else if (type == "minus") {
@@ -196,15 +260,10 @@ mage_cross_single <- function(data, short_ma = 5, long_ma = 23,type=c('auto','pl
       paste("Glucose Trace - Subject ", .data$id[1])
     } else { title }
     # 4b. Label Gaps in Data
-    # Automagically calculate interval of glucose monitor if unspecified
-    interval <- if(is.na(interval)) {
-      diff <- as.numeric(nrow(.data) - 1)
+    interval <- data_ip$dt0
 
-      for( i in 2:nrow(.data)) {
-        diff[i-1] = .data$time[i] - .data$time[i-1]
-      }
-      median(diff, na.rm = T)
-    } else { interval }
+    # filter out gl NAs to enable correct gap identification
+    .data <- .data[complete.cases(.data$gl), ]
 
     # Find the start and end of each gap and merge/sort the two (Must do separately to solve the problem of "back to back" gaps not having correct start & end time)
     .gap_start <- .data %>%
@@ -222,31 +281,34 @@ mage_cross_single <- function(data, short_ma = 5, long_ma = 23,type=c('auto','pl
     .gaps <- data.frame(.xmin = .gaps$time[c(TRUE, FALSE)],
                         .xmax = .gaps$time[c(FALSE, TRUE)])
 
-  #  .ymin <- min(.data$gl) #extraneous for ggplot; need for plotly
-  #  .ymax <- max(.data$gl)
+    #  .ymin <- min(.data$gl) #extraneous for ggplot; need for plotly
+    #  .ymax <- max(.data$gl)
 
     # 4c. Generate ggplot
-    colors <- c("Short MA" = "#D55E00", "Long MA" = "#009E73","Nadir" = "blue", "Peak"="red", "Gap"="purple")
-
+    colors <- c("Short MA" = "#009E73", "Long MA" = "#D55E00","Nadir" = "blue", "Peak"="red")
+    gap_colors <- c("Gap"="purple")
     .p <- ggplot2::ggplot(.data, ggplot2::aes(x=time, y=gl)) +
       ggplot2::ggtitle(title) +
       ggplot2::geom_point() +
       ggplot2::geom_point(data = subset(.data, .data$TP != ""), ggplot2::aes(color = TP), fill='white', size=2) +
-     # ggplot2::geom_line(ggplot2::aes(y = MA_Short, group = 1, color="Short MA")) + #Exclude for now because ggplot becomes too crowded
-     # ggplot2::geom_line(ggplot2::aes(y = MA_Long, group = 2, color="Long MA")) +
       ggplot2::geom_rect(data=.gaps, ggplot2::aes(
         xmin=.xmin,
         xmax=.xmax,
         ymin=-Inf,
         ymax=Inf, fill = 'Gap'),
-        alpha=0.2, inherit.aes = FALSE, show.legend = T) +
+        alpha=0.2, inherit.aes = FALSE, show.legend = T, na.rm = TRUE) +
       ggplot2::theme(
         legend.key = element_rect(fill='white'),
         legend.title = ggplot2::element_blank(),
-        ) +
+      ) +
       ggplot2::scale_color_manual(values = colors) +
-      ggplot2::scale_fill_manual(values=colors) +
+      ggplot2::scale_fill_manual(values=gap_colors) +
       ggplot2::labs(x=ifelse(!is.na(xlab), xlab, "Time"), y=ifelse(!is.na(ylab), ylab, 'Glucose Level'))
+
+    if(show_ma == TRUE) {
+      .p <- .p + ggplot2::geom_line(ggplot2::aes(y = MA_Short, group = 1, color="Short MA")) + #Exclude for now because ggplot becomes too crowded
+        ggplot2::geom_line(ggplot2::aes(y = MA_Long, group = 2, color="Long MA"))
+    }
 
     # 4d. Return plot
     return(.p)

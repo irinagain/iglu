@@ -4,43 +4,73 @@
 \alias{mage}
 \title{Calculate Mean Amplitude of Glycemic Excursions}
 \usage{
-mage(data, version = c("v2", "v1"), ...)
+mage(
+  data,
+  version = c("ma", "naive"),
+  sd_multiplier = 1,
+  short_ma = 5,
+  long_ma = 32,
+  type = c("auto", "plus", "minus"),
+  plot = FALSE,
+  dt0 = NULL,
+  inter_gap = 45,
+  tz = "",
+  title = NA,
+  xlab = NA,
+  ylab = NA,
+  show_ma = FALSE
+)
 }
 \arguments{
-\item{data}{Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector).}
+\item{data}{Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (numeric vector allowed for version \code{'naive'} only).}
 
-\item{version}{Optional. Either 'v2' or 'v1'. Chooses which version of the MAGE algorithm to use. Version 2 is default and highly recommended.}
+\item{version}{Either \code{'ma'} or \code{'naive'}. Chooses which version of the MAGE algorithm to use. \code{'ma'} algorithm is more accurate, and is the default. Earlier versions of iglu package (<=2.0.0) used \code{'naive'}.}
 
-\item{...}{Optional arguments to pass to the MAGE Functions (see "mage_ma_cross_single" for examples)
-\itemize{
-  \item{dateformat: POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of a different format.}
-  \item{short_ma: Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended <15).}
-  \item{long_ma: Integer for period length for the long moving average. Default: 23. (Recommended >20)}
- \item{plot: Boolean. Returns ggplot if TRUE. Default: FALSE.}
- \item{interval: Integer for time interval in minutes between glucose readings. Algorithm will auto-magically determine the interval if not specified. Default: NA (Only used to calculate the gaps shown on the ggplot)}
- \item{title: Title for the ggplot. Default: "Glucose Trace - Subject [ID]"}
- \item{xlab: Label for x-axis of ggplot. Defaults to "Time"}
- \item{ylab: Label for y-axis of ggplot. Defaults to "Glucose Level"}
- \item{sd_multiplier: DEPRECATED. A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation.}
-}}
+\item{sd_multiplier}{A numeric value that can change the sd value used to determine size of
+glycemic excursions used in the calculation. This is the only parameter that
+can be specified for \code{version = "naive"}, and it is ignored if \code{version = "ma"}.}
+
+\item{short_ma}{Integer for period length of the short moving average. Must be positive and less than "long_ma", default value is 5. (Recommended <15)}
+
+\item{long_ma}{Integer for period length for the long moving average, default value is 32. (Recommended >20)}
+
+\item{type}{One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.}
+
+\item{plot}{Boolean. Returns ggplot if TRUE.}
+
+\item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
+
+\item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
+
+\item{title}{Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"}
+
+\item{xlab}{Label for x-axis of ggplot. Defaults to "Time"}
+
+\item{ylab}{Label for y-axis of ggplot. Defaults to "Glucose Level"}
+
+\item{show_ma}{Whether to show the moving average lines on the plot or not}
 }
 \value{
-A tibble object with two columns: the subject id and corresponding MAGE value. If a vector of glucose values is passed, then a tibble object with just the MAGE value is returned. In version 2, if \code{plot = TRUE}, a "master" ggplot will be returned with glucose traces for all subjects.
+A tibble object with two columns: the subject id and corresponding MAGE value.
+If a vector of glucose values is passed, then a tibble object with just the MAGE value
+is returned. In \code{version = "ma"}, if \code{plot = TRUE}, a list of ggplots will
+be returned with one plot per subject.
 }
 \description{
-The function calculates MAGE values and can optionally return a plot of the glucose trace. UPDATED to version 2. Version 1 is accessible for backwards compatibility.
+The function calculates MAGE values and can optionally return a plot of the glucose trace.
 }
 \details{
-The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970).
+If version \code{'ma'} is selected, the function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970). For this version, glucose values will be interpolated over a uniform time grid prior to calculation.
 
-Version 2 is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.
+\code{'ma'} is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* (not moving average) glucose values.
 
-In Version 1, MAGE is calculated by taking the mean of absolute differences (between each value and the mean) that are greater than the standard deviation.
-A multiplier can be added to the standard deviation by the sd_multiplier argument.
+\code{'naive'} algorithm calculates MAGE by taking the mean of absolute glucose differences (between each value and the mean) that are greater than the standard deviation. A multiplier can be added to the standard deviation using the \code{sd_multiplier} argument.
 }
 \examples{
 data(example_data_5_subject)
-mage(example_data_5_subject, version = 'v2')
+mage(example_data_5_subject, version = 'ma')
 }
 \references{
 Service et al. (1970) Mean amplitude of glycemic excursions, a measure of diabetic instability

@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Travis build
-status](https://api.travis-ci.com/irinagain/iglu.svg?branch=master)](https://travis-ci.com/github/irinagain/iglu)
+status](https://api.travis-ci.com/irinagain/iglu.svg?branch=master)](https://app.travis-ci.com:443/github/irinagain/iglu)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/irinagain/iglu?branch=master&svg=true)](https://ci.appveyor.com/project/irinagain/iglu)
 
@@ -22,6 +22,18 @@ reference, see [“Interpretation of continuous glucose monitoring data:
 glycemic variability and quality of glycemic control.” Rodbard
 (2009)](https://doi.org/10.1089/dia.2008.0132). For more information on
 the package, see [package website](https://irinagain.github.io/iglu/).
+
+To cite:
+
+  - Broll S, Urbanek J, Buchanan D, Chun E, Muschelli J, Punjabi N and
+    Gaynanova I (2021). [Interpreting blood glucose data with R package
+    iglu.](https://doi.org/10.1371/journal.pone.0248560) *PLoS One*,
+    Vol. 16, No. 4, e0248560.
+
+  - Broll S, Buchanan D, Chun E, Muschelli J, Fernandes N, Seo J, Shih
+    J, Urbanek J, Schwenck J, Gaynanova I (2021). iglu: Interpreting
+    Glucose Data from Continuous Glucose Monitors. R package version
+    3.0.0.
 
 iglu comes with two example datasets: example\_data\_1\_subject and
 example\_data\_5\_subject. These data are collected using Dexcom G4 CGM
@@ -80,13 +92,13 @@ above_percent(example_data_1_subject, targets = c(80,140,200,250))
 
 j_index(example_data_1_subject)
 #> # A tibble: 1 x 2
-#>   id        j_index
+#>   id        J_index
 #> * <fct>       <dbl>
 #> 1 Subject 1    24.6
 
 conga(example_data_1_subject)
 #> # A tibble: 1 x 2
-#>   id        conga
+#>   id        CONGA
 #> * <fct>     <dbl>
 #> 1 Subject 1  37.0
 
@@ -112,18 +124,19 @@ below_percent(example_data_5_subject, targets = c(80,170,260))
 
 mage(example_data_5_subject)
 #> # A tibble: 5 x 2
-#>   id         mage
-#> * <fct>     <dbl>
-#> 1 Subject 1  53.4
-#> 2 Subject 2  78.2
-#> 3 Subject 3  76.6
-#> 4 Subject 4  42.9
-#> 5 Subject 5  90.0
+#> # Rowwise: 
+#>   id         MAGE
+#>   <fct>     <dbl>
+#> 1 Subject 1  85.3
+#> 2 Subject 2 118. 
+#> 3 Subject 3 116. 
+#> 4 Subject 4  72.4
+#> 5 Subject 5 144.
 ```
 
-– Shiny App –
+## Shiny App
 
-– Shiny App can be accessed locally via
+Shiny App can be accessed locally via
 
 ``` r
 library(iglu)
@@ -133,8 +146,3 @@ iglu_shiny()
 or globally at <https://irinagain.shinyapps.io/shiny_iglu/>. As new
 functionality gets added, local version will be slightly ahead of the
 global one.
-
-– For a Shiny App demo of the package in a point and click interface,
-click the link below for pre-loaded dataset.
-
-<https://stevebroll.shinyapps.io/shinyigludemo/>

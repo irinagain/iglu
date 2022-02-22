@@ -1,34 +1,28 @@
 #' Calculate Mean Amplitude of Glycemic Excursions
 #'
-#' @description The function calculates MAGE values and can optionally return a plot of the glucose trace. UPDATED to version 2. Version 1 is accessible for backwards compatibility.
+#' @description The function calculates MAGE values and can optionally return a plot of the glucose trace.
 #'
+#' @param data Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (numeric vector allowed for version \code{'naive'} only).
 #'
-#' @param data Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (plot won't work with vector).
+#' @param version Either \code{'ma'} or \code{'naive'}. Chooses which version of the MAGE algorithm to use. \code{'ma'} algorithm is more accurate, and is the default. Earlier versions of iglu package (<=2.0.0) used \code{'naive'}.
 #'
-#' @param version Optional. Either 'v2' or 'v1'. Chooses which version of the MAGE algorithm to use. Version 2 is default and highly recommended.
+#' @param sd_multiplier A numeric value that can change the sd value used to determine size of
+#' glycemic excursions used in the calculation. This is the only parameter that
+#' can be specified for \code{version = "naive"}, and it is ignored if \code{version = "ma"}.
 #'
-#' @param ... Optional arguments to pass to the MAGE Functions (see "mage_ma_cross_single" for examples)
-#' \itemize{
-#'   \item{dateformat: POSIXct format for time of glucose reading. Default: YYYY-mm-dd HH:MM:SS. Highly recommended to set if glucose times are of a different format.}
-#'   \item{short_ma: Integer for period length of the short moving average. Must be positive and less than "long_MA". Default: 5. (Recommended <15).}
-#'   \item{long_ma: Integer for period length for the long moving average. Default: 23. (Recommended >20)}
-#'  \item{plot: Boolean. Returns ggplot if TRUE. Default: FALSE.}
-#'  \item{interval: Integer for time interval in minutes between glucose readings. Algorithm will auto-magically determine the interval if not specified. Default: NA (Only used to calculate the gaps shown on the ggplot)}
-#'  \item{title: Title for the ggplot. Default: "Glucose Trace - Subject [ID]"}
-#'  \item{xlab: Label for x-axis of ggplot. Defaults to "Time"}
-#'  \item{ylab: Label for y-axis of ggplot. Defaults to "Glucose Level"}
-#'  \item{sd_multiplier: DEPRECATED. A numeric value that can change the sd value used to determine size of glycemic excursions used in the calculation.}
-#' }
+#' @inheritParams mage_ma_single
 #'
-#' @return A tibble object with two columns: the subject id and corresponding MAGE value. If a vector of glucose values is passed, then a tibble object with just the MAGE value is returned. In version 2, if \code{plot = TRUE}, a "master" ggplot will be returned with glucose traces for all subjects.
+#' @return A tibble object with two columns: the subject id and corresponding MAGE value.
+#' If a vector of glucose values is passed, then a tibble object with just the MAGE value
+#' is returned. In \code{version = "ma"}, if \code{plot = TRUE}, a list of ggplots will
+#' be returned with one plot per subject.
 #' @export
 #'
-#' @details The function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970).
+#' @details If version \code{'ma'} is selected, the function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970). For this version, glucose values will be interpolated over a uniform time grid prior to calculation.
 #'
-#' Version 2 is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* glucose values.
+#' \code{'ma'} is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* (not moving average) glucose values.
 #'
-#' In Version 1, MAGE is calculated by taking the mean of absolute differences (between each value and the mean) that are greater than the standard deviation.
-#' A multiplier can be added to the standard deviation by the sd_multiplier argument.
+#' \code{'naive'} algorithm calculates MAGE by taking the mean of absolute glucose differences (between each value and the mean) that are greater than the standard deviation. A multiplier can be added to the standard deviation using the \code{sd_multiplier} argument.
 #'
 #' @references
 #' Service et al. (1970) Mean amplitude of glycemic excursions, a measure of diabetic instability
@@ -37,24 +31,31 @@
 #'
 #' @examples
 #' data(example_data_5_subject)
-#' mage(example_data_5_subject, version = 'v2')
+#' mage(example_data_5_subject, version = 'ma')
 
 
 
-mage <- function(data, version = c('v2', 'v1'), ...) {
+mage <- function(data, version = c('ma', 'naive'), sd_multiplier = 1,
+                 short_ma = 5, long_ma = 32, type = c('auto', 'plus', 'minus'),
+                 plot = FALSE, dt0 = NULL, inter_gap = 45, tz = "",
+                 title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
 
   # Match version
   version = match.arg(version)
 
-  if(version == 'v1') {
-    warning("You are using Version 1 of the iglu mage algorithm. This version is deprecated and less accurate. Please use Version 2.")
-    return(mage_sd(data, ...))
+  if(version == 'naive') {
+    warning("You are using the naive version of the iglu mage algorithm. It is included for backward compatibility with earlier versions of iglu and is less accurate than the ma algorithm.")
+    return(mage_sd(data, sd_multiplier = sd_multiplier))
   }
 
-  return(mage_cross(data, ...))
+  return(mage_ma(data, short_ma = short_ma, long_ma = long_ma, type = type,
+                 plot = plot, dt0 = dt0, inter_gap = inter_gap, tz = tz,
+                 title = title, xlab = xlab, ylab = ylab, show_ma = show_ma))
 }
 
-mage_cross <- function(data, ...) {
+mage_ma <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'plus', 'minus'),
+                    plot = FALSE, dt0 = NULL, inter_gap = 45, tz = "",
+                    title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
   id = . = MAGE = NULL
   rm(list = c("id", ".", "MAGE"))
 
@@ -64,17 +65,15 @@ mage_cross <- function(data, ...) {
   out <- data %>%
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
-    dplyr::do(MAGE = mage_cross_single(., ...))
-    # dplyr::summarize(
-    #   MAGE = mage_cross_single(., ...)
-    # )
-#    dplyr::do(MAGE = View(mage_cross_single(., ...)))
+    dplyr::do(MAGE = mage_ma_single(., short_ma = short_ma, long_ma = long_ma, type = type,
+                                    plot = plot, dt0 = dt0, inter_gap = inter_gap, tz = tz,
+                                    title = title, xlab = xlab, ylab = ylab, show_ma = show_ma))
 
   # Check if a ggplot or number in list is returned - convert the latter to a number
-  if(is.numeric(out$MAGE[[1]])) {
+  if(class(out$MAGE[[1]])[1] == "numeric" | is.na(out$MAGE[[1]][1])) {
     out <- out %>% dplyr::mutate(MAGE = as.numeric(MAGE))
   }
-
+  # else must be ggplot output
   else {
     out <- ggpubr::ggarrange(plotlist = out$MAGE, nrow = 1, ncol = 1)
   }

@@ -129,12 +129,9 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     }
     data <- data[-c(1:11),]
     if (grepl("- | /",data$Timestamp[1]) == F) {
-      data$Timestamp <- base::as.POSIXct(as.numeric(data$Timestamp)* (60*60*24),
-                                          origin = "1899-12-30",
-                                          tz = "UTC")
+      data$Timestamp <- as.POSIXct(strptime(data$Timestamp, format = "%m/%d/%y %H:%M"))
     }
-    data$Timestamp <- base::sub("[.]00","",data$Timestamp)
-    data <- data[,c("time","gl")]
+    data <- data[,c("Timestamp","Sensor Glucose (mg/dL)")]
     base::colnames(data) <- c('time','gl')
     data$id = id
     data = data[,c(3,1,2)]

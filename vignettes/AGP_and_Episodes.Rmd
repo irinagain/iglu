@@ -27,22 +27,37 @@ agp(example_data_1_subject)
 
 ## Episode Calculation
 
-The Episode_Calculation function measures the number of hypoglycemia and hyperglycemia that occur more than a certain period.
+The Episode_Calculation function measures the number of episodes that hypoglycemia and hyperglycemia that occur more than a certain period.
 
 ```{r}
-episode_calculation(example_data_5_subject,lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 180, dur_length = 15)
+episode_calculation(example_data_1_subject,lv2_hypo = 70, lv1_hypo = 120, lv2_hyper = 180, dur_length = 15)
 ```
 
-Users can set certain thresholds for the hypo and hyperglycemia by passing parameters, lv1_hypo, lv2_hypo, hy1_hyper, lv2_hpyer. Here, we are passing 70 for the hypoglycemia threshold level 2 threshold and 180 for the hyperglycemia level 2 threshold. By setting a duration length to 15 minutes (the last parameter), the function will count the number of episodes that glucose values go below or above the thresholds more than 15 minutes. 
+In this example, example_data_1_subject contains multiple days, and episode_calculation function calculate the number of episodes across days.
 
-In this example, we calculated episodes for subject 1. The average numbers of hypo and hyperglycemia for subject 1 (level 1) are 2.7 and 2.6 respectively. It occurred for 111 minutes and 196 minutes in average. You can also see other values such as the mean average values for hypoglycemia and hyperglycemia, and this function can be used for multiple subjects as well.
+### Parameters
+
+#### data 
+DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.
+
+#### lv1_hypo, lv2_hypo, hy1_hyper, lv2_hpyer
+Users can set certain thresholds for the hypo and hyperglycemia by passing parameters, lv1_hypo, lv2_hypo, hy1_hyper, lv2_hpyer. Level 2 indicates more severe states than level 1 so the threshold value for the lv2_hypo value should be lower than hy1_hypo value, and the threshold for the lv2_hyper value should higher than lv1_hyper value. Otherwise, the warning will be produced. Here, we are passing 70 for the hypoglycemia threshold level 2 threshold, 120 for hypoglycemia threshold, and 180 for the hyperglycemia level 2 threshold.
+
+#### dur_length
+By setting a duration length to 15 minutes (the last parameter), the function will count the number of episodes that glucose values go below or above the thresholds more than 15 minutes. 
+
+### Return value
+The function returns a dataframe including number of hypo and hyper episodes, hypo and hyper mean values, mean durations (Minutes), and average mean values per day (%).
+
+### Example
+In this example, we calculated episodes for subject 1. The average numbers of hypo and hyperglycemia for subject 1 (level 1) are 3.14 and 2.64 respectively. The mean duration for hypoglycemia is 243.8 minutes and 196.9 minutes for hyperglycemia. You can also see other values such as the mean average values for hypoglycemia and hyperglycemia, and this function can be used for multiple subjects as well (check by setting the parameter, data =example_data_5_subject).
 
 ## Epicalc_profile function
 
 Visualization of the metrics produced by the `episode_calculation()` function is done with the function `epicalc_profile()`. This function takes the `episode_calculation()` output and displays it as a tables of the episode metrics as well as plots that visualizes the subject's glucose level over time. Like `episode_calculation`, this function is designed to work with one subject data at a time, and the structure of the function output is shown below.
 
-```{r, eval = F}
-# epicalc_profile(example_data_1_subject)
+```{r, fig.width=8, fig.height=4}
+epicalc_profile(example_data_1_subject)
 ```
 
 The function will accept the following six parameters that are passed on to `epicalc_profile()`. Like `episode_calculation()`, there are options to adjust the hypoglycemia and hyperglycemia thresholds. If the hyperglycemia threshold is lower than the hypoglycemia threshold, a warning will be produced.
@@ -53,6 +68,6 @@ The function will accept the following six parameters that are passed on to `epi
 * "`lv2_hyper`" - Second threshold for what above is considered hyperglycemia. Default is 160 and the units are mg/dL
 * "`color_scheme`" - String corresponding to a color scheme for the plot.Default is dark red for `lv1_hypo`, red for `lv2_hypo`, green for normal, yellow for `lv1_hyper`, and orange for `lv2_hyper`.
 
-```{r, eval = F}
+```{r,fig.width=8, fig.height=4}
 epicalc_profile(example_data_1_subject, lv1_hypo=100, lv2_hypo=70, lv1_hyper=120, lv2_hyper=160, color_scheme="Color Scheme 1")
 ```

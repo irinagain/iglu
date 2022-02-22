@@ -4,10 +4,22 @@
 \alias{all_metrics}
 \title{Calculate all metrics in iglu}
 \usage{
-all_metrics(data)
+all_metrics(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15, lag = 1)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
+
+\item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
+
+\item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
+
+\item{timelag}{Integer indicating the time period (# minutes) over which rate
+of change is calculated. Default is 15, e.g. rate of change is the change in
+glucose over the past 15 minutes divided by 15.}
+
+\item{lag}{Integer indicating which lag (# days) to use. Default is 1.}
 }
 \value{
 A tibble object with 1 row per subject and one column per metric is returned.
@@ -25,5 +37,9 @@ information, please see the corresponding function documentation.
 \examples{
 data(example_data_1_subject)
 all_metrics(example_data_1_subject)
+
+
+# Specify the meter frequency and change the interpolation gap to 30 min
+all_metrics(example_data_1_subject, dt0 = 5, inter_gap = 30)
 
 }

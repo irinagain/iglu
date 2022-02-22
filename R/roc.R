@@ -59,6 +59,13 @@ roc <- function (data, timelag = 15, dt0 = NULL, inter_gap = 45, tz = "") {
     data_ip = CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
     gl_ip_vec = as.vector(t(data_ip[[1]]))
     dt0 = data_ip[[3]]
+
+    if (timelag < dt0) {
+      message(paste("Parameter timelag cannot be less than the data collection frequency: " ,
+                    dt0, " , function will be evaluated with timelag = ", dt0, sep = ""))
+      timelag <- dt0
+    }
+
     out = c(rep(NA, timelag/dt0),
             diff(gl_ip_vec, lag = timelag/dt0)/timelag)
     return(out)
