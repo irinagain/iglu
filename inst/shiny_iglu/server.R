@@ -991,9 +991,10 @@ shinyServer(function(input, output) {
     lv2_hypo = input$lv2hypoThreshold
     lv1_hyper = input$lv1hyperThreshold
     lv2_hyper = input$lv2hyperThreshold
+    dur_length = input$DurationLength
     color_scheme = input$colorScheme
     string = paste('iglu::epicalc_profile(data = data, lv1_hypo= lv1_hypo, lv2_hypo = lv2_hypo,
-                   lv1_hyper=lv1_hyper,lv2_hyper=lv2_hyper,color_scheme= color_scheme)')
+                   lv1_hyper=lv1_hyper,lv2_hyper=lv2_hyper,color_scheme= color_scheme, dur_length=dur_length)')
     eval(parse(text = string))
   })
 

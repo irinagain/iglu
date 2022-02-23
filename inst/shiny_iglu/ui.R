@@ -166,6 +166,8 @@ shinyUI(fluidPage(
                               value = 100),
                  numericInput(inputId = "lv2hypoThreshold", label = "\nEnter a value for HypoThreshold (level2)",
                               value = 70),
+                 numericInput(inputId = "DurationLength", label = "\nEnter a value for Duration Length",
+                              value = 15),
                  radioButtons("colorScheme", "Color Scheme", c("Color Scheme 1", "Color Scheme 2", "Color Scheme 3")),
                  downloadButton(outputId = "pdfEpisode", label = "pdf"),
                  downloadButton(outputId = "pngEpisode", label = "png"),

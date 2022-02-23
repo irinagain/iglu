@@ -10,7 +10,8 @@ epicalc_profile(
   lv2_hypo = 70,
   lv1_hyper = 120,
   lv2_hyper = 160,
-  color_scheme = "Color Scheme 1"
+  color_scheme = "Color Scheme 1",
+  dur_length = 15
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ epicalc_profile(
 
 \item{color_scheme}{String corresponding to the chosen color scheme. Acceptable choices are: "Color Scheme 1", "Color Scheme 2", and
 "Color Scheme 3". Color Scheme 1 is orange/green/red. Color Scheme 2 is red/white/blue. Color Scheme 3 is orange/green/red.}
+
+\item{dur_length}{An integer or a double specifying a duration length in minutes}
 }
 \value{
 A plot displaying the varying glucose levels (mg/dL) of the subject in a day as well as the statistics for the episodes.
