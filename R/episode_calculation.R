@@ -37,129 +37,104 @@
 # library(ggplot2)
 # library(dplyr)
 
-episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120.0, lv2_hyper = 160, dur_length = 15) {
+episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120, lv2_hyper = 180, dur_length = 15) {
 
-  params = list(lv1_hypo, lv1_hyper, dur_length)
+  episode_calculator <- function(data, params) {
 
-  episode_calculator <- function(data, params){
-
-    ##################### Input Processing        #####################
-
-    data_ip = gl_by_id_ip = NULL
-    rm(list = c("data_ip", "gl_by_id_ip"))
-    data_ip = CGMS2DayByDay(data, dt0 = 5)
-    gl_by_id_ip = data_ip[[1]]
-    dt0 = data_ip[[3]]
-    params = list(gl_by_id_ip, params[[1]], params[[2]], params[[3]], dt0)
-
-    #gl_by_id_ip       : CGM data for a subject
-    #lv_hypo(hyper) : Hypoglycemia and hyperglycemia threshold
-    #dur_length        : Duaration length
-    #dt0               : Default value for an inteveral (default = 5 mins)
-    ##################### Input Ended             #####################
-
-    ##################### Episode Day computation   ###################
     episode_one_day<- function(params) {
 
+        stat_computation <- function(gl_by_id_ip, params, is_hypo) {
+
+          # IF THE TIME SERIES DATA IS LESS THAN OR EQUAL TO THE THRESHOLD THAT WAS GIVEN, THOSE ARE TRUE. OTHERWISE, FALSE.
+          if (is_hypo){
+            hyp_episode = gl_by_id_ip <= params[[2]]
+          }
+          else{
+            hyp_episode = gl_by_id_ip >= params[[3]]
+          }
+
+          # HYPO OR HYPER DURATION LENGTH CALCULATION
+          hyp_result = hyp_episode[2:length(hyp_episode)] - hyp_episode[1:length(hyp_episode)-1]
+          hyp_end_point = which(hyp_result %in% -1) + 1
+          hyp_starting_point = which(hyp_result %in% 1) + 1
+
+          if (is_hypo){
+                if(gl_by_id_ip[length(gl_by_id_ip)] <= params[[2]]){
+                  hyp_end_point = c(hyp_end_point, length(hyp_result))
+                  hyp_end_point= sort(hyp_end_point)
+                }
+                if(gl_by_id_ip[1] <= params[[2]] ) {
+                  hyp_starting_point = c(hyp_starting_point, 1)
+                  hyp_starting_point= sort(hyp_starting_point)
+                }
+          }else{
+                if(gl_by_id_ip[length(gl_by_id_ip)] >= params[[3]]){
+                  hyp_end_point = c(hyp_end_point, length(hyp_result))
+                  hyp_end_point= sort(hyp_end_point)
+                }
+                if(gl_by_id_ip[1] >= params[[3]] ) {
+                  hyp_starting_point = c(hyp_starting_point, 1)
+                  hyp_starting_point= sort(hyp_starting_point)
+                }
+          }
+
+          hyp_dur_length = hyp_end_point - hyp_starting_point
+
+          # HANDLING EXCEPTION: WHEN FIRST POINT OR SEQUENCE ARE NA
+          if(is.null(hyp_dur_length)) hyp_dur_length = c(0)
+
+          # COMPUTING EPISODES THAT GO BELOW THE THRESHOLD
+          hyp_dur_length = hyp_dur_length[hyp_dur_length >= (params[[4]]/params[[5]])]
+          hyp_duration = mean(hyp_dur_length * params[[5]])
+          hyp_total = length(hyp_dur_length)
+
+          i = 1; hyp_mean = 0
+          while(i <= length(hyp_dur_length)){
+            if( (!is.na(hyp_end_point[i]) & !is.na(hyp_starting_point[i])) & (hyp_end_point[i] - hyp_starting_point[i]) >= params[[4]]/params[[5]]){
+              interval = seq(hyp_starting_point[i],hyp_end_point[i], 1)
+              interval_val = gl_by_id_ip[interval]
+              hyp_mean = hyp_mean + mean(interval_val)
+            }
+            i = i + 1
+          }
+
+          Low_Or_High_Alert = 0
+
+          if (length(hyp_dur_length != 0))
+            Low_Or_High_Alert = (sum(hyp_dur_length)) / length(gl_by_id_ip) * 100
+          else
+            Low_Or_High_Alert = 0
+
+          avg_Min_hyp = 0
+
+          if(!all(is.na(gl_by_id_ip))){
+            avg_Min_hyp = sum(hyp_dur_length * dt0) / (length(gl_by_id_ip) * 5)
+          }
+          r = c(hyp_total, hyp_duration, avg_Min_hyp, Low_Or_High_Alert)
+          return (r)
+      } # stat_computation FUNCTION ENDS
+
       if(params[[2]] > params[[3]])
-        warning("WARNING. Hypoglycemia threshold is greater than hyperglycemia threshold. This may affect result")
+          warning("Warning. Hypoglycemia threshold is greater than hyperglycemia threshold. This may affect result")
 
       gl_by_id_ip = params[[1]][!is.na(params[[1]])]
-      hypo_episode = gl_by_id_ip <= params[[2]] # if data is less than or equal to the threshold containing true or false value
 
-      hypo_result = hypo_episode[2:length(hypo_episode)] - hypo_episode[1:length(hypo_episode)-1]
-      hypo_end_point = which(hypo_result %in% -1) + 1
-      hypo_starting_point = which(hypo_result %in% 1) + 1
+      stat_outputs = stat_computation(gl_by_id_ip, params, TRUE)
+      hypo_total = stat_outputs[1]
+      hypo_duration = stat_outputs[2]
+      avg_Min_hypo = stat_outputs[3]
+      Low_Alert = stat_outputs[4]
 
-      # Handle when hypoglycemia continues until the end
-      if(gl_by_id_ip[length(gl_by_id_ip)] <= params[[2]]){
-        hypo_end_point = c(hypo_end_point, length(hypo_result))
-        hypo_end_point= sort(hypo_end_point)
-      }
+      stat_outputs = stat_computation(gl_by_id_ip, params, FALSE)
+      hyper_total = stat_outputs[1]
+      hyper_duration = stat_outputs[2]
+      avg_Min_hyper = stat_outputs[3]
+      High_Alert = stat_outputs[4]
 
-      # Handle exception when first point or first sequence is NA
-      if(gl_by_id_ip[1] <= params[[2]] ) {
-        hypo_starting_point = c(hypo_starting_point, 1)
-        hypo_starting_point= sort(hypo_starting_point)
-      }
-
-      hypo_dur_length = hypo_end_point - hypo_starting_point
-
-      if(is.null(hypo_dur_length)) hypo_dur_length = c(0)
-
-      hypo_dur_length = hypo_dur_length[hypo_dur_length >= 3]
-      hypo_duration = mean(hypo_dur_length * dt0)
-      hypo_total = length(hypo_dur_length)
-      hyper_episode = gl_by_id_ip >= params[[3]]
-      hyper_result = hyper_episode[2:length(hyper_episode)] - hyper_episode[1:length(hyper_episode)-1]
-      hyper_end_point = which(hyper_result %in% -1) + 1
-      hyper_starting_point = which(hyper_result %in% 1) + 1
-
-      # Handle when hyperglycemia continues until the end
-
-      if(gl_by_id_ip[length(gl_by_id_ip)] >= params[[3]]){
-        hyper_end_point = c(hyper_end_point, length(hyper_result))
-        hyper_end_point= sort(hyper_end_point)
-      }
-      # Handle exception when first point is greater than hyperglycemia
-      if(gl_by_id_ip[1] >= params[[3]] ) {
-        hyper_starting_point = c(hyper_starting_point, 1)
-        hyper_starting_point= sort(hyper_starting_point)
-      }
-
-      hyper_dur_length = hyper_end_point - hyper_starting_point
-
-      if(is.null(hypo_dur_length)) hypo_dur_length = c(0)
-
-      hyper_dur_length = hyper_dur_length[hyper_dur_length >= 3]
-      hyper_duration = mean(hyper_dur_length * dt0)
-      hyper_total = length(hyper_dur_length)
       episodes = c(hypo_total, hyper_total)
       durations = c(hypo_duration, hyper_duration)
-
-      i = 1; hypo_mean = 0
-
-      while(i <= length(hypo_dur_length)){
-        if( (!is.na(hypo_end_point[i]) & !is.na(hypo_starting_point[i])) & (hypo_end_point[i] - hypo_starting_point[i]) >= 3){
-          interval = seq(hypo_starting_point[i],hypo_end_point[i], 1)
-          interval_val = gl_by_id_ip[interval]
-          hypo_mean = hypo_mean + mean(interval_val)
-        }
-        i = i + 1
-      }
-
-      i = 1; hyper_mean = 0
-
-      while(i <= length(hyper_dur_length)){
-        if((!is.na(hyper_end_point[i]) & !is.na(hyper_starting_point[i])) & (hyper_end_point[i] - hyper_starting_point[i]) >= 3 ){
-          interval = seq(hyper_starting_point[i],hyper_end_point[i], 1)
-          interval_val = gl_by_id_ip[interval]
-          hyper_mean = hyper_mean + mean(interval_val)
-        }
-        i = i + 1
-      }
-
-      means = c(hypo_mean, hyper_mean)
-
-      if (length(hypo_dur_length != 0))
-        Low_Alert = (sum(hypo_dur_length)) / length(gl_by_id_ip) * 100
-      else
-        Low_Alert = 0
-      if (length(hyper_dur_length != 0))
-        High_Alert = (sum(hyper_dur_length)) / length(gl_by_id_ip) * 100
-      else
-        High_Alert = 0
-
       Target_Range = 100 - High_Alert - Low_Alert
       range = c(Low_Alert, Target_Range, High_Alert)
-
-      avg_Min_hypo = 0
-      avg_Min_hyper = 0
-      if(!all(is.na(gl_by_id_ip))){
-        avg_Min_hypo = sum(hypo_dur_length * dt0) / (length(gl_by_id_ip) * 5)
-        avg_Min_hyper = sum(hyper_dur_length * dt0) / (length(gl_by_id_ip) * 5)
-      }
-
       Min_avg = c(avg_Min_hypo, avg_Min_hyper)
 
       dataframe <- data.frame("Hypo_ep" = episodes[1], "Hyper_ep" = episodes[2],
@@ -183,7 +158,9 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
       hypo_min_avg = c();hyper_min_avg = c();
 
       while(i <= num_rows){
+
         params[[1]] = gl_by_id_ip[i,]
+
         if(!all(is.na(params[[1]]))){
 
           temp = episode_one_day(params)
@@ -202,22 +179,38 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
                                   "target_range" = mean(target_range, na.rm= TRUE),
                                   "hypo_min_avg" = mean(hypo_min_avg, na.rm = TRUE), "hyper_min_avg" = mean(hyper_min_avg, na.rm = TRUE))
         }
+
         i = i + 1
       }
       df_multiday <- round(df_multiday, digits = 2)
       return (df_multiday)
-    }
-    ##################### Eipsode computation for multidays END ###############
+    } #multidays FUNCTION ENDS
+
+    ##################### Input Processing        #####################
+    data_ip = gl_by_id_ip = NULL
+    rm(list = c("data_ip", "gl_by_id_ip"))
+    data_ip = CGMS2DayByDay(data, dt0 = 5)
+    gl_by_id_ip = data_ip[[1]]
+    dt0 = data_ip[[3]]
+    params = list(gl_by_id_ip, params[[1]], params[[2]], params[[3]], dt0)
+
+    #gl_by_id_ip       : CGM data for a subject
+    #lv_hypo(hyper)    : Hypoglycemia and hyperglycemia threshold (lv1 = level 1 and lv2 = level2)
+    #dur_length        : Duaration length
+    #dt0               : Default value for an inteveral (default = 5 mins)
+    ###################################################################
     result = 0
     result = multidays(data_ip, params)
     return (result)
-  }
+
+  } #episode calculator function ends
 
   id = NULL
   rm("id")
 
-  #####################         Wrapper Function         ####################
-  wrapper_function <-function(data,params){
+  #####################         WRAPPER FUNCTION         ####################
+  ################  THIS WRAPPER FUNCTION FORMATS THE OUTPUT  ###############
+  wrapper_function <-function(data, params){
     out = NULL
     rm("out")
     out <- data %>%
@@ -225,18 +218,20 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
       dplyr::summarise(episode_calculator(data.frame(id, time, gl), params))
   }
 
+  # Remove global some global variables
   df1 = df2 = out = out2 = result1 = result2 = final =NULL
   rm(list = c("df1", "df2", "out", "out2", "result1", "result2", "final"))
 
+  params = list(lv1_hypo, lv1_hyper, dur_length)
+
   # This returns episode values for hypo and hyper level 1
-  result1 = wrapper_function(data,params)
+  result1 = wrapper_function(data, params)
 
   # Changing parameters for level 2
   params = list(lv2_hypo, lv2_hyper, dur_length)
 
   # This returns episode values for hypo and hyper level 2
   result2 = wrapper_function(data,params)
-
 
   df1 = data.frame(result1)
   df2 = data.frame(result2)

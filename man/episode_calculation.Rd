@@ -9,7 +9,7 @@ episode_calculation(
   lv1_hypo = 100,
   lv2_hypo = 70,
   lv1_hyper = 120,
-  lv2_hyper = 160,
+  lv2_hyper = 180,
   dur_length = 15
 )
 }
