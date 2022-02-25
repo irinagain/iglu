@@ -72,3 +72,4 @@ Suggests:
     rmarkdown,
     testthat (>= 2.1.0)
 VignetteBuilder: knitr
+URL: https://irinagain.github.io/iglu/

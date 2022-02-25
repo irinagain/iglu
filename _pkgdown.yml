@@ -1,4 +1,4 @@
-destination: docs
+url: https://irinagain.github.io/iglu/
+template:
+  bootstrap: 5
 
-development:
-  mode: auto
