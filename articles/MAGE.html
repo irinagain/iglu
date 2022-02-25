@@ -4,118 +4,103 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="iglu">
 <title>MAGE Algorithm • iglu</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="MAGE Algorithm">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="MAGE Algorithm">
 <meta property="og:description" content="iglu">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">iglu</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">3.3.0</span>
-      </span>
-    </div>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">iglu</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../articles/iglu.html">Get started</a>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.3.1</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../articles/iglu.html">Get started</a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/AGP_and_Episodes.html">AGP and Episodes</a>
-    </li>
-    <li>
-      <a href="../articles/MAGE.html">MAGE Algorithm</a>
-    </li>
-    <li>
-      <a href="../articles/lasagna_plots.html">Lasagna Plots in iglu</a>
-    </li>
-    <li>
-      <a href="../articles/metrics_list.html">List of metrics implemented in iglu</a>
-    </li>
-  </ul>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/AGP_and_Episodes.html">AGP and Episodes</a>
+    <a class="dropdown-item" href="../articles/MAGE.html">MAGE Algorithm</a>
+    <a class="dropdown-item" href="../articles/lasagna_plots.html">Lasagna Plots in iglu</a>
+    <a class="dropdown-item" href="../articles/metrics_list.html">List of metrics implemented in iglu</a>
+  </div>
 </li>
-<li>
-  <a href="../news/index.html">Changelog</a>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav"></ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article">
 
-      
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>MAGE Algorithm</h1>
+
+<script src="MAGE_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+  <main id="main"><div class="page-header">
+      <img src="" class="logo" alt=""><h1>MAGE Algorithm</h1>
                         <h4 data-toc-skip class="author">Nathaniel Fernandes, Nhan Nguyen, Elizabeth Chun, Naresh Punjabi, Irina Gaynanova</h4>
             
       
       
-      <div class="hidden name"><code>MAGE.Rmd</code></div>
-
+      <div class="d-none name"><code>MAGE.Rmd</code></div>
     </div>
 
     
     
 <p>Mean Amplitude of Glycemic Excursions (MAGE) is a glucose variability metric that can be applied to CGM data. From iglu version 3 onward, the package includes two algorithms for MAGE calculation: (i) version = ‘ma’ uses short and long moving averages to computationally emulate the original definition, (ii) version = ‘naive’ is a naive approximation included for backwards compatibility with earlier versions of iglu. The moving average algorithm was published in the Journal of Diabetes Science and Technology: <a href="https://doi.org/10.1177/19322968211061165" class="external-link">Open-source Algorithm to Calculate Mean Amplitude of Glycemic Excursions Using Short and Long Moving Averages</a>, and the code to reproduce all tests can be found at the accompanying repository: <a href="https://github.com/Nathaniel-Fernandes/mage_algorithm_data" class="external-link">Nathaniel-Fernandes/mage_algorithm_data</a>. Below is a longer vignette describing the algorithm and the methods we used to test it. Some example code to help get started using MAGE in iglu is included in the <a href="#example_code"><em>Implementation</em></a> section.</p>
-<div class="section level1">
-<h1 id="abstract">Abstract<a class="anchor" aria-label="anchor" href="#abstract"></a>
-</h1>
+<div class="section level2">
+<h2 id="abstract">Abstract<a class="anchor" aria-label="anchor" href="#abstract"></a>
+</h2>
 <p><strong>Background</strong>: Glucose variability is increasingly regarded as a risk factor for diabetes-related complications. The mean amplitude of glycemic excursions (MAGE) is a common measure of glucose variability. While its original definition requires manual calculations, there exist several software programs for automated calculations which have shown varying degrees of agreement. The objective of this study was to develop an automated algorithm for MAGE that would achieve high accuracy against the reference standard of manual calculations.</p>
 <p><strong>Methods</strong>: Manual calculations of MAGE were performed on 45 publicly available CGM profiles from a diverse set of patients (e.g., type 1 diabetes, type 2 diabetes, and those without diabetes). An automated algorithm for MAGE calculation was developed to identify peaks and nadirs of glycemic excursions based on the crosses of a short and long moving average of the glucose profile, and implemented in version 3 of R package iglu. The accuracy of the algorithm was evaluated relative to manual calculations using a five-fold cross-validation and compared to four other publicly available MAGE calculators.</p>
 <p><strong>Results</strong>: The newly developed algorithm had the median error of 1% relative to manual calculations. The median errors of the four other approaches including cgmanalysis, cgmquantify, EasyGV and algorithm in the earlier version of iglu were 20%, 78%, 11% and 42%, respectively.</p>
 <p><strong>Conclusions</strong>: The newly developed algorithm eliminates the need for tedious manual MAGE calculations and approximates the manual derivation better than existing approaches.</p>
 </div>
-<div class="section level1">
-<h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h1>
-<p>Glucose variability is increasingly regarded as a risk factor for diabetes-related complications beyond HbA1c [1, 2]. The mean amplitude of glycemic excursions (MAGE) is a commonly used measure of glucose variability. As defined by Service et al. [3], MAGE is the arithmetic mean of the amplitude (i.e. height) of glucose excursions that are greater than the standard deviation of the glucose values. MAGE is calculated manually by visually inspecting the glucose profiles. However, such manual approach to calculating MAGE is error-prone and impractical for large datasets of continuous glucose monitors (CGMs). Thus, an automated algorithm for MAGE calculation that approximates the manual reference is needed.</p>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>Glucose variability is increasingly regarded as a risk factor for diabetes-related complications beyond HbA1c [1, 2]. The mean amplitude of glycemic excursions (MAGE) is a commonly used measure of glucose variability. As defined by Service et al. [3], MAGE is the arithmetic mean of the amplitude (i.e. height) of glucose excursions that are greater than the standard deviation of the glucose values. MAGE is calculated manually by visually inspecting the glucose profiles. However, such manual approach to calculating MAGE is error-prone and impractical for large datasets of continuous glucose monitors (CGMs). Thus, an automated algorithm for MAGE calculation that approximates the manual reference is needed.</p>
 <p>Several software programs for automated MAGE calculations have been developed, and these implementations can be divided into two categories: those that only return the numeric MAGE values, and those that additionally provide a visual display of the calculations [4]. Examples in the first category include the Excel®-based workbook EasyGV [5], online GlyCulator2 [6], R package cgmanalysis [7], early versions of R package iglu [8], and Python package cgmquantify [9]. Because these software programs do not output a visual display of the performed calculations, the user has no means to inspect the calculations and confirm accuracy. Examples in the second category include programs developed by Fritzsche [10] and Baghurst [11]. However, the software developed by Fritzsche are not compatible with newer operating systems (e.g., Windows 10) to allow importing of CGM data. According to documentation for cgmanalysis [7] and cgmquantify [9], these packages provide free implementations of Baghurst’s algorithm, albeit they may not fully reflect the original implementation.</p>
 <p>Comparison of GlyCulator, EasyGV, Fritzsche, and Baghurst algorithms demonstrates varying degrees of agreement across MAGE algorithms [12]. While the aforementioned algorithms were compared to each other, they were not compared with the manual reference standard.</p>
-<p>The objective of current study is to establish an approach of calculating MAGE that approximates well the results obtained manually. In developing an algorithm, the goal was to computationally emulate the manual method in Service et al. [3] based on the automated detection of peaks and nadirs tailored specifically towards CGM data, and to provide a freely available implementation with a visual display. To evaluate accuracy, the newly developed algorithm was compared with the manual derivations along with the other computational approaches.</p>
+<p>The objective of current study is to establish an approach of calculating MAGE that approximates well the results obtained manually. In developing an algorithm, the goal was to computationally emulate the manual method in Service et al. [3] based on the automated detection of peaks and nadirs tailored specifically towards CGM data, and to provide a freely available implementation with a visual display. To evaluate accuracy, the newly developed algorithm was compared with the manual derivations along with the other computational approaches.</p>
 </div>
-<div class="section level1">
-<h1 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a>
-</h1>
+<div class="section level2">
+<h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a>
+</h2>
 <p><em>CGM Data and Manual MAGE Calculation</em></p>
-<p>Publicly available CGM data were obtained from [13], from which 45 CGM traces were selected to represent a diverse set of patients (type 1 diabetes, type 2 diabetes and those without diabetes), see Table 1. Each CGM trace corresponds to one day of measurements (24 h), where a day is defined from midnight to midnight as it is customary to calculate MAGE daily. Manual MAGE calculations were performed on each of the 45 CGM traces following the original description of MAGE calculations by Service et al. [3] by two of the authors, who were unaware of the outcome of new derived automated analysis.</p>
+<p>Publicly available CGM data were obtained from [13], from which 45 CGM traces were selected to represent a diverse set of patients (type 1 diabetes, type 2 diabetes and those without diabetes), see Table 1. Each CGM trace corresponds to one day of measurements (24 h), where a day is defined from midnight to midnight as it is customary to calculate MAGE daily. Manual MAGE calculations were performed on each of the 45 CGM traces following the original description of MAGE calculations by Service et al. [3] by two of the authors, who were unaware of the outcome of new derived automated analysis.</p>
 <table class="table">
 <thead><tr class="header">
 <th>Dataset</th>
@@ -126,7 +111,7 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><a href="https://doi.org/10.1371/journal.pbio.2005143" class="external-link">Hall et al. (2018)</a></td>
+<td><a href="https://doi.org/10.1371/journal.pbio.2005143" class="external-link">Hall et al. (2018)</a></td>
 <td align="center">None</td>
 <td align="center">Adults (&gt; 18)</td>
 <td>1636-69-001</td>
@@ -140,7 +125,7 @@
 <td align="center">6</td>
 </tr>
 <tr class="odd">
-<td><a href="https://doi.org/10.1016/j.jpeds.2005.04.065" class="external-link">Tsalikian et al. (2005)</a></td>
+<td><a href="https://doi.org/10.1016/j.jpeds.2005.04.065" class="external-link">Tsalikian et al. (2005)</a></td>
 <td align="center">Type 1</td>
 <td align="center">Children (10 - 18)</td>
 <td>2</td>
@@ -189,7 +174,7 @@
 <td align="center">1</td>
 </tr>
 <tr class="even">
-<td><a href="https://doi.org/10.1016/j.imu.2018.09.003" class="external-link">Dubosson et al. (2005)</a></td>
+<td><a href="https://doi.org/10.1016/j.imu.2018.09.003" class="external-link">Dubosson et al. (2005)</a></td>
 <td align="center">Type 1</td>
 <td align="center">Adults (&gt; 18)</td>
 <td>1</td>
@@ -203,7 +188,7 @@
 <td align="center">2</td>
 </tr>
 <tr class="even">
-<td><a href="https://doi.org/10.1371/journal.pone.0248560" class="external-link">Broll et al. (2021)</a></td>
+<td><a href="https://doi.org/10.1371/journal.pone.0248560" class="external-link">Broll et al. (2021)</a></td>
 <td align="center">Type 2</td>
 <td align="center">Adults (&gt; 18)</td>
 <td>Subject 1</td>
@@ -242,16 +227,16 @@
 <p><strong>Table 1:</strong> Summary of the 45 CGM traces used for manual calculations. The first three datasets have been obtained as described in [13]. The last dataset is available within R package iglu [8].</p>
 <p>   </p>
 <p><em>The Algorithm</em></p>
-<p>The original MAGE description in Service et al. [3] requires (i) identification of turning points (e.g., peaks and nadirs) for calculation of glucose excursions; (ii) calculation of the mean of excursion amplitudes (i.e., heights) by filtering only those that are above the threshold of one standard deviation. To the best of our knowledge, our implementations for both parts are unique.</p>
+<p>The original MAGE description in Service et al. [3] requires (i) identification of turning points (e.g., peaks and nadirs) for calculation of glucose excursions; (ii) calculation of the mean of excursion amplitudes (i.e., heights) by filtering only those that are above the threshold of one standard deviation. To the best of our knowledge, our implementations for both parts are unique.</p>
 <ol style="list-style-type: lower-roman">
 <li><p>Identification of peaks and nadirs. The proposed algorithm uses the crosses of short and long moving averages to identify time intervals where a peak or nadir may exist. Let <span class="math inline">\(\alpha\)</span> be the window size for the short moving average, and 𝛽 be the window size for the long moving average, where <span class="math inline">\(\alpha &lt; \beta\)</span>. A peak or nadir must exist on the intervals that are bounded by the crosses of the two moving averages as demonstrated in Figure 1. This occurs because the shorter moving average is more affected by the local variation in the glucose values than the longer moving average. The glucose value at a peak or nadir (i.e., <span class="math inline">\(p_i\)</span>) is then determined as the maximum or minimum glucose value, respectively, between the two crossing points. By default, the first and last glucose values are always treated as turning points. A distinct advantage of using moving averages to identify the turning points is that they inherently smooth out local fluctuations and noise within larger trends in a glucose profile. The amount of smoothing can be tuned by varying window size parameters <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>. By default, the algorithm uses <span class="math inline">\(\alpha = 5\)</span> and <span class="math inline">\(\beta = 32\)</span> as these values lead to high accuracy when compared to the manual MAGE calculations.</p></li>
-<li><p>Eliminating Excursions and Calculation of Mean Amplitudes. Given the glucose values <span class="math inline">\(p_i\)</span> at the turning points (either peaks or nadirs), the amplitude of an excursion is calculated as |<span class="math inline">\(p_{i + 1}-p_i\)</span>|. The amplitude value corresponds to the ascending segment if <span class="math inline">\(p_i\)</span> corresponds to a nadir, and to the descending segment if <span class="math inline">\(p_i\)</span> corresponds to a peak. First, we check whether the amplitudes exceed one standard deviation threshold. If an amplitude value is below the threshold, the algorithm will skip the corresponding turning points, and recalculate the amplitudes based on the remaining <span class="math inline">\(p_i\)</span> (this allows to absorb a smaller excursion within a larger excursion). Secondly, to prevent double counting excursions, only ascending (MAGE+) or descending (MAGE–) excursion amplitudes are averaged. When excursions are symmetric, MAGE+ = MAGE–, however in general they may disagree [11]. By default, the algorithm follows the description in Service et al. [3], and calculates MAGE+ or MAGE– depending on which type of excursion first crosses the one SD threshold.</p></li>
+<li><p>Eliminating Excursions and Calculation of Mean Amplitudes. Given the glucose values <span class="math inline">\(p_i\)</span> at the turning points (either peaks or nadirs), the amplitude of an excursion is calculated as |<span class="math inline">\(p_{i + 1}-p_i\)</span>|. The amplitude value corresponds to the ascending segment if <span class="math inline">\(p_i\)</span> corresponds to a nadir, and to the descending segment if <span class="math inline">\(p_i\)</span> corresponds to a peak. First, we check whether the amplitudes exceed one standard deviation threshold. If an amplitude value is below the threshold, the algorithm will skip the corresponding turning points, and recalculate the amplitudes based on the remaining <span class="math inline">\(p_i\)</span> (this allows to absorb a smaller excursion within a larger excursion). Secondly, to prevent double counting excursions, only ascending (MAGE+) or descending (MAGE–) excursion amplitudes are averaged. When excursions are symmetric, MAGE+ = MAGE–, however in general they may disagree [11]. By default, the algorithm follows the description in Service et al. [3], and calculates MAGE+ or MAGE– depending on which type of excursion first crosses the one SD threshold.</p></li>
 </ol>
 <p><a name="example_code"></a><br><em>Implementation</em><br>
 The newly developed algorithm for MAGE calculation can be found from version 3 onward in R package iglu [17] as well as the accompanying GUI via Shiny App [8] - both are free and open-source. Implementation in a script-based programming language like R allows the creation of reproducible scripts for all data processing and MAGE calculation steps, and the availability of a point-and-click GUI meets the needs of researchers with limited programming experience. By default, the algorithm uses <span class="math inline">\(\alpha = 5\)</span> and <span class="math inline">\(\beta = 32\)</span>, however these choices can be adjusted by the user.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load package and example data</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">iglu</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://irinagain.github.io/iglu/">iglu</a></span><span class="op">)</span>
 <span class="co"># mage calculation using default parameters</span>
 <span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">example_data_5_subject</span><span class="op">)</span>
 <span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span>
@@ -280,7 +265,7 @@ The newly developed algorithm for MAGE calculation can be found from version 3 o
 <span class="va">fig1data</span> <span class="op">&lt;-</span> <span class="va">example_data_1_subject</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span>
 <span class="co"># plot using mage function with plot = TRUE and show_ma = TRUE </span>
 <span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig1data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, show_ma <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace - Subject 1"</span><span class="op">)</span></code></pre></div>
-<p><img src="MAGE_files/figure-html/figure%201-1.png" width="672"><strong>Figure 1:</strong> Glucose trace of Subject 2 with Type 2 diabetes from Broll et al. [8], the solid green line is a short MA with <span class="math inline">\(\alpha\)</span> = 5 and the solid orange line is a long MA with <span class="math inline">\(\beta\)</span> = 32. The peaks and nadirs occur between the crosses of short and long moving averages. By default, the algorithm calculates MAGE+ as in this profile the first segment to exceed one SD threshold is ascending. The provided graphical display in iglu software [17] automatically highlights only those peaks (red) and nadirs (blue) that are used for final calculation.</p>
+<p><img src="MAGE_files/figure-html/figure%201-1.png" width="672"><strong>Figure 1:</strong> Glucose trace of Subject 2 with Type 2 diabetes from Broll et al. [8], the solid green line is a short MA with <span class="math inline">\(\alpha\)</span> = 5 and the solid orange line is a long MA with <span class="math inline">\(\beta\)</span> = 32. The peaks and nadirs occur between the crosses of short and long moving averages. By default, the algorithm calculates MAGE+ as in this profile the first segment to exceed one SD threshold is ascending. The provided graphical display in iglu software [17] automatically highlights only those peaks (red) and nadirs (blue) that are used for final calculation.</p>
 <p>   </p>
 <p>Additionally, the plot will highlight any gaps in the data due to missing readings.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -288,16 +273,16 @@ The newly developed algorithm for MAGE calculation can be found from version 3 o
 <span class="va">fig2data</span> <span class="op">&lt;-</span> <span class="va">example_data_1_subject</span><span class="op">[</span><span class="fl">200</span><span class="op">:</span><span class="fl">400</span>, <span class="op">]</span>
 <span class="co"># plot using mage function with plot = TRUE</span>
 <span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig2data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace with Gaps - Subject 1"</span><span class="op">)</span></code></pre></div>
-<p><img src="MAGE_files/figure-html/figure%202-1.png" width="672"><strong>Figure 2</strong>. Glucose trace of Subject 5 with Type 2 diabetes from Broll et al. [8] with regions of missing glucose readings automatically highlighted using iglu software [17].</p>
+<p><img src="MAGE_files/figure-html/figure%202-1.png" width="672"><strong>Figure 2</strong>. Glucose trace of Subject 5 with Type 2 diabetes from Broll et al. [8] with regions of missing glucose readings automatically highlighted using iglu software [17].</p>
 <p>   </p>
 <p><em>Assessment of Accuracy</em><br>
 The accuracy of the proposed algorithm was evaluated against 45 manual calculations. For each CGM trace, the accuracy was measured as the relative percent difference in the automatically calculated MAGE value and the manual MAGE value, that is: |MAGEalgorithm - MAGEmanual|/MAGEmanual⋅ 100%.</p>
 <p>To find optimal combination of window sizes, we considered <span class="math inline">\(\alpha \in [1, 15]\)</span> and <span class="math inline">\(\beta \in [16, 38]\)</span>, and recorded the mean errors across 45 CGM traces for each pair of (<span class="math inline">\(\alpha, \beta\)</span>) values. The optimal (<span class="math inline">\(\alpha, \beta\)</span>) pair was determined as the one that leads to the minimal in-sample error. Since the obtained minimal error is a biased assessment of accuracy as the optimal (<span class="math inline">\(\alpha, \beta\)</span>) were selected based on the same 45 traces, unbiased assessment of accuracy using five-fold cross-validation was also performed. The 45 CGM traces were randomly split into five groups of nine samples each. The best (<span class="math inline">\(\alpha, \beta\)</span>) combination was then chosen using the four out of five groups, and used to evaluate the accuracy on the remaining group. The best combination was defined as the one that gave the lowest percent error compared to manual calculations. This out-of-sample evaluation was performed on all five groups.</p>
 <p>The accuracy of EasyGV [5], cgmanalysis [7], cgmquantify [9], and the MAGE algorithm implemented in the earlier version of iglu [8] was also determined against the manual reference derivation. The latter is a naive simplification of original MAGE definition, as it calculates MAGE as the mean of absolute differences between glucose values and the glucose mean that are larger than one standard deviations (and thus does not attempt to explicitly identify peaks and nadirs). We use iglu_ma to denote the proposed algorithm based on moving averages, and iglu_naive to denote the naive algorithm used in earlier versions of the software. We were unable to evaluate GlyCulator2 [6] because the software requires CGM trace to have at least 576 time points, and thus returns NA when applied to 24-hour CGM data. We were also unable to evaluate Fritzsche [10] as importing the CGM data into the provided user interface on Windows 10 lead to errors.</p>
 </div>
-<div class="section level1">
-<h1 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
-</h1>
+<div class="section level2">
+<h2 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
+</h2>
 <p>The optimal choice of window sizes (<span class="math inline">\(\alpha, \beta\)</span>) for the proposed algorithm was determined to be (5, 32) as this combination minimized the average error relative to 45 manual calculations. Figure 3 shows a heatmap of the percent average error (across 45 traces) as a function of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, where the darkest regions represent the most favorable combinations of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>. The minimum corresponds to the average error of 4.8%. The corresponding median relative error was much smaller, 1.1%, with the inter-quartile range of [0.3%, 3.6%]. As expected, the out-of-sample cross-validated errors were larger, but still relatively low. The average cross-validated error was 5.8%, with the median of 1.3% and inter-quartile range of [0.3%, 6.6%].</p>
 <p><img src="mage_figures/Figure3_heatmap_percent_error.png" width="700px" height="400px"><strong>Figure 3.</strong> Heatmap of average errors over 45 CGM traces of automatically calculated MAGE values via proposed algorithm relative to manual MAGE values. The short moving average window size <span class="math inline">\(\alpha \in [1, 15]\)</span> and the long moving average window size <span class="math inline">\(\beta \in [16, 38]\)</span>. The darker regions correspond to smaller errors, with the minimal error of 4.8% achieved at <span class="math inline">\(\alpha = 5\)</span>, <span class="math inline">\(\beta = 32\)</span>.</p>
 <p>   </p>
@@ -355,24 +340,24 @@ The accuracy of the proposed algorithm was evaluated against 45 manual calculati
 <p><strong>Table 2:</strong> Numerical summaries of relative errors of automatic MAGE calculators on 45 CGM traces compared to manual calculations. The proposed method is implemented as ma (moving average) algorithm in R package iglu [17]; best corresponds to the errors with <span class="math inline">\(\alpha\)</span> = 5, <span class="math inline">\(\beta\)</span> = 32; cv corresponds to the out-of-sample errors based on 5-fold-cross-validation for <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>.</p>
 <p>   </p>
 </div>
-<div class="section level1">
-<h1 id="discussion">Discussion<a class="anchor" aria-label="anchor" href="#discussion"></a>
-</h1>
+<div class="section level2">
+<h2 id="discussion">Discussion<a class="anchor" aria-label="anchor" href="#discussion"></a>
+</h2>
 <p>There are several software programs for automatic MAGE calculation, however, they show varying agreement [12]. In the current study, a new automated algorithm for MAGE was developed based on moving averages which demonstrated the least amount of error relative to manual reference when compared to other automated algorithms.</p>
 <p>The newly developed algorithm approximated the manual results better than EasyGV, cgmanalysis, iglu_naive, and cgmquantify. The largest discrepancy was noted for cgmanalysis and cgmquantify both of which implemented Baghurst’s algorithm [11]. It is unclear whether the deviation from manual determination is due to the underlying algorithm or the specifics of implementation of the algorithm. The differences in accuracy among the MAGE algorithms points to the necessity of a visual display of the underlying calculations with identified peaks and nadirs. While such visual display is implemented for the proposed MAGE algorithm in version 3 of R package iglu [17], this functionality is absent from EasyGV, cgmanalysis, and cgmquantify, making it more difficult for the user to verify the accuracy.</p>
-<p>A major challenge for any automated MAGE algorithm is separation of true peaks and nadirs in a larger trend from the smaller glucose fluctuations. A particular advantage of the proposed algorithm is the use of moving averages which inherently smooth out local fluctuations within a larger trend. The amount of smoothing can be tuned by varying the window sizes of the short and long moving averages, and we found that the algorithm is quite robust to the choice of window sizes, with high accuracy in a large range (Figure 3). One disadvantage is that the moving average is a lagging indicator, and thus is undefined in the beginning of the time period (e.g., a moving average of window size 20 is undefined for the first 19 time points). This could skew the calculations of MAGE if the first times points contain a lot of variation in subject’s glucose levels. To adjust for this, the algorithm replaces the undefined moving average values at the first time points with the first calculated moving average value (e.g., a moving average of window size 20 will be first calculated at 20th time point, and that same value will be assigned to the first 19 time point to be later used in determining the crosses of short and long moving averages). This adjustment can be seen for the long moving average in Figure 1, where its value is flat for the first 32 points. Given the high accuracy of the proposed algorithm compared to manual calculations, this adjustment is adequate, however it is possible that it may not be adequate for some CGM profiles. In practice, we recommend to inspect the visual display of MAGE calculations provided by iglu [17] as in Figures 1 and 2 for additional accuracy validation. Another challenge for MAGE calculations is the presence of asymmetric excursions. To prevent double counting, typically only ascending (MAGE+) or descending (MAGE–) excursion amplitudes are averaged. When excursions are symmetric, MAGE+ = MAGE–, and the accuracy is not affected irrespective of the choice of direction. However, when excursions are asymmetric, the direction matters as the two disagree. By default, our algorithm follows the description in Service et al. [3], and calculates MAGE+ or MAGE– depending on which type of excursion first crosses the one SD threshold. The same decision is made in [12]. However, Baghurst [11] argues that it is more appropriate to use MAGEavg = (MAGE+ + MAGE–)/2. Our implementation allows the user to change the default settings, and explicitly calculate MAGE+, MAGE–, or MAGEavg, which makes our algorithm’s implementation more flexible compared to existing MAGE software.</p>
+<p>A major challenge for any automated MAGE algorithm is separation of true peaks and nadirs in a larger trend from the smaller glucose fluctuations. A particular advantage of the proposed algorithm is the use of moving averages which inherently smooth out local fluctuations within a larger trend. The amount of smoothing can be tuned by varying the window sizes of the short and long moving averages, and we found that the algorithm is quite robust to the choice of window sizes, with high accuracy in a large range (Figure 3). One disadvantage is that the moving average is a lagging indicator, and thus is undefined in the beginning of the time period (e.g., a moving average of window size 20 is undefined for the first 19 time points). This could skew the calculations of MAGE if the first times points contain a lot of variation in subject’s glucose levels. To adjust for this, the algorithm replaces the undefined moving average values at the first time points with the first calculated moving average value (e.g., a moving average of window size 20 will be first calculated at 20th time point, and that same value will be assigned to the first 19 time point to be later used in determining the crosses of short and long moving averages). This adjustment can be seen for the long moving average in Figure 1, where its value is flat for the first 32 points. Given the high accuracy of the proposed algorithm compared to manual calculations, this adjustment is adequate, however it is possible that it may not be adequate for some CGM profiles. In practice, we recommend to inspect the visual display of MAGE calculations provided by iglu [17] as in Figures 1 and 2 for additional accuracy validation. Another challenge for MAGE calculations is the presence of asymmetric excursions. To prevent double counting, typically only ascending (MAGE+) or descending (MAGE–) excursion amplitudes are averaged. When excursions are symmetric, MAGE+ = MAGE–, and the accuracy is not affected irrespective of the choice of direction. However, when excursions are asymmetric, the direction matters as the two disagree. By default, our algorithm follows the description in Service et al. [3], and calculates MAGE+ or MAGE– depending on which type of excursion first crosses the one SD threshold. The same decision is made in [12]. However, Baghurst [11] argues that it is more appropriate to use MAGEavg = (MAGE+ + MAGE–)/2. Our implementation allows the user to change the default settings, and explicitly calculate MAGE+, MAGE–, or MAGEavg, which makes our algorithm’s implementation more flexible compared to existing MAGE software.</p>
 </div>
-<div class="section level1">
-<h1 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
-</h1>
+<div class="section level2">
+<h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
+</h2>
 <p>A new algorithm for MAGE calculation that significantly outperforms existing algorithms in terms of accuracy is presented. The implementation of this algorithm is free and open-source, it is available in the R package iglu version 3 [17] as well as in the accompanying GUI via Shiny App at <a href="https://irinagain.shinyapps.io/shiny_iglu/" class="external-link uri">https://irinagain.shinyapps.io/shiny_iglu/</a>. Furthermore, the visual displays of the CGM traces, exact values for manual MAGE and the code to reproduce all analyses, along with instructions on how to download each CGM trace, are publicly available at <a href="https://github.com/Nathaniel-Fernandes/mage_algorithm_data" class="external-link uri">https://github.com/Nathaniel-Fernandes/mage_algorithm_data</a>. The public nature of CGM traces, manual MAGE values, and the algorithm allow additional validation of presented results by a community at large.</p>
 <p><strong>Funding Sources</strong>: NSF CAREER Award DMS-2044823 to IG</p>
 <p><strong>Acknowledgements</strong>: The source of subset of the data is the T1D Exchange, but the analyses, content and conclusions presented herein are solely the responsibility of the authors and have not been reviewed or approved by the T1D Exchange.</p>
 <p><strong>Disclosures</strong>: None</p>
 </div>
-<div class="section level1">
-<h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h1>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <p>[1] Kovatchev BP. Metrics for glycemic control—from HbA1c to continuous glucose monitoring. Nature Reviews Endocrinology. 2017 Jul;13(7):425-36.</p>
 <p>[2] Service FJ. Glucose variability. Diabetes. 2013 May;62(5):1398-404.</p>
 <p>[3] Service FJ, Molnar GD, Rosevear JW, Ackerman E, Gatewood LC, Taylor WF. Mean amplitude of glycemic excursions, a measure of diabetic instability. Diabetes. 1970 Sep 1;19(9):644-55.</p>
@@ -391,33 +376,26 @@ The accuracy of the proposed algorithm was evaluated against 45 manual calculati
 <p>[16] Dubosson F, Ranvier JE, Bromuri S, Calbimonte JP, Ruiz J, Schumacher M. The open D1NAMO dataset: A multi-modal dataset for research on non-invasive type 1 diabetes management. Informatics in Medicine Unlocked. 2018 Jan 1;13:92-100.</p>
 <p>[17] Broll S, Buchanan D, Chun E, Muschelli J, Fernandes N, Seo J, Shih J, Urbanek J, Schwenck J, Gaynanova I. iglu: Interpreting Glucose Data from Continuous Glucose Monitors. R package version 3.0.0. 2021 July 23. <a href="https://cran.r-project.org/package=iglu" class="external-link uri">https://cran.r-project.org/package=iglu</a>. Date Accessed: July 23, 2021.</p>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
+    <footer><div class="pkgdown-footer-left">
   <p></p>
 <p>Developed by Steve Broll, David Buchanan, Elizabeth Chun, John Muschelli, Nathaniel Fernandes, Jung Hoon Seo, Johnathan Shih, Jacek Urbanek, John Schwenck, Irina Gaynanova.</p>
 </div>
 
-<div class="pkgdown">
+<div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
-
 
   
 
