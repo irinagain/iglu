@@ -5,11 +5,6 @@
 
 <!-- badges: start -->
 
-[![Travis build
-status](https://api.travis-ci.com/irinagain/iglu.svg?branch=master)](https://app.travis-ci.com:443/github/irinagain/iglu)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/irinagain/iglu?branch=master&svg=true)](https://ci.appveyor.com/project/irinagain/iglu)
-
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/iglu)](https://cran.r-project.org/package=iglu)[![](https://cranlogs.r-pkg.org/badges/iglu)](https://CRAN.R-project.org/package=iglu)
 [![R-CMD-check](https://github.com/irinagain/iglu/workflows/R-CMD-check/badge.svg)](https://github.com/irinagain/iglu/actions)
 <!-- badges: end -->
