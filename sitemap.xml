@@ -88,6 +88,9 @@
     <loc>https://irinagain.github.io/iglu/reference/example_data_5_subject.html</loc>
   </url>
   <url>
+    <loc>https://irinagain.github.io/iglu/reference/example_meal.html</loc>
+  </url>
+  <url>
     <loc>https://irinagain.github.io/iglu/reference/gmi.html</loc>
   </url>
   <url>
@@ -152,6 +155,9 @@
   </url>
   <url>
     <loc>https://irinagain.github.io/iglu/reference/mage_ma_single.html</loc>
+  </url>
+  <url>
+    <loc>https://irinagain.github.io/iglu/reference/meal_metrics.html</loc>
   </url>
   <url>
     <loc>https://irinagain.github.io/iglu/reference/mean_glu.html</loc>
