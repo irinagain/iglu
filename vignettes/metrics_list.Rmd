@@ -28,6 +28,8 @@ library(iglu)
 |Coefficient of variation (CV) | cv_glu | [Rodbard (2009)](https://doi.org/10.1089/dia.2008.0132) | No |
 |CVmean (mean of daily CV) | cv_measures (CVmean) | [Umpierrez et al. (2018)](https://doi.org/10.1016/j.amjms.2018.09.010) | Yes |
 |CVsd (SD of daily CV) | cv_measures (CVsd) | [Umpierrez et al. (2018)](https://doi.org/10.1016/j.amjms.2018.09.010) | Yes |
+|Delta G (meal metric)| meal_metrics | [Service (2013)](https://doi.org/10.2337/db12-1396) | Yes|
+|Delta T (meal metric)| meal_metrics | [Service (2013)](https://doi.org/10.2337/db12-1396) | Yes |
 |eA1c (Estimated A1c) | ea1c | [Nathan et. al (2008)](https://doi.org/10.2337/dc08-0545)| No |
 |Episode Calculation | episode_calculation| | Yes | 
 |Episode Calculation Profile | epicalc_profile | | Yes | 
@@ -54,6 +56,7 @@ library(iglu)
 |Percent Above | above_percent | | No |
 |Percent Below | below_percent | | No |
 |Percent in range | in_range_percent | | No |
+|\% Baseline Recovery (meal metric)| meal_metrics | [Service (2013)](https://doi.org/10.2337/db12-1396) | Yes |
 |Quantiles | quantile_glu | | No |
 |Range | range_glu | | No |
 |Rate of change (ROC) | roc | [Clarke et al. (2009)](https://doi.org/10.1089/dia.2008.0138) | Yes |
