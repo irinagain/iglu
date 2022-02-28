@@ -21,3 +21,16 @@
 #' \item{gl}{glucose level as measured by CGM (mg/dL)}
 #' }
 "example_data_5_subject"
+
+#' @title Example CGM mealtime data
+#'
+#' @description Example of mealtimes data format for meal_metrics function,
+#' corresponds to example_data_1_subject data.
+#'
+#' @format A data.frame with 1 row and 3 columns, which are:
+#' \describe{
+#' \item{id}{identifier of subject}
+#' \item{meal}{meal type identifier}
+#' \item{mealtime}{time of meal}
+#' }
+"example_meal"
