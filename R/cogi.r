@@ -75,6 +75,7 @@ cogi <- function(data, targets = c(70,180), weights = c(.5,.35,.15)){
   out$id = sd_glu(data)$id
   out = out[,c(2,1)]
   colnames(out) = c("id", "COGI")
+  out$COGI = out$COGI*100 # convert to percent
 
   if (is_vector) {
     out$id = NULL

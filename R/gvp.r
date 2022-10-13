@@ -61,7 +61,7 @@ gvp = function(data) {
     added_length = sqrt(reading_gap^2+diffvec^2)
     base_length = length(na.omit(diffvec))*reading_gap
 
-    return(sum(added_length, na.rm = T)/sum(base_length, na.rm = T))
+    return((sum(added_length, na.rm = T)/sum(base_length, na.rm = T) - 1) * 100)
   }
 
   out = data %>%
