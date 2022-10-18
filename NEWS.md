@@ -1,3 +1,7 @@
+# iglu 3.3.2
+* Correct bug with ADRR that ignored time zone (worked incorrectly on daylight savings time dates)
+* Return COGI in percentage (rather than proportion)
+* Correct bug in gvp formula calculation
 
 # iglu 3.3.1
 * Correct bug that makes mage not work on data with time supplied as POSIXlt instead of POSIXct
