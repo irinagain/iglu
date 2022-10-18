@@ -26,7 +26,6 @@
 #' @param lower Lower bound used for hypoglycemia cutoff, in mg/dL. Default is 70
 #' @param upper Upper bound used for hyperglycemia cutoff, in mg/dL. Default is 140.
 #'
-#' @return
 #'
 #' @export
 #'

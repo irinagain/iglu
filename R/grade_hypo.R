@@ -24,7 +24,6 @@
 #' \%GRADE hypoglycemia is determined by calculating the percentage of
 #' GRADE score (see grade function) attributed to hypoglycemic glucose values.
 #'
-#' @return
 #'
 #' @export
 #'

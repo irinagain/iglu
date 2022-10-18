@@ -19,7 +19,6 @@
 #' values is passed, then a tibble object with just the median value is returned.
 #' as.numeric() can be wrapped around the latter to output just a numeric value.
 #'
-#' @return
 #'
 #' @export
 #'

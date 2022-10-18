@@ -15,8 +15,6 @@ If a data.frame object is passed, then a tibble object with
 two columns: subject id and corresponding median value is returned. If a vector of glucose
 values is passed, then a tibble object with just the median value is returned.
 as.numeric() can be wrapped around the latter to output just a numeric value.
-
-
 }
 \description{
 The function median_glu is a wrapper for the base function

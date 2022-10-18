@@ -17,8 +17,6 @@ If a data.frame object is passed, then a tibble object with
 two columns: subject id and corresponding \%GRADE hypoglycemia value is returned. If a vector of glucose
 values is passed, then a tibble object with just the \%GRADE hypoglycemia value is returned.
 as.numeric() can be wrapped around the latter to output just a numeric value.
-
-
 }
 \description{
 The function grade_hypo produces \%GRADE hypoglycemia values in a tibble object.
