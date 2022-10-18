@@ -44,7 +44,10 @@ adrr <- function(data){
   adrr_multi = function(data) {
     bgi = drr = id = NULL
     rm(list = c("id", "bgi", "drr"))
-    data$date = as.Date(data$time,format="%Y-%m-%d")
+
+    tz = attr(data$time, "tz")
+
+    data$date = as.Date(data$time, format="%Y-%m-%d", tz = tz)
     out = data %>%
       dplyr::filter(!is.na(gl)) %>%
       dplyr::group_by(id, date) %>%
