@@ -3,7 +3,7 @@
 input data for use with other functions.
 Typically, this function will process the data and return another dataframe.
 This function ensures that the returned data will be compitable with every
-function within the iglu package. All NAs will be removed. See Vignette for further details."><title>Data Pre-Processor — process_data • iglu</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Data Pre-Processor — process_data"><meta property="og:description" content="A helper function to assist in pre-processing the user-supplied
+function within the iglu package. All NAs will be removed. See Vignette for further details."><title>Data Pre-Processor — process_data • iglu</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Data Pre-Processor — process_data"><meta property="og:description" content="A helper function to assist in pre-processing the user-supplied
 input data for use with other functions.
 Typically, this function will process the data and return another dataframe.
 This function ensures that the returned data will be compitable with every
@@ -69,7 +69,7 @@ function within the <code>iglu</code> package. All NAs will be removed. See Vign
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">process_data</span><span class="op">(</span><span class="va">data</span>, <span class="va">id</span>, <span class="va">timestamp</span>, <span class="va">glu</span>, time_parser <span class="op">=</span> <span class="va">as.POSIXct</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">process_data</span><span class="op">(</span><span class="va">data</span>, <span class="va">id</span>, <span class="va">timestamp</span>, <span class="va">glu</span>, time_parser <span class="op">=</span> <span class="va">as.POSIXct</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -77,23 +77,34 @@ function within the <code>iglu</code> package. All NAs will be removed. See Vign
     <dl><dt>data</dt>
 <dd><p>User-supplied dataset containing continuous glucose monitor data. Must
 contain data for time and glucose readings at a minimum. Accepted formats are dataframe and tibble.</p></dd>
+
+
 <dt>id</dt>
 <dd><p>Optional column name (character string) corresponding to subject id column.
 If no value is passed, an id of 1 will be assigned to the data.</p></dd>
+
+
 <dt>timestamp</dt>
 <dd><p>Required column name (character string) corresponding to time values in data. The dates can be
 in any format parsable by as.POSIXct, or any format accepted by the parser passed to time_parser. See time_parser param for an explanation
 on how to handle arbitrary formats.</p></dd>
+
+
 <dt>glu</dt>
 <dd><p>Required column name (character string) corresponding to blood glucose values, mg/dl</p></dd>
+
+
 <dt>time_parser</dt>
 <dd><p>Optional function used to convert datetime strings to time objects. Defaults to as.POSIXct.
 If your times are in a format not parsable by as.POSIXct, you can parse a custom format by passing
 function(time_string) {strptime(time_string, format = &lt;format string&gt;)} as the time_parser parameter.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A processed dataframe object that cooperates with every other
+    
+
+<p>A processed dataframe object that cooperates with every other
 function within the iglu package - all column names and formats comply.</p>
     </div>
     <div class="section level2">
@@ -110,12 +121,12 @@ https://github.com/johnschwenck/bp</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"example_data_1_subject"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Process example data</span></span>
-<span class="r-in"><span class="va">processed</span> <span class="op">&lt;-</span> <span class="fu">process_data</span><span class="op">(</span><span class="va">example_data_1_subject</span>, id <span class="op">=</span> <span class="st">"id"</span>, timestamp <span class="op">=</span> <span class="st">"time"</span>, glu <span class="op">=</span> <span class="st">"gl"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">processed</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"example_data_1_subject"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Process example data</span></span></span>
+<span class="r-in"><span><span class="va">processed</span> <span class="op">&lt;-</span> <span class="fu">process_data</span><span class="op">(</span><span class="va">example_data_1_subject</span>, id <span class="op">=</span> <span class="st">"id"</span>, timestamp <span class="op">=</span> <span class="st">"time"</span>, glu <span class="op">=</span> <span class="st">"gl"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">processed</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             id                time  gl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    Subject 1 2015-06-06 16:50:27 153</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    Subject 1 2015-06-06 17:05:27 137</span>
@@ -3032,13 +3043,13 @@ https://github.com/johnschwenck/bp</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2913 Subject 1 2015-06-19 08:49:36 116</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2914 Subject 1 2015-06-19 08:54:36 116</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2915 Subject 1 2015-06-19 08:59:36 115</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"example_data_5_subject"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Process example data</span></span>
-<span class="r-in"><span class="va">processed_5subj</span> <span class="op">&lt;-</span> <span class="fu">process_data</span><span class="op">(</span><span class="va">example_data_5_subject</span>, id <span class="op">=</span> <span class="st">"id"</span>, timestamp <span class="op">=</span> <span class="st">"time"</span>, glu <span class="op">=</span> <span class="st">"gl"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">processed_5subj</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"example_data_5_subject"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Process example data</span></span></span>
+<span class="r-in"><span><span class="va">processed_5subj</span> <span class="op">&lt;-</span> <span class="fu">process_data</span><span class="op">(</span><span class="va">example_data_5_subject</span>, id <span class="op">=</span> <span class="st">"id"</span>, timestamp <span class="op">=</span> <span class="st">"time"</span>, glu <span class="op">=</span> <span class="st">"gl"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">processed_5subj</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              id                time  gl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1     Subject 1 2015-06-06 16:50:27 153</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2     Subject 1 2015-06-06 17:05:27 137</span>
@@ -16906,7 +16917,7 @@ https://github.com/johnschwenck/bp</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 13864 Subject 5 2015-03-11 07:54:28 244</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 13865 Subject 5 2015-03-11 07:59:28 245</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 13866 Subject 5 2015-03-11 08:04:28 238</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -16918,7 +16929,7 @@ https://github.com/johnschwenck/bp</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer></div>

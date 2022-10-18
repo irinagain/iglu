@@ -8,8 +8,8 @@
 <meta name="description" content="iglu">
 <title>MAGE Algorithm • iglu</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="MAGE Algorithm">
 <meta property="og:description" content="iglu">
@@ -68,7 +68,7 @@
 
 
 <script src="MAGE_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <main id="main"><div class="page-header">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>MAGE Algorithm</h1>
                         <h4 data-toc-skip class="author">Nathaniel Fernandes, Nhan Nguyen, Elizabeth Chun, Naresh Punjabi, Irina Gaynanova</h4>
             
@@ -235,44 +235,44 @@
 <p><a name="example_code"></a><br><em>Implementation</em><br>
 The newly developed algorithm for MAGE calculation can be found from version 3 onward in R package iglu [17] as well as the accompanying GUI via Shiny App [8] - both are free and open-source. Implementation in a script-based programming language like R allows the creation of reproducible scripts for all data processing and MAGE calculation steps, and the availability of a point-and-click GUI meets the needs of researchers with limited programming experience. By default, the algorithm uses <span class="math inline">\(\alpha = 5\)</span> and <span class="math inline">\(\beta = 32\)</span>, however these choices can be adjusted by the user.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># load package and example data</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://irinagain.github.io/iglu/">iglu</a></span><span class="op">)</span>
-<span class="co"># mage calculation using default parameters</span>
-<span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">example_data_5_subject</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span>
-<span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span>
-<span class="co">#&gt;   id         MAGE</span>
-<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Subject 1  87.2</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Subject 2 111. </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Subject 3 115. </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Subject 4  70.1</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Subject 5 146.</span>
-<span class="co"># Adjust default window sizes in mage calculation</span>
-<span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, short_ma <span class="op">=</span> <span class="fl">3</span>, long_ma <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>
-<span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span>
-<span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span>
-<span class="co">#&gt;   id         MAGE</span>
-<span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Subject 1  91.8</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Subject 2 110. </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Subject 3 114. </span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Subject 4  70.3</span>
-<span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Subject 5 146.</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># load package and example data</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://irinagain.github.io/iglu/">iglu</a></span><span class="op">)</span></span>
+<span><span class="co"># mage calculation using default parameters</span></span>
+<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">example_data_5_subject</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
+<span><span class="co">#&gt;   id         MAGE</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Subject 1  87.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Subject 2 111. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Subject 3 115. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Subject 4  70.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Subject 5 146.</span></span>
+<span><span class="co"># Adjust default window sizes in mage calculation</span></span>
+<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, short_ma <span class="op">=</span> <span class="fl">3</span>, long_ma <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
+<span><span class="co">#&gt;   id         MAGE</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Subject 1  91.8</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Subject 2 110. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Subject 3 114. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Subject 4  70.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Subject 5 146.</span></span></code></pre></div>
 <p>In addition to providing a numerical MAGE value, the software allows the creation of glucose trace plots that highlight the selected peaks and nadirs used for MAGE calculation.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># subset data to better see identified peaks and nadirs</span>
-<span class="va">fig1data</span> <span class="op">&lt;-</span> <span class="va">example_data_1_subject</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span>
-<span class="co"># plot using mage function with plot = TRUE and show_ma = TRUE </span>
-<span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig1data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, show_ma <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace - Subject 1"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># subset data to better see identified peaks and nadirs</span></span>
+<span><span class="va">fig1data</span> <span class="op">&lt;-</span> <span class="va">example_data_1_subject</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span></span>
+<span><span class="co"># plot using mage function with plot = TRUE and show_ma = TRUE </span></span>
+<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig1data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, show_ma <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace - Subject 1"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="MAGE_files/figure-html/figure%201-1.png" width="672"><strong>Figure 1:</strong> Glucose trace of Subject 2 with Type 2 diabetes from Broll et al. [8], the solid green line is a short MA with <span class="math inline">\(\alpha\)</span> = 5 and the solid orange line is a long MA with <span class="math inline">\(\beta\)</span> = 32. The peaks and nadirs occur between the crosses of short and long moving averages. By default, the algorithm calculates MAGE+ as in this profile the first segment to exceed one SD threshold is ascending. The provided graphical display in iglu software [17] automatically highlights only those peaks (red) and nadirs (blue) that are used for final calculation.</p>
 <p>   </p>
 <p>Additionally, the plot will highlight any gaps in the data due to missing readings.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># subset data to better show gaps</span>
-<span class="va">fig2data</span> <span class="op">&lt;-</span> <span class="va">example_data_1_subject</span><span class="op">[</span><span class="fl">200</span><span class="op">:</span><span class="fl">400</span>, <span class="op">]</span>
-<span class="co"># plot using mage function with plot = TRUE</span>
-<span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig2data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace with Gaps - Subject 1"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># subset data to better show gaps</span></span>
+<span><span class="va">fig2data</span> <span class="op">&lt;-</span> <span class="va">example_data_1_subject</span><span class="op">[</span><span class="fl">200</span><span class="op">:</span><span class="fl">400</span>, <span class="op">]</span></span>
+<span><span class="co"># plot using mage function with plot = TRUE</span></span>
+<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig2data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace with Gaps - Subject 1"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="MAGE_files/figure-html/figure%202-1.png" width="672"><strong>Figure 2</strong>. Glucose trace of Subject 5 with Type 2 diabetes from Broll et al. [8] with regions of missing glucose readings automatically highlighted using iglu software [17].</p>
 <p>   </p>
 <p><em>Assessment of Accuracy</em><br>
@@ -389,7 +389,7 @@ The accuracy of the proposed algorithm was evaluated against 45 manual calculati
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer>
