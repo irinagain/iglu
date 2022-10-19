@@ -30,7 +30,7 @@ read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
   if(class(data) %in% c('numeric', 'integer', 'double')){
     output = as.double(data)
   }
-  else if(class(data) == 'data.frame'){
+  else if(inherits(data, "data.frame")){
     indexes = which(names(data) %in% c(id, time, gl))
     if(length(indexes) < 3){
       stop("If passing a dataframe, make sure there are columns corresponding to id, time, and gl glucose values. At least one of
