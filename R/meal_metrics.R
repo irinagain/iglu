@@ -280,7 +280,7 @@ meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
                                   before_win = before_win, after_win = after_win,
                                   recovery_win = recovery_win, interpolate = interpolate,
                                   adjust_mealtimes = adjust_mealtimes, dt0 = dt0,
-                                  inter_gap = inter_gap),
+                                  inter_gap = inter_gap, tz = tz),
               .groups = "drop") %>%
     dplyr::ungroup()
 

@@ -43,7 +43,7 @@
 #' mag(example_data_5_subject)
 #'
 
-mag <- function (data, n = 60, dt0 = NULL, inter_gap = 45, tz = "") {
+mag <- function (data, n = 60L, dt0 = NULL, inter_gap = 45, tz = "") {
 
   mag_single <- function (data) {
     data_ip = CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
