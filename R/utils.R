@@ -2,8 +2,8 @@ check_data_columns =  function(data, id = 'id', time = 'time', gl = 'gl', time_c
   if (is.vector(data)) {
     output = as.double(data)
     output = data.frame(gl = output,
-               id = 1,
-               time = NA_real_)
+                        id = 1,
+                        time = NA_real_)
     attr(output, "is_vector") = TRUE
   } else {
     cols_in = c(id, time, gl) %in% names(data)
@@ -73,6 +73,10 @@ read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
 #' CGMS2DayByDay(example_data_1_subject)
 #'
 CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
+
+  # clean up environment
+  gap = miss_tf = y = NULL
+  rm(list = c("gap", "miss_tf", "y"))
 
   # complete.cases only works with POSIXct, not POSIXlt, so check for correct time format
   if (!lubridate::is.POSIXct(data$time)){
@@ -170,19 +174,56 @@ CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
   ### Interpolate on the ideal grid
   new <- as.data.frame(stats::approx(x = tr, y = g, xout = time_out))
 
-  ### Adjust to that there is no interpolation between values > inter_gap appart
-  ### Thanks to weather_interp function from weathercan R package for inspiration
-  inter_gap <- lubridate::minutes(inter_gap)
-  timediff <- lubridate::minutes(round(timediff))
-  which_gap <- tr[c(timediff > inter_gap, FALSE)]
-  missing <- lubridate::interval(which_gap + 1, which_gap + timediff[timediff > inter_gap] - 1)
-  missing <- vapply(new$x, FUN.VALUE = TRUE, FUN = function(x, missing) {
-    any(lubridate::`%within%`(x, missing))
-  }, missing = missing)
-  new$y[missing] <- NA
+  ### Adjust so that there is no interpolation between values > inter_gap apart
+  # first determine if such gaps exist and set the start+end points of such gaps to gap = TRUE
+  gaps <- tibble::tibble(
+    time = tr,
+    timediff = c(as.numeric(timediff), 0),
+    gap = (timediff > inter_gap) | (dplyr::lag(timediff, 1L, default = FALSE) > inter_gap)
+  )
+  # if any gaps exist, set any interpolated values in those times to NA
+  if (any(gaps$gap)) {
+    missing <- gaps %>%
+      dplyr::filter(gap) %>%
+      dplyr::mutate(
+        # starts have timediff greater than inter_gap
+        start = dplyr::if_else(timediff > inter_gap, time + 1, NA_real_),
+        # ends are the ones where the time before is the gap start
+        end = dplyr::if_else(dplyr::lag(timediff, 1L, default = FALSE) > inter_gap,
+                             time - 1, NA_real_),
+        # shift ends to match with their gap start time point
+        end = c(end[2:dplyr::n()], NA)
+      ) %>%
+      dplyr::filter(!is.na(start)) # filter down to one entry per gap
+
+    # create grid of interpolated time points that exist in each gap
+    # rule = 1 means points outside of xmin/xmax will be NA (no extrapolation)
+    intervals <- list(nrow(missing))
+    for (i in 1:nrow(missing)) {
+      grid = stats::approx(x = c(missing$start[i], missing$end[i]),
+                           y = c(missing$start[i], missing$end[i]),
+                           xout = time_out, rule = 1)$y
+      intervals[[i]] <- grid[!is.na(grid)]
+    }
+    # unlist interpolated gaps and reconvert to posixct
+    missing_times <- as.POSIXct(unlist(intervals), tz = tz, origin = "1970-01-01")
+    # create missing df to join with original interpolation
+    missing_df <- tibble::tibble(
+      x = missing_times,
+      miss_tf = TRUE
+    )
+    # join by time and set any times corresponding to gap (missing_times) to NA
+    merged <- dplyr::left_join(new, missing_df, by = "x") %>%
+      dplyr::mutate(
+        y = ifelse(is.na(miss_tf), y, NA)
+      )
+    # if no gaps, then keep all interpolated times
+  } else {
+    merged <- new
+  }
 
   # Next, from ti remove all the ones that are more than dt0 min away from t0
-  gd2d = matrix(new$y, nrow = ndays, byrow = TRUE)
+  gd2d = matrix(merged$y, nrow = ndays, byrow = TRUE)
 
   # Assign rownames that correspond to actual dates
   actual_dates = as.Date(minD) + lubridate::days(0:(ndays - 1))
