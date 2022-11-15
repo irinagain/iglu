@@ -3,7 +3,7 @@ title: "Lasagna Plots in iglu"
 author: "Steve Broll, Elizabeth Chun, Irina Gaynanova, David Buchanan"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Lasagna plots in iglu}
+  %\VignetteIndexEntry{Lasagna Plots in iglu}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
