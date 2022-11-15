@@ -299,11 +299,11 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 7</span></span></span>
 <span><span class="co">#&gt;   id          SDw SDhhmm SDwsh  SDdm   SDb SDbdm</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Subject 1  10.2   3.02  3.15  21.3  23.9  12.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Subject 1  10.2   3.04  3.15  21.3  23.9  12.2</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Subject 2  18.9  12.8   6.22  41.9  43.6  18.2</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Subject 3  17.6   9.99  4.86  20.1  32.7  26.8</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Subject 4  10.8   3.98  3.43  12.2  17.3  12.0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Subject 5  28.1  10.7   5.88  29.4  38.4  27.2</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Subject 5  28.1  13.3   5.88  29.4  38.4  27.2</span></span></code></pre></div>
 <p>There is an option to calculate for either sleep, wake, or both periods. By default, the metric will be calculated for the sleep period. To calculate for the wake period, set the “calculate” parameter to “wake”. The following call will calculate the metric for all readings outside of 11pm-6:59am</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_sleep_wake.html">calculate_sleep_wake</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, <span class="va">grade</span>, sleep_start <span class="op">=</span> <span class="fl">23</span>, sleep_end <span class="op">=</span> <span class="fl">7</span>, calculate <span class="op">=</span> <span class="st">"wake"</span><span class="op">)</span></span>

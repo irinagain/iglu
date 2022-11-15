@@ -147,6 +147,7 @@ When log = TRUE the glucose values, limits, midpoint, LLTR, and ULTR will all be
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">plot_lasagna</span><span class="op">(</span><span class="va">example_data_5_subject</span>, datatype <span class="op">=</span> <span class="st">"average"</span>, lasagnatype <span class="op">=</span> <span class="st">'timesorted'</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 5 rows containing missing values (`geom_tile()`).</span>
 <span class="r-plt img"><img src="plot_lasagna-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">plot_lasagna</span><span class="op">(</span><span class="va">example_data_5_subject</span>, lasagnatype <span class="op">=</span> <span class="st">"subjectsorted"</span>, LLTR <span class="op">=</span> <span class="fl">100</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_lasagna-2.png" alt="" width="700" height="433"></span>
