@@ -172,14 +172,19 @@ CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
 
   ### Adjust to that there is no interpolation between values > inter_gap appart
   ### Thanks to weather_interp function from weathercan R package for inspiration
-  inter_gap <- lubridate::minutes(inter_gap)
-  timediff <- lubridate::minutes(round(timediff))
-  which_gap <- tr[c(timediff > inter_gap, FALSE)]
-  missing <- lubridate::interval(which_gap + 1, which_gap + timediff[timediff > inter_gap] - 1)
-  missing <- vapply(new$x, FUN.VALUE = TRUE, FUN = function(x, missing) {
-    any(lubridate::`%within%`(x, missing))
-  }, missing = missing)
-  new$y[missing] <- NA
+  ### Adjust so that there is no interpolation between values > inter_gap apart
+  # First, determine if such gaps exist
+  gap_start = which(timediff > inter_gap)
+  ngaps = length(gap_start)
+  if (ngaps > 0){
+    # If gaps present, need to set to NA for each out
+    for (g in 1:ngaps){
+      # Identify affected times
+      time_covered = (new$x > tr[gap_start[g]]) & (new$x < tr[gap_start[g] + 1])
+      # Set those glucose values to NA
+      new$y[time_covered] = NA
+    }
+  }
 
   # Next, from ti remove all the ones that are more than dt0 min away from t0
   gd2d = matrix(new$y, nrow = ndays, byrow = TRUE)
