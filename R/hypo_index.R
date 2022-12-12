@@ -57,7 +57,7 @@ hypo_index <- function(data, LLTR = 80, b = 2, d = 30){
     dplyr::group_by(id) %>%
     dplyr::summarise(
       hypo_index = sum((LLTR - gl[gl < LLTR]) ^ b, na.rm = TRUE) /
-        (length(!is.na(gl)) * d)
+        (sum(!is.na(gl)) * d)
     )
   if (is_vector) {
     out$id = NULL
