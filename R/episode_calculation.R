@@ -16,6 +16,8 @@
 #'
 #' @param dur_length An integer or a double specifying a duration length in minutes
 #'
+#' @inheritParams CGMS2DayByDay
+#'
 #' @return A dataframe with
 #' \item{Hypo_ep}{A mean value that counts the number of hypogyclemia episodes per days}
 #' \item{Hyper_ep}{A mean value that counts the number of hypergyclemia episodes per days}
@@ -33,11 +35,9 @@
 #'
 #' @examples episode_calculation(example_data_5_subject, lv1_hypo=100, lv1_hyper= 120)
 #'
-# library(iglu)
-# library(ggplot2)
-# library(dplyr)
 
-episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120, lv2_hyper = 180, dur_length = 15) {
+episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120, lv2_hyper = 180,
+                                 dur_length = 15, dt0 = NULL, inter_gap = 45, tz = "") {
 
   episode_calculator <- function(data, params) {
 
@@ -48,8 +48,7 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
           # IF THE TIME SERIES DATA IS LESS THAN OR EQUAL TO THE THRESHOLD THAT WAS GIVEN, THOSE ARE TRUE. OTHERWISE, FALSE.
           if (is_hypo){
             hyp_episode = gl_by_id_ip <= params[[2]]
-          }
-          else{
+          } else{
             hyp_episode = gl_by_id_ip >= params[[3]]
           }
 
@@ -58,23 +57,20 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
           hyp_end_point = which(hyp_result %in% -1) + 1
           hyp_starting_point = which(hyp_result %in% 1) + 1
 
+          # add first/last points as start/end if they meet the threshold
           if (is_hypo){
                 if(gl_by_id_ip[length(gl_by_id_ip)] <= params[[2]]){
-                  hyp_end_point = c(hyp_end_point, length(hyp_result))
-                  hyp_end_point= sort(hyp_end_point)
+                  hyp_end_point = c(hyp_end_point, length(gl_by_id_ip))
                 }
                 if(gl_by_id_ip[1] <= params[[2]] ) {
-                  hyp_starting_point = c(hyp_starting_point, 1)
-                  hyp_starting_point= sort(hyp_starting_point)
+                  hyp_starting_point = c(1, hyp_starting_point)
                 }
           }else{
                 if(gl_by_id_ip[length(gl_by_id_ip)] >= params[[3]]){
-                  hyp_end_point = c(hyp_end_point, length(hyp_result))
-                  hyp_end_point= sort(hyp_end_point)
+                  hyp_end_point = c(hyp_end_point, length(gl_by_id_ip))
                 }
                 if(gl_by_id_ip[1] >= params[[3]] ) {
-                  hyp_starting_point = c(hyp_starting_point, 1)
-                  hyp_starting_point= sort(hyp_starting_point)
+                  hyp_starting_point = c(1, hyp_starting_point)
                 }
           }
 
@@ -157,6 +153,7 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
       result = NA; Average_Glucose=c(); Hypo_ep = c(); Hyper_ep= c();hypo_duration=c();hyper_duration=c();Hypo_mean=c();Hyper_mean=c();low_alert=c();high_alert=c();target_range=c();
       hypo_min_avg = c();hyper_min_avg = c();
 
+      # each row is a day of interpolated data
       while(i <= num_rows){
 
         params[[1]] = gl_by_id_ip[i,]
@@ -189,7 +186,8 @@ episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 
     ##################### Input Processing        #####################
     data_ip = gl_by_id_ip = NULL
     rm(list = c("data_ip", "gl_by_id_ip"))
-    data_ip = CGMS2DayByDay(data, dt0 = 5)
+
+    data_ip = CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
     gl_by_id_ip = data_ip[[1]]
     dt0 = data_ip[[3]]
     params = list(gl_by_id_ip, params[[1]], params[[2]], params[[3]], dt0)

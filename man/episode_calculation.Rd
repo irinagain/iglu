@@ -10,7 +10,10 @@ episode_calculation(
   lv2_hypo = 70,
   lv1_hyper = 120,
   lv2_hyper = 180,
-  dur_length = 15
+  dur_length = 15,
+  dt0 = NULL,
+  inter_gap = 45,
+  tz = ""
 )
 }
 \arguments{
@@ -25,6 +28,12 @@ episode_calculation(
 \item{lv2_hyper}{A double specifying a hyperglycemia threshold for level 2}
 
 \item{dur_length}{An integer or a double specifying a duration length in minutes}
+
+\item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
+
+\item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 A dataframe with
