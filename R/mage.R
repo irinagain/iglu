@@ -60,7 +60,7 @@ mage_ma <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'plus', '
   rm(list = c("id", ".", "MAGE"))
 
   data = check_data_columns(data)
-  is_vector = attr(data, "is_vector")
+  is_vector = attr(data, "is_vector") # TODO: is this check really necessary?
 
   out <- data %>%
     dplyr::filter(!is.na(gl)) %>%
@@ -90,7 +90,7 @@ mage_sd <- function(data, sd_multiplier = 1){
   abs_diff_mean = gl = id = NULL
   rm(list = c("gl", "id", "abs_diff_mean"))
   data = check_data_columns(data)
-  is_vector = attr(data, "is_vector")
+  is_vector = attr(data, "is_vector") # TODO: if remove below, then remove here
 
   out = data %>%
     dplyr::filter(!is.na(gl)) %>%
@@ -101,9 +101,9 @@ mage_sd <- function(data, sd_multiplier = 1){
         abs_diff_mean[abs_diff_mean > (sd_multiplier * sd(gl, na.rm = TRUE))],
         na.rm = TRUE)
     )
-  #if (is_vector) {
-  #  out$id = NULL
-  #}
+  if (is_vector) { # TODO: can remove - will just output 2 columns instead of 1
+   out$id = NULL
+  }
   return(out)
 
 }
