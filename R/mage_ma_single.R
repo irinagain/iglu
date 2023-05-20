@@ -46,110 +46,120 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
 
   ## 1. Preprocessing
   # 1a. Clean up Global Environment
-  MA_Short = MA_Long = DIFF = TP = id = .xmin = .xmax = NULL
-  rm(list = c("MA_Short", "MA_Long", "DIFF", "TP", ".xmin", ".xmax", "id"))
+  MA_Short = MA_Long = DELTA_SHORT_LONG = TP = id = .xmin = .xmax = NULL # TODO: if we're deleting them in the next line, isn't this extraneous??? I guess it is necessary: if it's not in the environment then it will throw a warning
+  rm(list = c("MA_Short", "MA_Long", "DELTA_SHORT_LONG", "TP", ".xmin", ".xmax", "id"))
 
   # 1b. Sanitize the input data
   data = check_data_columns(data)
 
-  # use cgms2daybyday to interpolate over uniform grid
+  # 1c. Split input data into discrete dates/time
+  # > Use cgms2daybyday to interpolate over uniform grid
   data_ip <- CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
-  # find first day and number of days
-  day_one = lubridate::as_datetime(data_ip[[2]][1])
-  ndays = length(data_ip[[2]])
-  # generate grid times by starting from day one and cumulatively summing
-  time_ip =  day_one + lubridate::minutes(cumsum(
-    # replicate dt0 by number of measurements (total minutes/dt0)
-    rep(data_ip$dt0, ndays * 24 * 60 /data_ip$dt0)))
 
-  # recalculate short_ma and long_ma because short and long are based on 5 minutes originally
-  # so multiply by 5 to get length in min and divide by dt0 to get rounded number
-  # of measurements that are roughly equal to short/long ma original definition
+  # > Find first day and number of days
+  day_one = lubridate::as_datetime(data_ip$actual_dates[1])
+  ndays = length(data_ip$actual_dates)
+
+  # Generate grid times by starting from day one and cumulatively summing
+  # > replicate dt0 by number of measurements (total minutes/dt0)
+  time_ip =  day_one + lubridate::minutes(
+    cumsum(
+      rep(data_ip$dt0, ndays * 24 * 60 /data_ip$dt0)
+    )
+  )
+
+  # 1d. Recalculate short_ma and long_ma because short and long are based on 5 minutes originally
+  # > Multiply by 5 to get length in min
+  # > Divide by dt0 to get rounded number of measurements that are roughly equal to short/long ma original definition
   short_ma = round(short_ma*5/data_ip$dt0)
   long_ma = round(long_ma*5/data_ip$dt0)
 
   ## 2. Process the Data
-
-  # change to interpolated data (times and glucose)
-  .data <- data %>%
-    # change data into id, interpolated times, interpolated glucose (t to get rowwise)
+  # 2a. Change to interpolated data (times and glucose)
+  # > change data into id, interpolated times, interpolated glucose (t to get rowwise)
+  # > drop NA rows before first glucose reading
+  # > then drop NA rows after last glucose reading
+  .data <- data %>% # TODO: deprecated function - need some regression tests
     dplyr::summarise(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d))) %>%
-    # drop NA rows before first glucose reading
     dplyr::slice(which(!is.na(gl))[1]:dplyr::n()) %>%
-    # then drop NA rows after last glucose reading
-    dplyr::slice(1:utils::tail(which(!is.na(.data$gl)), 1))
+    dplyr::slice(1:utils::tail(which(!is.na(.data$gl)), 1)
+  )
 
-  # Check whether need to adjust long_ma depending on the size
-  nmeasurements = nrow(.data)
-  if (nmeasurements < 7){
-    warning("The number of measurements is too small for MAGE calculation.")
-    return(NA)
-  }else if (nmeasurements < long_ma){
-    warning("The total number of measurements is smaller than the long moving average. The value is adjusted to match.")
-    long_ma = nmeasurements
-  }
-
+  # 2b. Sanity Checks
+  # 2b1. By definition, long > short MA. Note: could swap automatically, but might confuse user => prefer being explicit.
   if (short_ma >= long_ma){
     warning("The short moving average window size should be smaller than the long moving average window size for correct MAGE calculation. Return NA.")
     return(NA)
   }
 
-  # check if interpolation creates large gaps (longer than 12 hours)
+  # 2b2. Is there sufficient data?
+  nmeasurements = nrow(.data)
+  if (nmeasurements < 7){
+    warning("The number of measurements is too small for MAGE calculation.")
+    return(NA)
+  } else if (nmeasurements < long_ma){
+    warning("The total number of measurements is smaller than the long moving average. The value is adjusted to match: long_ma = # measurements.") # TODO: it doesn't really make sense to set these equal b/c long ma is just a horizontal line (mean of all data points) - should we force user to explicitly set it like 2b1???
+    long_ma = nmeasurements
+  }
+
+  # 2b3. Does interpolation create large gaps (longer than 12 hours)?
+  # Label NA glucose as gap (gap = 1)
   gaps <- .data %>%
-    # label NA glucose as gap (gap = 1)
     dplyr::mutate(gap = dplyr::if_else(is.na(gl), 1, 0))
-  # find run length encoding of gap column
+
+  # Find run length encoding of gap column
+  # Subset to only runs corresponding to gaps
   runlen <- rle(gaps$gap)
-  # subset to only runs corresponding to gaps
   runlen <- runlen$lengths[runlen$values == 1]
-  # if any gap run is longer than 12 hours, return message
+
+  # If any gap run is longer than 12 hours, return message
   # since runlen counts by measurements, compare to number of measurements corresponding to 12hrs (720 mins)
   # take ceiling and add 1 to make edge cases less likely to give this message
   if (any(runlen > (ceiling(720/data_ip$dt0) + 1))) {
     message(paste0("Gap found in data for subject id: ", .data$id[1], ", that exceeds 12 hours."))
   }
 
-  # 2a. Calculate the moving average values
+  # 2c. Calculate the moving average values
   .data <- .data %>%
-    # rollmean doesn't work for NA's, switch to rollapply
+    # rollmean doesn't work for NA's, switch to rollapply - # TODO: this seems like a development comment not critical to & obscuring computation. Remove?
     dplyr::mutate(MA_Short = zoo::rollapply(gl, width = short_ma, FUN = mean,
-                                            # apply na.rm = TRUE to function mean
+                                            # apply na.rm = TRUE to function mean # TODO: this seems like a development comment not critical to & obscuring computation. Remove?
                                             align = 'right', fill = NA, na.rm = TRUE),
                   MA_Long  = zoo::rollapply(gl, width = long_ma, FUN = mean,
-                                            # apply na.rm = TRUE to function mean
+                                            # apply na.rm = TRUE to function mean # TODO: this seems like a development comment not critical to & obscuring computation. Remove?
                                             align = 'right', fill = NA, na.rm = TRUE)) %>%
     # fill in leading NA's from using rolling mean
     dplyr::mutate(MA_Short = replace(MA_Short, 1:short_ma, MA_Short[short_ma]),
                   MA_Long  = replace(MA_Long, 1:long_ma, MA_Long[long_ma]),
-                  DIFF = MA_Short - MA_Long)
+                  DELTA_SHORT_LONG = MA_Short - MA_Long)
 
-  # 2b. Create a preallocated list of crossing point ids & type
-  # Why is this a thousand? This is not great.
-  list_cross <- list("id" = rep.int(NA, 1000), "type" = rep.int(NA, 1000))
+  # 2d. Create a preallocated list of crossing point ids & type
+  # Why is this a thousand? This is not great. # FIXED
+  list_cross <- list("id" = rep.int(NA, nmeasurements), "type" = rep.int(NA, nmeasurements))
   list_cross$id[1] <- 1
-  list_cross$type[1] <- ifelse(.data$DIFF[1] > 0, 1, 0)
+  types = list2env(list(REL_MIN=0, REL_MAX=1))
+  list_cross$type[1] <- ifelse(.data$DELTA_SHORT_LONG[1] > 0, types$REL_MAX, types$REL_MIN)
   count = 1
-  for(i in seq_along(.data$DIFF)) {
-    if(i >= 2 && !is.na(.data$DIFF[i]) && !is.na(.data$DIFF[i-1])) {
+  for(i in 2:length(.data$DELTA_SHORT_LONG)) {
+    if(!is.na(.data$DELTA_SHORT_LONG[i]) && !is.na(.data$DELTA_SHORT_LONG[i-1])) {
       # crossing point if previous DIFF changes sign or goes to 0
-      if(.data$DIFF[i] * .data$DIFF[i-1] < 0 ||
-         (.data$DIFF[i] == 0 && .data$DIFF[i-1] != 0)) {
+      if(.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[i-1] < 0 || (.data$DELTA_SHORT_LONG[i] == 0 && .data$DELTA_SHORT_LONG[i-1] != 0)) {
         count <- count + 1
         list_cross$id[count] <- i
-        if(.data$DIFF[i] < .data$DIFF[i-1]) {
-          list_cross$type[count] = 0
-          # 0 means short crossed below so relative minimum
+        if(.data$DELTA_SHORT_LONG[i] < .data$DELTA_SHORT_LONG[i-1]) {
+          list_cross$type[count] = types$REL_MIN
         } else {
-          list_cross$type[count] = 1
+          list_cross$type[count] = types$REL_MAX
         }
       }
     }
   }
+
   # Add last point to capture end variation
   list_cross$id[count+1] <- nrow(.data)
-  list_cross$type[count+1] <- ifelse(.data$DIFF[nrow(.data)] > 0, 1, 0)
+  list_cross$type[count+1] <- ifelse(.data$DELTA_SHORT_LONG[nrow(.data)] > 0, 1, 0)
 
-  # 2c. Filter for non-na values then combine into a table
+  # 2e. Filter for non-na values then combine into a table
   list_cross$id <- list_cross$id[!is.na(list_cross$id)]
   list_cross$type <- list_cross$type[!is.na(list_cross$type)]
 
