@@ -142,7 +142,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   count = 1
   for(i in 2:length(.data$DELTA_SHORT_LONG)) {
     if(!is.na(.data$DELTA_SHORT_LONG[i]) && !is.na(.data$DELTA_SHORT_LONG[i-1])) {
-      # crossing point if previous DIFF changes sign or goes to 0
+      # crossing point if DELTA changes sign or curr DELTA is 0
       if(.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[i-1] < 0 || (.data$DELTA_SHORT_LONG[i] == 0 && .data$DELTA_SHORT_LONG[i-1] != 0)) {
         count <- count + 1
         list_cross$id[count] <- i
@@ -155,31 +155,30 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     }
   }
 
-  # Add last point to capture end variation
+  # Add last point to capture excursion at end
   list_cross$id[count+1] <- nrow(.data)
-  list_cross$type[count+1] <- ifelse(.data$DELTA_SHORT_LONG[nrow(.data)] > 0, 1, 0)
+  list_cross$type[count+1] <- ifelse(.data$DELTA_SHORT_LONG[nrow(.data)] > 0, types$REL_MAX, types$REL_MIN)
 
-  # 2e. Filter for non-na values then combine into a table
+  # Filter for non-na values then combine into a table
   list_cross$id <- list_cross$id[!is.na(list_cross$id)]
   list_cross$type <- list_cross$type[!is.na(list_cross$type)]
 
   crosses <- do.call(cbind, list_cross)
 
-  # 2d. Calculate min and max glucose values from ids and types in crosses
-  #     - store indexes for plotting later
-  minmax <- numeric(0) # dynamicly growing, could pre-allocate based on number of crossing
-  indexes <- numeric(0)
-  for(i in 1:(nrow(crosses)-1)) {
+  # 2e. Calculate min and max glucose values from ids and types in crosses + store indexes for plotting later
+  num_extrema = nrow(crosses)-1
+  minmax <- rep(NA_real_, num_extrema) # dynamically growing, could pre-allocate based on number of crossing - FIXED
+  indexes <- rep(NA_real_, num_extrema)
+  for(i in 1:num_extrema) {
     s1 <- crosses[i,1]    # indexes of crossing points
     s2 <- crosses[i+1,1]
 
-    if(crosses[i, "type"] == 0) {
-      minmax <- append(minmax, min(.data$gl[s1:s2], na.rm = TRUE))
-      # which.min/max will ignore NAs (index includes NAs but not counted max/min)
-      indexes <- append(indexes,which.min(.data$gl[s1:s2])+s1-1) # append index to array
+    if(crosses[i, "type"] == types$REL_MIN) {
+      minmax[i] <- min(.data$gl[s1:s2], na.rm = TRUE)
+      indexes[i] <- which.min(.data$gl[s1:s2])+s1-1 # which.min/max will ignore NAs (index includes NAs but not counted max/min) # TODO: even I don't understand this comment LOL. I think it's extraneous
     } else {
-      minmax <- append(minmax, max(.data$gl[s1:s2], na.rm = TRUE))
-      indexes <- append(indexes, which.max(.data$gl[s1:s2])+s1-1)
+      minmax[i] <- max(.data$gl[s1:s2], na.rm = TRUE)
+      indexes[i] <- which.max(.data$gl[s1:s2])+s1-1
     }
   }
 
