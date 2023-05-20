@@ -141,7 +141,11 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   list_cross$type[1] <- ifelse(.data$DELTA_SHORT_LONG[1] > 0, types$REL_MAX, types$REL_MIN)
   count = 1
   for(i in 2:length(.data$DELTA_SHORT_LONG)) {
-    if(!is.na(.data$DELTA_SHORT_LONG[i]) && !is.na(.data$DELTA_SHORT_LONG[i-1])) {
+    if(
+      !is.na(.data$gl[i]) && !is.na(.data$gl[i-1]) &&
+      !is.na(.data$DELTA_SHORT_LONG[i]) && !is.na(.data$DELTA_SHORT_LONG[i-1])
+    ) {
+
       # crossing point if DELTA changes sign or curr DELTA is 0
       if(.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[i-1] < 0 || (.data$DELTA_SHORT_LONG[i] == 0 && .data$DELTA_SHORT_LONG[i-1] != 0)) {
         count <- count + 1
@@ -174,6 +178,10 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     s2 <- crosses[i+1,1]
 
     if(crosses[i, "type"] == types$REL_MIN) {
+      print(s1)
+      print(s2)
+      print(.data$gl[s1:s2])
+      print("\n")
       minmax[i] <- min(.data$gl[s1:s2], na.rm = TRUE)
       indexes[i] <- which.min(.data$gl[s1:s2])+s1-1 # which.min/max will ignore NAs (index includes NAs but not counted max/min) # TODO: even I don't understand this comment LOL. I think it's extraneous
     } else {
@@ -330,8 +338,8 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     }
 
     # 4d. Return plot
-    return(.p)
-    #return(plotly::ggplotly(.p))
+    # return(.p)
+    # return(plotly::ggplotly(.p))
   }
 
   # 5. Return MAGE calculation
