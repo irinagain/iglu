@@ -79,7 +79,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   # > change data into id, interpolated times, interpolated glucose (t to get rowwise)
   # > drop NA rows before first glucose reading
   # > then drop NA rows after last glucose reading
-  .data <- data %>% # TODO: deprecated function - need some regression tests
+  .data <- data %>% # TODO: deprecated function - need some regression tests b4 change
     dplyr::summarise(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d))) %>%
     dplyr::slice(which(!is.na(gl))[1]:dplyr::n()) %>%
     dplyr::slice(1:utils::tail(which(!is.na(.data$gl)), 1)
@@ -178,10 +178,6 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     s2 <- crosses[i+1,1]
 
     if(crosses[i, "type"] == types$REL_MIN) {
-      print(s1)
-      print(s2)
-      print(.data$gl[s1:s2])
-      print("\n")
       minmax[i] <- min(.data$gl[s1:s2], na.rm = TRUE)
       indexes[i] <- which.min(.data$gl[s1:s2])+s1-1 # which.min/max will ignore NAs (index includes NAs but not counted max/min) # TODO: even I don't understand this comment LOL. I think it's extraneous
     } else {
@@ -216,7 +212,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   while(n < length(minmax)) {
     height1 <- minmax[n+1] - minmax[n]
     # Redefined variable type, not great
-    type <- crosses[n+1, "type"]  ## crosses has 1 more element so add 1
+    type <- crosses[n+1, "type"]  ## crosses has 1 more element (from line 163-164) so add 1
 
     # Check if excursion is above SD. If smaller - go to next excursion.
     if(abs(height1) > standardD) {
@@ -233,14 +229,9 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
           height2 <- minmax[n+1]-minmax[n]
 
           if(abs(height2) >= standardD) { # append height2 to height
-            tp_indexes <- append(tp_indexes, indexes[n])
-            if(nadir2peak == 1) {
-              heights <- append(heights, abs(height2))
-              tp_indexes <- append(tp_indexes, indexes[n+1])
-            } else {
-              heights <- append(heights, abs(height2))
-              tp_indexes <- append(tp_indexes, indexes[n+1])
-            }
+            tp_indexes <- append(tp_indexes, indexes[n]) # TODO: combine into one?
+            tp_indexes <- append(tp_indexes, indexes[n+1])
+            heights <- append(heights, abs(height2))
           }
         }
         else {
@@ -262,7 +253,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
               n <- n+x
             }
             else {
-              # this implicitly assumes you hvae min/max/min/max always alternating
+              # this implicitly assumes you hvae min/max/min/max always alternating - does not work w/ GAPS
               x <- x + 2
             }
           }
