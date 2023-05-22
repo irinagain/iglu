@@ -55,6 +55,7 @@ shinyUI(fluidPage(
                                                                                `eA1C` = 'ea1c',
                                                                                `Episode Calculation` = 'episode_calculation',
                                                                                `GMI` = 'gmi',
+                                                                               `GRI` = 'gri',
                                                                                `GRADE` = 'grade',
                                                                                `GRADE Euglycemia` = 'grade_eugly',
                                                                                `GRADE Hyperglycemia` = 'grade_hyper',

@@ -72,7 +72,7 @@ shinyServer(function(input, output) {
   #add metric based on the parameter it takes in
   parameter_type <- reactive({
     #metric is considered as parameter type "none" if it only requires data as a parameter
-    if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "episode_calculation", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi",
+    if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "episode_calculation", "grade", "gri", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi",
                            "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
       return("none")
     }
