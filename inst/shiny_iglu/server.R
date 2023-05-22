@@ -849,6 +849,11 @@ shinyServer(function(input, output) {
     helpText("Enter the ID of a subject to display their AGP Report")
   })
 
+  output$agp_span <- renderUI({
+    sliderInput("agp_span", "Enter amount of smoothing for AGP plot",
+                min = 0.1, max = 0.7, value = 0.3, step = 0.1)
+  })
+
   agp_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
 
     validate (
@@ -896,7 +901,8 @@ shinyServer(function(input, output) {
 
     library(iglu)
     data = agp_data()
-    string = paste('iglu::plot_agp(data = data)')
+    string = paste0('iglu::plot_agp(data = data, smooth = TRUE, ', 'span = ',
+                    input$agp_span, ')')
     eval(parse(text = string))
   })
 
