@@ -167,7 +167,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   list_cross$id <- list_cross$id[!is.na(list_cross$id)]
   list_cross$type <- list_cross$type[!is.na(list_cross$type)]
 
-  crosses <- do.call(cbind, list_cross)
+  crosses <- do.call(cbind.data.frame, list_cross)
 
   # 2e. Calculate min and max glucose values from ids and types in crosses + store indexes for plotting later
   num_extrema = nrow(crosses)-1
@@ -205,65 +205,76 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   } else { -1 }
 
   n <- 1
-  tp_indexes <- numeric()
 
-  # currently, if the first is below, it moves on to next point (potentially want to accumulate)
-  # can we do this in vector form?
-  while(n < length(minmax)) {
-    height1 <- minmax[n+1] - minmax[n]
-    # Redefined variable type, not great
-    type <- crosses[n+1, "type"]  ## crosses has 1 more element (from line 163-164) so add 1
+  tp_indexes <- indexes
 
-    # Check if excursion is above SD. If smaller - go to next excursion.
-    if(abs(height1) > standardD) {
-      # Check if it was specified whether MAGE+ or MAGE- should be computed.
-      # If not specified (-1), determine based on value of height1
-      # height1 > 0 means it's nadir to peak
-      if(nadir2peak == -1) { # Assigns nadir2peak
-        nadir2peak <- ifelse(height1 > 0, 1, 0)
-      }
+  # Computation:
+  # 1. collect all tp ids
+  # tp_indexes <- sapply(2:nrow(crosses), function(i) {
+  #   # ASSUMES alternating MIN, MAX, MIN, ... (data should be in that arrangement based on slection of indices)
+  #   if (crosses$type[i] == types$REL_MAX) { return }
+  # })
 
-      # Once plus or minus is specified, only look at those excursions that match the type
-      if(nadir2peak == type) {
-        if(n+1 == length(minmax)) { # covers case where one before last
-          height2 <- minmax[n+1]-minmax[n]
+  # 2. Filter the excursions maybe get ids:
 
-          if(abs(height2) >= standardD) { # append height2 to height
-            tp_indexes <- append(tp_indexes, indexes[n]) # TODO: combine into one?
-            tp_indexes <- append(tp_indexes, indexes[n+1])
-            heights <- append(heights, abs(height2))
-          }
-        }
-        else {
-          x <- 1
-          height2 <- 0
-          while(!(abs(height2) >= standardD) && n+x+1 <= length(minmax)) {  # checks bounds
-            height2 <- minmax[n+x+1]-minmax[n+x]
-
-            if(abs(height2) >= standardD || n+x+1 == length(minmax)-1 || n+x+1 == length(minmax)) {
-              # appends height2 to height
-              tp_indexes <- append(tp_indexes, indexes[n])
-              if(nadir2peak == 1) {
-                heights <- append(heights, abs(minmax[n]- max(minmax[n:(n+x+1)])))
-                tp_indexes <- append(tp_indexes, indexes[n + which.max(minmax[n:(n+x+1)])-1])
-              } else {
-                heights <- append(heights, abs(minmax[n]- min(minmax[n:(n+x+1)])))
-                tp_indexes <- append(tp_indexes, indexes[n + which.min(minmax[n:(n+x+1)])-1])
-              }
-              n <- n+x
-            }
-            else {
-              # this implicitly assumes you hvae min/max/min/max always alternating - does not work w/ GAPS
-              x <- x + 2
-            }
-          }
-        }
-      }
-    }
-
-    # increment loop variable
-    n <- n + 1
-  }
+  # tp_indexes <- numeric()
+  # # currently, if the first is below, it moves on to next point (potentially want to accumulate)
+  # # can we do this in vector form?
+  # while(n < length(minmax)) {
+  #   height1 <- minmax[n+1] - minmax[n]
+  #   # Redefined variable type, not great
+  #   type <- crosses[n+1, "type"]  ## crosses has 1 more element (from line 163-164) so add 1
+  #
+  #   # Check if excursion is above SD. If smaller - go to next excursion.
+  #   if(abs(height1) > standardD) {
+  #     # Check if it was specified whether MAGE+ or MAGE- should be computed.
+  #     # If not specified (-1), determine based on value of height1
+  #     # height1 > 0 means it's nadir to peak
+  #     if(nadir2peak == -1) { # Assigns nadir2peak
+  #       nadir2peak <- ifelse(height1 > 0, 1, 0)
+  #     }
+  #
+  #     # Once plus or minus is specified, only look at those excursions that match the type
+  #     if(nadir2peak == type) {
+  #       if(n+1 == length(minmax)) { # covers case where one before last
+  #         height2 <- minmax[n+1]-minmax[n]
+  #
+  #         if(abs(height2) >= standardD) { # append height2 to height
+  #           tp_indexes <- append(tp_indexes, indexes[n]) # TODO: combine into one?
+  #           tp_indexes <- append(tp_indexes, indexes[n+1])
+  #           heights <- append(heights, abs(height2))
+  #         }
+  #       }
+  #       else {
+  #         x <- 1
+  #         height2 <- 0
+  #         while(!(abs(height2) >= standardD) && n+x+1 <= length(minmax)) {  # checks bounds
+  #           height2 <- minmax[n+x+1]-minmax[n+x]
+  #
+  #           if(abs(height2) >= standardD || n+x+1 == length(minmax)-1 || n+x+1 == length(minmax)) {
+  #             # appends height2 to height
+  #             tp_indexes <- append(tp_indexes, indexes[n])
+  #             if(nadir2peak == 1) {
+  #               heights <- append(heights, abs(minmax[n] - max(minmax[n:(n+x+1)])))
+  #               tp_indexes <- append(tp_indexes, indexes[n + which.max(minmax[n:(n+x+1)])-1])
+  #             } else {
+  #               heights <- append(heights, abs(minmax[n]- min(minmax[n:(n+x+1)])))
+  #               tp_indexes <- append(tp_indexes, indexes[n + which.min(minmax[n:(n+x+1)])-1])
+  #             }
+  #             n <- n+x
+  #           }
+  #           else {
+  #             # this implicitly assumes you hvae min/max/min/max always alternating - does not work w/ GAPS
+  #             x <- x + 2
+  #           }
+  #         }
+  #       }
+  #     }
+  #   }
+  #
+  #   # increment loop variable
+  #   n <- n + 1
+  # }
 
   ## 4. Generate Plot of Data (if specified)
   if(plot) {
@@ -299,8 +310,9 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     .gaps <- data.frame(.xmin = .gaps$time[c(TRUE, FALSE)],
                         .xmax = .gaps$time[c(FALSE, TRUE)])
 
-    #  .ymin <- min(.data$gl) #extraneous for ggplot; need for plotly
-    #  .ymax <- max(.data$gl)
+    # extraneous for ggplot; need for plotly
+    .ymin <- min(.data$gl)
+    .ymax <- max(.data$gl)
 
     # 4c. Generate ggplot
     colors <- c("Short MA" = "#009E73", "Long MA" = "#D55E00","Nadir" = "blue", "Peak"="red")
@@ -312,8 +324,8 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
       ggplot2::geom_rect(data=.gaps, ggplot2::aes(
         xmin=.xmin,
         xmax=.xmax,
-        ymin=-Inf,
-        ymax=Inf, fill = 'Gap'),
+        ymin=.ymin,
+        ymax=.ymax, fill = 'Gap'),
         alpha=0.2, inherit.aes = FALSE, show.legend = T, na.rm = TRUE) +
       ggplot2::theme(
         legend.key = element_rect(fill='white'),
@@ -330,7 +342,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
 
     # 4d. Return plot
     # return(.p)
-    # return(plotly::ggplotly(.p))
+    return(plotly::ggplotly(.p))
   }
 
   # 5. Return MAGE calculation
