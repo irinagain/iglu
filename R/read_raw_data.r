@@ -98,6 +98,11 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     data <- data[,c("Time","Historic Glucose (mg/dL)")]
     colnames(data) <- c('time','gl')
     data$id = id
+
+    # reformat data types
+    data$gl = as.numeric(data$gl)
+    data$time = as.POSIXct(data$time, format='%m/%d/%Y %H:%M')
+
     data = data[,c(3,1,2)]
     return(data)
   }
