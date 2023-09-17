@@ -72,7 +72,7 @@ shinyServer(function(input, output) {
   #add metric based on the parameter it takes in
   parameter_type <- reactive({
     #metric is considered as parameter type "none" if it only requires data as a parameter
-    if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "episode_calculation", "grade", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi",
+    if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "episode_calculation", "grade", "gri", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi",
                            "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
       return("none")
     }
@@ -849,6 +849,11 @@ shinyServer(function(input, output) {
     helpText("Enter the ID of a subject to display their AGP Report")
   })
 
+  output$agp_span <- renderUI({
+    sliderInput("agp_span", "Enter amount of smoothing for AGP plot",
+                min = 0.1, max = 0.7, value = 0.3, step = 0.1)
+  })
+
   agp_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
 
     validate (
@@ -896,7 +901,8 @@ shinyServer(function(input, output) {
 
     library(iglu)
     data = agp_data()
-    string = paste('iglu::plot_agp(data = data)')
+    string = paste0('iglu::plot_agp(data = data, smooth = TRUE, ', 'span = ',
+                    input$agp_span, ')')
     eval(parse(text = string))
   })
 

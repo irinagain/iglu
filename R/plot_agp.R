@@ -4,11 +4,15 @@
 #' The function plot_agp produces an AGP plot that collapses all data into a single 24 hr "modal day".
 #'
 #' @usage
-#' plot_agp(data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", title = FALSE)
+#' plot_agp(data, LLTR = 70, ULTR = 180, smooth = TRUE, span = 0.3, dt0 = NULL,
+#' inter_gap = 45, tz = "", title = FALSE)
 #'
 #' @inheritParams CGMS2DayByDay
 #' @inheritParams plot_glu
 #' @param title Indicator whether the title of the plot should display the subject ID. The default is FALSE (no title).
+#' @param smooth Boolean indicating whether quantiles should be smoothed before plotting, default is TRUE
+#' @param span Optional parameter indicating span for loess smoothing. Default is 0.3, larger values result in more smoothing,
+#' recommended to choose between 0.1 to 0.7.
 #'
 #' @return Plot of a 24 hr modal day collapsing all data to a single day.
 #'
@@ -17,11 +21,13 @@
 #' @author Elizabeth Chun
 #'
 #' @details
-#' Only a single subject's data may be plotted. The horizontal green lines represent the target range, default is 70-180 mg/dL. The black line is the median glucose value for each time of day. The dark blue shaded area
-#' represents 50\% of glucose values - those between the 25th and 75 quartiles. The light
-#' blue shaded area shows 90\% of the glucose values - those between the 5th and 95th quartiles.
-#'Additionally, the percents shown on the right hand side of the plot show which quartile each line refers to -
-#' e.g. the line ending at 95\% is the line corresponding to the 95th quartile of glucose values.
+#' Only a single subject's data may be plotted. If smooth = TRUE, then the quantiles are
+#' loess smoothed with the specified span before plotting. The horizontal green lines represent the target range,
+#' default is 70-180 mg/dL. The black line is the median glucose value for each time of day. The dark blue shaded area
+#' represents 50\% of glucose values - those between the 25th and 75 quantiles. The light
+#' blue shaded area shows 90\% of the glucose values - those between the 5th and 95th quantiles.
+#' Additionally, the percents shown on the right hand side of the plot show which quantiles each line refers to -
+#' e.g. the line ending at 95\% is the line corresponding to the 95th quantiles of glucose values.
 #'
 #' @references
 #' Johnson et al. (2019) Utilizing the Ambulatory Glucose Profile to Standardize and
@@ -36,10 +42,11 @@
 #' plot_agp(example_data_1_subject)
 #'
 
-plot_agp <- function (data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", title = FALSE) {
+plot_agp <- function (data, LLTR = 70, ULTR = 180, smooth = TRUE,
+                      span = 0.3, dt0 = NULL, inter_gap = 45, tz = "", title = FALSE) {
 
-  gl = id = five = twentyfive = seventyfive = ninetyfive = times = value = NULL
-  rm(list = c("gl",  "id", "five", "twentyfive", "seventyfive", "ninetyfive", "times", "value"))
+  gl = id = five = twentyfive = seventyfive = ninetyfive = times = times_numeric = value = NULL
+  rm(list = c("gl",  "id", "five", "twentyfive", "seventyfive", "ninetyfive", "times", "times_numeric", "value"))
 
   subject = unique(data$id)
   ns = length(subject)
@@ -54,11 +61,24 @@ plot_agp <- function (data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, t
   quartiles <- apply(gl_ip, 2, quantile, probs = c(0.05, 0.25, 0.50, 0.75, 0.95), na.rm = TRUE)
   q_labels <- dplyr::as_tibble(quartiles[, ncol(quartiles)])
 
-  plot_data = dplyr::tibble(
-    times = hms::as_hms(seq(data_ip[[3]]*60, 86400, by = data_ip[[3]]*60)),
-    median = quartiles[3, ], five = quartiles[1, ], twentyfive = quartiles[2, ],
-    seventyfive = quartiles[4, ], ninetyfive = quartiles[5, ]
-  )
+
+  if (smooth) {
+    plot_data = dplyr::tibble(
+      times_numeric = as.numeric(seq(data_ip[[3]]*60, 86400, by = data_ip[[3]]*60)),
+      median = loess(quartiles[3, ]~times_numeric, span = span)$fitted,
+      five = loess(quartiles[1, ]~times_numeric, span = span)$fitted,
+      twentyfive = loess(quartiles[2, ]~times_numeric, span = span)$fitted,
+      seventyfive = loess(quartiles[4, ]~times_numeric, span = span)$fitted,
+      ninetyfive = loess(quartiles[5, ]~times_numeric, span = span)$fitted,
+      times = hms::as_hms(times_numeric)
+    )
+  } else {
+    plot_data = dplyr::tibble(
+      times = hms::as_hms(seq(data_ip[[3]]*60, 86400, by = data_ip[[3]]*60)),
+      median = quartiles[3, ], five = quartiles[1, ], twentyfive = quartiles[2, ],
+      seventyfive = quartiles[4, ], ninetyfive = quartiles[5, ]
+    )
+  }
 
   p = ggplot2::ggplot(plot_data) +
     ggplot2::geom_line(ggplot2::aes(times, median), color = "black", size = 1) +
@@ -91,3 +111,4 @@ plot_agp <- function (data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, t
   }
 
 }
+

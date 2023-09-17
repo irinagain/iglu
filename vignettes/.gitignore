@@ -1,3 +1,6 @@
 *.html
 *.R
 iglu_cache/*
+iglu_files/*
+lasagna_plots_cache/*
+lasagna_plots_files/*
