@@ -162,7 +162,7 @@ epicalc_profile <- function(data,lv1_hypo=100,lv2_hypo=70,lv1_hyper=120,lv2_hype
   }
 
   #Spacing the labels for the days
-  time_break <- c(0, 288,576,864,1152,1440,1728,2016,2304,2592,2880,3168,3456,3744)
+  time_break <- seq(from = 0, to = (length(day_label) - 1)*288, by = 288)
 
   #Creating plot
   p1 <- ggplot(final, aes(x = x, y = gl_data.t)) + geom_point(aes(color = col), size = 1, na.rm=TRUE) +

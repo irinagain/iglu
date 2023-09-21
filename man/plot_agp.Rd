@@ -4,7 +4,8 @@
 \alias{plot_agp}
 \title{Plot Ambulatory Glucose Profile (AGP) modal day}
 \usage{
-plot_agp(data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", title = FALSE)
+plot_agp(data, LLTR = 70, ULTR = 180, smooth = TRUE, span = 0.3, dt0 = NULL,
+inter_gap = 45, tz = "", title = FALSE)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.}
@@ -12,6 +13,11 @@ plot_agp(data, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", title
 \item{LLTR}{Lower Limit of Target Range, default value is 70 mg/dL.}
 
 \item{ULTR}{Upper Limit of Target Range, default value is 180 mg/dL.}
+
+\item{smooth}{Boolean indicating whether quantiles should be smoothed before plotting, default is TRUE}
+
+\item{span}{Optional parameter indicating span for loess smoothing. Default is 0.3, larger values result in more smoothing,
+recommended to choose between 0.1 to 0.7.}
 
 \item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
@@ -28,11 +34,13 @@ Plot of a 24 hr modal day collapsing all data to a single day.
 The function plot_agp produces an AGP plot that collapses all data into a single 24 hr "modal day".
 }
 \details{
-Only a single subject's data may be plotted. The horizontal green lines represent the target range, default is 70-180 mg/dL. The black line is the median glucose value for each time of day. The dark blue shaded area
-represents 50\% of glucose values - those between the 25th and 75 quartiles. The light
-blue shaded area shows 90\% of the glucose values - those between the 5th and 95th quartiles.
-Additionally, the percents shown on the right hand side of the plot show which quartile each line refers to -
-e.g. the line ending at 95\% is the line corresponding to the 95th quartile of glucose values.
+Only a single subject's data may be plotted. If smooth = TRUE, then the quantiles are
+loess smoothed with the specified span before plotting. The horizontal green lines represent the target range,
+default is 70-180 mg/dL. The black line is the median glucose value for each time of day. The dark blue shaded area
+represents 50\% of glucose values - those between the 25th and 75 quantiles. The light
+blue shaded area shows 90\% of the glucose values - those between the 5th and 95th quantiles.
+Additionally, the percents shown on the right hand side of the plot show which quantiles each line refers to -
+e.g. the line ending at 95\% is the line corresponding to the 95th quantiles of glucose values.
 }
 \examples{
 
