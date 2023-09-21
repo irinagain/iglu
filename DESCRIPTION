@@ -66,7 +66,8 @@ Imports:
     utils,
     zoo,
     gtable,
-    grid
+    grid,
+    plotly
 Suggests:
     knitr,
     rmarkdown,

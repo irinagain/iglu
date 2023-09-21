@@ -22,7 +22,7 @@ mage(
 )
 }
 \arguments{
-\item{data}{Data Frame object with column names "id", "time", and "gl" OR numeric vector of glucose values (numeric vector allowed for version \code{'naive'} only).}
+\item{data}{DataFrame object with column names "id", "time", and "gl" OR numeric vector of glucose values.}
 
 \item{version}{Either \code{'ma'} or \code{'naive'}. Chooses which version of the MAGE algorithm to use. \code{'ma'} algorithm is more accurate, and is the default. Earlier versions of iglu package (<=2.0.0) used \code{'naive'}.}
 
@@ -62,7 +62,7 @@ be returned with one plot per subject.
 The function calculates MAGE values and can optionally return a plot of the glucose trace.
 }
 \details{
-If version \code{'ma'} is selected, the function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability, (Service, 1970). For this version, glucose values will be interpolated over a uniform time grid prior to calculation.
+If version \code{'ma'} is selected, the function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in "Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability", (Service, 1970). For this version, glucose values will be interpolated over a uniform time grid prior to calculation.
 
 \code{'ma'} is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* (not moving average) glucose values.
 
