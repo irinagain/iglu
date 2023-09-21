@@ -55,6 +55,7 @@ shinyUI(fluidPage(
                                                                                `eA1C` = 'ea1c',
                                                                                `Episode Calculation` = 'episode_calculation',
                                                                                `GMI` = 'gmi',
+                                                                               `GRI` = 'gri',
                                                                                `GRADE` = 'grade',
                                                                                `GRADE Euglycemia` = 'grade_eugly',
                                                                                `GRADE Hyperglycemia` = 'grade_hyper',
@@ -128,6 +129,7 @@ shinyUI(fluidPage(
                sidebarPanel(
                  uiOutput("agp_subject"),
                  uiOutput("agp_subject_help_text"),
+                 uiOutput("agp_span"),
                  downloadButton(outputId = "pdfAGP", label = "pdf"),
                  downloadButton(outputId = "pngAGP", label = "png"),
                  downloadButton(outputId = "epsAGP", label = "eps")
