@@ -408,7 +408,9 @@ and nadirs used for MAGE calculation.</p>
 <code class="sourceCode R"><span><span class="co"># subset data to better see identified peaks and nadirs</span></span>
 <span><span class="va">fig1data</span> <span class="op">&lt;-</span> <span class="va">example_data_1_subject</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span></span>
 <span><span class="co"># plot using mage function with plot = TRUE and show_ma = TRUE </span></span>
-<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig1data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, show_ma <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace - Subject 1"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig1data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, show_ma <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace - Subject 1"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in as_grob.default(plot): Cannot convert object of class</span></span>
+<span><span class="co">#&gt; plotlyhtmlwidget into a grob.</span></span></code></pre></div>
 <p><img src="MAGE_files/figure-html/figure%201-1.png" width="672"><strong>Figure 1:</strong> Glucose trace of Subject 2 with Type 2
 diabetes from Broll et al. [8], the solid green line is a short MA with
 <span class="math inline">\(\alpha\)</span> = 5 and the solid orange
@@ -426,7 +428,9 @@ missing readings.</p>
 <code class="sourceCode R"><span><span class="co"># subset data to better show gaps</span></span>
 <span><span class="va">fig2data</span> <span class="op">&lt;-</span> <span class="va">example_data_1_subject</span><span class="op">[</span><span class="fl">200</span><span class="op">:</span><span class="fl">400</span>, <span class="op">]</span></span>
 <span><span class="co"># plot using mage function with plot = TRUE</span></span>
-<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig2data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace with Gaps - Subject 1"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig2data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace with Gaps - Subject 1"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in as_grob.default(plot): Cannot convert object of class</span></span>
+<span><span class="co">#&gt; plotlyhtmlwidget into a grob.</span></span></code></pre></div>
 <p><img src="MAGE_files/figure-html/figure%202-1.png" width="672"><strong>Figure 2</strong>. Glucose trace of Subject 5 with Type 2
 diabetes from Broll et al. [8] with regions of missing glucose readings
 automatically highlighted using iglu software [17].</p>
