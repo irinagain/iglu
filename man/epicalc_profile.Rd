@@ -6,32 +6,42 @@
 \usage{
 epicalc_profile(
   data,
-  lv1_hypo = 100,
-  lv2_hypo = 70,
-  lv1_hyper = 120,
-  lv2_hyper = 160,
-  color_scheme = "Color Scheme 1",
-  dur_length = 15
+  lv1_hypo = 70,
+  lv2_hypo = 54,
+  lv1_hyper = 180,
+  lv2_hyper = 250,
+  dur_length = 15,
+  subject = NULL,
+  dt0 = NULL,
+  inter_gap = 45,
+  tz = ""
 )
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl"}
+\item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.}
 
-\item{lv1_hypo}{A double specifying a hypoglycemia threshold for level 1}
+\item{lv1_hypo}{Numeric value specifying a hypoglycemia threshold for level 1}
 
-\item{lv2_hypo}{A double specifying a hypoglycemia threshold for level 2}
+\item{lv2_hypo}{Numeric value specifying a hypoglycemia threshold for level 2}
 
-\item{lv1_hyper}{A double specifying a hyperglycemia threshold for level 1}
+\item{lv1_hyper}{Numeric value specifying a hyperglycemia threshold for level 1}
 
-\item{lv2_hyper}{A double specifying a hyperglycemia threshold for level 2}
+\item{lv2_hyper}{Numeric value specifying a hyperglycemia threshold for level 2}
 
-\item{color_scheme}{String corresponding to the chosen color scheme. Acceptable choices are: "Color Scheme 1", "Color Scheme 2", and
-"Color Scheme 3". Color Scheme 1 is orange/green/red. Color Scheme 2 is red/white/blue. Color Scheme 3 is orange/green/red.}
+\item{dur_length}{Numeric value specifying the minimum duration in minutes to be
+considered an episode. Note dur_length should be a multiple of the data recording
+interval otherwise the function will round up to the nearest multiple.}
 
-\item{dur_length}{An integer or a double specifying a duration length in minutes}
+\item{subject}{String corresponding to subject id}
+
+\item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
+
+\item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
-A plot displaying the varying glucose levels (mg/dL) of the subject in a day as well as the statistics for the episodes.
+A plot displaying (1) the statistics for the episodes and (2) the episodes colored by level.
 }
 \description{
 Display Episode Calculation statistics for selected subject
@@ -40,6 +50,9 @@ Display Episode Calculation statistics for selected subject
 epicalc_profile(example_data_1_subject)
 
 }
+\seealso{
+episode_calculation()
+}
 \author{
-Johnathan Shih, Jung Hoon Seo
+Johnathan Shih, Jung Hoon Seo, Elizabeth Chun
 }
