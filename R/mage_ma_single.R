@@ -43,20 +43,190 @@
 mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'plus', 'minus'),
                            plot = FALSE, dt0 = NULL, inter_gap = 45, tz = "",
                            title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
+  mage_atomic <- function(data) {
+    #' Calculate MAGE+/- w/o doing any preprocessing on data (i.e., no gap removal)
+    nmeasurements = .data = list_cross = types = count = crosses = num_extrema = minmax = indexes = s1 = s2 = standardD = heights = nadir2peak = tp_indexes = NULL
+    rm(list=c('nmeasurements', '.data', 'list_cross', 'types', 'count', 'crosses', 'num_extrema', 'minmax', 'indexes', 's1', 's2', 'standardD', 'heights', 'nadir2peak', 'tp_indexes'))
+    nmeasurements = nrow(data)
+
+    if (nmeasurements < 7){
+      warning("The number of measurements is too small for MAGE calculation.")
+      return(NA)
+    } else if (nmeasurements < long_ma){
+      warning("The total number of measurements is smaller than the long moving average. The value is adjusted to match: long_ma = # measurements.") # TODO: it doesn't really make sense to set these equal b/c long ma is just a horizontal line (mean of all data points) - should we force user to explicitly set it like 2b1???
+      long_ma = nmeasurements # TODO: return diff
+    }
+
+    # 2c. Calculate the moving average values
+    .data <- data %>%
+      dplyr::mutate(MA_Short = zoo::rollapply(gl, width = short_ma, FUN = mean,
+                                              align = 'right', fill = NA, na.rm = TRUE),
+                    MA_Long  = zoo::rollapply(gl, width = long_ma, FUN = mean,
+                                              align = 'right', fill = NA, na.rm = TRUE)) %>%
+      # fill in leading NA's from using rolling mean
+      dplyr::mutate(MA_Short = replace(MA_Short, 1:short_ma, MA_Short[short_ma]),
+                    MA_Long  = replace(MA_Long, 1:long_ma, MA_Long[long_ma]),
+                    DELTA_SHORT_LONG = MA_Short - MA_Long)
+
+
+    # 2d. Create a preallocated list of crossing point ids & type
+    list_cross <- list("id" = rep.int(NA, nmeasurements), "type" = rep.int(NA, nmeasurements))
+    list_cross$id[1] <- 1
+    types = list2env(list(REL_MIN=0, REL_MAX=1))
+    list_cross$type[1] <- ifelse(.data$DELTA_SHORT_LONG[1] > 0, types$REL_MAX, types$REL_MIN)
+    count = 1
+    for(i in 2:length(.data$DELTA_SHORT_LONG)) {
+      if(
+        !is.na(.data$gl[i]) && !is.na(.data$gl[i-1]) &&
+        !is.na(.data$DELTA_SHORT_LONG[i]) && !is.na(.data$DELTA_SHORT_LONG[i-1])
+      ) {
+
+        # crossing point if DELTA changes sign or curr DELTA is 0
+        if(.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[i-1] < 0 || (.data$DELTA_SHORT_LONG[i] == 0 && .data$DELTA_SHORT_LONG[i-1] != 0)) {
+          count <- count + 1
+          list_cross$id[count] <- i
+          if(.data$DELTA_SHORT_LONG[i] < .data$DELTA_SHORT_LONG[i-1]) {
+            list_cross$type[count] = types$REL_MIN
+          } else {
+            list_cross$type[count] = types$REL_MAX
+          }
+        }
+      }
+    }
+
+    # Add last point to capture excursion at end
+    list_cross$id[count+1] <- nrow(.data)
+    list_cross$type[count+1] <- ifelse(.data$DELTA_SHORT_LONG[nrow(.data)] > 0, types$REL_MAX, types$REL_MIN)
+
+    # Filter for non-na values then combine into a table
+    list_cross$id <- list_cross$id[!is.na(list_cross$id)]
+    list_cross$type <- list_cross$type[!is.na(list_cross$type)]
+
+    crosses <- do.call(cbind.data.frame, list_cross)
+
+    # 2e. Calculate min and max glucose values from ids and types in crosses + store indexes for plotting later
+    num_extrema = nrow(crosses)-1
+    minmax <- rep(NA_real_, num_extrema) # dynamically growing, could pre-allocate based on number of crossing - FIXED
+    indexes <- rep(NA_real_, num_extrema)
+    for(i in 1:num_extrema) {
+      s1 <- crosses[i,1]    # indexes of crossing points
+      s2 <- crosses[i+1,1]
+
+      if(crosses[i, "type"] == types$REL_MIN) {
+        minmax[i] <- min(.data$gl[s1:s2], na.rm = TRUE)
+        indexes[i] <- which.min(.data$gl[s1:s2])+s1-1 # which.min/max will ignore NAs (index includes NAs but not counted max/min) # TODO: even I don't understand this comment LOL. I think it's extraneous
+      } else {
+        minmax[i] <- max(.data$gl[s1:s2], na.rm = TRUE)
+        indexes[i] <- which.max(.data$gl[s1:s2])+s1-1
+      }
+    }
+
+
+    ## 3. Calculate MAGE
+    # 3a. Standard deviation
+    standardD <- sd(.data$gl, na.rm = TRUE)
+
+    # 3b. Calculate the valid excursion heights
+    #     - heights: vector that will contain final heights
+    #     - peak2nadir: measure excursion peak to nadir. unassigned (-1), false (0), true (1)
+    #     - n: a counter that helps iterate through the turning points
+    #     - tp_indexes: vector that will contain tp from valid excursions
+    heights <- numeric()
+    type <- match.arg(type, c('auto', 'plus', 'minus'))
+
+    nadir2peak <- if(type == "plus") {
+      1
+    } else if (type == "minus") {
+      0
+    } else { -1 } # TODO: calculate both MAGE+ and MAGE- automatically
+
+    n <- 1
+
+    tp_indexes <- indexes
+
+    # Computation:
+    # 1. collect all tp ids
+    tp_indexes <- sapply(2:nrow(crosses), function(i) {
+      # ASSUMES alternating MIN, MAX, MIN, ... (data should be in that arrangement based on selection of indices)
+      if (crosses$type[i] == types$REL_MAX) { return }
+    })
+
+    # 2. Filter the excursions maybe get ids:
+
+    tp_indexes <- numeric()
+    # currently, if the first is below, it moves on to next point (potentially want to accumulate)
+    # can we do this in vector form?
+    while(n < length(minmax)) {
+      height1 <- minmax[n+1] - minmax[n]
+      # Redefined variable type, not great
+      type_2 <- crosses[n+1, "type"]  ## crosses has 1 more element (from line 163-164) so add 1
+
+      # Check if excursion is above SD. If smaller - go to next excursion.
+      if(abs(height1) > standardD) {
+        # Check if it was specified whether MAGE+ or MAGE- should be computed.
+        # If not specified (-1), determine based on value of height1
+        # height1 > 0 means it's nadir to peak
+        if(nadir2peak == -1) { # Assigns nadir2peak
+          nadir2peak <- ifelse(height1 > 0, 1, 0)
+        }
+
+        # Once plus or minus is specified, only look at those excursions that match the type
+        if(nadir2peak == type_2) {
+          if(n+1 == length(minmax)) { # covers case where one before last
+            height2 <- minmax[n+1]-minmax[n]
+
+            if(abs(height2) >= standardD) { # append height2 to height
+              tp_indexes <- append(tp_indexes, indexes[n]) # TODO: combine into one?
+              tp_indexes <- append(tp_indexes, indexes[n+1])
+              heights <- append(heights, abs(height2))
+            }
+          }
+          else {
+            x <- 1
+            height2 <- 0
+            while(!(abs(height2) >= standardD) && n+x+1 <= length(minmax)) {  # checks bounds
+              height2 <- minmax[n+x+1]-minmax[n+x]
+
+              if(abs(height2) >= standardD || n+x+1 == length(minmax)-1 || n+x+1 == length(minmax)) {
+                # appends height2 to height
+                tp_indexes <- append(tp_indexes, indexes[n])
+                if(nadir2peak == 1) {
+                  heights <- append(heights, abs(minmax[n] - max(minmax[n:(n+x+1)])))
+                  tp_indexes <- append(tp_indexes, indexes[n + which.max(minmax[n:(n+x+1)])-1])
+                } else {
+                  heights <- append(heights, abs(minmax[n]- min(minmax[n:(n+x+1)])))
+                  tp_indexes <- append(tp_indexes, indexes[n + which.min(minmax[n:(n+x+1)])-1])
+                }
+                n <- n+x
+              }
+              else {
+                # this implicitly assumes you have min/max/min/max always alternating - does not work w/ GAPS
+                x <- x + 2
+              }
+            }
+          }
+        }
+      }
+
+      # increment loop variable
+      n <- n + 1
+    }
+
+    # 5. Return MAGE calculation
+    if(length(heights) == 0) { # return 0 if no excursions are present
+      return(0)
+    }
+    mean(heights)
+  }
 
   ## 1. Preprocessing
-  # 1a. Clean up Global Environment
-  MA_Short = MA_Long = DELTA_SHORT_LONG = TP = id = .xmin = .xmax = NULL # TODO: if we're deleting them in the next line, isn't this extraneous??? I guess it is necessary: if it's not in the environment then it will throw a warning
+  MA_Short = MA_Long = DELTA_SHORT_LONG = TP = id = .xmin = .xmax = NULL
   rm(list = c("MA_Short", "MA_Long", "DELTA_SHORT_LONG", "TP", ".xmin", ".xmax", "id"))
 
-  # 1b. Sanitize the input data
   data = check_data_columns(data)
 
-  # 1c. Split input data into discrete dates/time
-  # > Use cgms2daybyday to interpolate over uniform grid
+  # Interpolate over uniform grid
   data_ip <- CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
-
-  # > Find first day and number of days
   day_one = lubridate::as_datetime(data_ip$actual_dates[1])
   ndays = length(data_ip$actual_dates)
 
@@ -68,9 +238,9 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     )
   )
 
-  # 1d. Recalculate short_ma and long_ma because short and long are based on 5 minutes originally
+  # Recalculate short_ma and long_ma because short and long are based on 5 minutes originally
   # > Multiply by 5 to get length in min
-  # > Divide by dt0 to get rounded number of measurements that are roughly equal to short/long ma original definition
+  # > Divide by dt0 to get rounded number of measurements that are roughly equal to original short/long ma definition
   short_ma = round(short_ma*5/data_ip$dt0)
   long_ma = round(long_ma*5/data_ip$dt0)
 
@@ -79,8 +249,8 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   # > change data into id, interpolated times, interpolated glucose (t to get rowwise)
   # > drop NA rows before first glucose reading
   # > then drop NA rows after last glucose reading
-  .data <- data %>% # TODO: deprecated function - need some regression tests b4 change
-    dplyr::reframe(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d))) %>%
+  .data <- data %>%
+    dplyr::reframe(id = rep(id[1], length(time_ip)), time = time_ip, gl = as.vector(t(data_ip$gd2d))) %>%
     dplyr::slice(which(!is.na(gl))[1]:dplyr::n()) %>%
     dplyr::slice(1:utils::tail(which(!is.na(.data$gl)), 1)
   )
@@ -92,183 +262,31 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     return(NA)
   }
 
-  # 2b2. Is there sufficient data?
-  nmeasurements = nrow(.data)
-  if (nmeasurements < 7){
-    warning("The number of measurements is too small for MAGE calculation.")
-    return(NA)
-  } else if (nmeasurements < long_ma){
-    warning("The total number of measurements is smaller than the long moving average. The value is adjusted to match: long_ma = # measurements.") # TODO: it doesn't really make sense to set these equal b/c long ma is just a horizontal line (mean of all data points) - should we force user to explicitly set it like 2b1???
-    long_ma = nmeasurements
-  }
-
-  # 2b3. Does interpolation create large gaps (longer than 12 hours)?
+  # 2b3. Does interpolation create large gaps?
   # Label NA glucose as gap (gap = 1)
   gaps <- .data %>%
     dplyr::mutate(gap = dplyr::if_else(is.na(gl), 1, 0))
 
-  # Find run length encoding of gap column
-  # Subset to only runs corresponding to gaps
   runlen <- rle(gaps$gap)
-  runlen <- runlen$lengths[runlen$values == 1]
 
-  # If any gap run is longer than 12 hours, return message
   # since runlen counts by measurements, compare to number of measurements corresponding to 12hrs (720 mins)
   # take ceiling and add 1 to make edge cases less likely to give this message
-  if (any(runlen > (ceiling(720/data_ip$dt0) + 1))) {
+
+  if (any(runlen$lengths[runlen$values == 1] > (ceiling(720/data_ip$dt0) + 1))) {
     message(paste0("Gap found in data for subject id: ", .data$id[1], ", that exceeds 12 hours."))
   }
 
-  # 2c. Calculate the moving average values
-  .data <- .data %>%
-    # rollmean doesn't work for NA's, switch to rollapply - # TODO: this seems like a development comment not critical to & obscuring computation. Remove?
-    dplyr::mutate(MA_Short = zoo::rollapply(gl, width = short_ma, FUN = mean,
-                                            # apply na.rm = TRUE to function mean # TODO: this seems like a development comment not critical to & obscuring computation. Remove?
-                                            align = 'right', fill = NA, na.rm = TRUE),
-                  MA_Long  = zoo::rollapply(gl, width = long_ma, FUN = mean,
-                                            # apply na.rm = TRUE to function mean # TODO: this seems like a development comment not critical to & obscuring computation. Remove?
-                                            align = 'right', fill = NA, na.rm = TRUE)) %>%
-    # fill in leading NA's from using rolling mean
-    dplyr::mutate(MA_Short = replace(MA_Short, 1:short_ma, MA_Short[short_ma]),
-                  MA_Long  = replace(MA_Long, 1:long_ma, MA_Long[long_ma]),
-                  DELTA_SHORT_LONG = MA_Short - MA_Long)
-
-  # 2d. Create a preallocated list of crossing point ids & type
-  # Why is this a thousand? This is not great. # FIXED
-  list_cross <- list("id" = rep.int(NA, nmeasurements), "type" = rep.int(NA, nmeasurements))
-  list_cross$id[1] <- 1
-  types = list2env(list(REL_MIN=0, REL_MAX=1))
-  list_cross$type[1] <- ifelse(.data$DELTA_SHORT_LONG[1] > 0, types$REL_MAX, types$REL_MIN)
-  count = 1
-  for(i in 2:length(.data$DELTA_SHORT_LONG)) {
-    if(
-      !is.na(.data$gl[i]) && !is.na(.data$gl[i-1]) &&
-      !is.na(.data$DELTA_SHORT_LONG[i]) && !is.na(.data$DELTA_SHORT_LONG[i-1])
-    ) {
-
-      # crossing point if DELTA changes sign or curr DELTA is 0
-      if(.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[i-1] < 0 || (.data$DELTA_SHORT_LONG[i] == 0 && .data$DELTA_SHORT_LONG[i-1] != 0)) {
-        count <- count + 1
-        list_cross$id[count] <- i
-        if(.data$DELTA_SHORT_LONG[i] < .data$DELTA_SHORT_LONG[i-1]) {
-          list_cross$type[count] = types$REL_MIN
-        } else {
-          list_cross$type[count] = types$REL_MAX
-        }
-      }
+  dfs = split(gaps, rep(1:length(runlen$lengths), runlen$lengths))
+  dfs_data = list()
+  for (i in 1:length(dfs)) {
+    if (!is.na(dfs[[i]]$gl[1])) {
+      dfs_data <- append(dfs_data, dfs[i])
     }
-  }
-
-  # Add last point to capture excursion at end
-  list_cross$id[count+1] <- nrow(.data)
-  list_cross$type[count+1] <- ifelse(.data$DELTA_SHORT_LONG[nrow(.data)] > 0, types$REL_MAX, types$REL_MIN)
-
-  # Filter for non-na values then combine into a table
-  list_cross$id <- list_cross$id[!is.na(list_cross$id)]
-  list_cross$type <- list_cross$type[!is.na(list_cross$type)]
-
-  crosses <- do.call(cbind.data.frame, list_cross)
-
-  # 2e. Calculate min and max glucose values from ids and types in crosses + store indexes for plotting later
-  num_extrema = nrow(crosses)-1
-  minmax <- rep(NA_real_, num_extrema) # dynamically growing, could pre-allocate based on number of crossing - FIXED
-  indexes <- rep(NA_real_, num_extrema)
-  for(i in 1:num_extrema) {
-    s1 <- crosses[i,1]    # indexes of crossing points
-    s2 <- crosses[i+1,1]
-
-    if(crosses[i, "type"] == types$REL_MIN) {
-      minmax[i] <- min(.data$gl[s1:s2], na.rm = TRUE)
-      indexes[i] <- which.min(.data$gl[s1:s2])+s1-1 # which.min/max will ignore NAs (index includes NAs but not counted max/min) # TODO: even I don't understand this comment LOL. I think it's extraneous
-    } else {
-      minmax[i] <- max(.data$gl[s1:s2], na.rm = TRUE)
-      indexes[i] <- which.max(.data$gl[s1:s2])+s1-1
-    }
-  }
-
-  ## 3. Calculate MAGE
-  # 3a. Standard deviation
-  standardD <- sd(.data$gl, na.rm = TRUE)
-
-  # 3b. Calculate the valid excursion heights
-  #     - heights: vector that will contain final heights
-  #     - peak2nadir: measure excursion peak to nadir. unassigned (-1), false (0), true (1)
-  #     - n: a counter that helps iterate through the turning points
-  #     - tp_indexes: vector that will contain tp from valid excursions
-  heights <- numeric()
-  type <- match.arg(type)
-
-  nadir2peak <- if(type == "plus") {
-    1
-  } else if (type == "minus") {
-    0
-  } else { -1 }
-
-  n <- 1
-
-  # Computation:
-  # Filter the excursions maybe get ids:
-
-  tp_indexes <- numeric()
-
-  # currently, if the first is below, it moves on to next point (potentially want to accumulate)
-  while(n < length(minmax)) {
-    height1 <- minmax[n+1] - minmax[n]
-    # Redefined variable type, not great
-    type <- crosses[n+1, "type"]  ## crosses has 1 more element (from line 163-164) so add 1
-
-    # Check if excursion is above SD. If smaller - go to next excursion.
-    if(abs(height1) > standardD) {
-      # Check if it was specified whether MAGE+ or MAGE- should be computed.
-      # If not specified (-1), determine based on value of height1
-      # height1 > 0 means it's nadir to peak
-      if(nadir2peak == -1) { # Assigns nadir2peak
-        nadir2peak <- ifelse(height1 > 0, 1, 0)
-      }
-
-      # Once plus or minus is specified, only look at those excursions that match the type
-      if(nadir2peak == type) {
-        if(n+1 == length(minmax)) { # covers case where one before last
-          height2 <- minmax[n+1]-minmax[n]
-
-          if(abs(height2) >= standardD) { # append height2 to height
-            tp_indexes <- append(tp_indexes, indexes[n]) # TODO: combine into one?
-            tp_indexes <- append(tp_indexes, indexes[n+1])
-            heights <- append(heights, abs(height2))
-          }
-        }
-        else {
-          x <- 1
-          height2 <- 0
-          while(!(abs(height2) >= standardD) && n+x+1 <= length(minmax)) {  # checks bounds
-            height2 <- minmax[n+x+1]-minmax[n+x]
-
-            if(abs(height2) >= standardD || n+x+1 == length(minmax)-1 || n+x+1 == length(minmax)) {
-              # appends height2 to height
-              tp_indexes <- append(tp_indexes, indexes[n])
-              if(nadir2peak == 1) {
-                heights <- append(heights, abs(minmax[n] - max(minmax[n:(n+x+1)])))
-                tp_indexes <- append(tp_indexes, indexes[n + which.max(minmax[n:(n+x+1)])-1])
-              } else {
-                heights <- append(heights, abs(minmax[n]- min(minmax[n:(n+x+1)])))
-                tp_indexes <- append(tp_indexes, indexes[n + which.min(minmax[n:(n+x+1)])-1])
-              }
-              n <- n+x
-            }
-            else {
-              # this implicitly assumes you have min/max/min/max always alternating - does not work w/ GAPS
-              x <- x + 2
-            }
-          }
-        }
-      }
-    }
-
-    # increment loop variable
-    n <- n + 1
   }
 
   ## 4. Generate Plot of Data (if specified)
+  ### PLOT
+
   if(plot) {
 
     # 4a. Label 'Peaks' and 'Nadirs'
@@ -336,10 +354,5 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     # return(.p)
     return(plotly::ggplotly(.p))
   }
-
-  # 5. Return MAGE calculation
-  if(length(heights) == 0) { # return 0 if no excursions are present
-    return(0)
-  }
-  mean(heights)
 }
+
