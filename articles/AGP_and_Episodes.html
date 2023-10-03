@@ -109,29 +109,27 @@ profile across days together with daily glucose views.</p>
 <div class="section level3">
 <h3 id="episode-calculation">Episode Calculation<a class="anchor" aria-label="anchor" href="#episode-calculation"></a>
 </h3>
-<p>The Episode_Calculation function measures the number of episodes that
-hypoglycemia and hyperglycemia that occur more than a certain
-period.</p>
+<p>The episode_Calculation function measures the number of hypoglycemia
+and hyperglycemia episodes or events.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/episode_calculation.html">episode_calculation</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>,lv2_hypo <span class="op">=</span> <span class="fl">70</span>, lv1_hypo <span class="op">=</span> <span class="fl">120</span>, lv2_hyper <span class="op">=</span> <span class="fl">180</span>, dur_length <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                id Hypo_ep Hyper_ep hypo_duration hyper_duration low_alert</span></span>
-<span><span class="co">#&gt; 1 Subject 1 (Lv1)    3.14     2.64        245.62         197.23     55.29</span></span>
-<span><span class="co">#&gt; 2 Subject 1 (Lv2)    0.07     1.14         25.00          85.79      0.16</span></span>
-<span><span class="co">#&gt;   high_alert target_range hypo_min_avg hyper_min_avg</span></span>
-<span><span class="co">#&gt; 1      43.98         0.72         0.55          0.44</span></span>
-<span><span class="co">#&gt; 2       7.90        91.95         0.00          0.08</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 6</span></span></span>
+<span><span class="co">#&gt;   id        type  level    avg_ep_per_day avg_ep_duration avg_ep_gl</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Subject 1 hypo  lv1              3.33             257.      105. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Subject 1 hypo  lv2              0.089<span style="text-decoration: underline;">9</span>            35        68.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Subject 1 hypo  extended         1.71             437.      101. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Subject 1 hyper lv1              1.44              80.3     200. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Subject 1 hyper lv2              1.44              80.3     200.</span></span></code></pre></div>
 <p>In this example, example_data_1_subject contains multiple days, and
-episode_calculation function calculate the number of episodes across
-days.</p>
+episode_calculation function calculate the episodes across all days.</p>
 <div class="section level4">
 <h4 id="parameters">Parameters<a class="anchor" aria-label="anchor" href="#parameters"></a>
 </h4>
 <div class="section level5">
 <h5 id="data">data<a class="anchor" aria-label="anchor" href="#data"></a>
 </h5>
-<p>DataFrame object with column names “id”, “time”, and “gl”. Should
-only be data for 1 subject. In case multiple subject ids are detected,
-the warning is produced and only 1st subject is used.</p>
+<p>DataFrame object with column names “id”, “time”, and “gl”.</p>
 </div>
 <div class="section level5">
 <h5 id="lv1_hypo-lv2_hypo-hy1_hyper-lv2_hpyer">lv1_hypo, lv2_hypo, hy1_hyper, lv2_hpyer<a class="anchor" aria-label="anchor" href="#lv1_hypo-lv2_hypo-hy1_hyper-lv2_hpyer"></a>
@@ -140,10 +138,7 @@ the warning is produced and only 1st subject is used.</p>
 passing parameters, lv1_hypo, lv2_hypo, hy1_hyper, lv2_hpyer. Level 2
 indicates more severe states than level 1 so the threshold value for the
 lv2_hypo value should be lower than hy1_hypo value, and the threshold
-for the lv2_hyper value should higher than lv1_hyper value. Otherwise,
-the warning will be produced. Here, we are passing 70 for the
-hypoglycemia threshold level 2 threshold, 120 for hypoglycemia
-threshold, and 180 for the hyperglycemia level 2 threshold.</p>
+for the lv2_hyper value should higher than lv1_hyper value.</p>
 </div>
 <div class="section level5">
 <h5 id="dur_length">dur_length<a class="anchor" aria-label="anchor" href="#dur_length"></a>
@@ -156,20 +151,10 @@ or above the thresholds more than 15 minutes.</p>
 <div class="section level4">
 <h4 id="return-value">Return value<a class="anchor" aria-label="anchor" href="#return-value"></a>
 </h4>
-<p>The function returns a dataframe including number of hypo and hyper
-episodes, hypo and hyper mean values, mean durations (Minutes), and
-average mean values per day (%).</p>
-</div>
-<div class="section level4">
-<h4 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
-</h4>
-<p>In this example, we calculated episodes for subject 1. The average
-numbers of hypo and hyperglycemia for subject 1 (level 1) are 3.14 and
-2.64 respectively. The mean duration for hypoglycemia is 243.8 minutes
-and 196.9 minutes for hyperglycemia. You can also see other values such
-as the mean average values for hypoglycemia and hyperglycemia, and this
-function can be used for multiple subjects as well (check by setting the
-parameter, data =example_data_5_subject).</p>
+<p>The function returns a dataframe for average number of episodes,
+average episode duration, and average glucose in episodes. Optionally,
+the function can return the input data with interpolation and episode
+labeling added.</p>
 </div>
 </div>
 <div class="section level3">
@@ -180,35 +165,11 @@ parameter, data =example_data_5_subject).</p>
 <code><a href="../reference/epicalc_profile.html">epicalc_profile()</a></code>. This function takes the
 <code><a href="../reference/episode_calculation.html">episode_calculation()</a></code> output and displays it as a tables of
 the episode metrics as well as plots that visualizes the subject’s
-glucose level over time. Like <code>episode_calculation</code>, this
-function is designed to work with one subject data at a time, and the
-structure of the function output is shown below.</p>
+episodes. This function is designed to work with one subject data at a
+time, and the structure of the function output is shown below.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/epicalc_profile.html">epicalc_profile</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></span></code></pre></div>
 <p><img src="AGP_and_Episodes_files/figure-html/unnamed-chunk-3-1.png" width="768"></p>
-<p>The function will accept the following six parameters that are passed
-on to <code><a href="../reference/epicalc_profile.html">epicalc_profile()</a></code>. Like
-<code><a href="../reference/episode_calculation.html">episode_calculation()</a></code>, there are options to adjust the
-hypoglycemia and hyperglycemia thresholds. If the hyperglycemia
-threshold is lower than the hypoglycemia threshold, a warning will be
-produced.</p>
-<ul>
-<li>“<code>lv1_hypo</code>” - First threshold for what below is
-considered hypoglycemia. Default is 100 and the units are mg/dL</li>
-<li>“<code>lv2_hypo</code>” - Second threshold for what below is
-considered hypoglycemia. Default is 70 and the units are mg/dL</li>
-<li>“<code>lv1_hyper</code>” - First threshold for what above is
-considered hyperglycemia. Default is 120 and the units are mg/dL</li>
-<li>“<code>lv2_hyper</code>” - Second threshold for what above is
-considered hyperglycemia. Default is 160 and the units are mg/dL</li>
-<li>“<code>color_scheme</code>” - String corresponding to a color scheme
-for the plot.Default is dark red for <code>lv1_hypo</code>, red for
-<code>lv2_hypo</code>, green for normal, yellow for
-<code>lv1_hyper</code>, and orange for <code>lv2_hyper</code>.</li>
-</ul>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/epicalc_profile.html">epicalc_profile</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lv1_hypo<span class="op">=</span><span class="fl">100</span>, lv2_hypo<span class="op">=</span><span class="fl">70</span>, lv1_hyper<span class="op">=</span><span class="fl">120</span>, lv2_hyper<span class="op">=</span><span class="fl">160</span>, color_scheme<span class="op">=</span><span class="st">"Color Scheme 1"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="AGP_and_Episodes_files/figure-html/unnamed-chunk-4-1.png" width="768"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
