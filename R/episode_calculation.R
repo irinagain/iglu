@@ -1,262 +1,289 @@
-#' Calculates the number of Hypo/Hyperglycemic events as well as other statistics
+### algorithm description
+# (1) apply the following to each subject (episode_single)
+#       (a) interpolate to create equidistant grid
+#       (b) split into contiguous segments based on gaps
+#       (c) classify events in each segment (event_class)
+#       (d) summarize episodes (episode_summary)
+# (a) event_class: label events of each type for each segment
+#       (a) must be >= duration (function input is # idx to get # minutes)
+#       (b) ends at >= dur_length (function input is top level dur_length/dt0)
+# (b) episode_summary: calculate summary statistics
+#       (a) return for each type of episode: # episodes, mean duration, mean glu value
+
+
+# function to classify and label all events in a segment
+event_class = function(data, level_type, threshold, event_duration, end_duration) {
+
+  event = level = pos_start = pos_end = NULL
+  rm(list = c("event", "level", "pos_start", "pos_end"))
+
+  # if hypo use < else if hyper use >
+  if (level_type == 'hypo') {
+
+    annotated = data
+    annotated$level = annotated$gl < threshold
+
+  } else if (level_type == 'hyper') {
+
+    annotated = data
+    annotated$level = annotated$gl > threshold
+
+  }
+
+  level_rle = rle(annotated$level)$lengths
+  annotated$event = rep(1:length(level_rle), level_rle)
+  annotated = annotated %>%
+    dplyr::group_by(event) %>%
+    dplyr::mutate(
+      # possibly event; where duration is met
+      pos_start = level[1] && (dplyr::n() >= event_duration),
+      # if possible event, add start on first index of event
+      start = c(ifelse(pos_start[1], "start", NA_character_),
+                rep(NA_character_, dplyr::n()-1)),
+      # add possible ends (always need to check for end duration)
+      pos_end = !level[1] && (dplyr::n() >= end_duration),
+      end = c(ifelse(pos_end[1], "end", NA_character_),
+              rep(NA_character_, dplyr::n()-1))
+    )
+
+  ### for each possible end find the matching start
+  starts = which(!is.na(annotated$start))
+  # add 0 for initial "previous end" to be 0 and length + 1 for last point to be end
+  ends = c(0, which(!is.na(annotated$end)), nrow(data) + 1)
+  # *_ref are the matched pairs
+  pairs = data.frame(
+    starts_ref = starts,
+    ends_ref = sapply(starts, function(x) {min(ends[ends > x]) - 1} )
+  )
+
+  # no episodes in this segment
+  if (nrow(pairs) == 0) {
+    output = rep(0, nrow(data))
+    return (output)
+  } else {
+
+    # remove intervening 'starts'
+    pairs = pairs[!duplicated(pairs$ends_ref), ]
+
+    # vectorize seq function to create seqs for contiguous events
+    vseq = Vectorize(seq.default, c("from", "to"))
+    event_idx = unlist(vseq(pairs$start, pairs$end))
+    event_label = rep(1:nrow(pairs), (pairs$end - pairs$start)+1)
+
+    output = rep(0, nrow(data))
+    output[event_idx] = event_label
+
+    # return event vector with length = nrow(data); not event = 0, event given group label
+    # label is unique per subject-segment
+    return(output)
+  }
+}
+
+# function to calculate summary statistics for each type of episode
+episode_summary = function (data, dt0) {
+
+  event = segment = NULL
+  rm(list = c("event", "segment"))
+
+  episode_summary_helper = function (data, level_label, dt0) {
+
+    data = data[, c(1:4, which(colnames(data) == level_label))]
+    colnames(data) = c("id", "time", "gl", "segment", "event")
+
+    # if none of this event exists, return NA and exit
+    if (all(data$event == 0)) {
+      output = c(0, 0, NA)
+      return(output)
+    }
+
+    # calculate summary metrics
+    events = data[data$event != 0, 3:5]
+    data_sum = events %>%
+      dplyr::group_by(segment, event) %>%
+      dplyr::summarise(
+        # for each event, pull duration in minutes and mean glucose
+        event_duration = dplyr::n() * dt0,
+        event_glucose = mean(gl),
+        .groups = "drop"
+      )
+
+    # eps/recording time, not incl gaps
+    avg_ep_per_day = nrow(data_sum)/(nrow(data) * dt0 / 60 / 24)
+    avg_ep_duration = mean(data_sum$event_duration)
+    avg_ep_glu = mean(data_sum$event_glucose)
+
+    output = c(avg_ep_per_day, avg_ep_duration, avg_ep_glu)
+    return(output)
+  }
+
+  labels = c("lv1_hypo", "lv2_hypo", "ext_hypo", "lv1_hyper", "lv2_hyper")
+  out_list = sapply(labels, function(x) episode_summary_helper(data, x, dt0))
+
+  output = data.frame(
+    type = c(rep("hypo", 3), rep("hyper", 2)), # hypo or hyper
+    level = c("lv1", 'lv2', 'extended', 'lv1', 'lv2'), # lv1/lv2/extended
+    avg_ep_per_day = out_list[1, ],
+    avg_ep_duration = out_list[2, ],
+    avg_ep_gl = out_list[3, ]
+  )
+
+  return(output)
+}
+
+# classify episodes for all segments for one subject
+episode_single = function(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper,
+                          dur_length, return_data, dt0, inter_gap, tz) {
+
+  id = segment = NULL
+  rm(list = c("id", "segment"))
+
+  ### interpolate and segment to deal with gaps and uneven grid
+  data_ip <- CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
+  dt0 = data_ip[[3]]
+  # find first day and number of days
+  day_one = as.POSIXct(data_ip[[2]][1], tz = tz)
+  ndays = length(data_ip[[2]])
+  # generate grid times by starting from day one and cumulatively summing
+  time_ip =  day_one + cumsum(
+    # replicate dt0 by number of measurements (total minutes/dt0)
+    rep(dt0 * 60, ndays * 24 * 60 /dt0))
+
+  # interpolated dataframe
+  new_data = data.frame(
+    id = data$id[1],
+    time = time_ip,
+    # t to get rowwise vector of a matrix
+    gl = as.vector(t(data_ip[[1]]))
+  )
+
+  if (dur_length %% dt0 != 0) {
+    warning("Episode duration is not a multiple of recording interval, smallest multiple
+            that is greater than input dur_length chosen for computation")
+  }
+
+  dur_idx = ceiling(dur_length/dt0)
+
+  ### create segment indices to split by NA gaps then remove gaps
+  na_idx = is.na(new_data$gl)
+  segment_rle = rle(na_idx)$lengths
+  segment_data = new_data
+  segment_data$segment = rep(1:length(segment_rle), segment_rle)
+  segment_data = segment_data[!is.na(segment_data$gl), ]
+
+  # classify events for each segment
+  ep_per_seg = segment_data %>%
+    dplyr::group_by(segment) %>%
+    dplyr::mutate(
+      lv1_hypo = event_class(data.frame(id, time, gl), "hypo", lv1_hypo, dur_idx, dur_idx),
+      lv2_hypo = event_class(data.frame(id, time, gl), "hypo", lv2_hypo, dur_idx, dur_idx),
+      lv1_hyper = event_class(data.frame(id, time, gl), "hyper", lv1_hyper, dur_idx, dur_idx),
+      lv2_hyper = event_class(data.frame(id, time, gl), "hyper",lv2_hyper, dur_idx, dur_idx),
+      # extended hypoglycemia defined as >120 minutes of hypoglycemia
+      ext_hypo = event_class(data.frame(id, time, gl), "hypo", !!lv1_hypo, 120/dt0 + 1, dur_idx)
+    )
+
+  # if return data, then return without calculating summaries
+  if (return_data) {
+    return(ep_per_seg)
+  }
+
+  # calculate summary statistic
+  output = episode_summary(ep_per_seg, dt0)
+
+  return(output)
+}
+
+
+#' Calculates Hypo/Hyperglycemic episodes with summary statistics
 #' @name episode_calculation
 #'
 #' @description
-#' The function episode calculation produces the number of Hypo/Hyperglycemic events as well as other statistics such as mean duration
-#'
-#' @param data DataFrame object with column names "id", "time", and "gl"
-#'
-#' @param lv1_hypo A double specifying a hypoglycemia threshold for level 1
-#'
-#' @param lv2_hypo A double specifying a hypoglycemia threshold for level 2
-#'
-#' @param lv1_hyper A double specifying a hyperglycemia threshold for level 1
-#'
-#' @param lv2_hyper A double specifying a hyperglycemia threshold for level 2
-#'
-#' @param dur_length An integer or a double specifying a duration length in minutes
+#' The function determines episodes or events, calculates summary statistics,
+#' and optionally returns data with episode label columns added
 #'
 #' @inheritParams CGMS2DayByDay
 #'
-#' @return A dataframe with
-#' \item{Hypo_ep}{A mean value that counts the number of hypogyclemia episodes per days}
-#' \item{Hyper_ep}{A mean value that counts the number of hypergyclemia episodes per days}
-#' \item{hypo_duration}{A mean value of the hypoglycemia durations per days}
-#' \item{hyper_duration}{A mean value of the hyperclycemia durations per days}
-#' \item{low_alert}{A mean percentage of time in level 1 and 2 hypoglycemic range}
-#' \item{target_range}{A mean percentage of time in target range}
-#' \item{high_alert}{A mean percentage of time in level 1 and 2 hyperglycemic ranges}
-#' \item{hypo_min_avg}{A mean percentage of time for the hypoglycemia per days}
-#' \item{hyper_min_avg}{A mean Percentage of time for the hyperglycemia per days}
+#' @param lv1_hypo Numeric value specifying a hypoglycemia threshold for level 1
+#' @param lv2_hypo Numeric value specifying a hypoglycemia threshold for level 2
+#' @param lv1_hyper Numeric value specifying a hyperglycemia threshold for level 1
+#' @param lv2_hyper Numeric value specifying a hyperglycemia threshold for level 2
+#' @param dur_length Numeric value specifying the minimum duration in minutes to be
+#' considered an episode. Note dur_length should be a multiple of the data recording
+#' interval otherwise the function will round up to the nearest multiple.
+#' @param return_data Boolean indicating whether to also return data with episode labels.
+#' Defaults to FALSE which means only episode summary statistics will be returned
+#'
+#'
+#' @return If return_data is FALSE, a single dataframe with columns:
+#' \item{id}{Subject id}
+#' \item{type}{Type of episode - either hypoglycemia or hyperglycemia}
+#' \item{level}{Level of episode - one of lv1, lv2, or extended}
+#' \item{avg_ep_per_day}{Average number of episodes per day calculated as
+#' (total # episodes)/(recording time in days (24hrs))}
+#' \item{avg_ep_duration}{Average duration of episodes in minutes}
+#' \item{avg_ep_gl}{Average glucose in the episode in mg/dL}
+#'
+#' If return_data is TRUE, returns a list where the first entry is the episode summary dataframe
+#' (see above) and the second entry is the input data with episode labels added.
+#' Mostly for use with epicalc_profile function. Format of the second list entry is:
+#' \item{id}{Subject id}
+#' \item{time}{Interpolated timestamps}
+#' \item{gl}{glucose in mg/dL}
+#' \item{**episode_label**}{One column per episode label - i.e. lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper, ext_hypo.
+#' 0 means not this type of episode, a positive integer label is assigned to each episode.
+#' Note the labels are *not* unique by subject only unique by segment}
+#'
+#' @details We follow the definition of episodes given in the 2023 consensus by Battelino et al.
+#' Note we have classified lv2 as a subset of lv1 since we find the consensus to be
+#' slightly ambiguous.
+#'
+#' @references
+#' Battelino et al. (2023): Continuous glucose monitoring and metrics for clinical
+#' trials: an international consensus statement
+#' \emph{Lancet Diabetes & Endocrinology} \strong{11(1)} .42-57,
+#' \doi{10.1016/s2213-8587(22)00319-9}.
 #'
 #' @export
 #'
-#' @author Johnathan Shih, Jung Hoon Seo
+#' @author Johnathan Shih, Jung Hoon Seo, Elizabeth Chun
 #'
 #' @examples episode_calculation(example_data_5_subject, lv1_hypo=100, lv1_hyper= 120)
 #'
 
-episode_calculation <- function (data, lv1_hypo=100.0,lv2_hypo = 70, lv1_hyper= 120, lv2_hyper = 180,
-                                 dur_length = 15, dt0 = NULL, inter_gap = 45, tz = "") {
 
-  episode_calculator <- function(data, params) {
-
-    episode_one_day<- function(params) {
-
-        stat_computation <- function(gl_by_id_ip, params, is_hypo) {
-
-          # IF THE TIME SERIES DATA IS LESS THAN OR EQUAL TO THE THRESHOLD THAT WAS GIVEN, THOSE ARE TRUE. OTHERWISE, FALSE.
-          if (is_hypo){
-            hyp_episode = gl_by_id_ip <= params[[2]]
-          } else{
-            hyp_episode = gl_by_id_ip >= params[[3]]
-          }
-
-          # HYPO OR HYPER DURATION LENGTH CALCULATION
-          hyp_result = hyp_episode[2:length(hyp_episode)] - hyp_episode[1:length(hyp_episode)-1]
-          hyp_end_point = which(hyp_result %in% -1) + 1
-          hyp_starting_point = which(hyp_result %in% 1) + 1
-
-          # add first/last points as start/end if they meet the threshold
-          if (is_hypo){
-                if(gl_by_id_ip[length(gl_by_id_ip)] <= params[[2]]){
-                  hyp_end_point = c(hyp_end_point, length(gl_by_id_ip))
-                }
-                if(gl_by_id_ip[1] <= params[[2]] ) {
-                  hyp_starting_point = c(1, hyp_starting_point)
-                }
-          }else{
-                if(gl_by_id_ip[length(gl_by_id_ip)] >= params[[3]]){
-                  hyp_end_point = c(hyp_end_point, length(gl_by_id_ip))
-                }
-                if(gl_by_id_ip[1] >= params[[3]] ) {
-                  hyp_starting_point = c(1, hyp_starting_point)
-                }
-          }
-
-          hyp_dur_length = hyp_end_point - hyp_starting_point
-
-          # HANDLING EXCEPTION: WHEN FIRST POINT OR SEQUENCE ARE NA
-          if(is.null(hyp_dur_length)) hyp_dur_length = c(0)
-
-          # COMPUTING EPISODES THAT GO BELOW THE THRESHOLD
-          hyp_dur_length = hyp_dur_length[hyp_dur_length >= (params[[4]]/params[[5]])]
-          hyp_duration = mean(hyp_dur_length * params[[5]])
-          hyp_total = length(hyp_dur_length)
-
-          i = 1; hyp_mean = 0
-          while(i <= length(hyp_dur_length)){
-            if( (!is.na(hyp_end_point[i]) & !is.na(hyp_starting_point[i])) & (hyp_end_point[i] - hyp_starting_point[i]) >= params[[4]]/params[[5]]){
-              interval = seq(hyp_starting_point[i],hyp_end_point[i], 1)
-              interval_val = gl_by_id_ip[interval]
-              hyp_mean = hyp_mean + mean(interval_val)
-            }
-            i = i + 1
-          }
-
-          Low_Or_High_Alert = 0
-
-          if (length(hyp_dur_length != 0))
-            Low_Or_High_Alert = (sum(hyp_dur_length)) / length(gl_by_id_ip) * 100
-          else
-            Low_Or_High_Alert = 0
-
-          avg_Min_hyp = 0
-
-          if(!all(is.na(gl_by_id_ip))){
-            avg_Min_hyp = sum(hyp_dur_length * dt0) / (length(gl_by_id_ip) * 5)
-          }
-          r = c(hyp_total, hyp_duration, avg_Min_hyp, Low_Or_High_Alert)
-          return (r)
-      } # stat_computation FUNCTION ENDS
-
-      if(params[[2]] > params[[3]])
-          warning("Warning. Hypoglycemia threshold is greater than hyperglycemia threshold. This may affect result")
-
-      gl_by_id_ip = params[[1]][!is.na(params[[1]])]
-
-      stat_outputs = stat_computation(gl_by_id_ip, params, TRUE)
-      hypo_total = stat_outputs[1]
-      hypo_duration = stat_outputs[2]
-      avg_Min_hypo = stat_outputs[3]
-      Low_Alert = stat_outputs[4]
-
-      stat_outputs = stat_computation(gl_by_id_ip, params, FALSE)
-      hyper_total = stat_outputs[1]
-      hyper_duration = stat_outputs[2]
-      avg_Min_hyper = stat_outputs[3]
-      High_Alert = stat_outputs[4]
-
-      episodes = c(hypo_total, hyper_total)
-      durations = c(hypo_duration, hyper_duration)
-      Target_Range = 100 - High_Alert - Low_Alert
-      range = c(Low_Alert, Target_Range, High_Alert)
-      Min_avg = c(avg_Min_hypo, avg_Min_hyper)
-
-      dataframe <- data.frame("Hypo_ep" = episodes[1], "Hyper_ep" = episodes[2],
-                              "hypo_duration" = durations[1], "hyper_duration" = durations[2], check.names = FALSE,
-                              "low_alert" = range[1], "high_alert" = range[3],
-                              "target_range" = range[2], "Min_hypo" = Min_avg[1], "Min_hyper" = Min_avg[2])
-
-      return (dataframe)
-    }
-    ##################### Episode Day computation End       ###############
-
-    ##################### Eipsode computation for multidays ###############
-    multidays <-function(data_ip, params){
-      i = 1
-
-      gl_by_id_ip = data_ip[[1]]
-
-      num_rows = dim(gl_by_id_ip)[1]
-
-      result = NA; Average_Glucose=c(); Hypo_ep = c(); Hyper_ep= c();hypo_duration=c();hyper_duration=c();Hypo_mean=c();Hyper_mean=c();low_alert=c();high_alert=c();target_range=c();
-      hypo_min_avg = c();hyper_min_avg = c();
-
-      # each row is a day of interpolated data
-      while(i <= num_rows){
-
-        params[[1]] = gl_by_id_ip[i,]
-
-        if(!all(is.na(params[[1]]))){
-
-          temp = episode_one_day(params)
-
-          Hypo_ep = c(Hypo_ep, temp$Hypo_ep); Hyper_ep = c(Hyper_ep, temp$Hyper_ep);
-
-          hypo_duration = c(hypo_duration, temp$hypo_duration); hyper_duration = c(hyper_duration, temp$hyper_duration);
-
-          low_alert = c(low_alert, temp$low_alert); high_alert = c(high_alert, temp$high_alert); target_range = c(target_range, temp$target_range);
-
-          hypo_min_avg = c(hypo_min_avg, temp$Min_hypo); hyper_min_avg = c(hyper_min_avg, temp$Min_hyper)
-
-          df_multiday <- data.frame("Hypo_ep" = mean(Hypo_ep, na.rm= TRUE), "Hyper_ep" = mean(Hyper_ep, na.rm= TRUE),
-                                  "hypo_duration" = mean(hypo_duration, na.rm= TRUE), "hyper_duration" = mean(hyper_duration, na.rm= TRUE), check.names = FALSE,
-                                  "low_alert" = mean(low_alert, na.rm= TRUE), "high_alert" = mean(high_alert, na.rm= TRUE),
-                                  "target_range" = mean(target_range, na.rm= TRUE),
-                                  "hypo_min_avg" = mean(hypo_min_avg, na.rm = TRUE), "hyper_min_avg" = mean(hyper_min_avg, na.rm = TRUE))
-        }
-
-        i = i + 1
-      }
-      df_multiday <- round(df_multiday, digits = 2)
-      return (df_multiday)
-    } #multidays FUNCTION ENDS
-
-    ##################### Input Processing        #####################
-    data_ip = gl_by_id_ip = NULL
-    rm(list = c("data_ip", "gl_by_id_ip"))
-
-    data_ip = CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
-    gl_by_id_ip = data_ip[[1]]
-    dt0 = data_ip[[3]]
-    params = list(gl_by_id_ip, params[[1]], params[[2]], params[[3]], dt0)
-
-    #gl_by_id_ip       : CGM data for a subject
-    #lv_hypo(hyper)    : Hypoglycemia and hyperglycemia threshold (lv1 = level 1 and lv2 = level2)
-    #dur_length        : Duaration length
-    #dt0               : Default value for an inteveral (default = 5 mins)
-    ###################################################################
-    result = 0
-    result = multidays(data_ip, params)
-    return (result)
-
-  } #episode calculator function ends
+# top level function overall
+episode_calculation = function(data, lv1_hypo = 70,lv2_hypo = 54, lv1_hyper= 180, lv2_hyper = 250,
+                               dur_length = 15, return_data = FALSE, dt0 = NULL, inter_gap = 45, tz = "") {
 
   id = NULL
-  rm("id")
+  rm(list = c("id"))
 
-  #####################         WRAPPER FUNCTION         ####################
-  ################  THIS WRAPPER FUNCTION FORMATS THE OUTPUT  ###############
-  wrapper_function <-function(data, params){
-    out = NULL
-    rm("out")
-    out <- data %>%
+
+  if (dur_length > inter_gap) {
+    warning("Interpolation gap parameter less than episode duration, data gaps may cause
+            incorrect computation")
+  }
+
+  out <- data %>%
+    dplyr::group_by(id) %>%
+    # calculate episodes for each subject and return summary stats not data
+    dplyr::reframe(episode_single(data.frame(id, time, gl), lv1_hypo, lv2_hypo, lv1_hyper,
+                                  lv2_hyper, dur_length, return_data = FALSE,
+                                  dt0, inter_gap, tz)) %>%
+    dplyr::ungroup()
+
+
+  if (return_data) {
+    ep_data = data %>%
       dplyr::group_by(id) %>%
-      dplyr::summarise(episode_calculator(data.frame(id, time, gl), params))
+      # return labeled episode data
+      dplyr::reframe(episode_single(data.frame(id, time, gl), lv1_hypo, lv2_hypo, lv1_hyper,
+                                    lv2_hyper, dur_length, return_data, dt0, inter_gap, tz)) %>%
+      dplyr::ungroup()
+    output = list(out, ep_data)
+    return(output)
   }
 
-  # Remove global some global variables
-  df1 = df2 = out = out2 = result1 = result2 = final =NULL
-  rm(list = c("df1", "df2", "out", "out2", "result1", "result2", "final"))
+  return(out)
 
-  params = list(lv1_hypo, lv1_hyper, dur_length)
-
-  # This returns episode values for hypo and hyper level 1
-  result1 = wrapper_function(data, params)
-
-  # Changing parameters for level 2
-  params = list(lv2_hypo, lv2_hyper, dur_length)
-
-  # This returns episode values for hypo and hyper level 2
-  result2 = wrapper_function(data,params)
-
-  df1 = data.frame(result1)
-  df2 = data.frame(result2)
-
-  i <- 1
-
-  # Process of mering lv1 data with lv2 data
-  row_names_lv1 = c()
-  row_names_lv2 = c()
-  while(i <= nrow(df1)){
-      names_lv1 <- paste(df1$id[i], "(Lv1)")
-      names_lv2 <- paste(df2$id[i], "(Lv2)")
-      row_names_lv1 <- c(row_names_lv1, names_lv1)
-      row_names_lv2 <- c(row_names_lv2, names_lv2)
-      i = i + 1
-  }
-
-  df1$id <- toString(df1$id)
-  df1$id <- row_names_lv1
-
-  df2$id <- toString(df2$id)
-  df2$id <- row_names_lv2
-
-  # Bind two data frames
-  final = rbind(df1,df2)
-
-  return(final)
-
-}#end Function
-
+}
