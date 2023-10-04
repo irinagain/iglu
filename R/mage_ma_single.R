@@ -47,6 +47,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     #' Calculate MAGE+/- w/o doing any preprocessing on data (i.e., no gap removal)
     nmeasurements = .data = list_cross = types = count = crosses = num_extrema = minmax = indexes = s1 = s2 = standardD = heights = nadir2peak = tp_indexes = NULL
     rm(list=c('nmeasurements', '.data', 'list_cross', 'types', 'count', 'crosses', 'num_extrema', 'minmax', 'indexes', 's1', 's2', 'standardD', 'heights', 'nadir2peak', 'tp_indexes'))
+
     nmeasurements = nrow(data)
 
     if (nmeasurements < 7){
@@ -70,22 +71,22 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
 
 
     # 2d. Create a preallocated list of crossing point ids & type
-    list_cross <- list("id" = rep.int(NA, nmeasurements), "type" = rep.int(NA, nmeasurements))
-    list_cross$id[1] <- 1
+    list_cross <- list("id" = rep.int(NA, nmeasurements), "type" = rep.int(NA, nmeasurements)) # TODO: why does this need to be pre-allocated in the 1st place?
+    idx = as.numeric(rownames(.data))
+    list_cross$id[1] <- idx[1]
     types = list2env(list(REL_MIN=0, REL_MAX=1))
     list_cross$type[1] <- ifelse(.data$DELTA_SHORT_LONG[1] > 0, types$REL_MAX, types$REL_MIN)
-    count = 1
+    count = 1 # assumes index starts at 1
     for(i in 2:length(.data$DELTA_SHORT_LONG)) {
       if(
         !is.na(.data$gl[i]) && !is.na(.data$gl[i-1]) &&
         !is.na(.data$DELTA_SHORT_LONG[i]) && !is.na(.data$DELTA_SHORT_LONG[i-1])
       ) {
-
         # crossing point if DELTA changes sign or curr DELTA is 0
         if(.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[i-1] < 0 || (.data$DELTA_SHORT_LONG[i] == 0 && .data$DELTA_SHORT_LONG[i-1] != 0)) {
           count <- count + 1
-          list_cross$id[count] <- i
-          if(.data$DELTA_SHORT_LONG[i] < .data$DELTA_SHORT_LONG[i-1]) {
+          list_cross$id[count] <- idx[i]
+          if(.data$DELTA_SHORT_LONG[i] < .data$DELTA_SHORT_LONG[i-1]) { # TODO: make a ternary operator
             list_cross$type[count] = types$REL_MIN
           } else {
             list_cross$type[count] = types$REL_MAX
@@ -95,7 +96,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     }
 
     # Add last point to capture excursion at end
-    list_cross$id[count+1] <- nrow(.data)
+    list_cross$id[count+1] <- tail(idx, 1)
     list_cross$type[count+1] <- ifelse(.data$DELTA_SHORT_LONG[nrow(.data)] > 0, types$REL_MAX, types$REL_MIN)
 
     # Filter for non-na values then combine into a table
@@ -106,21 +107,20 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
 
     # 2e. Calculate min and max glucose values from ids and types in crosses + store indexes for plotting later
     num_extrema = nrow(crosses)-1
-    minmax <- rep(NA_real_, num_extrema) # dynamically growing, could pre-allocate based on number of crossing - FIXED
+    minmax <- rep(NA_real_, num_extrema)
     indexes <- rep(NA_real_, num_extrema)
     for(i in 1:num_extrema) {
       s1 <- crosses[i,1]    # indexes of crossing points
       s2 <- crosses[i+1,1]
 
       if(crosses[i, "type"] == types$REL_MIN) {
-        minmax[i] <- min(.data$gl[s1:s2], na.rm = TRUE)
-        indexes[i] <- which.min(.data$gl[s1:s2])+s1-1 # which.min/max will ignore NAs (index includes NAs but not counted max/min) # TODO: even I don't understand this comment LOL. I think it's extraneous
+        minmax[i] <- min(.data[as.character(s1:s2), ]$gl, na.rm = TRUE)
+        indexes[i] <- which.min(.data[as.character(s1:s2), ]$gl)+s1-1
       } else {
-        minmax[i] <- max(.data$gl[s1:s2], na.rm = TRUE)
-        indexes[i] <- which.max(.data$gl[s1:s2])+s1-1
+        minmax[i] <- max(.data[as.character(s1:s2), ]$gl, na.rm = TRUE)
+        indexes[i] <- which.max(.data[as.character(s1:s2), ]$gl)+s1-1
       }
     }
-
 
     ## 3. Calculate MAGE
     # 3a. Standard deviation
@@ -145,7 +145,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     tp_indexes <- indexes
 
     # Computation:
-    # 1. collect all tp ids
+    # 1. collect all tp ids ??? TODO: what does this do?
     tp_indexes <- sapply(2:nrow(crosses), function(i) {
       # ASSUMES alternating MIN, MAX, MIN, ... (data should be in that arrangement based on selection of indices)
       if (crosses$type[i] == types$REL_MAX) { return }
@@ -212,18 +212,24 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
       n <- n + 1
     }
 
+    # save intermediate data for plotting
+    pframe = parent.frame()
+    pframe$all_data = rbind(pframe$all_data, .data)
+    pframe$outer_tp_indexes = append(pframe$outer_tp_indexes, tp_indexes)
+
     # 5. Return MAGE calculation
     if(length(heights) == 0) { # return 0 if no excursions are present
       return(0)
     }
-    mean(heights)
+
+    return(mean(heights))
   }
 
   ## 1. Preprocessing
   MA_Short = MA_Long = DELTA_SHORT_LONG = TP = id = .xmin = .xmax = NULL
   rm(list = c("MA_Short", "MA_Long", "DELTA_SHORT_LONG", "TP", ".xmin", ".xmax", "id"))
 
-  data = check_data_columns(data)
+  # data = check_data_columns(data)
 
   # Interpolate over uniform grid
   data_ip <- CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
@@ -256,13 +262,14 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   )
 
   # 2b. Sanity Checks
-  # 2b1. By definition, long > short MA. Note: could swap automatically, but might confuse user => prefer being explicit.
+  # 2b1. By definition, long > short MA.
   if (short_ma >= long_ma){
-    warning("The short moving average window size should be smaller than the long moving average window size for correct MAGE calculation. Return NA.")
-    return(NA)
+    warning("The short moving average window size should be smaller than the long moving average window size for correct MAGE calculation. Swapping automatically.")
+    temp = short_ma
+    short_ma = long_ma
+    long_ma = temp
   }
 
-  # 2b3. Does interpolation create large gaps?
   # Label NA glucose as gap (gap = 1)
   gaps <- .data %>%
     dplyr::mutate(gap = dplyr::if_else(is.na(gl), 1, 0))
@@ -271,28 +278,32 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
 
   # since runlen counts by measurements, compare to number of measurements corresponding to 12hrs (720 mins)
   # take ceiling and add 1 to make edge cases less likely to give this message
-
   if (any(runlen$lengths[runlen$values == 1] > (ceiling(720/data_ip$dt0) + 1))) {
     message(paste0("Gap found in data for subject id: ", .data$id[1], ", that exceeds 12 hours."))
   }
 
-  dfs = split(gaps, rep(1:length(runlen$lengths), runlen$lengths))
-  dfs_data = list()
-  for (i in 1:length(dfs)) {
-    if (!is.na(dfs[[i]]$gl[1])) {
-      dfs_data <- append(dfs_data, dfs[i])
+  dfs_all = split(gaps, rep(1:length(runlen$lengths), runlen$lengths))
+
+  dfs = list()
+  for (i in 1:length(dfs_all)) {
+    if (!is.na(dfs_all[[i]]$gl[1])) {
+      dfs <- append(dfs, dfs_all[i])
     }
   }
 
-  ## 4. Generate Plot of Data (if specified)
-  ### PLOT
+  outer_tp_indexes = c()
+  all_data = c()
+  return_val = c()
+
+  for (e in dfs) {
+    return_val = append(return_val, mage_atomic(e))
+  }
 
   if(plot) {
-
     # 4a. Label 'Peaks' and 'Nadirs'
-    .data <- .data %>%
-      dplyr::mutate(TP = dplyr::case_when(dplyr::row_number() %in% tp_indexes[seq(to=length(tp_indexes), by=2)] ~ ifelse(nadir2peak==0,"Peak","Nadir"),
-                                          dplyr::row_number() %in% tp_indexes[1+seq(to=length(tp_indexes), by=2)] ~ ifelse(nadir2peak==0,"Nadir","Peak")))
+    .data <- all_data %>%
+      dplyr::mutate(TP = dplyr::case_when(dplyr::row_number() %in% outer_tp_indexes[seq(to=length(outer_tp_indexes), by=2)] ~ ifelse(TRUE,"Peak","Nadir"), # TODO: assumes we alternate Peak/Nadir which not work w/ gaps
+                                          dplyr::row_number() %in% outer_tp_indexes[1+seq(to=length(outer_tp_indexes), by=2)] ~ ifelse(TRUE,"Nadir","Peak")))
 
     #Set a default Title
     title <- if(is.na(title)) {
@@ -353,6 +364,10 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     # 4d. Return plot
     # return(.p)
     return(plotly::ggplotly(.p))
+  }
+
+  else {
+    return(return_val)
   }
 }
 
