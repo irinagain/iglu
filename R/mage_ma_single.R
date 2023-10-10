@@ -39,27 +39,31 @@
 #'    ylab="Glucose Level (mg/dL)",
 #'    show_ma=FALSE)
 
-
 mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'plus', 'minus'),
-                           plot = FALSE, dt0 = NULL, inter_gap = 45, tz = "",
-                           title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
-  mage_atomic <- function(data) {
-    #' Calculate MAGE+/- w/o doing any preprocessing on data (i.e., no gap removal)
-    nmeasurements = .data = list_cross = types = count = crosses = num_extrema = minmax = indexes = s1 = s2 = standardD = heights = nadir2peak = tp_indexes = NULL
-    rm(list=c('nmeasurements', '.data', 'list_cross', 'types', 'count', 'crosses', 'num_extrema', 'minmax', 'indexes', 's1', 's2', 'standardD', 'heights', 'nadir2peak', 'tp_indexes'))
+                           plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap = 90,
+                           tz = "", title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
 
-    nmeasurements = nrow(data)
+  ## 0. Calculates MAGE on 1 segment of CGM trace
+  mage_atomic <- function(.data) {
+    nmeasurements = list_cross = types = count = crosses = num_extrema = minmax = indexes = s1 = s2 = standardD = heights = nadir2peak = tp_indexes = NULL
+    rm(list=c('nmeasurements', 'list_cross', 'types', 'count', 'crosses', 'num_extrema', 'minmax', 'indexes', 's1', 's2', 'standardD', 'heights', 'nadir2peak', 'tp_indexes'))
+
+    if (all(is.na(.data$gl))) {
+      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, pm=NA, first_excursion=NA))
+    }
+
+    nmeasurements = nrow(.data)
 
     if (nmeasurements < 7){
       warning("The number of measurements is too small for MAGE calculation.")
-      return(NA)
+      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, pm=NA, first_excursion=NA))
     } else if (nmeasurements < long_ma){
-      warning("The total number of measurements is smaller than the long moving average. The value is adjusted to match: long_ma = # measurements.") # TODO: it doesn't really make sense to set these equal b/c long ma is just a horizontal line (mean of all data points) - should we force user to explicitly set it like 2b1???
-      long_ma = nmeasurements # TODO: return diff
+      warning("The total number of measurements is smaller than the long moving average. ")
+      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, pm=NA, first_excursion=NA))
     }
 
     # 2c. Calculate the moving average values
-    .data <- data %>%
+    .data <- .data %>%
       dplyr::mutate(MA_Short = zoo::rollapply(gl, width = short_ma, FUN = mean,
                                               align = 'right', fill = NA, na.rm = TRUE),
                     MA_Long  = zoo::rollapply(gl, width = long_ma, FUN = mean,
@@ -71,12 +75,16 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
 
 
     # 2d. Create a preallocated list of crossing point ids & type
-    list_cross <- list("id" = rep.int(NA, nmeasurements), "type" = rep.int(NA, nmeasurements)) # TODO: why does this need to be pre-allocated in the 1st place?
     idx = as.numeric(rownames(.data))
-    list_cross$id[1] <- idx[1]
     types = list2env(list(REL_MIN=0, REL_MAX=1))
+
+    list_cross <- list("id" = rep.int(NA, nmeasurements), "type" = rep.int(NA, nmeasurements)) # TODO: why does this need to be pre-allocated in the 1st place?
+
+    # always add 1st point
+    list_cross$id[1] <- idx[1]
     list_cross$type[1] <- ifelse(.data$DELTA_SHORT_LONG[1] > 0, types$REL_MAX, types$REL_MIN)
-    count = 1 # assumes index starts at 1
+    count = 2
+
     for(i in 2:length(.data$DELTA_SHORT_LONG)) {
       if(
         !is.na(.data$gl[i]) && !is.na(.data$gl[i-1]) &&
@@ -84,13 +92,9 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
       ) {
         # crossing point if DELTA changes sign or curr DELTA is 0
         if(.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[i-1] < 0 || (.data$DELTA_SHORT_LONG[i] == 0 && .data$DELTA_SHORT_LONG[i-1] != 0)) {
-          count <- count + 1
           list_cross$id[count] <- idx[i]
-          if(.data$DELTA_SHORT_LONG[i] < .data$DELTA_SHORT_LONG[i-1]) { # TODO: make a ternary operator
-            list_cross$type[count] = types$REL_MIN
-          } else {
-            list_cross$type[count] = types$REL_MAX
-          }
+          list_cross$type[count] = ifelse(.data$DELTA_SHORT_LONG[i] < .data$DELTA_SHORT_LONG[i-1], types$REL_MIN, types$REL_MAX)
+          count <- count + 1
         }
       }
     }
@@ -100,7 +104,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     list_cross$type[count+1] <- ifelse(.data$DELTA_SHORT_LONG[nrow(.data)] > 0, types$REL_MAX, types$REL_MIN)
 
     # Filter for non-na values then combine into a table
-    list_cross$id <- list_cross$id[!is.na(list_cross$id)]
+    list_cross$id <- list_cross$id[!is.na(list_cross$id)] # TODO: remove preallocation & get rid of this
     list_cross$type <- list_cross$type[!is.na(list_cross$type)]
 
     crosses <- do.call(cbind.data.frame, list_cross)
@@ -219,10 +223,10 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
 
     # 5. Return MAGE calculation
     if(length(heights) == 0) { # return 0 if no excursions are present
-      return(0)
+      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, pm=NA, first_excursion=NA))
     }
 
-    return(mean(heights))
+    return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=mean(heights, na.rm=TRUE), pm=NA, first_excursion=TRUE))
   }
 
   ## 1. Preprocessing
@@ -231,12 +235,12 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
 
   # data = check_data_columns(data)
 
-  # Interpolate over uniform grid
+  # 1.1 Interpolate over uniform grid
   data_ip <- CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
   day_one = lubridate::as_datetime(data_ip$actual_dates[1])
   ndays = length(data_ip$actual_dates)
 
-  # Generate grid times by starting from day one and cumulatively summing
+  # 1.2 Generate grid times by starting from day one and cumulatively summing
   # > replicate dt0 by number of measurements (total minutes/dt0)
   time_ip =  day_one + lubridate::minutes(
     cumsum(
@@ -244,7 +248,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     )
   )
 
-  # Recalculate short_ma and long_ma because short and long are based on 5 minutes originally
+  # 1.3 Recalculate short_ma and long_ma because short and long are based on 5 minutes originally
   # > Multiply by 5 to get length in min
   # > Divide by dt0 to get rounded number of measurements that are roughly equal to original short/long ma definition
   short_ma = round(short_ma*5/data_ip$dt0)
@@ -255,7 +259,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   # > change data into id, interpolated times, interpolated glucose (t to get rowwise)
   # > drop NA rows before first glucose reading
   # > then drop NA rows after last glucose reading
-  .data <- data %>%
+  data <- data %>%
     dplyr::reframe(id = rep(id[1], length(time_ip)), time = time_ip, gl = as.vector(t(data_ip$gd2d))) %>%
     dplyr::slice(which(!is.na(gl))[1]:dplyr::n()) %>%
     dplyr::slice(1:utils::tail(which(!is.na(.data$gl)), 1)
@@ -271,7 +275,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   }
 
   # Label NA glucose as gap (gap = 1)
-  gaps <- .data %>%
+  gaps <- data %>%
     dplyr::mutate(gap = dplyr::if_else(is.na(gl), 1, 0))
 
   runlen <- rle(gaps$gap)
@@ -279,47 +283,77 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   # since runlen counts by measurements, compare to number of measurements corresponding to 12hrs (720 mins)
   # take ceiling and add 1 to make edge cases less likely to give this message
   if (any(runlen$lengths[runlen$values == 1] > (ceiling(720/data_ip$dt0) + 1))) {
-    message(paste0("Gap found in data for subject id: ", .data$id[1], ", that exceeds 12 hours."))
+    message(paste0("Gap found in data for subject id: ", data$id[1], ", that exceeds 12 hours."))
   }
 
-  dfs_all = split(gaps, rep(1:length(runlen$lengths), runlen$lengths))
+  # 3. Gap Identification: Split TS into groups based on gap-schema
+  is_large_gap = runlen$values == 1 & (runlen$lengths*data_ip$dt0 > max_gap)
 
-  dfs = list()
-  for (i in 1:length(dfs_all)) {
-    if (!is.na(dfs_all[[i]]$gl[1])) {
-      dfs <- append(dfs, dfs_all[i])
+  if (length(is_large_gap) == 1 && is_large_gap[1] == FALSE) {
+    # there are no gaps
+    dfs = list()
+    dfs[[1]] <- gaps
+  }
+
+  else {
+    # there are gaps
+    end_boundary = cumsum(runlen$lengths)[is_large_gap]
+    start_boundary = end_boundary - runlen$lengths[is_large_gap] + 1 # add 1 b/c both sides inclusive
+
+    dfs = list()
+
+    for (i in seq_along(end_boundary)) {
+      curr_gap_start = start_boundary[i]
+      curr_gap_end = end_boundary[i]
+
+      if (i == 1) {
+        # add 1st data sequence
+        if (curr_gap_start > 1) {
+          dfs[[length(dfs)+1]] <- gaps[1:(curr_gap_start - 1), ]
+        }
+      }
+
+      dfs[[length(dfs) + 1]] <- gaps[curr_gap_start:curr_gap_end, ]
+
+      if (curr_gap_end < nrow(gaps)) {
+        data_start = curr_gap_end + 1
+        data_end = ifelse(i == length(end_boundary), nrow(gaps), start_boundary[i+1] - 1)
+
+        dfs[[length(dfs) + 1]] <- gaps[data_start:data_end, ]
+      }
     }
   }
 
-  outer_tp_indexes = c()
+  # 4. MAGE calculation on each identified DF
+  all_tp_indexes = c()
   all_data = c()
-  return_val = c()
+  return_val = setNames(data.frame(matrix(ncol = 5, nrow = 0)), c("start", "end", "mage", "pm", "first_excursion"))
 
   for (e in dfs) {
-    return_val = append(return_val, mage_atomic(e))
+      return_val = rbind(return_val, mage_atomic(e))
   }
 
   if(plot) {
     # 4a. Label 'Peaks' and 'Nadirs'
-    .data <- all_data %>%
+    data <- all_data %>%
       dplyr::mutate(TP = dplyr::case_when(dplyr::row_number() %in% outer_tp_indexes[seq(to=length(outer_tp_indexes), by=2)] ~ ifelse(TRUE,"Peak","Nadir"), # TODO: assumes we alternate Peak/Nadir which not work w/ gaps
                                           dplyr::row_number() %in% outer_tp_indexes[1+seq(to=length(outer_tp_indexes), by=2)] ~ ifelse(TRUE,"Nadir","Peak")))
 
     #Set a default Title
     title <- if(is.na(title)) {
-      paste("Glucose Trace - Subject ", .data$id[1])
+      paste("Glucose Trace - Subject ", data$id[1])
     } else { title }
     # 4b. Label Gaps in Data
     interval <- data_ip$dt0
 
     # filter out gl NAs to enable correct gap identification
-    .data <- .data[complete.cases(.data$gl), ]
+    data <- data[complete.cases(data$gl), ]
 
     # Find the start and end of each gap and merge/sort the two (Must do separately to solve the problem of "back to back" gaps not having correct start & end time)
-    .gap_start <- .data %>%
+    .gap_start <- data %>%
       dplyr::filter(abs(difftime(time, dplyr::lead(time), units = "min")) > 2*interval)
 
-    .gap_end <- .data %>%
+    .gap_end <- data %>%
       dplyr::filter(difftime(time, dplyr::lag(time), units = "min") > interval*2)
 
     .gaps <- rbind(.gap_start, .gap_end) %>%
@@ -332,16 +366,16 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
                         .xmax = .gaps$time[c(FALSE, TRUE)])
 
     # extraneous for ggplot; need for plotly
-    .ymin <- min(.data$gl)
-    .ymax <- max(.data$gl)
+    .ymin <- min(data$gl)
+    .ymax <- max(data$gl)
 
     # 4c. Generate ggplot
     colors <- c("Short MA" = "#009E73", "Long MA" = "#D55E00","Nadir" = "blue", "Peak"="red")
     gap_colors <- c("Gap"="purple")
-    .p <- ggplot2::ggplot(.data, ggplot2::aes(x=time, y=gl)) +
+    .p <- ggplot2::ggplot(data, ggplot2::aes(x=time, y=gl)) +
       ggplot2::ggtitle(title) +
       ggplot2::geom_point() +
-      ggplot2::geom_point(data = subset(.data, .data$TP != ""), ggplot2::aes(color = TP), fill='white', size=2) +
+      ggplot2::geom_point(data = subset(data, data$TP != ""), ggplot2::aes(color = TP), fill='white', size=2) +
       ggplot2::geom_rect(data=.gaps, ggplot2::aes(
         xmin=.xmin,
         xmax=.xmax,
@@ -367,7 +401,21 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   }
 
   else {
-    return(return_val)
+    print(return_val) # TODO: add MAGE+, MAGE-, all, single flag
+
+    res = return_val %>%
+      dplyr::filter(first_excursion)
+
+    if (nrow(res) == 0) {
+      return(NA)
+    }
+
+    res = res %>%
+      dplyr::mutate(hours = end - start) %>%
+      dplyr::mutate(weight = as.numeric(hours/as.numeric(sum(hours)))) %>%
+      dplyr::summarize(sum(mage*weight))
+
+    return(as.numeric(res))
   }
 }
 
