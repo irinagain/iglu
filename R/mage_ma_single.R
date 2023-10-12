@@ -127,9 +127,77 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32,
       }
     }
 
+    ##########################################
+    ##### New Mage Excursion Elimination #####
+    ##########################################
+
+    differences = t(outer(minmax, minmax, `-`))
+    standardD <- sd(.data$gl, na.rm = TRUE)
+    N = length(minmax)
+
+    # MAGE+
+    mage_plus_heights = c()
+    mage_plus_tp_pairs = c()
+    i = prev_i = 1
+
+    while (i <= N) {
+      delta = differences[prev_i:i,i] # minmax_i - minmax_j st. i >= j
+
+      max_v = max(delta) # max does left-side accumulation
+      j = which.max(delta) + prev_i - 1 # add `prev_i - 1` to adjust for offset since only subsetting prev_i:i
+
+      if (max_v >= standardD) {
+        # we've found left excursion, nadir2peak > sd
+        for (k in i:N) {
+          if (differences[i, k] <= -1*standardD || k == N) {
+            # we've found the first large enoough right side || unmatched left excursion
+            mage_plus_heights = append(mage_plus_heights, max_v)
+            mage_plus_tp_pairs = append(mage_plus_tp_pairs, c(j, i))
+
+            prev_i = i
+            i = k
+            break
+          }
+        }
+      }
+
+      else {
+        i = i + 1
+      }
+    }
+
+    # MAGE-
+    mage_minus_heights = c()
+    mage_minus_tp_pairs = c()
+    i = prev_i = 1
+
+    while (i <= N) {
+      delta = differences[prev_i:i, i] # minmax_i - minmax_j st. i >= j
+
+      min_v = min(delta) # min does left-side accumulation
+      j = which.min(delta) + prev_i - 1
+
+      # print(paste0(i min_v))
+      if (min_v <= -1*standardD) {
+        for (k in i:N) {
+          if (differences[i, k] >= standardD || k == N) {
+            mage_minus_heights = append(mage_minus_heights, min_v)
+            mage_minus_tp_pairs = append(mage_minus_tp_pairs, c(j, i))
+
+            prev_i = i
+            i = k
+            break
+          }
+        }
+      }
+
+      else {
+        i = i + 1
+      }
+    }
+
     ## 3. Calculate MAGE
     # 3a. Standard deviation
-    standardD <- sd(.data$gl, na.rm = TRUE)
 
     # 3b. Calculate the valid excursion heights
     #     - heights: vector that will contain final heights
@@ -290,7 +358,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32,
   if (length(is_qualifying_gap) == 1 && is_qualifying_gap[1] == FALSE) {
     # there are no gaps
     dfs = list()
-    dfs[[1]] <- gaps
+    dfs[[1]] <- data
   }
   else {
     # there are gaps
@@ -306,17 +374,17 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32,
       if (i == 1) {
         # add 1st data sequence
         if (curr_gap_start > 1) {
-          dfs[[length(dfs)+1]] <- gaps[1:(curr_gap_start - 1), ]
+          dfs[[length(dfs)+1]] <- data[1:(curr_gap_start - 1), ]
         }
       }
 
-      dfs[[length(dfs) + 1]] <- gaps[curr_gap_start:curr_gap_end, ]
+      dfs[[length(dfs) + 1]] <- data[curr_gap_start:curr_gap_end, ]
 
-      if (curr_gap_end < nrow(gaps)) {
+      if (curr_gap_end < nrow(data)) {
         data_start = curr_gap_end + 1
-        data_end = ifelse(i == length(end_boundary), nrow(gaps), start_boundary[i+1] - 1)
+        data_end = ifelse(i == length(end_boundary), nrow(data), start_boundary[i+1] - 1)
 
-        dfs[[length(dfs) + 1]] <- gaps[data_start:data_end, ]
+        dfs[[length(dfs) + 1]] <- data[data_start:data_end, ]
       }
     }
   }
