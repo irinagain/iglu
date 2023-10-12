@@ -56,13 +56,17 @@ shinyServer(function(input, output) {
 
     req(input$demodata)
 
-    if (input$demodata == "user_data") {
-      data = data()
-    } else if (input$demodata == "example_data") {
-      data = iglu::example_data_5_subject
-    }
+    ## unnecessary since read_raw_data is called on user data files and outputs
+    ## formatted data with id, time, gl
+    # if (input$demodata == "user_data") {
+    #   data = data()
+    # } else if (input$demodata == "example_data") {
+    #   data = iglu::example_data_5_subject
+    # }
+    #
+    # iglu:::read_df_or_vec(data, id = input$id, time = input$time, gl = input$gl)
 
-    iglu:::read_df_or_vec(data, id = input$id, time = input$time, gl = input$gl)
+    return(data())
   })
 
 

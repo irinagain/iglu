@@ -61,7 +61,7 @@ plot_roc <- function(data, subjects = NULL, timelag = 15, dt0 = NULL, inter_gap 
 
   data = data %>%
     dplyr::group_by(id) %>%
-    dplyr::summarise(
+    dplyr::reframe(
       time_ip = time_single(data.frame(id, time, gl)),
       gl_ip = as.vector(t(CGMS2DayByDay(
         data.frame(id, time, gl), dt0 = dt0, inter_gap = inter_gap, tz = tz)[[1]])),
