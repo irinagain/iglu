@@ -11,8 +11,11 @@
 #' @param id String indicating subject id. Defaults to "filename".
 #' A value of "read" will cause the program to attempt to read the subject id from the file. A value of "filename" will cause the
 #' program to use the basename of the filename (i.e. filename without any directory information) with .csv removed, as subject id.
-#' A value of "default" will cause the program to use whatever the default value associated with the sensor is.
-#' The asc reader currently does not support id="read"
+#' A value of "default" will cause the program to use whichever of "read" or "filename" that is default for that specific sensor.
+#' Any other string will be treated as the unique id for the entire file.
+#'
+#' Note the asc reader currently does not support id="read"
+#' @inheritParams CGMS2DayByDay
 #'
 #' @return A dataframe containing the data read from the named file.
 #'
@@ -35,31 +38,40 @@
 #'
 #'
 
-read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "asc", "ipro"), id = "filename") {
+read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "asc", "ipro"),
+                         id = "filename", tz = "") {
+
+  if (length(sensor) > 1) {
+    warning("Sensor type not specified, using dexcom as default")
+  }
+  sensor = match.arg(sensor)
 
   if (is.null(sensor)) {
     stop("You must enter the sensor type to be read from. Current supported sensors are 'dexcom', 'libre', 'librepro', 'asc', 'ipro'")
   }
-  sensor = tolower(sensor)
 
-  importdexcom = function(filename, id= "read") {
+  importdexcom = function(filename, id= "read", tz) {
     data = utils::read.csv(filename, stringsAsFactors = FALSE)
     if (tolower(id) == "read") {
-      id <- data[3,grep("patient",tolower(colnames(data)))]
+      id <- data[2,grep("subtype",tolower(colnames(data)))]
     } else if (tolower(id) == "filename") {
      id = sub("\\.csv*","",basename(filename))
     }
-    out = data[,c(grep("timestamp",tolower(colnames(data))),grep("glucose",tolower(colnames(data)))[1])]
+    # remove rows that are not EGV (electronic glucose value?)
+    header = data[, grep("event.type", tolower(colnames(data)))] != "EGV"
+    out = data[!header,
+               c(grep("timestamp",tolower(colnames(data))),
+                 grep("glucose",tolower(colnames(data)))[1])]
     colnames(out) = c("time", "gl")
     out$id = id
-
-    out$time <- strptime(out$time, format='%Y-%m-%dT%H:%M:%S', tz = "")
+    out$gl = as.numeric(out$gl)
+    out$time <- as.POSIXct(out$time, format='%Y-%m-%dT%H:%M:%S', tz = tz)
     out = out[,c(3,1,2)]
 
     return(out)
   }
 
-  importlibre = function(filename, id="read",colnamerow = 2) {
+  importlibre = function(filename, id="read",colnamerow = 2, tz) {
     data = utils::read.csv(filename, stringsAsFactors = FALSE)
     mmol = FALSE
     if (tolower(id) == "read") {
@@ -79,6 +91,7 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     colnames(data) <- c('time','gl')
     data$gl = as.numeric(data$gl)
     data$id = id
+    data$time <- as.POSIXct(data$time, format='%Y-%m-%dT%H:%M:%S', tz = tz)
     data = data[,c(3,1,2)]
     if (mmol) {
       data$gl = 18*data$gl
@@ -86,7 +99,7 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     return(data)
   }
 
-  importlibrepro = function(filename, id="read") {
+  importlibrepro = function(filename, id="read", tz) {
     data = utils::read.csv(filename, stringsAsFactors = FALSE)
     if (tolower(id) == "read") {
       id <- data[1,1]
@@ -101,13 +114,13 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
 
     # reformat data types
     data$gl = as.numeric(data$gl)
-    data$time = as.POSIXct(data$time, format='%m/%d/%Y %H:%M')
+    data$time = as.POSIXct(data$time, format='%m/%d/%Y %H:%M', tz = tz)
 
     data = data[,c(3,1,2)]
     return(data)
   }
 
-  importasc = function(filename, id="filename") {
+  importasc = function(filename, id="filename", tz) {
     data = utils::read.csv(filename, stringsAsFactors = FALSE)
     if (tolower(id) == "filename") {
       id = sub("\\.csv*","",basename(filename))
@@ -119,12 +132,14 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     data$sensorglucose = data$Value
     data = data[,c('time','gl')]
     data$id = id
+    data$gl = as.numeric(data$gl)
+    data$time <- as.POSIXct(data$time, format='%Y-%m-%dT%H:%M:%S', tz = tz)
     data = data[,c(3,1,2)]
     return(data)
   }
 
 
-  importipro = function(filename, id="read") {
+  importipro = function(filename, id="read", tz) {
     data = utils::read.csv(filename, stringsAsFactors = FALSE)
     base::colnames(data) <- data[11,]
     if (tolower(id) == "read") {
@@ -134,29 +149,31 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     }
     data <- data[-c(1:11),]
     if (grepl("- | /",data$Timestamp[1]) == F) {
-      data$Timestamp <- as.POSIXct(strptime(data$Timestamp, format = "%m/%d/%y %H:%M"))
+      data$Timestamp <- as.POSIXct(data$Timestamp, format = "%m/%d/%y %H:%M", tz = tz)
     }
     data <- data[,c("Timestamp","Sensor Glucose (mg/dL)")]
     base::colnames(data) <- c('time','gl')
     data$id = id
+    data$gl = as.numeric(data$gl)
     data = data[,c(3,1,2)]
     return(data)
   }
+
   if (id == "default") {
     out = switch(sensor,
-                 "dexcom" = importdexcom(filename),
-                 "libre" = importlibre(filename),
-                 "librepro" = importlibrepro(filename),
-                 "asc" = importasc(filename),
-                 "ipro" = importipro(filename))
+                 "dexcom" = importdexcom(filename, tz = tz),
+                 "libre" = importlibre(filename, tz = tz),
+                 "librepro" = importlibrepro(filename, tz = tz),
+                 "asc" = importasc(filename, tz = tz),
+                 "ipro" = importipro(filename, tz = tz))
 
   } else {
     out = switch(sensor,
-                 "dexcom" = importdexcom(filename, id = id),
-                 "libre" = importlibre(filename, id = id),
-                 "librepro" = importlibrepro(filename, id = id),
-                 "asc" = importasc(filename, id = id),
-                 "ipro" = importipro(filename, id = id))
+                 "dexcom" = importdexcom(filename, id = id, tz = tz),
+                 "libre" = importlibre(filename, id = id, tz = tz),
+                 "librepro" = importlibrepro(filename, id = id, tz = tz),
+                 "asc" = importasc(filename, id = id, tz = tz),
+                 "ipro" = importipro(filename, id = id, tz = tz))
 
   }
 

@@ -7,7 +7,8 @@
 read_raw_data(
   filename,
   sensor = c("dexcom", "libre", "librepro", "asc", "ipro"),
-  id = "filename"
+  id = "filename",
+  tz = ""
 )
 }
 \arguments{
@@ -19,8 +20,12 @@ Must be one of "dexcom", "libre", "librepro", "asc", or "ipro".}
 \item{id}{String indicating subject id. Defaults to "filename".
 A value of "read" will cause the program to attempt to read the subject id from the file. A value of "filename" will cause the
 program to use the basename of the filename (i.e. filename without any directory information) with .csv removed, as subject id.
-A value of "default" will cause the program to use whatever the default value associated with the sensor is.
-The asc reader currently does not support id="read"}
+A value of "default" will cause the program to use whichever of "read" or "filename" that is default for that specific sensor.
+Any other string will be treated as the unique id for the entire file.
+
+Note the asc reader currently does not support id="read"}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 A dataframe containing the data read from the named file.
