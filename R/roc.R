@@ -77,8 +77,10 @@ roc <- function (data, timelag = 15, dt0 = NULL, inter_gap = 45, tz = "") {
 
   out = data %>%
     dplyr::group_by(id) %>%
-    dplyr::summarise(
+    dplyr::reframe(
       roc = roc_single(data.frame(id, time, gl), timelag)
-    )
+    ) %>%
+    dplyr::ungroup()
+
   return(out)
 }

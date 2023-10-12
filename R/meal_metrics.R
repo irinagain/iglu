@@ -82,7 +82,7 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
       rep(data_ip$dt0, ndays * 24 * 60 /data_ip$dt0)))
     # change data into id, interpolated times, interpolated glucose (t to get rowwise)
     data <- data %>%
-      dplyr::summarise(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d)))
+      dplyr::reframe(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d)))
   } else {
     data = data
     timediff <- difftime(data$time[2:length(data$time)],
@@ -107,6 +107,17 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
       dplyr::summarise(id = id, meal = meal, mealtime = adj_mtimes(data, mealtime, dt0))
   }
 
+  ## if no mealtimes match with cgm times (likely due to not interpolating or adjusting)
+  # then exit out and warn
+  if (!any(meals_single$mealtime %in% data$time)) {
+    out = meals_single[, 1:3] %>%
+      dplyr::mutate(deltag = NA, deltat = NA, basereco = NA)
+
+    warning("No meals match with recorded CGM timestamps. Please try running with interpolate = TRUE and/or adjust_mealtimes = TRUE")
+
+    return(out)
+  }
+
   # find total window time
   total_win <- before_win + after_win + recovery_win
   meals_annotated = meals_single %>%
@@ -114,14 +125,13 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
     dplyr::mutate(start = mealtime - before_win*60*60) %>%
     dplyr::rowwise() %>%
     # for each meal window, create 4 periods
-    dplyr::summarise(meal = meal,
+    dplyr::reframe(meal = meal,
               # time is total window (secondly)
               time = start + lubridate::seconds(0:(total_win*60*60)),
               # each window now has 4 periods: before, meal, after, recovery
               period = c(rep("before", before_win*60*60), "meal",
                          rep("after", after_win*60*60),
-                         rep("recovery", recovery_win*60*60)),
-              .groups = "drop")
+                         rep("recovery", recovery_win*60*60)))
 
   # combine cgm data with mealtimes
   # if a given time corresponds to more than one meal, all possible
@@ -153,7 +163,7 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
              # recovery is time one hour after peak
              recover = time[period == "after"][which.max(gl[period == "after"])] +
                1*60*60) %>%
-      dplyr::summarise(id = id[1], meal = meal[1],
+      dplyr::reframe(id = id[1], meal = meal[1],
                 mealtime = time[period == "meal"],
                 # deltag is change in gl from baseline to peak
                 deltag = peak[1] - base[1],
@@ -164,12 +174,11 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
                 # baseline recovery is gl change from peak to 1hr after/deltag
                 # only calculate basereco if recovery time is within 4 hr window
                 basereco = ifelse(recover[1] %in% time,
-                                  (peak[1] - gl[time == recover[1]])/deltag[1], NA),
-                .groups = "drop") %>%
+                                  (peak[1] - gl[time == recover[1]])/deltag[1], NA)) %>%
       dplyr::select(id, time = mealtime, meal, deltag, deltat, basereco)
   }
 
-  # untested if works or not
+  # may need to check
   out <- do.call(rbind, list_all)
 
   return(out)
@@ -276,12 +285,11 @@ meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
   out <- data %>%
     dplyr::group_by(id) %>%
     # calculate meal metrics for each subject
-    dplyr::summarise(meal_metrics_single(data.frame(id, time, gl), mealtimes = mealtimes,
+    dplyr::reframe(meal_metrics_single(data.frame(id, time, gl), mealtimes = mealtimes,
                                   before_win = before_win, after_win = after_win,
                                   recovery_win = recovery_win, interpolate = interpolate,
                                   adjust_mealtimes = adjust_mealtimes, dt0 = dt0,
-                                  inter_gap = inter_gap, tz = tz),
-              .groups = "drop") %>%
+                                  inter_gap = inter_gap, tz = tz)) %>%
     dplyr::ungroup()
 
   return(out)

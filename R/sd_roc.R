@@ -50,6 +50,7 @@ sd_roc <- function(data, timelag = 15, dt0 = NULL, inter_gap = 45, tz = ""){
   data = check_data_columns(data)
 
   out = roc(data, timelag, dt0, inter_gap, tz) %>%
+    dplyr::group_by(id) %>%
     dplyr::summarise(
       sd_roc = sd(roc, na.rm = TRUE)
     )

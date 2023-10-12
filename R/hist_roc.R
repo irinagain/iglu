@@ -53,7 +53,7 @@ hist_roc <- function(data, subjects = NULL, timelag = 15, dt0 = NULL, inter_gap 
 
   data = data %>%
     dplyr::group_by(id) %>%
-    dplyr::summarise(
+    dplyr::reframe(
       roc = roc(data.frame(id, time, gl), timelag, dt0, inter_gap, tz)$roc,
       category = cut(roc, breaks = c(-Inf, -3, -2, -1, 1, 2, 3, Inf),
                      labels = c("-Inf to -3", "-3 to -2", "-2 to -1",

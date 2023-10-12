@@ -55,7 +55,7 @@ auc <- function (data, tz = "") {
     # this whole part gets our desired output from the data
     out = data %>%
       # this part tidies up the data into 2 columns: day and gl
-      dplyr::summarise(
+      dplyr::reframe(
         day = rep(data_ip[[2]], 1440/dt0),
         # the interpolated glucose is input as a vector
         gl = as.vector(t(data_ip[[1]]))
@@ -63,7 +63,7 @@ auc <- function (data, tz = "") {
       # this part finds AUC
       # first we group by day
       dplyr::group_by(day) %>%
-      dplyr::summarise(
+      dplyr::reframe(
         # this returns the AUC measurements for each trapezoid
         each_area = (dt0/60) * ((gl[2:length(gl)] +
                                    gl[1:(length(gl)-1)])/2)
