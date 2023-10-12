@@ -647,19 +647,7 @@ figure shows a side by side comparison of rate of change time-series
 plots for two subjects. Subject 1 shows significantly less glucose
 variability than Subject 5.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_roc.html">plot_roc</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, subjects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Subject 1"</span>, <span class="st">"Subject 5"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: There was 1 warning in `dplyr::summarise()`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In argument: `roc = roc(data.frame(id, time, gl), timelag, dt0, inter_gap,</span></span>
-<span><span class="co">#&gt;   tz)$roc`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> In group 1: `id = Subject 1`.</span></span>
-<span><span class="co">#&gt; Caused by warning:</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Returning more (or less) than 1 row per `summarise()` group was deprecated in</span></span>
-<span><span class="co">#&gt;   dplyr 1.1.0.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Please use `reframe()` instead.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> When switching from `summarise()` to `reframe()`, remember that `reframe()`</span></span>
-<span><span class="co">#&gt;   always returns an ungrouped data frame and adjust accordingly.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">iglu</span> package.</span></span>
-<span><span class="co">#&gt;   Please report the issue to the authors.</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_roc.html">plot_roc</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, subjects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Subject 1"</span>, <span class="st">"Subject 5"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iglu_files/figure-html/unnamed-chunk-26-1.png" width="672"></p>
 <p>The next figure shows a side by side comparison of rate of change
 histogram plots for the same subjects. Once again, the colors show in
