@@ -31,7 +31,7 @@ library(iglu)
 |Delta G (meal metric)| meal_metrics | [Service (2013)](https://doi.org/10.2337/db12-1396) | Yes|
 |Delta T (meal metric)| meal_metrics | [Service (2013)](https://doi.org/10.2337/db12-1396) | Yes |
 |eA1c (Estimated A1c) | ea1c | [Nathan et. al (2008)](https://doi.org/10.2337/dc08-0545)| No |
-|Episode Calculation | episode_calculation| | Yes | 
+|Episode Calculation | episode_calculation| [Battelino (2023)](https://doi.org/10.1016/s2213-8587(22)00319-9)  | Yes | 
 |Episode Calculation Profile | epicalc_profile | | Yes | 
 |Glucose Management Indicator (GMI) | gmi | [Bergenstal (2018)](https://doi.org/10.2337/dc18-1581)| No |
 |GRADE (Glycemic Risk Assessment Diabetes Equation) | grade | [Hill et al. (2007)](https://doi.org/10.1111/j.1464-5491.2007.02119.x)| No |
