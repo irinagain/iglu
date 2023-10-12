@@ -39,7 +39,8 @@
 #'    ylab="Glucose Level (mg/dL)",
 #'    show_ma=FALSE)
 
-mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'plus', 'minus'),
+mage_ma_single <- function(data, short_ma = 5, long_ma = 32,
+                           return_type = c('num', 'df'), return_ = c('auto', 'plus', 'minus'),
                            plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap = 90,
                            tz = "", title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
 
@@ -233,7 +234,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   MA_Short = MA_Long = DELTA_SHORT_LONG = TP = id = .xmin = .xmax = NULL
   rm(list = c("MA_Short", "MA_Long", "DELTA_SHORT_LONG", "TP", ".xmin", ".xmax", "id"))
 
-  # data = check_data_columns(data)
+  data = check_data_columns(data)
 
   # 1.1 Interpolate over uniform grid
   data_ip <- CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
@@ -254,19 +255,21 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   short_ma = round(short_ma*5/data_ip$dt0)
   long_ma = round(long_ma*5/data_ip$dt0)
 
-  ## 2. Process the Data
-  # 2a. Change to interpolated data (times and glucose)
+  ## 2. Change to interpolated data (times and glucose)
   # > change data into id, interpolated times, interpolated glucose (t to get rowwise)
   # > drop NA rows before first glucose reading
   # > then drop NA rows after last glucose reading
+  # > Label NA glucose as gap (gap = 1)
   data <- data %>%
     dplyr::reframe(id = rep(id[1], length(time_ip)), time = time_ip, gl = as.vector(t(data_ip$gd2d))) %>%
     dplyr::slice(which(!is.na(gl))[1]:dplyr::n()) %>%
-    dplyr::slice(1:utils::tail(which(!is.na(.data$gl)), 1)
-  )
+    dplyr::slice(1:utils::tail(which(!is.na(.data$gl)), 1)) %>%
+    dplyr::mutate(gap = dplyr::if_else(is.na(gl), 1, 0))
 
-  # 2b. Sanity Checks
-  # 2b1. By definition, long > short MA.
+  runlen <- rle(data$gap)
+
+  # 3. Sanity Checks
+  # 3.1 By definition, long > short MA.
   if (short_ma >= long_ma){
     warning("The short moving average window size should be smaller than the long moving average window size for correct MAGE calculation. Swapping automatically.")
     temp = short_ma
@@ -274,31 +277,25 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     long_ma = temp
   }
 
-  # Label NA glucose as gap (gap = 1)
-  gaps <- data %>%
-    dplyr::mutate(gap = dplyr::if_else(is.na(gl), 1, 0))
-
-  runlen <- rle(gaps$gap)
-
-  # since runlen counts by measurements, compare to number of measurements corresponding to 12hrs (720 mins)
-  # take ceiling and add 1 to make edge cases less likely to give this message
+  # 3.2 Are any gaps > 12 hours?
+  # > since runlen counts by measurements, compare to number of measurements corresponding to 12hrs (720 mins)
+  # > take ceiling and add 1 to make edge cases less likely to give this message
   if (any(runlen$lengths[runlen$values == 1] > (ceiling(720/data_ip$dt0) + 1))) {
     message(paste0("Gap found in data for subject id: ", data$id[1], ", that exceeds 12 hours."))
   }
 
-  # 3. Gap Identification: Split TS into groups based on gap-schema
-  is_large_gap = runlen$values == 1 & (runlen$lengths*data_ip$dt0 > max_gap)
+  # 4. Time Series Segmentation: split gaps > max_gap into separate segments
+  is_qualifying_gap = runlen$values == 1 & (runlen$lengths*data_ip$dt0 > max_gap)
 
-  if (length(is_large_gap) == 1 && is_large_gap[1] == FALSE) {
+  if (length(is_qualifying_gap) == 1 && is_qualifying_gap[1] == FALSE) {
     # there are no gaps
     dfs = list()
     dfs[[1]] <- gaps
   }
-
   else {
     # there are gaps
-    end_boundary = cumsum(runlen$lengths)[is_large_gap]
-    start_boundary = end_boundary - runlen$lengths[is_large_gap] + 1 # add 1 b/c both sides inclusive
+    end_boundary = cumsum(runlen$lengths)[is_qualifying_gap]
+    start_boundary = end_boundary - runlen$lengths[is_qualifying_gap] + 1 # add 1 b/c both sides inclusive
 
     dfs = list()
 
@@ -324,7 +321,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     }
   }
 
-  # 4. MAGE calculation on each identified DF
+  # 5. Calculate MAGE on each identified segment
   all_tp_indexes = c()
   all_data = c()
   return_val = setNames(data.frame(matrix(ncol = 5, nrow = 0)), c("start", "end", "mage", "pm", "first_excursion"))
@@ -333,17 +330,19 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
       return_val = rbind(return_val, mage_atomic(e))
   }
 
+  # 6. Plotting
   if(plot) {
-    # 4a. Label 'Peaks' and 'Nadirs'
+    # 6.1 Label 'Peaks' and 'Nadirs'
     data <- all_data %>%
-      dplyr::mutate(TP = dplyr::case_when(dplyr::row_number() %in% outer_tp_indexes[seq(to=length(outer_tp_indexes), by=2)] ~ ifelse(TRUE,"Peak","Nadir"), # TODO: assumes we alternate Peak/Nadir which not work w/ gaps
+      dplyr::mutate(TP = dplyr::case_when(dplyr::row_number() %in% outer_tp_indexes[seq(to=length(outer_tp_indexes), by=2)] ~ ifelse(TRUE,"Peak","Nadir"), # TODO: assumes we alternate Peak/Nadir which does not work w/ gaps
                                           dplyr::row_number() %in% outer_tp_indexes[1+seq(to=length(outer_tp_indexes), by=2)] ~ ifelse(TRUE,"Nadir","Peak")))
 
-    #Set a default Title
+    # 6.2 Set a default Title
     title <- if(is.na(title)) {
       paste("Glucose Trace - Subject ", data$id[1])
     } else { title }
-    # 4b. Label Gaps in Data
+
+    # 6.3 Label Gaps in Data
     interval <- data_ip$dt0
 
     # filter out gl NAs to enable correct gap identification
@@ -369,7 +368,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
     .ymin <- min(data$gl)
     .ymax <- max(data$gl)
 
-    # 4c. Generate ggplot
+    # 6.4 Generate ggplot
     colors <- c("Short MA" = "#009E73", "Long MA" = "#D55E00","Nadir" = "blue", "Peak"="red")
     gap_colors <- c("Gap"="purple")
     .p <- ggplot2::ggplot(data, ggplot2::aes(x=time, y=gl)) +
@@ -401,10 +400,21 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   }
 
   else {
-    print(return_val) # TODO: add MAGE+, MAGE-, all, single flag
+    return_type = match.arg(return_type, c('num', 'df'))
+    return_ = match.arg(return_, c('auto', 'plus', 'minus'))
 
-    res = return_val %>%
-      dplyr::filter(first_excursion)
+    if (return_type == 'df') {
+      return(return_val)
+    }
+
+    # filter by various options
+    if (return_ == 'plus') {
+      res = return_val %>% dplyr::filter(pm = 'PLUS')
+    } else if (return_ == 'minus') {
+      res = return_val %>% dplyr::filter(pm == 'MINUS')
+    } else {
+      res = return_val %>% dplyr::filter(first_excursion)
+    }
 
     if (nrow(res) == 0) {
       return(NA)
@@ -412,7 +422,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
 
     res = res %>%
       dplyr::mutate(hours = end - start) %>%
-      dplyr::mutate(weight = as.numeric(hours/as.numeric(sum(hours)))) %>%
+      dplyr::mutate(weight = as.numeric(hours/as.numeric(sum(hours)))) %>% # weight each segment's mage value contribution by segment length
       dplyr::summarize(sum(mage*weight))
 
     return(as.numeric(res))
