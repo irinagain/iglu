@@ -51,6 +51,7 @@ Depends: R (>= 3.1.0)
 Imports:
     caTools,
     dplyr,
+    DT,
     ggplot2,
     ggpubr,
     gridExtra,
