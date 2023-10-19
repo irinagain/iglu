@@ -80,7 +80,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
   # > drop NA rows before first glucose reading
   # > then drop NA rows after last glucose reading
   .data <- data %>% # TODO: deprecated function - need some regression tests b4 change
-    dplyr::summarise(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d))) %>%
+    dplyr::reframe(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d))) %>%
     dplyr::slice(which(!is.na(gl))[1]:dplyr::n()) %>%
     dplyr::slice(1:utils::tail(which(!is.na(.data$gl)), 1)
   )

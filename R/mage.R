@@ -94,7 +94,7 @@ mage_sd <- function(data, sd_multiplier = 1){
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::mutate(abs_diff_mean = abs(gl - mean(gl, na.rm = TRUE))) %>%
-    dplyr::summarise( # TODO: this has been deprecated - use reframe instead
+    dplyr::reframe(
       MAGE = mean(
         abs_diff_mean[abs_diff_mean > (sd_multiplier * sd(gl, na.rm = TRUE))],
         na.rm = TRUE)

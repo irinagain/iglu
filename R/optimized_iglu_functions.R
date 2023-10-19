@@ -108,8 +108,8 @@ optimized_iglu_functions <- function(data, dt0 = NULL, inter_gap = 45, tz = "", 
 
       temp_df = cbind.data.frame(day, gl) %>%
         dplyr::group_by(day) %>%
-        dplyr::summarise(each_area = (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2)) %>%
-        dplyr::summarise(daily_area = sum(each_area, na.rm = TRUE),
+        dplyr::reframe(each_area = (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2)) %>%
+        dplyr::reframe(daily_area = sum(each_area, na.rm = TRUE),
                          hours = dt0/60 * length(na.omit(each_area)),
                          hourly_avg = daily_area/hours, .groups = 'drop')
 
@@ -217,9 +217,9 @@ optimized_iglu_functions <- function(data, dt0 = NULL, inter_gap = 45, tz = "", 
   ## Creates the tibble and calls the function above
   out = data %>%
     dplyr::filter(!is.na(gl)) %>%
-    dplyr::group_by(id) %>%
-    dplyr::summarise(
-      function_call(data.frame(id, time, gl), hours=24, dt0, inter_gap, tz, timelag, lag), .groups = "drop"
+    dplyr::group_by(id, .add = FALSE) %>%
+    dplyr::reframe(
+      function_call(data.frame(id, time, gl), hours=24, dt0, inter_gap, tz, timelag, lag)
     )
 
   return(out)
