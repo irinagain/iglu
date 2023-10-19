@@ -1,6 +1,6 @@
 citHeader("To cite/acknowledge iglu, please use:")
 
-citEntry(entry = "Article",
+bibentry(bibtype = "Article",
          title       = "Interpreting blood glucose data with {R} package {iglu}",
          author      = c(person(given = "Steven", family = "Broll"),
                         person("Jacek", "Urbanek"),
@@ -11,7 +11,7 @@ citEntry(entry = "Article",
                         comment = c(ORCID = "0000-0001-6469-1750")),
                         person(given = "Naresh", family = "Punjabi"),
 		                    person(given = "Irina", family = "Gaynanova",
-                          email = "irinag@stat.tamu.edu",
+                          email = "irinagn@umich.edu",
                           comment = c(ORCID = "0000-0002-4116-0268"))),
          journal     = "PloS One",
          year        = "2021",
@@ -23,11 +23,11 @@ citEntry(entry = "Article",
          textVersion = paste("Broll S, Urbanek J, Buchanan D, Chun E, Muschelli J, Punjabi N and Gaynanova I (2021).", "Interpreting blood glucose data with R package iglu.", "PLoS One, 16(4), e0248560.", "URL https://doi.org/10.1371/journal.pone.0248560")
 )
 
-citEntry(entry = "Manual",
+bibentry(bibtype = "Manual",
          title       = "{iglu:} Interpreting Glucose Data from Continuous Glucose Monitors",
-         author      = c(person(given = "Steven", family = "Broll"),
+         author      = c(person("Elizabeth", "Chun"),
+                        person(given = "Steven", family = "Broll"),
                         person("David", "Buchanan"),
-                        person("Elizabeth", "Chun"),
                         person("John", "Muschelli",
                         email = "muschellij2@gmail.com",
                         comment = c(ORCID = "0000-0001-6469-1750")),
@@ -37,11 +37,11 @@ citEntry(entry = "Manual",
                         person("Jacek", "Urbanek"),
                         person("John", "Schwenck"),
 		                    person(given = "Irina", family = "Gaynanova",
-                          email = "irinag@stat.tamu.edu",
+                          email = "irinagn@umich.edu",
                           comment = c(ORCID = "0000-0002-4116-0268"))),
-         year        = "2021",
-      	 note = "R package version 3.0.0",
+         year        = "2023",
+      	 note = "R package version 3.5.0",
 
-      	 textVersion = paste("Broll S, Buchanan D, Chun E, Muschelli J, Fernandes N, Seo J, Shih J, Urbanek J, Schwenck J, Gaynanova I (2021).","iglu: Interpreting
-Glucose Data from Continuous Glucose Monitors.","R package version 3.0.0.")
+      	 textVersion = paste("Chun E, Broll S, Buchanan D, Muschelli J, Fernandes N, Seo J, Shih J, Urbanek J, Schwenck J, Gaynanova I (2023).","iglu: Interpreting
+Glucose Data from Continuous Glucose Monitors.","R package version 3.5.0.")
 )
