@@ -40,7 +40,7 @@ Authors@R: c(person("Elizabeth", "Chun",
             role = c("ctb"),
             email = "nhannguyen993@tamu.edu"),
             person("Irina", "Gaynanova",
-            email = "irinag@stat.tamu.edu",role = c("aut", "cre"),
+            email = "irinagn@umich.edu",role = c("aut", "cre"),
             comment = c(ORCID = "0000-0002-4116-0268")))
 Description: Implements a wide range of metrics for measuring glucose control and glucose variability based on continuous glucose monitoring data. The list of implemented metrics is summarized in Rodbard (2009) <doi:10.1089/dia.2009.0015>. Additional visualization tools include time-series plots, lasagna plots and ambulatory glucose profile report. 
 License: GPL-2
