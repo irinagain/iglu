@@ -33,8 +33,12 @@
 #' data(example_data_5_subject)
 #' mage(example_data_5_subject, version = 'ma')
 
-mage <- function(data, version = c('ma', 'naive'), sd_multiplier = 1,
-                 short_ma = 5, long_ma = 32, type = c('auto', 'plus', 'minus'),
+mage <- function(data,
+                 version = c('ma', 'naive'),
+                 sd_multiplier = 1,
+                 short_ma = 5, long_ma = 32,
+                 return_type = c('num', 'df'),
+                 return_ = c('auto', 'plus', 'minus'), # TODO: change variable name
                  plot = FALSE, dt0 = NULL, inter_gap = 45, tz = "",
                  title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
 
@@ -46,12 +50,15 @@ mage <- function(data, version = c('ma', 'naive'), sd_multiplier = 1,
     return(mage_sd(data, sd_multiplier = sd_multiplier))
   }
 
-  return(mage_ma(data, short_ma = short_ma, long_ma = long_ma, type = type,
+  return(mage_ma(data, short_ma = short_ma, long_ma = long_ma, return_type=return_type, return_=return_,
                  plot = plot, dt0 = dt0, inter_gap = inter_gap, tz = tz,
                  title = title, xlab = xlab, ylab = ylab, show_ma = show_ma))
 }
 
-mage_ma <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'plus', 'minus'),
+mage_ma <- function(data,
+                    short_ma = 5, long_ma = 32,
+                    return_type = c('num', 'df'),
+                    return_ = c('auto', 'plus', 'minus'),
                     plot = FALSE, dt0 = NULL, inter_gap = 45, tz = "",
                     title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
   id = . = MAGE = NULL
@@ -63,7 +70,7 @@ mage_ma <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'plus', '
   out <- data %>%
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
-    dplyr::do(MAGE = mage_ma_single(., short_ma = short_ma, long_ma = long_ma, type = type,
+    dplyr::do(MAGE = mage_ma_single(., short_ma = short_ma, long_ma = long_ma, return_type=return_type, return_=return_,
                                     plot = plot, dt0 = dt0, inter_gap = inter_gap, tz = tz,
                                     title = title, xlab = xlab, ylab = ylab, show_ma = show_ma))
 
