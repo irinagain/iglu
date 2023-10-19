@@ -206,20 +206,12 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32, type = c('auto', 'p
 
   n <- 1
 
-  tp_indexes <- indexes
-
   # Computation:
-  # 1. collect all tp ids
-  tp_indexes <- sapply(2:nrow(crosses), function(i) {
-    # ASSUMES alternating MIN, MAX, MIN, ... (data should be in that arrangement based on selection of indices)
-    if (crosses$type[i] == types$REL_MAX) { return }
-  })
-
-  # 2. Filter the excursions maybe get ids:
+  # Filter the excursions maybe get ids:
 
   tp_indexes <- numeric()
+
   # currently, if the first is below, it moves on to next point (potentially want to accumulate)
-  # can we do this in vector form?
   while(n < length(minmax)) {
     height1 <- minmax[n+1] - minmax[n]
     # Redefined variable type, not great
