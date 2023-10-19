@@ -1,6 +1,6 @@
 ---
 title: "MAGE Algorithm"
-author: "Nathaniel Fernandes, Nhan Nguyen, Elizabeth Chun, Naresh Punjabi, Irina Gaynanova"
+author: "Nathaniel J. Fernandes, Nhan Nguyen, Elizabeth Chun, Naresh Punjabi, Irina Gaynanova"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{MAGE Algorithm}

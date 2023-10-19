@@ -59,3 +59,6 @@ glycemic variability and quality of glycemic control,
 
 Battelino et al. (2019) Clinical targets for continuous glucose monitoring data interpretation: recommendations from the international consensus on time in range. \emph{Diabetes Care}  \strong{42}(8):1593-603, \doi{10.2337/dci19-0028}
 }
+\seealso{
+plot_ranges()
+}

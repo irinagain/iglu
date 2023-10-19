@@ -2,32 +2,38 @@
 % Please edit documentation in R/episode_calculation.R
 \name{episode_calculation}
 \alias{episode_calculation}
-\title{Calculates the number of Hypo/Hyperglycemic events as well as other statistics}
+\title{Calculates Hypo/Hyperglycemic episodes with summary statistics}
 \usage{
 episode_calculation(
   data,
-  lv1_hypo = 100,
-  lv2_hypo = 70,
-  lv1_hyper = 120,
-  lv2_hyper = 180,
+  lv1_hypo = 70,
+  lv2_hypo = 54,
+  lv1_hyper = 180,
+  lv2_hyper = 250,
   dur_length = 15,
+  return_data = FALSE,
   dt0 = NULL,
   inter_gap = 45,
   tz = ""
 )
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl"}
+\item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.}
 
-\item{lv1_hypo}{A double specifying a hypoglycemia threshold for level 1}
+\item{lv1_hypo}{Numeric value specifying a hypoglycemia threshold for level 1}
 
-\item{lv2_hypo}{A double specifying a hypoglycemia threshold for level 2}
+\item{lv2_hypo}{Numeric value specifying a hypoglycemia threshold for level 2}
 
-\item{lv1_hyper}{A double specifying a hyperglycemia threshold for level 1}
+\item{lv1_hyper}{Numeric value specifying a hyperglycemia threshold for level 1}
 
-\item{lv2_hyper}{A double specifying a hyperglycemia threshold for level 2}
+\item{lv2_hyper}{Numeric value specifying a hyperglycemia threshold for level 2}
 
-\item{dur_length}{An integer or a double specifying a duration length in minutes}
+\item{dur_length}{Numeric value specifying the minimum duration in minutes to be
+considered an episode. Note dur_length should be a multiple of the data recording
+interval otherwise the function will round up to the nearest multiple.}
+
+\item{return_data}{Boolean indicating whether to also return data with episode labels.
+Defaults to FALSE which means only episode summary statistics will be returned}
 
 \item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
@@ -36,24 +42,44 @@ episode_calculation(
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
-A dataframe with
-\item{Hypo_ep}{A mean value that counts the number of hypogyclemia episodes per days}
-\item{Hyper_ep}{A mean value that counts the number of hypergyclemia episodes per days}
-\item{hypo_duration}{A mean value of the hypoglycemia durations per days}
-\item{hyper_duration}{A mean value of the hyperclycemia durations per days}
-\item{low_alert}{A mean percentage of time in level 1 and 2 hypoglycemic range}
-\item{target_range}{A mean percentage of time in target range}
-\item{high_alert}{A mean percentage of time in level 1 and 2 hyperglycemic ranges}
-\item{hypo_min_avg}{A mean percentage of time for the hypoglycemia per days}
-\item{hyper_min_avg}{A mean Percentage of time for the hyperglycemia per days}
+If return_data is FALSE, a single dataframe with columns:
+\item{id}{Subject id}
+\item{type}{Type of episode - either hypoglycemia or hyperglycemia}
+\item{level}{Level of episode - one of lv1, lv2, or extended}
+\item{avg_ep_per_day}{Average number of episodes per day calculated as
+(total # episodes)/(recording time in days (24hrs))}
+\item{avg_ep_duration}{Average duration of episodes in minutes}
+\item{avg_ep_gl}{Average glucose in the episode in mg/dL}
+
+If return_data is TRUE, returns a list where the first entry is the episode summary dataframe
+(see above) and the second entry is the input data with episode labels added.
+Mostly for use with epicalc_profile function. Format of the second list entry is:
+\item{id}{Subject id}
+\item{time}{Interpolated timestamps}
+\item{gl}{glucose in mg/dL}
+\item{**episode_label**}{One column per episode label - i.e. lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper, ext_hypo.
+0 means not this type of episode, a positive integer label is assigned to each episode.
+Note the labels are *not* unique by subject only unique by segment}
 }
 \description{
-The function episode calculation produces the number of Hypo/Hyperglycemic events as well as other statistics such as mean duration
+The function determines episodes or events, calculates summary statistics,
+and optionally returns data with episode label columns added
+}
+\details{
+We follow the definition of episodes given in the 2023 consensus by Battelino et al.
+Note we have classified lv2 as a subset of lv1 since we find the consensus to be
+slightly ambiguous.
 }
 \examples{
 episode_calculation(example_data_5_subject, lv1_hypo=100, lv1_hyper= 120)
 
 }
+\references{
+Battelino et al. (2023): Continuous glucose monitoring and metrics for clinical
+trials: an international consensus statement
+\emph{Lancet Diabetes & Endocrinology} \strong{11(1)} .42-57,
+\doi{10.1016/s2213-8587(22)00319-9}.
+}
 \author{
-Johnathan Shih, Jung Hoon Seo
+Johnathan Shih, Jung Hoon Seo, Elizabeth Chun
 }

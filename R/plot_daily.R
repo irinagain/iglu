@@ -72,7 +72,7 @@ plot_daily <- function (data, maxd = 14, LLTR = 70, ULTR = 180, inter_gap = 45, 
   gl_level <- plot_data %>%
     dplyr::mutate(level_group = rep(1:length(rle(gl_level)[[1]]), rle(gl_level)[[1]])) %>%
     dplyr::group_by(level_group) %>%
-    dplyr::summarise(id = id[1], time = c(time[1] - 10, time, time[dplyr::n()] + 10),
+    dplyr::reframe(id = id[1], time = c(time[1] - 10, time, time[dplyr::n()] + 10),
                      reltime = hms::as_hms(c(reltime[1] - 10, reltime, reltime[dplyr::n()] + 10)),
                      gl = dplyr::case_when(
                        gl_level[1] == "hyper" ~ c(ULTR, gl, ULTR),

@@ -1,5 +1,5 @@
-#library(shiny)
-#library(DT)
+# library(shiny)
+# library(DT)
 
 shinyServer(function(input, output) {
 
@@ -62,7 +62,10 @@ shinyServer(function(input, output) {
       data = iglu::example_data_5_subject
     }
 
-    iglu:::read_df_or_vec(data, id = input$id, time = input$time, gl = input$gl)
+    # what does this line do?
+    # iglu:::read_df_or_vec(data, id = input$id, time = input$time, gl = input$gl)
+
+    return(data)
   })
 
 
@@ -197,7 +200,7 @@ shinyServer(function(input, output) {
         textInput("parameter", "Specify Lower and Upper Limits", value = "70, 180")
       }
       else if(input$metric == "episode_calculation"){
-        textInput("parameter", "Specify Parameter", value = "100.0, 70")
+        textInput("parameter", "Specify Parameter", value = "70, 54")
       }
     }
     else if(parameter_type == "nested"){
@@ -998,9 +1001,8 @@ shinyServer(function(input, output) {
     lv1_hyper = input$lv1hyperThreshold
     lv2_hyper = input$lv2hyperThreshold
     dur_length = input$DurationLength
-    color_scheme = input$colorScheme
     string = paste('iglu::epicalc_profile(data = data, lv1_hypo= lv1_hypo, lv2_hypo = lv2_hypo,
-                   lv1_hyper=lv1_hyper,lv2_hyper=lv2_hyper,color_scheme= color_scheme, dur_length=dur_length)')
+                   lv1_hyper=lv1_hyper,lv2_hyper=lv2_hyper, dur_length=dur_length)')
     eval(parse(text = string))
   })
 
