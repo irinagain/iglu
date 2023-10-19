@@ -51,3 +51,6 @@ glycemic variability and quality of glycemic control,
 \emph{Diabetes Technology and Therapeutics} \strong{11} .55-67,
 \doi{10.1089/dia.2008.0132}.
 }
+\seealso{
+plot_ranges()
+}
