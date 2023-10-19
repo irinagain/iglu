@@ -14,6 +14,7 @@
 #' @param xlab Label for x-axis of ggplot. Defaults to "Time"
 #' @param ylab Label for y-axis of ggplot. Defaults to "Glucose Level"
 #' @param show_ma Whether to show the moving average lines on the plot or not
+#' @param plot_type returns ggplot if "ggplot". Else returns plotly.
 #'
 #' @return The numeric MAGE value for the inputted glucose values or a ggplot if \code{plot = TRUE}
 #'
@@ -39,28 +40,30 @@
 #'    ylab="Glucose Level (mg/dL)",
 #'    show_ma=FALSE)
 
-mage_ma_single <- function(data, short_ma = 5, long_ma = 32,
-                           return_type = c('num', 'df'), return_ = c('auto', 'plus', 'minus'),
+mage_ma_single <- function(data,
+                           short_ma = 5, long_ma = 32,
+                           return_type = c('num', 'df'),
+                           return_ = c('auto', 'plus', 'minus'),
                            plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap = 90,
-                           tz = "", title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
+                           tz = "", title = NA, xlab = NA, ylab = NA, show_ma = FALSE, plot_type='plotly') {
 
   ## 0. Calculates MAGE on 1 segment of CGM trace
   mage_atomic <- function(.data) {
-    nmeasurements = list_cross = types = count = crosses = num_extrema = minmax = indexes = s1 = s2 = standardD = heights = nadir2peak = tp_indexes = NULL
-    rm(list=c('nmeasurements', 'list_cross', 'types', 'count', 'crosses', 'num_extrema', 'minmax', 'indexes', 's1', 's2', 'standardD', 'heights', 'nadir2peak', 'tp_indexes'))
+    nmeasurements = list_cross = types = count = crosses = num_extrema = minmax = indexes = s1 = s2 = standardD = heights = nadir2peak = NULL
+    rm(list=c('nmeasurements', 'list_cross', 'types', 'count', 'crosses', 'num_extrema', 'minmax', 'indexes', 's1', 's2', 'standardD', 'heights', 'nadir2peak'))
 
     if (all(is.na(.data$gl))) {
-      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, pm=NA, first_excursion=NA))
+      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
     }
 
     nmeasurements = nrow(.data)
 
     if (nmeasurements < 7){
       warning("The number of measurements is too small for MAGE calculation.")
-      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, pm=NA, first_excursion=NA))
+      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
     } else if (nmeasurements < long_ma){
       warning("The total number of measurements is smaller than the long moving average. ")
-      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, pm=NA, first_excursion=NA))
+      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
     }
 
     # 2c. Calculate the moving average values
@@ -114,6 +117,7 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32,
     num_extrema = nrow(crosses)-1
     minmax <- rep(NA_real_, num_extrema)
     indexes <- rep(NA_real_, num_extrema)
+
     for(i in 1:num_extrema) {
       s1 <- crosses[i,1]    # indexes of crossing points
       s2 <- crosses[i+1,1]
@@ -127,175 +131,104 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32,
       }
     }
 
-    ##########################################
-    ##### New Mage Excursion Elimination #####
-    ##########################################
-
+    # excursion elimination
     differences = t(outer(minmax, minmax, `-`))
     standardD <- sd(.data$gl, na.rm = TRUE)
     N = length(minmax)
 
     # MAGE+
     mage_plus_heights = c()
-    mage_plus_tp_pairs = c()
-    i = prev_i = 1
+    mage_plus_tp_pairs = list()
+    j = prev_j = 1
 
-    while (i <= N) {
-      delta = differences[prev_i:i,i] # minmax_i - minmax_j st. i >= j
+    while (j <= N) {
+      delta = differences[prev_j:j,j] # minmax_j - minmax_i st. j >= i
 
       max_v = max(delta) # max does left-side accumulation
-      j = which.max(delta) + prev_i - 1 # add `prev_i - 1` to adjust for offset since only subsetting prev_i:i
+      i = which.max(delta) + prev_j - 1 # add `prev_j - 1` to adjust for offset since only subsetting prev_j:j
 
       if (max_v >= standardD) {
         # we've found left excursion, nadir2peak > sd
-        for (k in i:N) {
-          if (differences[i, k] <= -1*standardD || k == N) {
-            # we've found the first large enoough right side || unmatched left excursion
-            mage_plus_heights = append(mage_plus_heights, max_v)
-            mage_plus_tp_pairs = append(mage_plus_tp_pairs, c(j, i))
+        for (k in j:N) {
+          if (minmax[k] > minmax[j]) {
+            j = k
+          }
 
-            prev_i = i
-            i = k
+          if (differences[j, k] < -1*standardD || k == N) {
+            max_v = minmax[j] - minmax[i]
+            # we've found the first large enough right side || unmatched left excursion
+            mage_plus_heights = append(mage_plus_heights, max_v)
+            mage_plus_tp_pairs[[length(mage_plus_tp_pairs) + 1]] = c(i, j)
+
+            prev_j = k
+            j = k
             break
           }
         }
       }
 
       else {
-        i = i + 1
+        j = j + 1
       }
     }
 
     # MAGE-
     mage_minus_heights = c()
-    mage_minus_tp_pairs = c()
-    i = prev_i = 1
+    mage_minus_tp_pairs = list()
+    j = prev_j = 1
 
-    while (i <= N) {
-      delta = differences[prev_i:i, i] # minmax_i - minmax_j st. i >= j
+    while (j <= N) {
+      delta = differences[prev_j:j, j] # minmax_j - minmax_i st. j >= i
 
       min_v = min(delta) # min does left-side accumulation
-      j = which.min(delta) + prev_i - 1
+      i = which.min(delta) + prev_j - 1
 
-      # print(paste0(i min_v))
       if (min_v <= -1*standardD) {
-        for (k in i:N) {
-          if (differences[i, k] >= standardD || k == N) {
-            mage_minus_heights = append(mage_minus_heights, min_v)
-            mage_minus_tp_pairs = append(mage_minus_tp_pairs, c(j, i))
+        for (k in j:N) {
+          if (minmax[k] < minmax[j]) {
+            j = k
+          }
 
-            prev_i = i
-            i = k
+          if (differences[j, k] > standardD || k == N) {
+            min_v = minmax[j] - minmax[i]
+            mage_minus_heights = append(mage_minus_heights, min_v)
+            mage_minus_tp_pairs[[length(mage_minus_tp_pairs) + 1]] = c(i, j, k)
+
+            prev_j = j
+            j = k
             break
           }
         }
       }
 
       else {
-        i = i + 1
+        j = j + 1
       }
     }
 
-    ## 3. Calculate MAGE
-    # 3a. Standard deviation
-
-    # 3b. Calculate the valid excursion heights
-    #     - heights: vector that will contain final heights
-    #     - peak2nadir: measure excursion peak to nadir. unassigned (-1), false (0), true (1)
-    #     - n: a counter that helps iterate through the turning points
-    #     - tp_indexes: vector that will contain tp from valid excursions
-    heights <- numeric()
-    type <- match.arg(type, c('auto', 'plus', 'minus'))
-
-    nadir2peak <- if(type == "plus") {
-      1
-    } else if (type == "minus") {
-      0
-    } else { -1 } # TODO: calculate both MAGE+ and MAGE- automatically
-
-    n <- 1
-
-    tp_indexes <- indexes
-
-    # Computation:
-    # 1. collect all tp ids ??? TODO: what does this do?
-    tp_indexes <- sapply(2:nrow(crosses), function(i) {
-      # ASSUMES alternating MIN, MAX, MIN, ... (data should be in that arrangement based on selection of indices)
-      if (crosses$type[i] == types$REL_MAX) { return }
-    })
-
-    # 2. Filter the excursions maybe get ids:
-
-    tp_indexes <- numeric()
-    # currently, if the first is below, it moves on to next point (potentially want to accumulate)
-    # can we do this in vector form?
-    while(n < length(minmax)) {
-      height1 <- minmax[n+1] - minmax[n]
-      # Redefined variable type, not great
-      type_2 <- crosses[n+1, "type"]  ## crosses has 1 more element (from line 163-164) so add 1
-
-      # Check if excursion is above SD. If smaller - go to next excursion.
-      if(abs(height1) > standardD) {
-        # Check if it was specified whether MAGE+ or MAGE- should be computed.
-        # If not specified (-1), determine based on value of height1
-        # height1 > 0 means it's nadir to peak
-        if(nadir2peak == -1) { # Assigns nadir2peak
-          nadir2peak <- ifelse(height1 > 0, 1, 0)
-        }
-
-        # Once plus or minus is specified, only look at those excursions that match the type
-        if(nadir2peak == type_2) {
-          if(n+1 == length(minmax)) { # covers case where one before last
-            height2 <- minmax[n+1]-minmax[n]
-
-            if(abs(height2) >= standardD) { # append height2 to height
-              tp_indexes <- append(tp_indexes, indexes[n]) # TODO: combine into one?
-              tp_indexes <- append(tp_indexes, indexes[n+1])
-              heights <- append(heights, abs(height2))
-            }
-          }
-          else {
-            x <- 1
-            height2 <- 0
-            while(!(abs(height2) >= standardD) && n+x+1 <= length(minmax)) {  # checks bounds
-              height2 <- minmax[n+x+1]-minmax[n+x]
-
-              if(abs(height2) >= standardD || n+x+1 == length(minmax)-1 || n+x+1 == length(minmax)) {
-                # appends height2 to height
-                tp_indexes <- append(tp_indexes, indexes[n])
-                if(nadir2peak == 1) {
-                  heights <- append(heights, abs(minmax[n] - max(minmax[n:(n+x+1)])))
-                  tp_indexes <- append(tp_indexes, indexes[n + which.max(minmax[n:(n+x+1)])-1])
-                } else {
-                  heights <- append(heights, abs(minmax[n]- min(minmax[n:(n+x+1)])))
-                  tp_indexes <- append(tp_indexes, indexes[n + which.min(minmax[n:(n+x+1)])-1])
-                }
-                n <- n+x
-              }
-              else {
-                # this implicitly assumes you have min/max/min/max always alternating - does not work w/ GAPS
-                x <- x + 2
-              }
-            }
-          }
-        }
-      }
-
-      # increment loop variable
-      n <- n + 1
+    if (length(mage_minus_heights) == 0 && length(mage_plus_heights) == 0) {
+      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
     }
 
-    # save intermediate data for plotting
+    plus_first = ifelse((length(mage_plus_heights) > 0) && (length(mage_minus_heights) == 0 || mage_plus_tp_pairs[[1]][2] <= mage_minus_tp_pairs[[1]][1]), TRUE, FALSE)
+    mage_plus = data.frame(start=head(.data$time, 1), end=tail(.data$time, 1),  mage=mean(mage_plus_heights, na.rm = TRUE), plus_or_minus="PLUS", first_excursion=plus_first)
+    mage_minus = data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=abs(mean(mage_minus_heights, na.rm = TRUE)), plus_or_minus="MINUS", first_excursion=!plus_first)
+
+    # plotting
     pframe = parent.frame()
-    pframe$all_data = rbind(pframe$all_data, .data)
-    pframe$outer_tp_indexes = append(pframe$outer_tp_indexes, tp_indexes)
+    pframe$all_data = base::rbind(pframe$all_data, .data)
 
-    # 5. Return MAGE calculation
-    if(length(heights) == 0) { # return 0 if no excursions are present
-      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, pm=NA, first_excursion=NA))
+    for (e in mage_plus_tp_pairs) {
+      pframe$all_tp_indexes = base::rbind(pframe$all_tp_indexes, data.frame(idx=indexes[e[1]], peak_or_nadir="NADIR", plus_or_minus="PLUS", first_excursion=plus_first))
+      pframe$all_tp_indexes = base::rbind(pframe$all_tp_indexes, data.frame(idx=indexes[e[2]], peak_or_nadir="PEAK", plus_or_minus="PLUS", first_excursion=plus_first))
     }
 
-    return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=mean(heights, na.rm=TRUE), pm=NA, first_excursion=TRUE))
+    for (e in mage_minus_tp_pairs) {
+      pframe$all_tp_indexes = base::rbind(pframe$all_tp_indexes, data.frame(idx=indexes[e[1]], peak_or_nadir="PEAK", plus_or_minus="MINUS", first_excursion=!plus_first))
+      pframe$all_tp_indexes = base::rbind(pframe$all_tp_indexes, data.frame(idx=indexes[e[2]], peak_or_nadir="NADIR", plus_or_minus="MINUS", first_excursion=!plus_first))
+    }
+
+    return(base::rbind(mage_plus, mage_minus))
   }
 
   ## 1. Preprocessing
@@ -390,25 +323,32 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32,
   }
 
   # 5. Calculate MAGE on each identified segment
-  all_tp_indexes = c()
   all_data = c()
-  return_val = setNames(data.frame(matrix(ncol = 5, nrow = 0)), c("start", "end", "mage", "pm", "first_excursion"))
+  all_tp_indexes = setNames(data.frame(matrix(ncol = 4, nrow = 0)), c("idx", "peak_or_nadir", "plus_or_minus", "first_excursion"))
+  return_val = setNames(data.frame(matrix(ncol = 5, nrow = 0)), c("start", "end", "mage", "plus_or_minus", "first_excursion"))
 
   for (e in dfs) {
-      return_val = rbind(return_val, mage_atomic(e))
+      return_val = base::rbind(return_val, mage_atomic(e))
   }
 
   # 6. Plotting
   if(plot) {
     # 6.1 Label 'Peaks' and 'Nadirs'
+    return_ = match.arg(return_, c('auto', 'plus', 'minus'))
+
+    if (return_ == 'auto') {
+      tp_indexes <- dplyr::filter(all_tp_indexes, first_excursion==TRUE) %>% select(idx, peak_or_nadir)
+    } else {
+      tp_indexes <- dplyr::filter(all_tp_indexes, plus_or_minus==ifelse(return_ == 'plus', "PLUS", "MINUS")) %>% dplyr::select(idx, peak_or_nadir)
+    }
+
     data <- all_data %>%
-      dplyr::mutate(TP = dplyr::case_when(dplyr::row_number() %in% outer_tp_indexes[seq(to=length(outer_tp_indexes), by=2)] ~ ifelse(TRUE,"Peak","Nadir"), # TODO: assumes we alternate Peak/Nadir which does not work w/ gaps
-                                          dplyr::row_number() %in% outer_tp_indexes[1+seq(to=length(outer_tp_indexes), by=2)] ~ ifelse(TRUE,"Nadir","Peak")))
+      tibble::rownames_to_column(var = 'idx') %>%
+      dplyr::mutate(idx = as.numeric(idx)) %>%
+      dplyr::left_join(tp_indexes, by = 'idx')
 
     # 6.2 Set a default Title
-    title <- if(is.na(title)) {
-      paste("Glucose Trace - Subject ", data$id[1])
-    } else { title }
+    title <- ifelse(is.na(title), paste("Glucose Trace - Subject ", data$id[1]), title)
 
     # 6.3 Label Gaps in Data
     interval <- data_ip$dt0
@@ -437,12 +377,12 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32,
     .ymax <- max(data$gl)
 
     # 6.4 Generate ggplot
-    colors <- c("Short MA" = "#009E73", "Long MA" = "#D55E00","Nadir" = "blue", "Peak"="red")
+    colors <- c("Short MA" = "#009E73", "Long MA" = "#D55E00","NADIR" = "blue", "PEAK"="red")
     gap_colors <- c("Gap"="purple")
     .p <- ggplot2::ggplot(data, ggplot2::aes(x=time, y=gl)) +
       ggplot2::ggtitle(title) +
       ggplot2::geom_point() +
-      ggplot2::geom_point(data = subset(data, data$TP != ""), ggplot2::aes(color = TP), fill='white', size=2) +
+      ggplot2::geom_point(data = subset(data, data$peak_or_nadir != ""), ggplot2::aes(color = peak_or_nadir), fill='white', size=2) +
       ggplot2::geom_rect(data=.gaps, ggplot2::aes(
         xmin=.xmin,
         xmax=.xmax,
@@ -463,8 +403,11 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32,
     }
 
     # 4d. Return plot
-    # return(.p)
-    return(plotly::ggplotly(.p))
+    if (plot_type == 'ggplot') {
+      return(.p)
+    } else {
+      return(plotly::ggplotly(.p))
+    }
   }
 
   else {
@@ -477,9 +420,9 @@ mage_ma_single <- function(data, short_ma = 5, long_ma = 32,
 
     # filter by various options
     if (return_ == 'plus') {
-      res = return_val %>% dplyr::filter(pm = 'PLUS')
+      res = return_val %>% dplyr::filter(plus_or_minus == 'PLUS')
     } else if (return_ == 'minus') {
-      res = return_val %>% dplyr::filter(pm == 'MINUS')
+      res = return_val %>% dplyr::filter(plus_or_minus == 'MINUS')
     } else {
       res = return_val %>% dplyr::filter(first_excursion)
     }
