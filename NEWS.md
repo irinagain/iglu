@@ -1,3 +1,12 @@
+# iglu 3.5.0
+* minor bug corrections in mage calculations
+* adjustment from summarize to reframe
+* update algorithm for episode calculations
+* DT package import for shiny app
+* add glycemia risk index (GRI)
+* add AGP plot smoothing
+* add functionality to create a heatmap of metrics by subject
+
 #iglu 3.4.3
 * bug correction for denominator in hypo_index and hyper_index in case of missing glucose values
 

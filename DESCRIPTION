@@ -1,13 +1,13 @@
 Package: iglu
 Type: Package
 Title: Interpreting Glucose Data from Continuous Glucose Monitors
-Version: 3.4.3
-Authors@R: c(person("Steve", "Broll",
+Version: 3.5.0
+Authors@R: c(person("Elizabeth", "Chun",
+            role = c("aut")),
+            person("Steve", "Broll",
             email = "stevebroll@tamu.edu",
             role = c("aut")),
             person("David", "Buchanan",
-            role = c("aut")),
-            person("Elizabeth", "Chun",
             role = c("aut")),
             person("John", "Muschelli",
             role = c("aut"),
