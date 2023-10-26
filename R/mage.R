@@ -39,7 +39,7 @@ mage <- function(data,
                  short_ma = 5, long_ma = 32,
                  return_type = c('num', 'df'),
                  return_ = c('auto', 'plus', 'minus'), # TODO: change variable name
-                 plot = FALSE, dt0 = NULL, inter_gap = 45, tz = "",
+                 plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap=180, tz = "",
                  title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
 
   # Match version
@@ -51,7 +51,7 @@ mage <- function(data,
   }
 
   return(mage_ma(data, short_ma = short_ma, long_ma = long_ma, return_type=return_type, return_=return_,
-                 plot = plot, dt0 = dt0, inter_gap = inter_gap, tz = tz,
+                 plot = plot, dt0 = dt0, inter_gap = inter_gap, max_gap = max_gap, tz = tz,
                  title = title, xlab = xlab, ylab = ylab, show_ma = show_ma))
 }
 
@@ -59,7 +59,7 @@ mage_ma <- function(data,
                     short_ma = 5, long_ma = 32,
                     return_type = c('num', 'df'),
                     return_ = c('auto', 'plus', 'minus'),
-                    plot = FALSE, dt0 = NULL, inter_gap = 45, tz = "",
+                    plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap = 180, tz = "",
                     title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
   id = . = MAGE = NULL
   rm(list = c("id", ".", "MAGE"))
@@ -71,7 +71,7 @@ mage_ma <- function(data,
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::do(MAGE = mage_ma_single(., short_ma = short_ma, long_ma = long_ma, return_type=return_type, return_=return_,
-                                    plot = plot, dt0 = dt0, inter_gap = inter_gap, tz = tz,
+                                    plot = plot, dt0 = dt0, inter_gap = inter_gap, max_gap = max_gap, tz = tz,
                                     title = title, xlab = xlab, ylab = ylab, show_ma = show_ma))
 
   # Check if a ggplot or number in list is returned - convert the latter to a number

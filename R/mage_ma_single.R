@@ -44,7 +44,7 @@ mage_ma_single <- function(data,
                            short_ma = 5, long_ma = 32,
                            return_type = c('num', 'df'),
                            return_ = c('auto', 'plus', 'minus'),
-                           plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap = 90,
+                           plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap = 180,
                            tz = "", title = NA, xlab = NA, ylab = NA, show_ma = FALSE, plot_type='plotly') {
 
   ## 0. Calculates MAGE on 1 segment of CGM trace
@@ -287,7 +287,7 @@ mage_ma_single <- function(data,
   # 4. Time Series Segmentation: split gaps > max_gap into separate segments
   is_qualifying_gap = runlen$values == 1 & (runlen$lengths*data_ip$dt0 > max_gap)
 
-  if (length(is_qualifying_gap) == 1 && is_qualifying_gap[1] == FALSE) {
+  if (!any(is_qualifying_gap)) {
     # there are no gaps
     dfs = list()
     dfs[[1]] <- data
