@@ -200,7 +200,6 @@ mage_ma_single <- function(data,
           }
         }
       }
-
       else {
         j = j + 1
       }
@@ -390,7 +389,7 @@ mage_ma_single <- function(data,
         ymax=.ymax, fill = 'Gap'),
         alpha=0.2, inherit.aes = FALSE, show.legend = T, na.rm = TRUE) +
       ggplot2::theme(
-        legend.key = element_rect(fill='white'),
+        legend.key = ggplot2::element_rect(fill='white'),
         legend.title = ggplot2::element_blank(),
       ) +
       ggplot2::scale_color_manual(values = colors) +
@@ -409,7 +408,6 @@ mage_ma_single <- function(data,
       return(plotly::ggplotly(.p))
     }
   }
-
   else {
     return_type = match.arg(return_type, c('num', 'df'))
     return_ = match.arg(return_, c('auto', 'plus', 'minus'))
