@@ -64,6 +64,7 @@
 <span>  lv1_hyper <span class="op">=</span> <span class="fl">180</span>,</span>
 <span>  lv2_hyper <span class="op">=</span> <span class="fl">250</span>,</span>
 <span>  dur_length <span class="op">=</span> <span class="fl">15</span>,</span>
+<span>  end_length <span class="op">=</span> <span class="fl">15</span>,</span>
 <span>  subject <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dt0 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  inter_gap <span class="op">=</span> <span class="fl">45</span>,</span>
@@ -96,7 +97,13 @@
 <dt>dur_length</dt>
 <dd><p>Numeric value specifying the minimum duration in minutes to be
 considered an episode. Note dur_length should be a multiple of the data recording
-interval otherwise the function will round up to the nearest multiple.</p></dd>
+interval otherwise the function will round up to the nearest multiple. Default
+is 15 minutes to match consensus.</p></dd>
+
+
+<dt>end_length</dt>
+<dd><p>Numeric value specifying the minimum duration in minutes of
+improved glycemia for an episode to end. Default is equal to dur_length to match consensus.</p></dd>
 
 
 <dt>subject</dt>

@@ -103,14 +103,16 @@ profile across days together with daily glucose views.</p>
 and hyperglycemia episodes or events.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/episode_calculation.html">episode_calculation</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>,lv2_hypo <span class="op">=</span> <span class="fl">70</span>, lv1_hypo <span class="op">=</span> <span class="fl">120</span>, lv2_hyper <span class="op">=</span> <span class="fl">180</span>, dur_length <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7 × 6</span></span></span>
 <span><span class="co">#&gt;   id        type  level    avg_ep_per_day avg_ep_duration avg_ep_gl</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Subject 1 hypo  lv1              3.33             257.      105. </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Subject 1 hypo  lv2              0.089<span style="text-decoration: underline;">9</span>            35        68.6</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Subject 1 hypo  extended         1.71             437.      101. </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Subject 1 hyper lv1              1.44              80.3     200. </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Subject 1 hyper lv2              1.44              80.3     200.</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Subject 1 hyper lv2              1.44              80.3     200. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Subject 1 hypo  lv1_excl         3.24             262.      105. </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Subject 1 hyper lv1_excl         0                  0        <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
 <p>In this example, example_data_1_subject contains multiple days, and
 episode_calculation function calculate the episodes across all days.</p>
 <div class="section level4">
