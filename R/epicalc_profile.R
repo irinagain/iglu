@@ -139,7 +139,7 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
     )
 
   # match plot ranges colors (AGP)
-  colors <- c("#F9B500", "#F9F000", "#48BA3C", "#F92D00", "#8E1B1B")
+  colors <- c("#8E1B1B", "#F92D00", "#48BA3C", "#F9F000", "#F9B500")
   p1 = ggplot(plot_data) +
     geom_point(aes(time, gl, color = class)) +
     scale_color_manual(values = colors, drop = FALSE,
