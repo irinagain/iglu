@@ -67,15 +67,16 @@
 
 
 <dt>dur_length</dt>
-<dd><p>Numeric value specifying the minimum duration in minutes to be
-considered an episode. Note dur_length should be a multiple of the data recording
-interval otherwise the function will round up to the nearest multiple. Default
-is 15 minutes to match consensus.</p></dd>
+<dd><p>Numeric value specifying the minimum duration in minutes to
+be considered an episode. Note dur_length should be a multiple of the data recording
+interval otherwise the function will round up to the nearest multiple.
+Default is 20 minutes to match the original PGS definition.</p></dd>
 
 
 <dt>end_length</dt>
 <dd><p>Numeric value specifying the minimum duration in minutes of
-improved glycemia for an episode to end. Default is equal to dur_length to match consensus.</p></dd>
+improved glycemia for an episode to end.
+Default is 30 minutes to match original PGS definition.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -89,7 +90,10 @@ subject id and corresponding PGS value.</p>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>A tibble object with 1 row for each subject, a column for subject id and
 a column for GVP values is returned. NA glucose values are
-omitted from the calculation.</p>
+omitted from the calculation. Note that the duration thresholds for episodes
+are NOT the same as the episode_calculation defaults. The defaults chosen for
+PGS are those that match the original PGS paper definition, while the
+episode_calculation defaults match the consensus.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -99,6 +103,10 @@ and the Artificial Pancreas
 <em>Diabetes Technol Ther</em> <strong>19(S3)</strong> .S38-S48,
 <a href="https://doi.org/10.1089/dia.2017.0080" class="external-link">doi:10.1089/dia.2017.0080</a>
 .</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>episode_calculation()</p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
