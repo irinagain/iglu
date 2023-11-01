@@ -7,6 +7,13 @@
 #' pgs(data, dur_length = 20, end_length = 30)
 #'
 #' @inheritParams episode_calculation
+#' @param dur_length Numeric value specifying the minimum duration in minutes to
+#' be considered an episode. Note dur_length should be a multiple of the data recording
+#' interval otherwise the function will round up to the nearest multiple.
+#' Default is 20 minutes to match the original PGS definition.
+#' @param end_length Numeric value specifying the minimum duration in minutes of
+#' improved glycemia for an episode to end.
+#' Default is 30 minutes to match original PGS definition.
 #'
 #' @return A tibble object with two columns:
 #' subject id and corresponding PGS value.
@@ -17,7 +24,12 @@
 #'
 #' A tibble object with 1 row for each subject, a column for subject id and
 #' a column for GVP values is returned. NA glucose values are
-#' omitted from the calculation.
+#' omitted from the calculation. Note that the duration thresholds for episodes
+#' are NOT the same as the episode_calculation defaults. The defaults chosen for
+#' PGS are those that match the original PGS paper definition, while the
+#' episode_calculation defaults match the consensus.
+#'
+#' @seealso episode_calculation()
 #'
 #' @author Elizabeth Chun
 #'
