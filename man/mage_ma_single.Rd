@@ -6,17 +6,20 @@
 \usage{
 mage_ma_single(
   data,
-  short_ma = 5,
+  short_ma = 11,
   long_ma = 32,
-  type = c("auto", "plus", "minus"),
+  return_type = c("num", "df"),
+  direction = c("auto", "plus", "minus"),
   plot = FALSE,
   dt0 = NULL,
   inter_gap = 45,
+  max_gap = 180,
   tz = "",
   title = NA,
   xlab = NA,
   ylab = NA,
-  show_ma = FALSE
+  show_ma = FALSE,
+  plot_type = "plotly"
 )
 }
 \arguments{
@@ -26,7 +29,9 @@ mage_ma_single(
 
 \item{long_ma}{Integer for period length for the long moving average, default value is 32. (Recommended >20)}
 
-\item{type}{One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.}
+\item{return_type}{One of "num" and "df": will return a single value for MAGE or a DataFrame with the}
+
+\item{direction}{One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.}
 
 \item{plot}{Boolean. Returns ggplot if TRUE.}
 
@@ -43,6 +48,8 @@ mage_ma_single(
 \item{ylab}{Label for y-axis of ggplot. Defaults to "Glucose Level"}
 
 \item{show_ma}{Whether to show the moving average lines on the plot or not}
+
+\item{plot_type}{returns ggplot if "ggplot". Else returns plotly.}
 }
 \value{
 The numeric MAGE value for the inputted glucose values or a ggplot if \code{plot = TRUE}
@@ -59,7 +66,7 @@ mage_ma_single(
    example_data_1_subject,
    short_ma = 4,
    long_ma = 24,
-   type = 'plus')
+   direction = 'plus')
 
 mage_ma_single(
    example_data_1_subject,

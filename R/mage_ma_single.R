@@ -8,7 +8,8 @@
 #' @inheritParams CGMS2DayByDay
 #' @param short_ma Integer for period length of the short moving average. Must be positive and less than "long_ma", default value is 5. (Recommended <15)
 #' @param long_ma Integer for period length for the long moving average, default value is 32. (Recommended >20)
-#' @param type One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.
+#' @param return_type One of "num" and "df": will return a single value for MAGE or a DataFrame with the
+#' @param direction One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.
 #' @param plot Boolean. Returns ggplot if TRUE.
 #' @param title Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"
 #' @param xlab Label for x-axis of ggplot. Defaults to "Time"
@@ -26,7 +27,7 @@
 #'    example_data_1_subject,
 #'    short_ma = 4,
 #'    long_ma = 24,
-#'    type = 'plus')
+#'    direction = 'plus')
 #'
 #' mage_ma_single(
 #'    example_data_1_subject,
@@ -53,17 +54,17 @@ mage_ma_single <- function(data,
     rm(list=c('nmeasurements', 'list_cross', 'types', 'count', 'crosses', 'num_extrema', 'minmax', 'indexes', 's1', 's2', 'standardD', 'heights', 'nadir2peak'))
 
     if (all(is.na(.data$gl))) {
-      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
+      return(data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
     }
 
     nmeasurements = nrow(.data)
 
     if (nmeasurements < 7){
       warning("The number of measurements is too small for MAGE calculation.")
-      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
+      return(data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
     } else if (nmeasurements < long_ma){
       warning("The total number of measurements is smaller than the long moving average. ")
-      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
+      return(data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
     }
 
     # 2c. Calculate the moving average values
@@ -95,15 +96,13 @@ mage_ma_single <- function(data,
         !is.na(.data$DELTA_SHORT_LONG[i]) && !is.na(.data$DELTA_SHORT_LONG[i-1])
       ) {
         # crossing point if DELTA changes sign or curr DELTA is 0
-        if(.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[i-1] < 0 ||
-           (.data$DELTA_SHORT_LONG[i] == 0 && .data$DELTA_SHORT_LONG[i-1] != 0)
-          ) {
+        if(.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[i-1] < 0) {
           list_cross$id[count] <- idx[i]
           list_cross$type[count] = ifelse(.data$DELTA_SHORT_LONG[i] < .data$DELTA_SHORT_LONG[i-1], types$REL_MIN, types$REL_MAX)
           count <- count + 1
         }
 
-        else if (length(list_cross$id) >= 1 && .data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[list_cross$id[count-1]] < 0) { # needed for gaps, where DELTA_SHORT_LONG(i-1 | i-2) = NaN
+        else if (length(list_cross$id) >= 1 && (.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[list_cross$id[count-1]] < 0)) { # needed for gaps, where DELTA_SHORT_LONG(i-1 | i-2) = NaN
           prev_delta = .data$DELTA_SHORT_LONG[list_cross$id[count-1]]
 
           list_cross$id[count] <- idx[i]
@@ -114,7 +113,7 @@ mage_ma_single <- function(data,
     }
 
     # Add last point to capture excursion at end
-    list_cross$id[count+1] <- tail(idx, 1)
+    list_cross$id[count+1] <- utils::tail(idx, 1)
     list_cross$type[count+1] <- ifelse(.data$DELTA_SHORT_LONG[nrow(.data)] > 0, types$REL_MAX, types$REL_MIN)
 
     # Filter for non-na values then combine into a table
@@ -216,12 +215,12 @@ mage_ma_single <- function(data,
     }
 
     if (length(mage_minus_heights) == 0 && length(mage_plus_heights) == 0) {
-      return(data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
+      return(data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
     }
 
     plus_first = ifelse((length(mage_plus_heights) > 0) && (length(mage_minus_heights) == 0 || mage_plus_tp_pairs[[1]][2] <= mage_minus_tp_pairs[[1]][1]), TRUE, FALSE)
-    mage_plus = data.frame(start=head(.data$time, 1), end=tail(.data$time, 1),  mage=mean(mage_plus_heights, na.rm = TRUE), plus_or_minus="PLUS", first_excursion=plus_first)
-    mage_minus = data.frame(start=head(.data$time, 1), end=tail(.data$time, 1), mage=abs(mean(mage_minus_heights, na.rm = TRUE)), plus_or_minus="MINUS", first_excursion=!plus_first)
+    mage_plus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1),  mage=mean(mage_plus_heights, na.rm = TRUE), plus_or_minus="PLUS", first_excursion=plus_first)
+    mage_minus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=abs(mean(mage_minus_heights, na.rm = TRUE)), plus_or_minus="MINUS", first_excursion=!plus_first)
 
     # plotting
     pframe = parent.frame()

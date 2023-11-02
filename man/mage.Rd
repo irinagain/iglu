@@ -8,12 +8,14 @@ mage(
   data,
   version = c("ma", "naive"),
   sd_multiplier = 1,
-  short_ma = 5,
+  short_ma = 11,
   long_ma = 32,
-  type = c("auto", "plus", "minus"),
+  return_type = c("num", "df"),
+  direction = c("auto", "plus", "minus"),
   plot = FALSE,
   dt0 = NULL,
   inter_gap = 45,
+  max_gap = 180,
   tz = "",
   title = NA,
   xlab = NA,
@@ -34,7 +36,9 @@ can be specified for \code{version = "naive"}, and it is ignored if \code{versio
 
 \item{long_ma}{Integer for period length for the long moving average, default value is 32. (Recommended >20)}
 
-\item{type}{One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.}
+\item{return_type}{One of "num" and "df": will return a single value for MAGE or a DataFrame with the}
+
+\item{direction}{One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.}
 
 \item{plot}{Boolean. Returns ggplot if TRUE.}
 
