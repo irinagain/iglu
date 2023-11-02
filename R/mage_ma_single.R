@@ -346,7 +346,7 @@ mage_ma_single <- function(data,
     direction = match.arg(direction, c('auto', 'plus', 'minus'))
 
     if (direction == 'auto') {
-      tp_indexes <- dplyr::filter(all_tp_indexes, first_excursion==TRUE) %>% select(idx, peak_or_nadir)
+      tp_indexes <- dplyr::filter(all_tp_indexes, first_excursion==TRUE) %>% dplyr::select(idx, peak_or_nadir)
     } else {
       tp_indexes <- dplyr::filter(all_tp_indexes, plus_or_minus==ifelse(direction == 'plus', "PLUS", "MINUS")) %>% dplyr::select(idx, peak_or_nadir)
     }
