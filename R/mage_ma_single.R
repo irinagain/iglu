@@ -95,9 +95,19 @@ mage_ma_single <- function(data,
         !is.na(.data$DELTA_SHORT_LONG[i]) && !is.na(.data$DELTA_SHORT_LONG[i-1])
       ) {
         # crossing point if DELTA changes sign or curr DELTA is 0
-        if(.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[i-1] < 0 || (.data$DELTA_SHORT_LONG[i] == 0 && .data$DELTA_SHORT_LONG[i-1] != 0)) {
+        if(.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[i-1] < 0 ||
+           (.data$DELTA_SHORT_LONG[i] == 0 && .data$DELTA_SHORT_LONG[i-1] != 0)
+          ) {
           list_cross$id[count] <- idx[i]
           list_cross$type[count] = ifelse(.data$DELTA_SHORT_LONG[i] < .data$DELTA_SHORT_LONG[i-1], types$REL_MIN, types$REL_MAX)
+          count <- count + 1
+        }
+
+        else if (length(list_cross$id) >= 1 && .data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[list_cross$id[count-1]] < 0) { # needed for gaps, where DELTA_SHORT_LONG(i-1 | i-2) = NaN
+          prev_delta = .data$DELTA_SHORT_LONG[list_cross$id[count-1]]
+
+          list_cross$id[count] <- idx[i]
+          list_cross$type[count] = ifelse(.data$DELTA_SHORT_LONG[i] < prev_delta, types$REL_MIN, types$REL_MAX)
           count <- count + 1
         }
       }
@@ -382,19 +392,22 @@ mage_ma_single <- function(data,
       ggplot2::ggtitle(title) +
       ggplot2::geom_point() +
       ggplot2::geom_point(data = subset(data, data$peak_or_nadir != ""), ggplot2::aes(color = peak_or_nadir), fill='white', size=2) +
-      ggplot2::geom_rect(data=.gaps, ggplot2::aes(
+      ggplot2::scale_color_manual(values = colors) +
+      ggplot2::labs(x=ifelse(!is.na(xlab), xlab, "Time"), y=ifelse(!is.na(ylab), ylab, 'Glucose Level')) +
+      ggplot2::theme(
+        legend.key = ggplot2::element_rect(fill='white'),
+        legend.title = ggplot2::element_blank(),
+      )
+
+    if (nrow(.gaps)) {
+      .p <- .p + ggplot2::geom_rect(data=.gaps, ggplot2::aes(
         xmin=.xmin,
         xmax=.xmax,
         ymin=.ymin,
         ymax=.ymax, fill = 'Gap'),
         alpha=0.2, inherit.aes = FALSE, show.legend = T, na.rm = TRUE) +
-      ggplot2::theme(
-        legend.key = ggplot2::element_rect(fill='white'),
-        legend.title = ggplot2::element_blank(),
-      ) +
-      ggplot2::scale_color_manual(values = colors) +
-      ggplot2::scale_fill_manual(values=gap_colors) +
-      ggplot2::labs(x=ifelse(!is.na(xlab), xlab, "Time"), y=ifelse(!is.na(ylab), ylab, 'Glucose Level'))
+        ggplot2::scale_fill_manual(values=gap_colors)
+    }
 
     if(show_ma == TRUE) {
       .p <- .p + ggplot2::geom_line(ggplot2::aes(y = MA_Short, group = 1, color="Short MA")) + #Exclude for now because ggplot becomes too crowded
