@@ -11,6 +11,7 @@
 #' @param return_type One of "num" and "df": will return a single value for MAGE or a DataFrame with the
 #' @param direction One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.
 #' @param plot Boolean. Returns ggplot if TRUE.
+#' @param max_gap The maximum length of a gap before MAGE is calculated on each segment independently (recommended: 180 minutes)
 #' @param title Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"
 #' @param xlab Label for x-axis of ggplot. Defaults to "Time"
 #' @param ylab Label for y-axis of ggplot. Defaults to "Glucose Level"
@@ -45,8 +46,9 @@ mage_ma_single <- function(data,
                            short_ma = 11, long_ma = 32,
                            return_type = c('num', 'df'),
                            direction = c('auto', 'plus', 'minus'),
-                           plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap = 180,
-                           tz = "", title = NA, xlab = NA, ylab = NA, show_ma = FALSE, plot_type='plotly') {
+                           dt0 = NULL, tz = "", inter_gap = 45,
+                           max_gap = 180,
+                           plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, plot_type='ggplot') {
 
   ## 0. Calculates MAGE on 1 segment of CGM trace
   mage_atomic <- function(.data) {
@@ -98,15 +100,17 @@ mage_ma_single <- function(data,
         # crossing point if DELTA changes sign or curr DELTA is 0
         if(.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[i-1] < 0) {
           list_cross$id[count] <- idx[i]
-          list_cross$type[count] = ifelse(.data$DELTA_SHORT_LONG[i] < .data$DELTA_SHORT_LONG[i-1], types$REL_MIN, types$REL_MAX)
+          list_cross$type[count] <- ifelse(.data$DELTA_SHORT_LONG[i] < .data$DELTA_SHORT_LONG[i-1], types$REL_MIN, types$REL_MAX)
           count <- count + 1
         }
 
-        else if (length(list_cross$id) >= 1 && (.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[list_cross$id[count-1]] < 0)) { # needed for gaps, where DELTA_SHORT_LONG(i-1 | i-2) = NaN
-          prev_delta = .data$DELTA_SHORT_LONG[list_cross$id[count-1]]
+        # needed for gaps, where DELTA_SHORT_LONG(i-1 | i-2) = NaN
+        # match(list_cross$id[count-1], idx) : get the index from start of .data, since the rowname in the overall DF might not match the index in .data since they may not both start @ 1 (i.e., if multiple gaps)
+        else if (!is.na(.data$DELTA_SHORT_LONG[i]) && (.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[match(list_cross$id[count-1], idx)] < 0)) {
+          prev_delta = .data$DELTA_SHORT_LONG[match(list_cross$id[count-1], idx)]
 
           list_cross$id[count] <- idx[i]
-          list_cross$type[count] = ifelse(.data$DELTA_SHORT_LONG[i] < prev_delta, types$REL_MIN, types$REL_MAX)
+          list_cross$type[count] <- ifelse(.data$DELTA_SHORT_LONG[i] < prev_delta, types$REL_MIN, types$REL_MAX)
           count <- count + 1
         }
       }
@@ -414,10 +418,10 @@ mage_ma_single <- function(data,
     }
 
     # 4d. Return plot
-    if (plot_type == 'ggplot') {
-      return(.p)
-    } else {
+    if (plot_type == 'plotly') {
       return(plotly::ggplotly(.p))
+    } else {
+      return(.p)
     }
   }
   else {

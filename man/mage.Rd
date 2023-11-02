@@ -46,6 +46,8 @@ can be specified for \code{version = "naive"}, and it is ignored if \code{versio
 
 \item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
 
+\item{max_gap}{The maximum length of a gap before MAGE is calculated on each segment independently (recommended: 180 minutes)}
+
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 
 \item{title}{Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"}

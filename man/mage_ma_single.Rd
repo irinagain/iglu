@@ -10,16 +10,16 @@ mage_ma_single(
   long_ma = 32,
   return_type = c("num", "df"),
   direction = c("auto", "plus", "minus"),
-  plot = FALSE,
   dt0 = NULL,
+  tz = "",
   inter_gap = 45,
   max_gap = 180,
-  tz = "",
+  plot = FALSE,
   title = NA,
   xlab = NA,
   ylab = NA,
   show_ma = FALSE,
-  plot_type = "plotly"
+  plot_type = "ggplot"
 )
 }
 \arguments{
@@ -33,13 +33,15 @@ mage_ma_single(
 
 \item{direction}{One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.}
 
-\item{plot}{Boolean. Returns ggplot if TRUE.}
-
 \item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 
 \item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
 
-\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
+\item{max_gap}{The maximum length of a gap before MAGE is calculated on each segment independently (recommended: 180 minutes)}
+
+\item{plot}{Boolean. Returns ggplot if TRUE.}
 
 \item{title}{Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"}
 
