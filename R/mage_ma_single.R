@@ -41,9 +41,9 @@
 #'    show_ma=FALSE)
 
 mage_ma_single <- function(data,
-                           short_ma = 5, long_ma = 32,
+                           short_ma = 11, long_ma = 32,
                            return_type = c('num', 'df'),
-                           return_ = c('auto', 'plus', 'minus'),
+                           direction = c('auto', 'plus', 'minus'),
                            plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap = 180,
                            tz = "", title = NA, xlab = NA, ylab = NA, show_ma = FALSE, plot_type='plotly') {
 
@@ -82,7 +82,7 @@ mage_ma_single <- function(data,
     idx = as.numeric(rownames(.data))
     types = list2env(list(REL_MIN=0, REL_MAX=1))
 
-    list_cross <- list("id" = rep.int(NA, nmeasurements), "type" = rep.int(NA, nmeasurements)) # TODO: why does this need to be pre-allocated in the 1st place?
+    list_cross <- list("id" = rep.int(NA, nmeasurements), "type" = rep.int(NA, nmeasurements))
 
     # always add 1st point
     list_cross$id[1] <- idx[1]
@@ -118,7 +118,7 @@ mage_ma_single <- function(data,
     list_cross$type[count+1] <- ifelse(.data$DELTA_SHORT_LONG[nrow(.data)] > 0, types$REL_MAX, types$REL_MIN)
 
     # Filter for non-na values then combine into a table
-    list_cross$id <- list_cross$id[!is.na(list_cross$id)] # TODO: remove preallocation & get rid of this
+    list_cross$id <- list_cross$id[!is.na(list_cross$id)]
     list_cross$type <- list_cross$type[!is.na(list_cross$type)]
 
     crosses <- do.call(cbind.data.frame, list_cross)
@@ -343,12 +343,12 @@ mage_ma_single <- function(data,
   # 6. Plotting
   if(plot) {
     # 6.1 Label 'Peaks' and 'Nadirs'
-    return_ = match.arg(return_, c('auto', 'plus', 'minus'))
+    direction = match.arg(direction, c('auto', 'plus', 'minus'))
 
-    if (return_ == 'auto') {
+    if (direction == 'auto') {
       tp_indexes <- dplyr::filter(all_tp_indexes, first_excursion==TRUE) %>% select(idx, peak_or_nadir)
     } else {
-      tp_indexes <- dplyr::filter(all_tp_indexes, plus_or_minus==ifelse(return_ == 'plus', "PLUS", "MINUS")) %>% dplyr::select(idx, peak_or_nadir)
+      tp_indexes <- dplyr::filter(all_tp_indexes, plus_or_minus==ifelse(direction == 'plus', "PLUS", "MINUS")) %>% dplyr::select(idx, peak_or_nadir)
     }
 
     data <- all_data %>%
@@ -423,16 +423,16 @@ mage_ma_single <- function(data,
   }
   else {
     return_type = match.arg(return_type, c('num', 'df'))
-    return_ = match.arg(return_, c('auto', 'plus', 'minus'))
+    direction = match.arg(direction, c('auto', 'plus', 'minus'))
 
     if (return_type == 'df') {
       return(return_val)
     }
 
     # filter by various options
-    if (return_ == 'plus') {
+    if (direction == 'plus') {
       res = return_val %>% dplyr::filter(plus_or_minus == 'PLUS')
-    } else if (return_ == 'minus') {
+    } else if (direction == 'minus') {
       res = return_val %>% dplyr::filter(plus_or_minus == 'MINUS')
     } else {
       res = return_val %>% dplyr::filter(first_excursion)
