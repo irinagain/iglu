@@ -8,7 +8,7 @@ mage(
   data,
   version = c("ma", "naive"),
   sd_multiplier = 1,
-  short_ma = 11,
+  short_ma = 5,
   long_ma = 32,
   return_type = c("num", "df"),
   direction = c("auto", "plus", "minus"),

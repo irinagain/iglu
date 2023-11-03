@@ -358,7 +358,7 @@ mage_ma_single <- function(data,
       tibble::rownames_to_column(var = 'idx') %>%
       dplyr::mutate(idx = as.numeric(idx)) %>%
       dplyr::left_join(tp_indexes, by = 'idx') %>%
-      dplyr::left_join(select(all_data, time, MA_Short, MA_Long), by = 'time')
+      dplyr::left_join(dplyr::select(all_data, time, MA_Short, MA_Long), by = 'time')
 
     # 6.2 Set a default Title
     title <- ifelse(is.na(title), paste("Glucose Trace - Subject ", data$id[1]), title)
@@ -405,14 +405,14 @@ mage_ma_single <- function(data,
       )
 
     # add segment boundaries
-    segment_boundaries <- return_val %>% filter(!is.na(mage))
+    segment_boundaries <- return_val %>% dplyr::filter(!is.na(plus_or_minus))
 
     for (e in segment_boundaries$start) {
-      .p <- .p + ggplot2::geom_vline(xintercept = e, color="black", linetype = "dashed", show.legend = TRUE)
+      .p <- .p + ggplot2::geom_vline(xintercept = e, color="black", linetype = "solid", show.legend = TRUE)
     }
 
     for (e in segment_boundaries$end) {
-      .p <- .p + ggplot2::geom_vline(xintercept = e, color="black", linetype = "dashed", show.legend = TRUE)
+      .p <- .p + ggplot2::geom_vline(xintercept = e, color="black", linetype = "dotted", show.legend = TRUE)
     }
 
     if (nrow(.gaps)) {
