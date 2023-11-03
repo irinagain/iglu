@@ -73,6 +73,7 @@ Imports:
 Suggests:
     knitr,
     rmarkdown,
-    testthat (>= 2.1.0)
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 URL: https://irinagain.github.io/iglu/
+Config/testthat/edition: 3
