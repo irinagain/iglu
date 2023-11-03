@@ -26,6 +26,9 @@ check_data_columns =  function(data, id = 'id', time = 'time', gl = 'gl', time_c
 # checks for time format and any repeated/duplicate timestamps
 check_data_time <- function(data, tz = ""){
 
+  id = NULL
+  rm(list = c("id"))
+
   check_reps_single <- function(data) {
 
     check_reps = diff(data$time) == 0
@@ -42,15 +45,15 @@ check_data_time <- function(data, tz = ""){
     # (i.e. can have 2+ duplicates)
     grouping = rle(as.numeric(data$time))$lengths
     data = data %>%
-      mutate(
+      dplyr::mutate(
         grouping = rep(1:length(grouping), grouping)
       ) %>%
-      group_by(grouping) %>%
-      summarise(
+      dplyr::group_by(grouping) %>%
+      dplyr::summarise(
         id = id[1], time = time[1], gl = mean(gl, na.rm = TRUE),
         .groups = "drop"
       ) %>%
-      select(id, time, gl)
+      dplyr::select(id, time, gl)
 
     # returns data after averaging duplicates
     return(data)
@@ -66,7 +69,7 @@ check_data_time <- function(data, tz = ""){
     dplyr::reframe(
       check_reps_single(data.frame(id, time, gl))
     ) %>%
-    ungroup()
+    dplyr::ungroup()
 
   return(out)
 }
