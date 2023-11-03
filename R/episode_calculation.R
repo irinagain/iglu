@@ -79,6 +79,25 @@ event_class = function(data, level_type, threshold, event_duration, end_duration
   }
 }
 
+# label exlusive events (1 vs 0 if not)
+lv1_excl = function (data) {
+
+  segment = lv1 = lv2 = NULL
+  rm(list = c("segment", "lv1", "lv2"))
+
+  colnames(data) = c("id", "time", "gl", "segment", "lv1", "lv2")
+
+  out = data %>%
+    dplyr::group_by(segment, lv1) %>%
+    dplyr::mutate(
+      # if goes to lv2 = 0, not exclusive, else keep lv1 label (unique within subj-seg)
+      excl = ifelse(any(lv2 > 0), 0, lv1)
+    ) %>%
+    dplyr::ungroup()
+
+  return(out$excl)
+}
+
 # function to calculate summary statistics for each type of episode
 episode_summary = function (data, dt0) {
 
@@ -116,12 +135,13 @@ episode_summary = function (data, dt0) {
     return(output)
   }
 
-  labels = c("lv1_hypo", "lv2_hypo", "ext_hypo", "lv1_hyper", "lv2_hyper")
+  labels = c("lv1_hypo", "lv2_hypo", "ext_hypo", "lv1_hyper", "lv2_hyper",
+             "lv1_hypo_excl", "lv1_hyper_excl")
   out_list = sapply(labels, function(x) episode_summary_helper(data, x, dt0))
 
   output = data.frame(
-    type = c(rep("hypo", 3), rep("hyper", 2)), # hypo or hyper
-    level = c("lv1", 'lv2', 'extended', 'lv1', 'lv2'), # lv1/lv2/extended
+    type = c(rep("hypo", 3), rep("hyper", 2), "hypo", "hyper"), # hypo or hyper
+    level = c("lv1", 'lv2', 'extended', 'lv1', 'lv2', 'lv1_excl', 'lv1_excl'), # lv1/lv2/extended
     avg_ep_per_day = out_list[1, ],
     avg_ep_duration = out_list[2, ],
     avg_ep_gl = out_list[3, ]
@@ -132,7 +152,7 @@ episode_summary = function (data, dt0) {
 
 # classify episodes for all segments for one subject
 episode_single = function(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper,
-                          dur_length, return_data, dt0, inter_gap, tz) {
+                          dur_length, end_length, return_data, dt0, inter_gap, tz) {
 
   id = segment = NULL
   rm(list = c("id", "segment"))
@@ -162,6 +182,7 @@ episode_single = function(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper,
   }
 
   dur_idx = ceiling(dur_length/dt0)
+  end_idx = ceiling(end_length/dt0)
 
   ### create segment indices to split by NA gaps then remove gaps
   na_idx = is.na(new_data$gl)
@@ -174,12 +195,17 @@ episode_single = function(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper,
   ep_per_seg = segment_data %>%
     dplyr::group_by(segment) %>%
     dplyr::mutate(
-      lv1_hypo = event_class(data.frame(id, time, gl), "hypo", lv1_hypo, dur_idx, dur_idx),
-      lv2_hypo = event_class(data.frame(id, time, gl), "hypo", lv2_hypo, dur_idx, dur_idx),
-      lv1_hyper = event_class(data.frame(id, time, gl), "hyper", lv1_hyper, dur_idx, dur_idx),
-      lv2_hyper = event_class(data.frame(id, time, gl), "hyper",lv2_hyper, dur_idx, dur_idx),
+      lv1_hypo = event_class(data.frame(id, time, gl), "hypo", lv1_hypo, dur_idx, end_idx),
+      lv2_hypo = event_class(data.frame(id, time, gl), "hypo", lv2_hypo, dur_idx, end_idx),
+      lv1_hyper = event_class(data.frame(id, time, gl), "hyper", lv1_hyper, dur_idx, end_idx),
+      lv2_hyper = event_class(data.frame(id, time, gl), "hyper",lv2_hyper, dur_idx, end_idx),
       # extended hypoglycemia defined as >120 minutes of hypoglycemia
-      ext_hypo = event_class(data.frame(id, time, gl), "hypo", !!lv1_hypo, 120/dt0 + 1, dur_idx)
+      ext_hypo = event_class(data.frame(id, time, gl), "hypo", !!lv1_hypo, 120/dt0 + 1, end_idx)
+    ) %>%
+    dplyr::mutate(
+      # if both levels will be 0, else will be 1
+      lv1_hypo_excl = lv1_excl(data.frame(id, time, gl, segment, lv1_hypo, lv2_hypo)),
+      lv1_hyper_excl = lv1_excl(data.frame(id, time, gl, segment, lv1_hyper, lv2_hyper)),
     )
 
   # if return data, then return without calculating summaries
@@ -209,7 +235,10 @@ episode_single = function(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper,
 #' @param lv2_hyper Numeric value specifying a hyperglycemia threshold for level 2
 #' @param dur_length Numeric value specifying the minimum duration in minutes to be
 #' considered an episode. Note dur_length should be a multiple of the data recording
-#' interval otherwise the function will round up to the nearest multiple.
+#' interval otherwise the function will round up to the nearest multiple. Default
+#' is 15 minutes to match consensus.
+#' @param end_length Numeric value specifying the minimum duration in minutes of
+#' improved glycemia for an episode to end. Default is equal to dur_length to match consensus.
 #' @param return_data Boolean indicating whether to also return data with episode labels.
 #' Defaults to FALSE which means only episode summary statistics will be returned
 #'
@@ -237,6 +266,8 @@ episode_single = function(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper,
 #' Note we have classified lv2 as a subset of lv1 since we find the consensus to be
 #' slightly ambiguous.
 #'
+#' @seealso epicalc_profile()
+#'
 #' @references
 #' Battelino et al. (2023): Continuous glucose monitoring and metrics for clinical
 #' trials: an international consensus statement
@@ -253,7 +284,8 @@ episode_single = function(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper,
 
 # top level function overall
 episode_calculation = function(data, lv1_hypo = 70,lv2_hypo = 54, lv1_hyper= 180, lv2_hyper = 250,
-                               dur_length = 15, return_data = FALSE, dt0 = NULL, inter_gap = 45, tz = "") {
+                               dur_length = 15, end_length = 15, return_data = FALSE,
+                               dt0 = NULL, inter_gap = 45, tz = "") {
 
   id = NULL
   rm(list = c("id"))
@@ -267,9 +299,10 @@ episode_calculation = function(data, lv1_hypo = 70,lv2_hypo = 54, lv1_hyper= 180
   out <- data %>%
     dplyr::group_by(id) %>%
     # calculate episodes for each subject and return summary stats not data
-    dplyr::reframe(episode_single(data.frame(id, time, gl), lv1_hypo, lv2_hypo, lv1_hyper,
-                                  lv2_hyper, dur_length, return_data = FALSE,
-                                  dt0, inter_gap, tz)) %>%
+    dplyr::reframe(episode_single(data.frame(id, time, gl), lv1_hypo = lv1_hypo, lv2_hypo = lv2_hypo,
+                                  lv1_hyper = lv1_hyper, lv2_hyper = lv2_hyper, return_data = FALSE,
+                                  dur_length = dur_length,end_length = end_length, dt0 = dt0,
+                                  inter_gap = inter_gap, tz = tz)) %>%
     dplyr::ungroup()
 
 
@@ -277,8 +310,10 @@ episode_calculation = function(data, lv1_hypo = 70,lv2_hypo = 54, lv1_hyper= 180
     ep_data = data %>%
       dplyr::group_by(id) %>%
       # return labeled episode data
-      dplyr::reframe(episode_single(data.frame(id, time, gl), lv1_hypo, lv2_hypo, lv1_hyper,
-                                    lv2_hyper, dur_length, return_data, dt0, inter_gap, tz)) %>%
+      dplyr::reframe(episode_single(data.frame(id, time, gl), lv1_hypo = lv1_hypo, lv2_hypo = lv2_hypo,
+                                    lv1_hyper = lv1_hyper, lv2_hyper = lv2_hyper, return_data = TRUE,
+                                    dur_length = dur_length,end_length = end_length, dt0 = dt0,
+                                    inter_gap = inter_gap, tz = tz)) %>%
       dplyr::ungroup()
     output = list(out, ep_data)
     return(output)

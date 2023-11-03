@@ -64,6 +64,21 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
                  grep("glucose",tolower(colnames(data)))[1])]
     colnames(out) = c("time", "gl")
     out$id = id
+
+    # check number of high/low censored readings
+    n_high = sum(grepl("High", out$gl, ignore.case = TRUE))
+    n_low = sum(grepl("Low", out$gl, ignore.case = TRUE))
+
+    if ((n_high + n_low) > 0) {
+      warning(paste0("Out of range glucose values detected:\n", n_high,
+                     " High readings (", round(n_high/length(out$gl)*100, 2), "%)\n",
+                     n_low, " Low readings (", round(n_low/length(out$gl)*100, 2),
+                     "%).\nThese will be set to NA, total out of range = ", n_high + n_low,
+                     " readings (", round((n_high + n_low)/length(out$gl)*100, 2), "%)"))
+    } else {
+      print("All glucose values in range")
+    }
+
     out$gl = as.numeric(out$gl)
     out$time <- as.POSIXct(out$time, format='%Y-%m-%dT%H:%M:%S', tz = tz)
     out = out[,c(3,1,2)]
@@ -89,6 +104,21 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     data <- data[,c(grep("timestamp",tolower(colnames(data))),
                       grep("historic glucose",tolower(colnames(data))))]
     colnames(data) <- c('time','gl')
+
+    # check number of high/low censored readings
+    n_high = sum(grepl("High", out$gl, ignore.case = TRUE))
+    n_low = sum(grepl("Low", out$gl, ignore.case = TRUE))
+
+    if ((n_high + n_low) > 0) {
+      warning(paste0("Out of range glucose values detected:\n", n_high,
+                     " High readings (", round(n_high/length(out$gl)*100, 2), "%)\n",
+                     n_low, " Low readings (", round(n_low/length(out$gl)*100, 2),
+                     "%).\nThese will be set to NA, total out of range = ", n_high + n_low,
+                     " readings (", round((n_high + n_low)/length(out$gl)*100, 2), "%)"))
+    } else {
+      print("All glucose values in range")
+    }
+
     data$gl = as.numeric(data$gl)
     data$id = id
     data$time <- as.POSIXct(data$time, format='%Y-%m-%dT%H:%M:%S', tz = tz)
@@ -112,6 +142,20 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     colnames(data) <- c('time','gl')
     data$id = id
 
+    # check number of high/low censored readings
+    n_high = sum(grepl("High", out$gl, ignore.case = TRUE))
+    n_low = sum(grepl("Low", out$gl, ignore.case = TRUE))
+
+    if ((n_high + n_low) > 0) {
+      warning(paste0("Out of range glucose values detected:\n", n_high,
+                     " High readings (", round(n_high/length(out$gl)*100, 2), "%)\n",
+                     n_low, " Low readings (", round(n_low/length(out$gl)*100, 2),
+                     "%).\nThese will be set to NA, total out of range = ", n_high + n_low,
+                     " readings (", round((n_high + n_low)/length(out$gl)*100, 2), "%)"))
+    } else {
+      print("All glucose values in range")
+    }
+
     # reformat data types
     data$gl = as.numeric(data$gl)
     data$time = as.POSIXct(data$time, format='%m/%d/%Y %H:%M', tz = tz)
@@ -132,6 +176,21 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     data$sensorglucose = data$Value
     data = data[,c('time','gl')]
     data$id = id
+
+    # check number of high/low censored readings
+    n_high = sum(grepl("High", out$gl, ignore.case = TRUE))
+    n_low = sum(grepl("Low", out$gl, ignore.case = TRUE))
+
+    if ((n_high + n_low) > 0) {
+      warning(paste0("Out of range glucose values detected:\n", n_high,
+                     " High readings (", round(n_high/length(out$gl)*100, 2), "%)\n",
+                     n_low, " Low readings (", round(n_low/length(out$gl)*100, 2),
+                     "%).\nThese will be set to NA, total out of range = ", n_high + n_low,
+                     " readings (", round((n_high + n_low)/length(out$gl)*100, 2), "%)"))
+    } else {
+      print("All glucose values in range")
+    }
+
     data$gl = as.numeric(data$gl)
     data$time <- as.POSIXct(data$time, format='%Y-%m-%dT%H:%M:%S', tz = tz)
     data = data[,c(3,1,2)]
@@ -154,6 +213,21 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     data <- data[,c("Timestamp","Sensor Glucose (mg/dL)")]
     base::colnames(data) <- c('time','gl')
     data$id = id
+
+    # check number of high/low censored readings
+    n_high = sum(grepl("High", out$gl, ignore.case = TRUE))
+    n_low = sum(grepl("Low", out$gl, ignore.case = TRUE))
+
+    if ((n_high + n_low) > 0) {
+      warning(paste0("Out of range glucose values detected:\n", n_high,
+                     " High readings (", round(n_high/length(out$gl)*100, 2), "%)\n",
+                     n_low, " Low readings (", round(n_low/length(out$gl)*100, 2),
+                     "%).\nThese will be set to NA, total out of range = ", n_high + n_low,
+                     " readings (", round((n_high + n_low)/length(out$gl)*100, 2), "%)"))
+    } else {
+      print("All glucose values in range")
+    }
+
     data$gl = as.numeric(data$gl)
     data = data[,c(3,1,2)]
     return(data)
