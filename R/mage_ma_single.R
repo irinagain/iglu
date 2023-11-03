@@ -43,7 +43,7 @@
 #'    show_ma=FALSE)
 
 mage_ma_single <- function(data,
-                           short_ma = 11, long_ma = 32,
+                           short_ma = 5, long_ma = 32,
                            return_type = c('num', 'df'),
                            direction = c('auto', 'plus', 'minus'),
                            dt0 = NULL, tz = "", inter_gap = 45,
@@ -132,8 +132,9 @@ mage_ma_single <- function(data,
     indexes <- rep(NA_real_, num_extrema)
 
     for(i in 1:num_extrema) {
-      s1 <- crosses[i,1]    # indexes of crossing points
-      s2 <- crosses[i+1,1]
+      # s1 <- crosses[i,1]    # left boundary: prev turning point
+      s1 <- ifelse(i == 1, crosses[i, 1], indexes[i-1])
+      s2 <- crosses[i+1,1]  # right boundary: next crossing point
 
       if(crosses[i, "type"] == types$REL_MIN) {
         minmax[i] <- min(.data[as.character(s1:s2), ]$gl, na.rm = TRUE)
@@ -304,8 +305,7 @@ mage_ma_single <- function(data,
     # there are no gaps
     dfs = list()
     dfs[[1]] <- data
-  }
-  else {
+  } else {
     # there are gaps
     end_boundary = cumsum(runlen$lengths)[is_qualifying_gap]
     start_boundary = end_boundary - runlen$lengths[is_qualifying_gap] + 1 # add 1 b/c both sides inclusive
@@ -354,10 +354,11 @@ mage_ma_single <- function(data,
       tp_indexes <- dplyr::filter(all_tp_indexes, plus_or_minus==ifelse(direction == 'plus', "PLUS", "MINUS")) %>% dplyr::select(idx, peak_or_nadir)
     }
 
-    data <- all_data %>%
+    plotting_data <- data %>%
       tibble::rownames_to_column(var = 'idx') %>%
       dplyr::mutate(idx = as.numeric(idx)) %>%
-      dplyr::left_join(tp_indexes, by = 'idx')
+      dplyr::left_join(tp_indexes, by = 'idx') %>%
+      dplyr::left_join(select(all_data, time, MA_Short, MA_Long), by = 'time')
 
     # 6.2 Set a default Title
     title <- ifelse(is.na(title), paste("Glucose Trace - Subject ", data$id[1]), title)
@@ -366,13 +367,13 @@ mage_ma_single <- function(data,
     interval <- data_ip$dt0
 
     # filter out gl NAs to enable correct gap identification
-    data <- data[complete.cases(data$gl), ]
+    plotting_data <- plotting_data[complete.cases(data$gl), ]
 
     # Find the start and end of each gap and merge/sort the two (Must do separately to solve the problem of "back to back" gaps not having correct start & end time)
-    .gap_start <- data %>%
+    .gap_start <- plotting_data %>%
       dplyr::filter(abs(difftime(time, dplyr::lead(time), units = "min")) > 2*interval)
 
-    .gap_end <- data %>%
+    .gap_end <- plotting_data %>%
       dplyr::filter(difftime(time, dplyr::lag(time), units = "min") > interval*2)
 
     .gaps <- rbind(.gap_start, .gap_end) %>%
@@ -385,16 +386,17 @@ mage_ma_single <- function(data,
                         .xmax = .gaps$time[c(FALSE, TRUE)])
 
     # extraneous for ggplot; need for plotly
-    .ymin <- min(data$gl)
-    .ymax <- max(data$gl)
+    .ymin <- min(plotting_data$gl)
+    .ymax <- max(plotting_data$gl)
 
     # 6.4 Generate ggplot
-    colors <- c("Short MA" = "#009E73", "Long MA" = "#D55E00","NADIR" = "blue", "PEAK"="red")
+    colors <- c("NADIR" = "blue", "PEAK"="red", "Short MA" = "#009E73", "Long MA" = "#D55E00")
     gap_colors <- c("Gap"="purple")
-    .p <- ggplot2::ggplot(data, ggplot2::aes(x=time, y=gl)) +
+
+    .p <- ggplot2::ggplot(plotting_data, ggplot2::aes(x=time, y=gl)) +
       ggplot2::ggtitle(title) +
       ggplot2::geom_point() +
-      ggplot2::geom_point(data = subset(data, data$peak_or_nadir != ""), ggplot2::aes(color = peak_or_nadir), fill='white', size=2) +
+      ggplot2::geom_point(data = subset(plotting_data, plotting_data$peak_or_nadir != ""), ggplot2::aes(color = peak_or_nadir), fill='white', size=2) +
       ggplot2::scale_color_manual(values = colors) +
       ggplot2::labs(x=ifelse(!is.na(xlab), xlab, "Time"), y=ifelse(!is.na(ylab), ylab, 'Glucose Level')) +
       ggplot2::theme(
@@ -402,18 +404,31 @@ mage_ma_single <- function(data,
         legend.title = ggplot2::element_blank(),
       )
 
+    # add segment boundaries
+    segment_boundaries <- return_val %>% filter(!is.na(mage))
+
+    for (e in segment_boundaries$start) {
+      .p <- .p + ggplot2::geom_vline(xintercept = e, color="black", linetype = "dashed", show.legend = TRUE)
+    }
+
+    for (e in segment_boundaries$end) {
+      .p <- .p + ggplot2::geom_vline(xintercept = e, color="black", linetype = "dashed", show.legend = TRUE)
+    }
+
     if (nrow(.gaps)) {
       .p <- .p + ggplot2::geom_rect(data=.gaps, ggplot2::aes(
-        xmin=.xmin,
-        xmax=.xmax,
-        ymin=.ymin,
-        ymax=.ymax, fill = 'Gap'),
+          xmin=.xmin,
+          xmax=.xmax,
+          ymin= ifelse(plot_type == "plotly", .ymin, -Inf),
+          ymax= ifelse(plot_type == "plotly", .ymax, Inf),
+          fill = 'Gap'
+        ),
         alpha=0.2, inherit.aes = FALSE, show.legend = T, na.rm = TRUE) +
         ggplot2::scale_fill_manual(values=gap_colors)
     }
 
     if(show_ma == TRUE) {
-      .p <- .p + ggplot2::geom_line(ggplot2::aes(y = MA_Short, group = 1, color="Short MA")) + #Exclude for now because ggplot becomes too crowded
+      .p <- .p + ggplot2::geom_line(ggplot2::aes(y = MA_Short, group = 1, color="Short MA")) + #Exclude by default because ggplot becomes too crowded
         ggplot2::geom_line(ggplot2::aes(y = MA_Long, group = 2, color="Long MA"))
     }
 

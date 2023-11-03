@@ -36,7 +36,7 @@
 mage <- function(data,
                  version = c('ma', 'naive'),
                  sd_multiplier = 1,
-                 short_ma = 11, long_ma = 32,
+                 short_ma = 5, long_ma = 32,
                  return_type = c('num', 'df'),
                  direction = c('auto', 'plus', 'minus'),
                  plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap=180, tz = "",
@@ -56,7 +56,7 @@ mage <- function(data,
 }
 
 mage_ma <- function(data,
-                    short_ma = 11, long_ma = 32,
+                    short_ma = 5, long_ma = 32,
                     return_type = c('num', 'df'),
                     direction = c('auto', 'plus', 'minus'),
                     plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap = 180, tz = "",
