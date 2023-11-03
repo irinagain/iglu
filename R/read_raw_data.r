@@ -251,6 +251,7 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
 
   }
 
+  out = check_data_time(out, tz = tz)
   return(out)
 }
 
