@@ -11,7 +11,7 @@ mage(
   short_ma = 5,
   long_ma = 32,
   return_type = c("num", "df"),
-  direction = c("auto", "plus", "minus"),
+  direction = c("service", "avg", "max", "plus", "minus"),
   plot = FALSE,
   dt0 = NULL,
   inter_gap = 45,
@@ -38,7 +38,7 @@ can be specified for \code{version = "naive"}, and it is ignored if \code{versio
 
 \item{return_type}{One of "num" and "df": will return a single value for MAGE or a DataFrame with the}
 
-\item{direction}{One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.}
+\item{direction}{One of 'service', 'avg', 'max', 'plus', or 'minus'. (Default: "service"). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service").}
 
 \item{plot}{Boolean. Returns ggplot if TRUE.}
 

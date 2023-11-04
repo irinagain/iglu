@@ -9,7 +9,7 @@
 #' @param short_ma Integer for period length of the short moving average. Must be positive and less than "long_ma", default value is 5. (Recommended <15)
 #' @param long_ma Integer for period length for the long moving average, default value is 32. (Recommended >20)
 #' @param return_type One of "num" and "df": will return a single value for MAGE or a DataFrame with the
-#' @param direction One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.
+#' @param direction One of 'service', 'avg', 'max', 'plus', or 'minus'. (Default: "service"). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service").
 #' @param plot Boolean. Returns ggplot if TRUE.
 #' @param max_gap The maximum length of a gap before MAGE is calculated on each segment independently (recommended: 180 minutes)
 #' @param title Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"
@@ -45,7 +45,7 @@
 mage_ma_single <- function(data,
                            short_ma = 5, long_ma = 32,
                            return_type = c('num', 'df'),
-                           direction = c('auto', 'plus', 'minus'),
+                           direction = c('service', 'avg', 'max', 'plus', 'minus'),
                            dt0 = NULL, tz = "", inter_gap = 45,
                            max_gap = 180,
                            plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, plot_type='ggplot') {
@@ -346,9 +346,15 @@ mage_ma_single <- function(data,
   # 6. Plotting
   if(plot) {
     # 6.1 Label 'Peaks' and 'Nadirs'
-    direction = match.arg(direction, c('auto', 'plus', 'minus'))
+    direction = match.arg(direction, c('service', 'avg', 'max', 'plus', 'minus'))
 
-    if (direction == 'auto') {
+    if (direction == "avg") {
+      stop("Plotting is not available with MAGEavg. Please generate plots for MAGE+ and MAGE- separately, via the direction argument.")
+    } else if (direction == "max") {
+      stop("Plotting functionality for MAGEmax is coming in iglu v4.1.0. Thank you for your patience.")
+    }
+
+    if (direction == 'service') {
       tp_indexes <- dplyr::filter(all_tp_indexes, first_excursion==TRUE) %>% dplyr::select(idx, peak_or_nadir)
     } else {
       tp_indexes <- dplyr::filter(all_tp_indexes, plus_or_minus==ifelse(direction == 'plus', "PLUS", "MINUS")) %>% dplyr::select(idx, peak_or_nadir)
@@ -441,7 +447,7 @@ mage_ma_single <- function(data,
   }
   else {
     return_type = match.arg(return_type, c('num', 'df'))
-    direction = match.arg(direction, c('auto', 'plus', 'minus'))
+    direction = match.arg(direction, c('service', 'avg', 'max', 'plus', 'minus'))
 
     if (return_type == 'df') {
       return(return_val)
@@ -452,8 +458,12 @@ mage_ma_single <- function(data,
       res = return_val %>% dplyr::filter(plus_or_minus == 'PLUS')
     } else if (direction == 'minus') {
       res = return_val %>% dplyr::filter(plus_or_minus == 'MINUS')
+    } else if (direction == 'avg') {
+      res = return_val %>% dplyr::filter(!is.na(mage))
+    } else if (direction == 'max') {
+      res = return_val %>% dplyr::group_by(start, end) %>% dplyr::filter(mage == max(mage)) %>% dplyr::ungroup() # Source: https://stackoverflow.com/a/24237538/21711054
     } else {
-      res = return_val %>% dplyr::filter(first_excursion)
+      res = return_val %>% dplyr::filter(first_excursion == TRUE)
     }
 
     if (nrow(res) == 0) {

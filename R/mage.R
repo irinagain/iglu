@@ -38,7 +38,7 @@ mage <- function(data,
                  sd_multiplier = 1,
                  short_ma = 5, long_ma = 32,
                  return_type = c('num', 'df'),
-                 direction = c('auto', 'plus', 'minus'),
+                 direction = c('service', 'avg', 'max', 'plus', 'minus'),
                  plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap=180, tz = "",
                  title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
 
@@ -58,7 +58,7 @@ mage <- function(data,
 mage_ma <- function(data,
                     short_ma = 5, long_ma = 32,
                     return_type = c('num', 'df'),
-                    direction = c('auto', 'plus', 'minus'),
+                    direction = c('service', 'avg', 'max', 'plus', 'minus'),
                     plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap = 180, tz = "",
                     title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
   id = . = MAGE = NULL
