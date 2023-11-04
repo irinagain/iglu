@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">iglu</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.5.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,6 +51,15 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="3.5.1" id="iglu-351">iglu 3.5.1<a class="anchor" aria-label="anchor" href="#iglu-351"></a></h2>
+<ul><li>MAGE handles traces with gaps, restarting calculation when gap &gt;= user-defined threshold</li>
+<li>MAGE returns ggplot as well as plotly</li>
+<li>Fixed plotting functionality with large gaps and multiple segments</li>
+<li>MAGE “left-side accumulation” optimization</li>
+<li>Added “MAGE_max” and “MAGE_avg” to possible directions able to be calculated (in addition to MAGE+, MAGE-, and Service’s definition)</li>
+<li>Updated MAGE vignette for more details</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.5.0" id="iglu-350">iglu 3.5.0<a class="anchor" aria-label="anchor" href="#iglu-350"></a></h2><p class="text-muted">CRAN release: 2023-10-20</p>
 <ul><li>minor bug corrections in mage calculations</li>
 <li>adjustment from summarize to reframe</li>
@@ -59,8 +68,11 @@
 <li>add glycemia risk index (GRI)</li>
 <li>add AGP plot smoothing</li>
 <li>add functionality to create a heatmap of metrics by subject</li>
-</ul><p>#iglu 3.4.3 * bug correction for denominator in hypo_index and hyper_index in case of missing glucose values</p>
-</div>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="3.4.3" id="iglu-343">iglu 3.4.3<a class="anchor" aria-label="anchor" href="#iglu-343"></a></h2>
+<ul><li>bug correction for denominator in hypo_index and hyper_index in case of missing glucose values</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.4.2" id="iglu-342">iglu 3.4.2<a class="anchor" aria-label="anchor" href="#iglu-342"></a></h2><p class="text-muted">CRAN release: 2022-11-16</p>
 <ul><li>Rewrite for computational efficiency of CGM2DayByDay</li>
