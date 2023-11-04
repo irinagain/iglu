@@ -629,7 +629,7 @@ shinyServer(function(input, output) {
     subject = unique(data$id)[1]
 
     tags$div(
-      textInput("plot_subjects", "Enter Subject ID", value = subject),
+      textInput("plot_subjects", "Enter Subject ID", value = subject), # TODO: change this to select/dropdown
       helpText("Enter the ID of a subject to display their MAGE plot"),
       textInput("mage_short_ma", "Short MA length", value="5"),
       textInput("mage_long_ma", "Long MA length", value="32"),

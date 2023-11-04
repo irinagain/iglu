@@ -1,3 +1,11 @@
+# iglu 3.5.1
+* MAGE handles traces with gaps, restarting calculation when gap >= user-defined threshold
+* MAGE returns ggplot as well as plotly
+* Fixed plotting functionality with large gaps and multiple segments
+* MAGE "left-side accumulation" optimization
+* Added "MAGE_max" and "MAGE_avg" to possible directions able to be calculated (in addition to MAGE+, MAGE-, and Service's definition)
+* Updated MAGE vignette for more details
+
 # iglu 3.5.0
 * minor bug corrections in mage calculations
 * adjustment from summarize to reframe
@@ -7,7 +15,7 @@
 * add AGP plot smoothing
 * add functionality to create a heatmap of metrics by subject
 
-#iglu 3.4.3
+# iglu 3.4.3
 * bug correction for denominator in hypo_index and hyper_index in case of missing glucose values
 
 # iglu 3.4.2

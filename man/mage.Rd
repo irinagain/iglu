@@ -10,10 +10,12 @@ mage(
   sd_multiplier = 1,
   short_ma = 5,
   long_ma = 32,
-  type = c("auto", "plus", "minus"),
+  return_type = c("num", "df"),
+  direction = c("service", "avg", "max", "plus", "minus"),
   plot = FALSE,
   dt0 = NULL,
   inter_gap = 45,
+  max_gap = 180,
   tz = "",
   title = NA,
   xlab = NA,
@@ -34,13 +36,17 @@ can be specified for \code{version = "naive"}, and it is ignored if \code{versio
 
 \item{long_ma}{Integer for period length for the long moving average, default value is 32. (Recommended >20)}
 
-\item{type}{One of "plus", "minus", "auto" (Default: auto). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), or automatically choose based on the first countable excursion.}
+\item{return_type}{One of "num" and "df": will return a single value for MAGE or a DataFrame with the}
+
+\item{direction}{One of 'service', 'avg', 'max', 'plus', or 'minus'. (Default: "service"). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service").}
 
 \item{plot}{Boolean. Returns ggplot if TRUE.}
 
 \item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
 \item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
+
+\item{max_gap}{The maximum length of a gap before MAGE is calculated on each segment independently (recommended: 180 minutes)}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 
