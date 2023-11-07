@@ -81,10 +81,10 @@
     
 <table class="table">
 <colgroup>
-<col width="18%">
-<col width="46%">
-<col width="15%">
-<col width="18%">
+<col width="20%">
+<col width="39%">
+<col width="20%">
+<col width="20%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">Metric Name</th>
@@ -178,45 +178,46 @@ al (2008)</a></td>
 <td align="left">Yes</td>
 </tr>
 <tr class="odd">
-<td align="left">Episode Calculation Profile</td>
-<td align="center">epicalc_profile</td>
-<td align="left"></td>
-<td align="left">Yes</td>
-</tr>
-<tr class="even">
 <td align="left">Glucose Management Indicator (GMI)</td>
 <td align="center">gmi</td>
 <td align="left"><a href="https://doi.org/10.2337/dc18-1581" class="external-link">Bergenstal
 (2018)</a></td>
 <td align="left">No</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">GRADE (Glycemic Risk Assessment Diabetes Equation)</td>
 <td align="center">grade</td>
 <td align="left"><a href="https://doi.org/10.1111/j.1464-5491.2007.02119.x" class="external-link">Hill et
 al. (2007)</a></td>
 <td align="left">No</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">GRADEeu</td>
 <td align="center">grade_eugly</td>
 <td align="left"><a href="https://doi.org/10.1111/j.1464-5491.2007.02119.x" class="external-link">Hill et
 al. (2007)</a></td>
 <td align="left">No</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">GRADEhyper</td>
 <td align="center">grade_hyper</td>
 <td align="left"><a href="https://doi.org/10.1111/j.1464-5491.2007.02119.x" class="external-link">Hill et
 al. (2007)</a></td>
 <td align="left">No</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">GRADEhypo</td>
 <td align="center">grade_hypo</td>
 <td align="left"><a href="https://doi.org/10.1111/j.1464-5491.2007.02119.x" class="external-link">Hill et
 al. (2007)</a></td>
 <td align="left">No</td>
+</tr>
+<tr class="even">
+<td align="left">GRI (Glycemia Risk Index)</td>
+<td align="center">gri</td>
+<td align="left"><a href="https://doi.org/10.1177/19322968221085273" class="external-link">Klonoff et
+al. (2023)</a></td>
+<td align="left">Yes</td>
 </tr>
 <tr class="odd">
 <td align="left">GVP (Glucose Variability Percentage)</td>
@@ -295,9 +296,12 @@ al. (2010)</a></td>
 <tr class="even">
 <td align="left">MAGE (Mean Amplitude of Glycemic Excursions)</td>
 <td align="center">mage</td>
-<td align="left"><a href="https://doi.org/10.2337/diacare.3.1.58" class="external-link">Service &amp; Nelson
-(1980)</a></td>
-<td align="left">No</td>
+<td align="left">
+<a href="https://doi.org/10.2337/diacare.3.1.58" class="external-link">Service &amp; Nelson
+(1980)</a> and <a href="https://doi.org/10.1177/19322968211061165" class="external-link">Fernandes et
+al. (2022)</a>
+</td>
+<td align="left">Yes</td>
 </tr>
 <tr class="odd">
 <td align="left">Mean</td>
@@ -344,45 +348,52 @@ al. (2010)</a></td>
 <td align="left">Yes</td>
 </tr>
 <tr class="even">
+<td align="left">PGS (Personal Glycemic State)</td>
+<td align="center">pgs</td>
+<td align="left"><a href="https://doi.org/10.1089%2Fdia.2017.0080" class="external-link">Hirsch et
+al. (2017)</a></td>
+<td align="left">Yes</td>
+</tr>
+<tr class="odd">
 <td align="left">Quantiles</td>
 <td align="center">quantile_glu</td>
 <td align="left"></td>
 <td align="left">No</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Range</td>
 <td align="center">range_glu</td>
 <td align="left"></td>
 <td align="left">No</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Rate of change (ROC)</td>
 <td align="center">roc</td>
 <td align="left"><a href="https://doi.org/10.1089/dia.2008.0138" class="external-link">Clarke
 et al. (2009)</a></td>
 <td align="left">Yes</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">Standard Deviation of ROC</td>
 <td align="center">sd_roc</td>
 <td align="left"><a href="https://doi.org/10.1089/dia.2008.0138" class="external-link">Clarke
 et al. (2009)</a></td>
 <td align="left">Yes</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">Standard Deviation</td>
 <td align="center">sd_glu</td>
 <td align="left"></td>
 <td align="left">No</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">SdB (between days, within timepoints)</td>
 <td align="center">sd_measures (SdB)</td>
 <td align="left"><a href="https://doi.org/10.1089/dia.2009.0015" class="external-link">Rodbard
 (2009)</a></td>
 <td align="left">Yes</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">SdBDM (between days, within timepoints, corrected for
 changes in daily means)</td>
 <td align="center">sd_measures (SdBDM)</td>
@@ -390,28 +401,28 @@ changes in daily means)</td>
 (2009)</a></td>
 <td align="left">Yes</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">SdDM (horizontal sd)</td>
 <td align="center">sd_measures (SdDM)</td>
 <td align="left"><a href="https://doi.org/10.1089/dia.2009.0015" class="external-link">Rodbard
 (2009)</a></td>
 <td align="left">Yes</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">SdHHMM (between time points)</td>
 <td align="center">sd_measures (SdHHMM)</td>
 <td align="left"><a href="https://doi.org/10.1089/dia.2009.0015" class="external-link">Rodbard
 (2009)</a></td>
 <td align="left">Yes</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">SdW (vertical within days)</td>
 <td align="center">sd_measures (Sd)</td>
 <td align="left"><a href="https://doi.org/10.1089/dia.2009.0015" class="external-link">Rodbard
 (2009)</a></td>
 <td align="left">Yes</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">SdWSH (within time series)</td>
 <td align="center">sd_measures (SdWSH)</td>
 <td align="left"><a href="https://doi.org/10.1089/dia.2009.0015" class="external-link">Rodbard
