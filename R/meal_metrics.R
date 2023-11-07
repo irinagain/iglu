@@ -234,8 +234,8 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 
 
 meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
-                          recovery_win = 1, interpolate = FALSE,
-                          adjust_mealtimes = FALSE, dt0 = NULL, inter_gap = 45,
+                          recovery_win = 1, interpolate = TRUE,
+                          adjust_mealtimes = TRUE, dt0 = NULL, inter_gap = 45,
                           tz = "") {
 
   id = meal = mealtime = idx = period = peak = base = recover = deltag = basereco = NULL
