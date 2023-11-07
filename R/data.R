@@ -24,10 +24,23 @@
 #' }
 "example_data_5_subject"
 
-#' @title Example CGM mealtime data
+#' @title Example data from Hall et al. (2018)
+#'
+#' @description Three subjects from the Hall publicly available dataset,
+#' primarily intended for use with example_meals_hall
+#'
+#' @format a data.frame with 5567 rows and 3 columns, which are:
+#' \describe{
+#' \item{id}{identifier of subject}
+#' \item{time}{date and time stamp}
+#' \item{gl}{glucose level as measured by CGM (mg/dL)}
+#' }
+'example_data_hall'
+
+#' @title Example mealtimes data from Hall et al. (2018)
 #'
 #' @description Example of mealtimes data format for meal_metrics function,
-#' corresponds to example_data_1_subject data.
+#' corresponds to example_data_hall data.
 #'
 #' @format A data.frame with 1 row and 3 columns, which are:
 #' \describe{
@@ -35,4 +48,4 @@
 #' \item{meal}{meal type identifier}
 #' \item{mealtime}{time of meal}
 #' }
-"example_meal"
+"example_meals_hall"

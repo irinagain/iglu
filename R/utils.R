@@ -2,8 +2,8 @@ check_data_columns =  function(data, id = 'id', time = 'time', gl = 'gl', time_c
   if (is.vector(data)) {
     output = as.double(data)
     output = data.frame(gl = output,
-               id = 1,
-               time = NA_real_)
+                        id = 1,
+                        time = NA_real_)
     attr(output, "is_vector") = TRUE
   } else {
     cols_in = c(id, time, gl) %in% names(data)
@@ -14,16 +14,64 @@ check_data_columns =  function(data, id = 'id', time = 'time', gl = 'gl', time_c
       stop(msg)
     }
     if (time_check) {
-      if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
-        tr = as.character(data$time)
-        data$time = as.POSIXct(tr, format='%Y-%m-%d %H:%M:%S', tz = tz)
-      }
+      data = check_data_time(data, tz = tz)
     }
     output = data[, c(id, time, gl), drop = FALSE]
     colnames(output) = c("id", "time", "gl")
     attr(output, "is_vector") = FALSE
   }
   return(output)
+}
+
+# checks for time format and any repeated/duplicate timestamps
+check_data_time <- function(data, tz = ""){
+
+  id = NULL
+  rm(list = c("id"))
+
+  check_reps_single <- function(data) {
+
+    check_reps = diff(data$time) == 0
+
+    # no duplicates for this subject, return data and exit
+    if (!any(check_reps)) {
+      return(data)
+    }
+
+    warning(paste0(sum(check_reps), " duplicated timestamps found for subject: ", data$id[1],
+                   ". Glucose values averaged for those timestamps"))
+
+    # note rle is robust to any number of repeated identical timestamps
+    # (i.e. can have 2+ duplicates)
+    grouping = rle(as.numeric(data$time))$lengths
+    data = data %>%
+      dplyr::mutate(
+        grouping = rep(1:length(grouping), grouping)
+      ) %>%
+      dplyr::group_by(grouping) %>%
+      dplyr::summarise(
+        id = id[1], time = time[1], gl = mean(gl, na.rm = TRUE),
+        .groups = "drop"
+      ) %>%
+      dplyr::select(id, time, gl)
+
+    # returns data after averaging duplicates
+    return(data)
+  }
+
+  if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
+    tr = as.character(data$time)
+    data$time = as.POSIXct(tr, format='%Y-%m-%d %H:%M:%S', tz = tz)
+  }
+
+  out = data %>%
+    dplyr::group_by(id) %>%
+    dplyr::reframe(
+      check_reps_single(data.frame(id, time, gl))
+    ) %>%
+    dplyr::ungroup()
+
+  return(out)
 }
 
 read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
