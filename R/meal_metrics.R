@@ -190,7 +190,7 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 #' The function meal_metrics calculates three simple glucose meal metrics
 #'
 #' @usage meal_metrics(data, mealtimes, before_win = 1, after_win = 3,
-#' recovery_win = 1, interpolate = FALSE, adjust_mealtimes = FALSE, dt0 = NULL,
+#' recovery_win = 1, interpolate = TRUE, adjust_mealtimes = TRUE, dt0 = NULL,
 #' inter_gap = 45, tz = "")
 #'
 #' @inheritParams CGMS2DayByDay
@@ -226,10 +226,10 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 #' \strong{62(5)}: 1398-1404, \doi{10.2337/db12-1396}
 #'
 #' @examples
-#' data(example_data_1_subject)
-#' data(example_meal)
-#' meal_metrics(example_data_1_subject, example_meal, interpolate = TRUE)
-#' meal_metrics(example_data_1_subject, example_meal, adjust_mealtimes = TRUE)
+#' data(example_data_hall)
+#' data(example_meals_hall)
+#' meal_metrics(example_data_hall, example_meals_hall)
+#' meal_metrics(example_data_hall, example_meals_hall, interpolate = FALSE)
 #'
 
 
