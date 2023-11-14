@@ -45,3 +45,6 @@ for Continuous Glucose Monitoring Validated by Clinician Ratings.
 \emph{J Diabetes Sci Technol}
 \doi{10.1177/19322968221085273}.
 }
+\author{
+Elizabeth Chun
+}
