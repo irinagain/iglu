@@ -42,38 +42,33 @@ optimized_iglu_functions <- function(data, dt0 = NULL, inter_gap = 45, tz = "", 
 
   ## Passes CGMS2DayByDay data to individual functions
   function_call <- function(data, hours = 24, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15, lag = 1) {
+
+    auc_single_O <- function(.data_ip) {
+
+      each_area = daily_area = NULL
+      rm(list = c("each_area", "daily_area"))
+
+      dt0 = .data_ip$dt0
+
+      day <- rep(.data_ip$actual_dates, 1440/dt0)
+      gl <- as.vector(t(.data_ip$gd2d))
+
+      temp_df = cbind.data.frame(day, gl) %>%
+        dplyr::group_by(day) %>%
+        dplyr::reframe(each_area = (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2)) %>%
+        dplyr::reframe(daily_area = sum(each_area, na.rm = TRUE),
+                       hours = dt0/60 * length(na.omit(each_area)),
+                       hourly_avg = daily_area/hours, .groups = 'drop')
+
+      return(mean(temp_df$hourly_avg))
+    }
+
     conga_single_O <- function(.data_ip, hours = 24) {
       gl_by_id_ip = .data_ip[[1]]
       dt0 = .data_ip[[3]]
       hourly_readings = round(60 / dt0, digits = 0)
 
       return(sd(diff(as.vector(t(gl_by_id_ip)), lag = hourly_readings * hours), na.rm = TRUE))
-    }
-
-    gvp_single_O <- function(.data_ip) {
-      daybyday = as.vector(t(.data_ip[[1]]))
-      reading_gap = .data_ip[[3]]
-      diffvec = diff(daybyday, na.rm = T)
-      added_length = sqrt(reading_gap^2+diffvec^2)
-      base_length = length(na.omit(diffvec))*reading_gap
-
-      return(sum(added_length, na.rm = T)/sum(base_length, na.rm = T))
-    }
-
-    modd_single_O <- function(.data_ip, lag = 1) {
-      gl_by_id_ip = .data_ip[[1]]
-
-      return(mean(abs(diff(gl_by_id_ip, lag = lag)), na.rm = TRUE))
-    }
-
-    sd_roc_O <- function(.data_ip, timelag = 15) {
-
-      gl_ip_vec = as.vector(t(.data_ip[[1]]))
-      dt0 = .data_ip[[3]]
-      roc = c(rep(NA, timelag/dt0),
-              diff(gl_ip_vec, lag = timelag/dt0)/timelag)
-
-      return(sd(roc, na.rm = TRUE))
     }
 
     cv_measures_mean_O <- function(.data_ip) {
@@ -96,24 +91,29 @@ optimized_iglu_functions <- function(data, dt0 = NULL, inter_gap = 45, tz = "", 
         sd( na.rm = TRUE)
     }
 
-    auc_single_O <- function(.data_ip) {
+    gri_single_O <- function(.data_ip) {
 
-      each_area = daily_area = NULL
-      rm(list = c("each_area", "daily_area"))
+      daybyday = as.vector(t(.data_ip[[1]]))
+      range_percents <- data.frame(below_percent(daybyday, targets_below = c(54, 70)),
+                          above_percent(daybyday, targets_above = c(180, 250)))
 
-      dt0 = .data_ip$dt0
+      out = 3*range_percents$below_54 + 2.4*range_percents$below_70 +
+        1.6*range_percents$above_250 + 0.8*range_percents$above_180
 
-      day <- rep(.data_ip$actual_dates, 1440/dt0)
-      gl <- as.vector(t(.data_ip$gd2d))
+      # threshold at 100%
+      out = ifelse(out > 100, 100, out)
 
-      temp_df = cbind.data.frame(day, gl) %>%
-        dplyr::group_by(day) %>%
-        dplyr::reframe(each_area = (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2)) %>%
-        dplyr::reframe(daily_area = sum(each_area, na.rm = TRUE),
-                         hours = dt0/60 * length(na.omit(each_area)),
-                         hourly_avg = daily_area/hours, .groups = 'drop')
+      return(out)
+    }
 
-      return(mean(temp_df$hourly_avg))
+    gvp_single_O <- function(.data_ip) {
+      daybyday = as.vector(t(.data_ip[[1]]))
+      reading_gap = .data_ip[[3]]
+      diffvec = diff(daybyday, na.rm = T)
+      added_length = sqrt(reading_gap^2+diffvec^2)
+      base_length = length(na.omit(diffvec))*reading_gap
+
+      return(sum(added_length, na.rm = T)/sum(base_length, na.rm = T))
     }
 
     mag_single_O <- function(.data_ip) {
@@ -126,6 +126,22 @@ optimized_iglu_functions <- function(data, dt0 = NULL, inter_gap = 45, tz = "", 
         (length(na.omit(idx_gl))*n/60)
 
       return(mag)
+    }
+
+    modd_single_O <- function(.data_ip, lag = 1) {
+      gl_by_id_ip = .data_ip[[1]]
+
+      return(mean(abs(diff(gl_by_id_ip, lag = lag)), na.rm = TRUE))
+    }
+
+    sd_roc_O <- function(.data_ip, timelag = 15) {
+
+      gl_ip_vec = as.vector(t(.data_ip[[1]]))
+      dt0 = .data_ip[[3]]
+      roc = c(rep(NA, timelag/dt0),
+              diff(gl_ip_vec, lag = timelag/dt0)/timelag)
+
+      return(sd(roc, na.rm = TRUE))
     }
 
     SdW <- function(.data_ip) {
