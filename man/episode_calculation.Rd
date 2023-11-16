@@ -89,5 +89,5 @@ trials: an international consensus statement
 epicalc_profile()
 }
 \author{
-Johnathan Shih, Jung Hoon Seo, Elizabeth Chun
+Elizabeth Chun, Jung Hoon Seo, Johnathan Shih
 }

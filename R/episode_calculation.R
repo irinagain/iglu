@@ -276,7 +276,7 @@ episode_single = function(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper,
 #'
 #' @export
 #'
-#' @author Johnathan Shih, Jung Hoon Seo, Elizabeth Chun
+#' @author Elizabeth Chun, Jung Hoon Seo, Johnathan Shih
 #'
 #' @examples episode_calculation(example_data_5_subject, lv1_hypo=100, lv1_hyper= 120)
 #'
