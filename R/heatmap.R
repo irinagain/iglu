@@ -59,7 +59,7 @@ metrics_heatmap_pure <- function(mecs, metric_cluster = 6, clustering_method = "
   # Check that the remaining columns are numeric
   isNumeric = sapply(mecs_mat, is.numeric)
   if (sum(!isNumeric) > 0){
-    warning("")
+    warning("Some supplied metrics are non-numeric, only subset of metrics with numeric values is used.")
     mecs_mat = as.matrix(mecs_mat[,isNumeric])
   }else{
     mecs_mat = as.matrix(mecs_mat)
@@ -68,11 +68,22 @@ metrics_heatmap_pure <- function(mecs, metric_cluster = 6, clustering_method = "
   # Get subject names and name rows accordingly
   rownames(mecs_mat) = as.character(mecs$id)
 
+  # Get metric names
+  metric_names = colnames(mecs_mat)
+
+  # Check if any metric has zero variability - remove if it does
+  sd_metrics = apply(mecs_mat, 2, sd)
+  if (any(sd_metrics == 0)){
+    # Remove any metric that has no variability across subjects
+    whichzero = metric_names[sd_metrics == 0]
+    warning(paste("There is no variability in metric", whichzero, "across subjects. This metric is not used in the heatmap."))
+    mecs_mat = mecs_mat[ , sd_metrics > 0]
+    metric_names = metric_names[sd_metrics > 0]
+  }
   # Do centering and scaling of all metrics before drawing the heatmap
   mecs_mat_scale = scale(mecs_mat)
 
   # Rename the metrics to make the plots nices
-  metric_names = colnames(mecs_mat_scale)
   metric_names[metric_names == "adrr"]="ADRR"
   metric_names[metric_names == "hourly_auc"]="AUC"
   metric_names[metric_names == "conga"]="CONGA"

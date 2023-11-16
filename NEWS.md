@@ -1,3 +1,8 @@
+# iglu 3.5.2
+* Metrics heatmap removes metrics with no variability across subjects
+* Add example dataset to demonstrate meal metrics calculations
+
+
 # iglu 3.5.1
 * MAGE handles traces with gaps, restarting calculation when gap >= user-defined threshold
 * MAGE returns ggplot as well as plotly
