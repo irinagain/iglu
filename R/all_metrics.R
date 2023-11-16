@@ -18,8 +18,13 @@
 #' @details
 #' All iglu functions are calculated within the all_metrics function, and the resulting tibble
 #' is returned with one row per subject and a column for each metric. Time dependent functions are
-#' calculated together using the function optimized_iglu_functions. For metric specific
-#' information, please see the corresponding function documentation.
+#' calculated together using the function optimized_iglu_functions with two exceptions:
+#' PGS and episodes are calculated within all_metrics because their structure does not
+#' align with optimized_iglu_functions. Note that episodes related outputs included in all_metrics are only
+#' average episodes per day. To get the average duration and glucose, please use the standalone
+#' episodes function
+#'
+#' For metric specific information, please see the corresponding function documentation.
 #'
 #' @examples
 #' data(example_data_1_subject)
@@ -34,14 +39,29 @@
 # function calls all metrics on a dataset.
 # returns a list
 all_metrics <- function(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15, lag = 1){
-  . = NULL
-  rm(".")
+  . = id = type = level = avg_ep_per_day = lvl = NULL
+  rm(list = c(".", 'id', 'type', 'level', 'avg_ep_per_day', 'lvl'))
+
+  # reformat episodes to give one row per subject and one column per category for avg_ep_per_day
+  episodes = episode_calculation(data)
+  ep_out = episodes %>%
+    dplyr::select(id, type, level, avg_ep_per_day) %>%
+    dplyr::mutate(
+      lvl = paste0(type, "_", level)
+    ) %>%
+    dplyr::select(id, lvl, avg_ep_per_day) %>%
+    dplyr::group_by(id) %>%
+    tidyr::pivot_wider(
+      names_from = 'lvl',
+      values_from = 'avg_ep_per_day'
+    )
 
   # Mean, Median, and Quantile Metrics not included. Summary covers all
   out = list("ADRR" = adrr(data),
              "COGI" = cogi(data),
              "CV_GLU" = cv_glu(data),
              "eA1C" = ea1c(data),
+             "episodes" = ep_out,
              "GMI" = gmi(data),
              "GRI" = gri(data),
              "GRADE" = grade(data),
