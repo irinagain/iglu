@@ -101,8 +101,12 @@ glucose over the past 15 minutes divided by 15.</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>All iglu functions are calculated within the all_metrics function, and the resulting tibble
 is returned with one row per subject and a column for each metric. Time dependent functions are
-calculated together using the function optimized_iglu_functions. For metric specific
-information, please see the corresponding function documentation.</p>
+calculated together using the function optimized_iglu_functions with two exceptions:
+PGS and episodes are calculated within all_metrics because their structure does not
+align with optimized_iglu_functions. Note that episodes related outputs included in all_metrics are only
+average episodes per day. To get the average duration and glucose, please use the standalone
+episodes function</p>
+<p>For metric specific information, please see the corresponding function documentation.</p>
     </div>
 
     <div class="section level2">
@@ -110,33 +114,33 @@ information, please see the corresponding function documentation.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">all_metrics</span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The number of measurements is too small for MAGE calculation.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 50</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   id         ADRR  COGI    CV  eA1C   GMI   GRI GRADE GRADE_eugly GRADE_hyper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Subject 1  15.1  93.0  26.9  5.94  6.27  7.49  3.47        28.2        71.7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 40 more variables: GRADE_hypo &lt;dbl&gt;, HBGI &lt;dbl&gt;, LBGI &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 62</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   id         ADRR  COGI    CV  eA1C hypo_lv1 hypo_lv2 hypo_extended hyper_lv1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Subject 1  15.1  93.0  26.9  5.94   0.089<span style="text-decoration: underline;">9</span>        0             0      1.44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 53 more variables: hyper_lv2 &lt;dbl&gt;, hypo_lv1_excl &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hyper_lv1_excl &lt;dbl&gt;, GMI &lt;dbl&gt;, GRI &lt;dbl&gt;, GRADE &lt;dbl&gt;, GRADE_eugly &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   GRADE_hyper &lt;dbl&gt;, GRADE_hypo &lt;dbl&gt;, HBGI &lt;dbl&gt;, LBGI &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hyper_index &lt;dbl&gt;, hypo_index &lt;dbl&gt;, IGC &lt;dbl&gt;, IQR &lt;dbl&gt;, J_index &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   M_value &lt;dbl&gt;, MAD &lt;dbl&gt;, MAGE &lt;dbl&gt;, above_140 &lt;dbl&gt;, above_180 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   above_250 &lt;dbl&gt;, below_54 &lt;dbl&gt;, below_70 &lt;dbl&gt;, in_range_63_140 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   in_range_70_180 &lt;dbl&gt;, range &lt;int&gt;, SD &lt;dbl&gt;, Min. &lt;dbl&gt;, `1st Qu.` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Median &lt;dbl&gt;, Mean &lt;dbl&gt;, `3rd Qu.` &lt;dbl&gt;, Max. &lt;dbl&gt;, Conga &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   GVP &lt;dbl&gt;, MODD &lt;dbl&gt;, SD.Roc &lt;dbl&gt;, CV_Measures_Mean &lt;dbl&gt;, …</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   M_value &lt;dbl&gt;, MAD &lt;dbl&gt;, MAGE &lt;dbl&gt;, active_percent &lt;dbl&gt;, ndays &lt;drtn&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   start_date &lt;dttm&gt;, end_date &lt;dttm&gt;, above_140 &lt;dbl&gt;, above_180 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   above_250 &lt;dbl&gt;, below_54 &lt;dbl&gt;, below_70 &lt;dbl&gt;, in_range_63_140 &lt;dbl&gt;, …</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Specify the meter frequency and change the interpolation gap to 30 min</span></span></span>
 <span class="r-in"><span><span class="fu">all_metrics</span><span class="op">(</span><span class="va">example_data_1_subject</span>, dt0 <span class="op">=</span> <span class="fl">5</span>, inter_gap <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The number of measurements is too small for MAGE calculation.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 50</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   id         ADRR  COGI    CV  eA1C   GMI   GRI GRADE GRADE_eugly GRADE_hyper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Subject 1  15.1  93.0  26.9  5.94  6.27  7.49  3.47        28.2        71.7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 40 more variables: GRADE_hypo &lt;dbl&gt;, HBGI &lt;dbl&gt;, LBGI &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 62</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   id         ADRR  COGI    CV  eA1C hypo_lv1 hypo_lv2 hypo_extended hyper_lv1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Subject 1  15.1  93.0  26.9  5.94   0.089<span style="text-decoration: underline;">9</span>        0             0      1.44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 53 more variables: hyper_lv2 &lt;dbl&gt;, hypo_lv1_excl &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hyper_lv1_excl &lt;dbl&gt;, GMI &lt;dbl&gt;, GRI &lt;dbl&gt;, GRADE &lt;dbl&gt;, GRADE_eugly &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   GRADE_hyper &lt;dbl&gt;, GRADE_hypo &lt;dbl&gt;, HBGI &lt;dbl&gt;, LBGI &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hyper_index &lt;dbl&gt;, hypo_index &lt;dbl&gt;, IGC &lt;dbl&gt;, IQR &lt;dbl&gt;, J_index &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   M_value &lt;dbl&gt;, MAD &lt;dbl&gt;, MAGE &lt;dbl&gt;, above_140 &lt;dbl&gt;, above_180 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   above_250 &lt;dbl&gt;, below_54 &lt;dbl&gt;, below_70 &lt;dbl&gt;, in_range_63_140 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   in_range_70_180 &lt;dbl&gt;, range &lt;int&gt;, SD &lt;dbl&gt;, Min. &lt;dbl&gt;, `1st Qu.` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   Median &lt;dbl&gt;, Mean &lt;dbl&gt;, `3rd Qu.` &lt;dbl&gt;, Max. &lt;dbl&gt;, Conga &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   GVP &lt;dbl&gt;, MODD &lt;dbl&gt;, SD.Roc &lt;dbl&gt;, CV_Measures_Mean &lt;dbl&gt;, …</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   M_value &lt;dbl&gt;, MAD &lt;dbl&gt;, MAGE &lt;dbl&gt;, active_percent &lt;dbl&gt;, ndays &lt;drtn&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   start_date &lt;dttm&gt;, end_date &lt;dttm&gt;, above_140 &lt;dbl&gt;, above_180 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   above_250 &lt;dbl&gt;, below_54 &lt;dbl&gt;, below_70 &lt;dbl&gt;, in_range_63_140 &lt;dbl&gt;, …</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
