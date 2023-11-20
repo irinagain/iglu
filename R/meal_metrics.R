@@ -82,7 +82,9 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
       rep(data_ip$dt0, ndays * 24 * 60 /data_ip$dt0)))
     # change data into id, interpolated times, interpolated glucose (t to get rowwise)
     data <- data %>%
-      dplyr::reframe(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d)))
+      dplyr::reframe(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d))) %>%
+      # remove leading and trailing NAs
+      dplyr::filter(!is.na(gl))
   } else {
     data = data
     timediff <- difftime(data$time[2:length(data$time)],
