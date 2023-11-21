@@ -39,8 +39,9 @@ mage <- function(data,
                  short_ma = 5, long_ma = 32,
                  return_type = c('num', 'df'),
                  direction = c('service', 'avg', 'max', 'plus', 'minus'),
-                 plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap=180, tz = "",
-                 title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
+                 dt0 = NULL,  tz = "", inter_gap = 45,
+                 max_gap=180,
+                 plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions = TRUE, plot_type= 'ggplot') {
 
   # Match version
   version = match.arg(version)
@@ -52,15 +53,16 @@ mage <- function(data,
 
   return(mage_ma(data, short_ma = short_ma, long_ma = long_ma, return_type=return_type, direction=direction,
                  plot = plot, dt0 = dt0, inter_gap = inter_gap, max_gap = max_gap, tz = tz,
-                 title = title, xlab = xlab, ylab = ylab, show_ma = show_ma))
+                 title = title, xlab = xlab, ylab = ylab, show_ma = show_ma, show_excursions=show_excursions, plot_type = plot_type))
 }
 
 mage_ma <- function(data,
                     short_ma = 5, long_ma = 32,
                     return_type = c('num', 'df'),
                     direction = c('service', 'avg', 'max', 'plus', 'minus'),
-                    plot = FALSE, dt0 = NULL, inter_gap = 45, max_gap = 180, tz = "",
-                    title = NA, xlab = NA, ylab = NA, show_ma = FALSE) {
+                    dt0 = NULL, inter_gap = 45, tz = "",
+                    max_gap = 180,
+                    plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions=TRUE, plot_type= 'ggplot') {
   id = . = MAGE = NULL
   rm(list = c("id", ".", "MAGE"))
 
@@ -72,7 +74,7 @@ mage_ma <- function(data,
     dplyr::group_by(id) %>%
     dplyr::do(MAGE = mage_ma_single(., short_ma = short_ma, long_ma = long_ma, return_type=return_type, direction=direction,
                                     plot = plot, dt0 = dt0, inter_gap = inter_gap, max_gap = max_gap, tz = tz,
-                                    title = title, xlab = xlab, ylab = ylab, show_ma = show_ma))
+                                    title = title, xlab = xlab, ylab = ylab, show_ma = show_ma, show_excursions = show_excursions, plot_type = plot_type))
 
   # Check if a ggplot or number in list is returned - convert the latter to a number
   if(class(out$MAGE[[1]])[1] == "numeric" | is.na(out$MAGE[[1]][1])) {

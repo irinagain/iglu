@@ -19,6 +19,7 @@ mage_ma_single(
   xlab = NA,
   ylab = NA,
   show_ma = FALSE,
+  show_excursions = TRUE,
   plot_type = "ggplot"
 )
 }
@@ -50,6 +51,8 @@ mage_ma_single(
 \item{ylab}{Label for y-axis of ggplot. Defaults to "Glucose Level"}
 
 \item{show_ma}{Whether to show the moving average lines on the plot or not}
+
+\item{show_excursions}{Whether or not to visualize the excursions on the plot or not}
 
 \item{plot_type}{returns ggplot if "ggplot". Else returns plotly.}
 }
