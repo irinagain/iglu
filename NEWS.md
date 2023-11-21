@@ -1,3 +1,8 @@
+# iglu 3.5.2
+* MAGE plot can now show excursions via "show_excursions = TRUE" flag
+* debugged formatting error with Mage vignette
+* debugged internal build warnings
+
 # iglu 3.5.1
 * MAGE handles traces with gaps, restarting calculation when gap >= user-defined threshold
 * MAGE returns ggplot as well as plotly
