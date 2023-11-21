@@ -24,6 +24,8 @@
 #' @return A tibble object with columns for subject id and GRI value. Rows
 #' correspond to individual subjects.
 #'
+#' @author Elizabeth Chun
+#'
 #' @export
 #'
 #' @references

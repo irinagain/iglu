@@ -7,6 +7,9 @@
 
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/iglu)](https://cran.r-project.org/package=iglu)[![](https://cranlogs.r-pkg.org/badges/iglu)](https://CRAN.R-project.org/package=iglu)
 [![R-CMD-check](https://github.com/irinagain/iglu/workflows/R-CMD-check/badge.svg)](https://github.com/irinagain/iglu/actions)
+[![R-CMD-check](https://github.com/irinagain/iglu/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/irinagain/iglu/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/irinagain/iglu/branch/master/graph/badge.svg)](https://app.codecov.io/gh/irinagain/iglu?branch=master)
 <!-- badges: end -->
 
 # iglu: Interpreting data from Continuous Glucose Monitors (CGMs)
@@ -20,18 +23,17 @@ the package, see [package website](https://irinagain.github.io/iglu/).
 
 To cite:
 
--   Broll S, Urbanek J, Buchanan D, Chun E, Muschelli J, Punjabi N and
-    Gaynanova I (2021). [Interpreting blood glucose data with R package
-    iglu.](https://doi.org/10.1371/journal.pone.0248560) *PLoS One*,
-    Vol. 16, No. 4, e0248560.
+- Broll S, Urbanek J, Buchanan D, Chun E, Muschelli J, Punjabi N and
+  Gaynanova I (2021). [Interpreting blood glucose data with R package
+  iglu.](https://doi.org/10.1371/journal.pone.0248560) *PLoS One*, Vol.
+  16, No. 4, e0248560.
 
--   Broll S, Buchanan D, Chun E, Muschelli J, Fernandes N, Seo J, Shih
-    J, Urbanek J, Schwenck J, Gaynanova I (2021). iglu: Interpreting
-    Glucose Data from Continuous Glucose Monitors. R package version
-    3.0.0.
+- Broll S, Buchanan D, Chun E, Muschelli J, Fernandes N, Seo J, Shih J,
+  Urbanek J, Schwenck J, Gaynanova I (2021). iglu: Interpreting Glucose
+  Data from Continuous Glucose Monitors. R package version 3.0.0.
 
-iglu comes with two example datasets: example_data_1\_subject and
-example_data_5\_subject. These data are collected using Dexcom G4 CGM on
+iglu comes with two example datasets: example_data_1_subject and
+example_data_5_subject. These data are collected using Dexcom G4 CGM on
 subjects with Type II diabetes. Each dataset follows the structure
 iglu’s functions are designed around. Note that the 1 subject data is a
 subset of the 5 subject data. See the examples below for loading and
@@ -54,8 +56,6 @@ devtools::install_github("irinagain/iglu", build_vignettes = TRUE)
 
 ``` r
 library(iglu)
-#> Warning in register(): Can't find generic `scale_type` in package ggplot2 to
-#> register S3 method.
 data(example_data_1_subject) # Load single subject data
 ## Plot data
 
@@ -66,6 +66,7 @@ plot_glu(example_data_1_subject)
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ``` r
+
 # Summary statistics and some metrics
 summary_glu(example_data_1_subject)
 #> # A tibble: 1 × 7
@@ -102,11 +103,13 @@ conga(example_data_1_subject)
 data(example_data_5_subject)
 
 plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average')
+#> Warning: Removed 5 rows containing missing values (`geom_tile()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
 
 ``` r
+
 below_percent(example_data_5_subject, targets = c(80,170,260))
 #> # A tibble: 5 × 4
 #>   id        below_170 below_260 below_80

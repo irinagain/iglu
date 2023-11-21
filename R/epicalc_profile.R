@@ -17,7 +17,8 @@
 #'
 
 epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper=250,
-                            dur_length = 15, subject = NULL, dt0 = NULL, inter_gap = 45, tz = ""){
+                            dur_length = 15, end_length = 15, subject = NULL,
+                            dt0 = NULL, inter_gap = 45, tz = ""){
 
   #Clean up Global environment
   id = num_levels = NULL
@@ -37,8 +38,10 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
 
 
   #Calling episode_calculation for data
-  episodes = episode_calculation(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper,
-                                 return_data = TRUE, dur_length, dt0, inter_gap, tz)
+  episodes = episode_calculation(data, lv1_hypo = lv1_hypo, lv2_hypo = lv2_hypo,
+                                 lv1_hyper = lv1_hyper, lv2_hyper = lv2_hyper,
+                                 return_data = TRUE, dur_length = dur_length,
+                                 end_length = end_length, dt0 = dt0, inter_gap = inter_gap, tz = tz)
 
   ep_summary = episodes[[1]]
   ep_data = episodes[[2]]
@@ -51,6 +54,8 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
   tableStat[1, 4] = "Hypoglycemia"
   tableStat[1, 5] = "Hyperglycemia"
   tableStat[1, 6] = "Hyperglycemia"
+  tableStat[1, 7] = "Hypoglycemia"
+  tableStat[1, 8] = "Hyperglycemia"
 
   tableStat[2, 1] = ""
   tableStat[2, 2] = "Level 1"
@@ -58,6 +63,8 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
   tableStat[2, 4] = "Extended"
   tableStat[2, 5] = "Level 1"
   tableStat[2, 6] = "Level 2"
+  tableStat[2, 7] = "Level 1 excl"
+  tableStat[2, 8] = "Level 1 excl"
 
   tableStat[3, 1] = "Thresholds"
   tableStat[3, 2] = paste0("<", as.character(lv1_hypo), " mg/dL")
@@ -65,6 +72,8 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
   tableStat[3, 4] = paste0("<", as.character(lv1_hypo), " mg/dL")
   tableStat[3, 5] = paste0(">", as.character(lv1_hyper), " mg/dL")
   tableStat[3, 6] = paste0(">", as.character(lv2_hyper), " mg/dL")
+  tableStat[3, 7] = paste0(as.character(lv1_hypo), "-", as.character(lv2_hypo), " mg/dL")
+  tableStat[3, 8] = paste0(as.character(lv1_hyper), "-", as.character(lv2_hyper), " mg/dL")
 
   tableStat[4, 1] = "Avg Episodes/Day"
   tableStat[4, 2] = as.character(format(round(ep_summary$avg_ep_per_day[1], 2), nsmall = 2))
@@ -72,6 +81,8 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
   tableStat[4, 4] = as.character(format(round(ep_summary$avg_ep_per_day[3], 2), nsmall = 2))
   tableStat[4, 5] = as.character(format(round(ep_summary$avg_ep_per_day[4], 2), nsmall = 2))
   tableStat[4, 6] = as.character(format(round(ep_summary$avg_ep_per_day[5], 2), nsmall = 2))
+  tableStat[4, 7] = as.character(format(round(ep_summary$avg_ep_per_day[6], 2), nsmall = 2))
+  tableStat[4, 8] = as.character(format(round(ep_summary$avg_ep_per_day[7], 2), nsmall = 2))
 
   tableStat[5, 1] = "Mean duration"
   tableStat[5, 2] = paste0(as.character(format(round(ep_summary$avg_ep_duration[1], 2), nsmall = 2)), " min")
@@ -79,13 +90,17 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
   tableStat[5, 4] = paste0(as.character(format(round(ep_summary$avg_ep_duration[3], 2), nsmall = 2)), " min")
   tableStat[5, 5] = paste0(as.character(format(round(ep_summary$avg_ep_duration[4], 2), nsmall = 2)), " min")
   tableStat[5, 6] = paste0(as.character(format(round(ep_summary$avg_ep_duration[5], 2), nsmall = 2)), " min")
+  tableStat[5, 7] = paste0(as.character(format(round(ep_summary$avg_ep_duration[6], 2), nsmall = 2)), " min")
+  tableStat[5, 8] = paste0(as.character(format(round(ep_summary$avg_ep_duration[7], 2), nsmall = 2)), " min")
 
   tableStat[6, 1] = "Mean glucose"
   tableStat[6, 2] = paste0(as.character(format(round(ep_summary$avg_ep_gl[1], 2), nsmall = 2)), " mg/dl")
-  tableStat[6, 3] = paste0(as.character(format(round(ep_summary$avg_ep_gl[2], 2), nsmall = 2)), " mg/d")
-  tableStat[6, 4] = paste0(as.character(format(round(ep_summary$avg_ep_gl[3], 2), nsmall = 2)), " mg/d")
-  tableStat[6, 5] = paste0(as.character(format(round(ep_summary$avg_ep_gl[4], 2), nsmall = 2)), " mg/d")
-  tableStat[6, 6] = paste0(as.character(format(round(ep_summary$avg_ep_gl[5], 2), nsmall = 2)), " mg/d")
+  tableStat[6, 3] = paste0(as.character(format(round(ep_summary$avg_ep_gl[2], 2), nsmall = 2)), " mg/dl")
+  tableStat[6, 4] = paste0(as.character(format(round(ep_summary$avg_ep_gl[3], 2), nsmall = 2)), " mg/dl")
+  tableStat[6, 5] = paste0(as.character(format(round(ep_summary$avg_ep_gl[4], 2), nsmall = 2)), " mg/dl")
+  tableStat[6, 6] = paste0(as.character(format(round(ep_summary$avg_ep_gl[5], 2), nsmall = 2)), " mg/dl")
+  tableStat[6, 7] = paste0(as.character(format(round(ep_summary$avg_ep_gl[6], 2), nsmall = 2)), " mg/dl")
+  tableStat[6, 8] = paste0(as.character(format(round(ep_summary$avg_ep_gl[7], 2), nsmall = 2)), " mg/dl")
 
   #Styling the table
   mytheme <- gridExtra::ttheme_minimal(base_size = 10, padding = unit(c(4,2),"mm"))
@@ -94,7 +109,7 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
   #Adding border(t1)
   t1 <- gtable::gtable_add_grob(t1,
                                 grobs = grid::rectGrob(gp = grid::gpar(fill = NA, lwd = 5)),
-                                t = 1, b = 6, l = 1, r = 6)
+                                t = 1, b = 6, l = 1, r = 8)
   #Adding dotted separator(t1)
   separators <- replicate(ncol(t1) - 2,
                           grid::segmentsGrob(x1 = unit(0, "npc"), gp=grid::gpar(lty=2)),
@@ -136,10 +151,10 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
                c("lv2_hypo", "lv2_hyper")[which(c(lv2_hypo != 0, lv2_hyper != 0))])
       ),
       class = factor(class, levels = c("lv2_hypo", "lv1_hypo", "Normal", "lv1_hyper", "lv2_hyper"))
-    )
+      )
 
   # match plot ranges colors (AGP)
-  colors <- c("#F9B500", "#F9F000", "#48BA3C", "#F92D00", "#8E1B1B")
+  colors <- c("#8E1B1B", "#F92D00", "#48BA3C", "#F9F000", "#F9B500")
   p1 = ggplot(plot_data) +
     geom_point(aes(time, gl, color = class)) +
     scale_color_manual(values = colors, drop = FALSE,

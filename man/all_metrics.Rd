@@ -31,8 +31,13 @@ one column per metric.
 \details{
 All iglu functions are calculated within the all_metrics function, and the resulting tibble
 is returned with one row per subject and a column for each metric. Time dependent functions are
-calculated together using the function optimized_iglu_functions. For metric specific
-information, please see the corresponding function documentation.
+calculated together using the function optimized_iglu_functions with two exceptions:
+PGS and episodes are calculated within all_metrics because their structure does not
+align with optimized_iglu_functions. Note that episodes related outputs included in all_metrics are only
+average episodes per day. To get the average duration and glucose, please use the standalone
+episodes function
+
+For metric specific information, please see the corresponding function documentation.
 }
 \examples{
 data(example_data_1_subject)

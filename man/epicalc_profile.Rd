@@ -11,6 +11,7 @@ epicalc_profile(
   lv1_hyper = 180,
   lv2_hyper = 250,
   dur_length = 15,
+  end_length = 15,
   subject = NULL,
   dt0 = NULL,
   inter_gap = 45,
@@ -30,7 +31,11 @@ epicalc_profile(
 
 \item{dur_length}{Numeric value specifying the minimum duration in minutes to be
 considered an episode. Note dur_length should be a multiple of the data recording
-interval otherwise the function will round up to the nearest multiple.}
+interval otherwise the function will round up to the nearest multiple. Default
+is 15 minutes to match consensus.}
+
+\item{end_length}{Numeric value specifying the minimum duration in minutes of
+improved glycemia for an episode to end. Default is equal to dur_length to match consensus.}
 
 \item{subject}{String corresponding to subject id}
 

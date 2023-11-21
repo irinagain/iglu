@@ -17,13 +17,13 @@ Authors@R: c(person("Elizabeth", "Chun",
             role = c("aut"), 
             email="njfernandes24@tamu.edu"),
             person("Jung Hoon", "Seo",
-            role = c("aut")),
+            role = c("ctb")),
             person("Johnathan", "Shih",
-            role = c("aut")),
+            role = c("ctb")),
             person("Jacek", "Urbanek",
-            role = c("aut")),
+            role = c("ctb")),
             person("John", "Schwenck",
-            role = c("aut"),
+            role = c("ctb"),
             email = "jschwenck@stat.tamu.edu"),
             person("Marielle", "Hicban",
             role = c("ctb"),
@@ -73,6 +73,7 @@ Imports:
 Suggests:
     knitr,
     rmarkdown,
-    testthat (>= 2.1.0)
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 URL: https://irinagain.github.io/iglu/
+Config/testthat/edition: 3
