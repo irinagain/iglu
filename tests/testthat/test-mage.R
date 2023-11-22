@@ -1,15 +1,11 @@
 ### 0. load in data
-if (!require("readxl")) install.packages("readxl")
-library("readxl")
-
 filepath = paste0(getwd(), '/data/')
 
 manual_calc <- read.csv(paste0(filepath, "manual_calculations.csv"))
 
 Dubosson2018 <- read.csv(paste0(filepath, "Dubosson2018_processed.csv"), header = TRUE)
-Hall2018 <- read.csv(paste0(filepath, "Hall2018_processed.csv"), header = TRUE)
 Tsalikian2005 <- read.csv(paste0(filepath, "Tsalikian2005_processed.csv"), header = TRUE)
-JHU <- read.csv(paste0(filepath, "ExampleData5Subjects.csv"), header=TRUE)
+JHU <- iglu::example_data_5_subject
 
 # A. exclude the samples where the comment is "exclude"
 cgm_all_data <- lapply(1:length(manual_calc$dataset), function(x) {
@@ -21,10 +17,18 @@ cgm_all_data <- Filter(function(x) is.na(x$comment) || x$comment != "exclude", c
 # B. Subset the complete data sets by the row numbers found in the manual calculations
 cgm_dataset_df <- lapply(cgm_all_data, function(x) {
   dataset <- x$dataset
-  eval(parse(text=dataset))[x$start:x$end, ] # evaluate the text
+
+  if (dataset != "Hall2018") {
+    eval(parse(text=dataset))[x$start:x$end, ] # evaluate the text
+  }
 })
 
 cgm_manual_calc <- sapply(cgm_all_data, function(x) x$manual) # get manual calculations
+
+idx_to_remove = manual_calc[manual_calc$dataset == "Hall2018", ]$X
+
+cgm_dataset_df <- cgm_dataset_df[-idx_to_remove]
+cgm_manual_calc <- cgm_manual_calc[-idx_to_remove]
 
 ### 0.25 Helper F(x)
 make_pdfs <- function(filepath, filename_prefix) {
@@ -73,7 +77,7 @@ return_type = "num"
 # }
 #
 # write.csv(df, file=base::paste0(filepath, 'mage_ground_truth.csv'))
-# make_pdfs(paste0(getwd(), '/data/mage_plots'), 'ground_truth')
+# make_pdfs(paste0(getwd(), '/data/mage_plots'), 'ground_truth') # see [] for current plots
 
 ### 2. TESTS: Check for compliance (i.e., identicalness) to previous validated version of MAGE
 

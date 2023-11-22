@@ -1,3 +1,7 @@
+# iglu 3.5.3
+* minor bugfix in MAGE: stopped extraneous warning from being thrown
+* Added tests for mage + mean + median + sd
+
 # iglu 3.5.2
 * MAGE plot can now show excursions via "show_excursions = TRUE" flag
 * debugged formatting error with Mage vignette
