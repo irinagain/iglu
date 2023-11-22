@@ -11,6 +11,7 @@ episode_calculation(
   lv1_hyper = 180,
   lv2_hyper = 250,
   dur_length = 15,
+  end_length = 15,
   return_data = FALSE,
   dt0 = NULL,
   inter_gap = 45,
@@ -30,7 +31,11 @@ episode_calculation(
 
 \item{dur_length}{Numeric value specifying the minimum duration in minutes to be
 considered an episode. Note dur_length should be a multiple of the data recording
-interval otherwise the function will round up to the nearest multiple.}
+interval otherwise the function will round up to the nearest multiple. Default
+is 15 minutes to match consensus.}
+
+\item{end_length}{Numeric value specifying the minimum duration in minutes of
+improved glycemia for an episode to end. Default is equal to dur_length to match consensus.}
 
 \item{return_data}{Boolean indicating whether to also return data with episode labels.
 Defaults to FALSE which means only episode summary statistics will be returned}
@@ -80,6 +85,9 @@ trials: an international consensus statement
 \emph{Lancet Diabetes & Endocrinology} \strong{11(1)} .42-57,
 \doi{10.1016/s2213-8587(22)00319-9}.
 }
+\seealso{
+epicalc_profile()
+}
 \author{
-Johnathan Shih, Jung Hoon Seo, Elizabeth Chun
+Elizabeth Chun, Jung Hoon Seo, Johnathan Shih
 }

@@ -5,7 +5,7 @@
 \title{Calculate Meal Metrics}
 \usage{
 meal_metrics(data, mealtimes, before_win = 1, after_win = 3,
-recovery_win = 1, interpolate = FALSE, adjust_mealtimes = FALSE, dt0 = NULL,
+recovery_win = 1, interpolate = TRUE, adjust_mealtimes = TRUE, dt0 = NULL,
 inter_gap = 45, tz = "")
 }
 \arguments{
@@ -52,10 +52,10 @@ If no meal column is given in the original data, one will be automatically gener
 with a unique number for each meal.
 }
 \examples{
-data(example_data_1_subject)
-data(example_meal)
-meal_metrics(example_data_1_subject, example_meal, interpolate = TRUE)
-meal_metrics(example_data_1_subject, example_meal, adjust_mealtimes = TRUE)
+data(example_data_hall)
+data(example_meals_hall)
+meal_metrics(example_data_hall, example_meals_hall)
+meal_metrics(example_data_hall, example_meals_hall, interpolate = FALSE)
 
 }
 \references{

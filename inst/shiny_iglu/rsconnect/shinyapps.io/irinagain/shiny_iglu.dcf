@@ -1,0 +1,12 @@
+name: shiny_iglu
+title: shiny_iglu
+username: irinagain
+account: irinagain
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2616894
+bundleId: 7870146
+url: https://irinagain.shinyapps.io/shiny_iglu/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
