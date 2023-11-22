@@ -77,7 +77,7 @@ return_type = "num"
 # }
 #
 # write.csv(df, file=base::paste0(filepath, 'mage_ground_truth.csv'))
-# make_pdfs(paste0(getwd(), '/data/mage_plots'), 'ground_truth') # see [] for current plots
+# make_pdfs(paste0(getwd(), '/data/mage_plots'), 'ground_truth') # see [here](https://github.com/Nathaniel-Fernandes/iglu/tree/df78ce4d1cde06a9b744afd71b8e1605971c5c54/tests/testthat/data/mage_plots) for ground truth plots
 
 ### 2. TESTS: Check for compliance (i.e., identicalness) to previous validated version of MAGE
 
