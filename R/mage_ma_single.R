@@ -178,9 +178,7 @@ mage_ma_single <- function(data,
             break
           }
         }
-      }
-
-      else {
+      } else {
         j = j + 1
       }
     }
@@ -223,8 +221,8 @@ mage_ma_single <- function(data,
     }
 
     plus_first = ifelse((length(mage_plus_heights) > 0) && (length(mage_minus_heights) == 0 || mage_plus_tp_pairs[[1]][2] <= mage_minus_tp_pairs[[1]][1]), TRUE, FALSE)
-    mage_plus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1),  mage=mean(mage_plus_heights, na.rm = TRUE), plus_or_minus="PLUS", first_excursion=plus_first)
-    mage_minus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=abs(mean(mage_minus_heights, na.rm = TRUE)), plus_or_minus="MINUS", first_excursion=!plus_first)
+    mage_plus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1),  mage=ifelse(length(mage_plus_heights), mean(mage_plus_heights, na.rm = TRUE), NA), plus_or_minus="PLUS", first_excursion=plus_first)
+    mage_minus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=ifelse(length(mage_minus_heights), abs(mean(mage_minus_heights, na.rm = TRUE)), NA), plus_or_minus="MINUS", first_excursion=!plus_first)
 
     # save data for plotting
     pframe = parent.frame()
