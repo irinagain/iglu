@@ -12,15 +12,17 @@ mage(
   long_ma = 32,
   return_type = c("num", "df"),
   direction = c("service", "avg", "max", "plus", "minus"),
-  plot = FALSE,
   dt0 = NULL,
+  tz = "",
   inter_gap = 45,
   max_gap = 180,
-  tz = "",
+  plot = FALSE,
   title = NA,
   xlab = NA,
   ylab = NA,
-  show_ma = FALSE
+  show_ma = FALSE,
+  show_excursions = TRUE,
+  plot_type = "ggplot"
 )
 }
 \arguments{
@@ -40,15 +42,15 @@ can be specified for \code{version = "naive"}, and it is ignored if \code{versio
 
 \item{direction}{One of 'service', 'avg', 'max', 'plus', or 'minus'. (Default: "service"). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service").}
 
-\item{plot}{Boolean. Returns ggplot if TRUE.}
-
 \item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
+
+\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 
 \item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
 
 \item{max_gap}{The maximum length of a gap before MAGE is calculated on each segment independently (recommended: 180 minutes)}
 
-\item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
+\item{plot}{Boolean. Returns ggplot if TRUE.}
 
 \item{title}{Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"}
 
@@ -57,6 +59,10 @@ can be specified for \code{version = "naive"}, and it is ignored if \code{versio
 \item{ylab}{Label for y-axis of ggplot. Defaults to "Glucose Level"}
 
 \item{show_ma}{Whether to show the moving average lines on the plot or not}
+
+\item{show_excursions}{Whether or not to visualize the excursions on the plot or not}
+
+\item{plot_type}{returns ggplot if "ggplot". Else returns plotly.}
 }
 \value{
 A tibble object with two columns: the subject id and corresponding MAGE value.

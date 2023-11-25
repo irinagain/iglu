@@ -1,0 +1,52 @@
+"","dataset","dataset_filename","start","end","manual","gap","short","adult","dtype","subject","comment"
+"1","Dubosson2018","Dubosson2018_processed.csv",1,58,52,0,1,1,1,"1",NA
+"2","Dubosson2018","Dubosson2018_processed.csv",59,346,118,0,0,1,1,"1",NA
+"3","Dubosson2018","Dubosson2018_processed.csv",347,634,264,0,0,1,1,"1",NA
+"4","Dubosson2018","Dubosson2018_processed.csv",635,923,183,0,0,1,1,"1",NA
+"5","Dubosson2018","Dubosson2018_processed.csv",924,1211,150,0,0,1,1,"1",NA
+"6","Dubosson2018","Dubosson2018_processed.csv",1470,1757,266,0,0,1,1,"2",NA
+"7","Dubosson2018","Dubosson2018_processed.csv",1758,2045,166,NA,0,1,1,"2",NA
+"8","Hall2018","Hall2018_processed.csv",1,244,31,0,0,1,0,"1636-69-001",NA
+"9","Hall2018","Hall2018_processed.csv",245,531,107,0,0,1,0,"1636-69-001",NA
+"10","Hall2018","Hall2018_processed.csv",532,754,83,0,0,1,0,"1636-69-001",NA
+"11","Hall2018","Hall2018_processed.csv",755,849,91,1,0,1,0,"1636-69-001",NA
+"12","Hall2018","Hall2018_processed.csv",849,1101,58,0,0,1,0,"1636-69-001","microscopic gap"
+"13","Hall2018","Hall2018_processed.csv",1102,1379,51,0,0,1,0,"1636-69-001(026)",NA
+"14","Hall2018","Hall2018_processed.csv",1380,1666,57,0,0,1,0,"1636-69-001(026)",NA
+"15","Hall2018","Hall2018_processed.csv",1667,1846,34,0,0,1,0,"1636-69-001(026)","microscopic gap"
+"16","Hall2018","Hall2018_processed.csv",1847,2124,53,0,0,1,0,"1636-69-001(026)",NA
+"17","Hall2018","Hall2018_processed.csv",2125,2303,65,1,0,1,0,"1636-69-001(026)",NA
+"18","Hall2018","Hall2018_processed.csv",2304,2585,47,0,0,1,0,"1636-69-001(026)","microscopic gap"
+"19","Hall2018","Hall2018_processed.csv",7697,7953,52,1,0,1,0,"1636-69-35","exclude"
+"20","Hall2018","Hall2018_processed.csv",7954,8128,75,1,0,1,0,"1636-69-35","exclude"
+"21","Hall2018","Hall2018_processed.csv",8129,8343,46,1,0,1,0,"1636-69-35","exclude"
+"22","Hall2018","Hall2018_processed.csv",8344,8513,40,1,0,1,0,"1636-69-35","exclude"
+"23","Hall2018","Hall2018_processed.csv",8514,8745,61,1,0,1,0,"1636-69-35","exclude"
+"24","JHU","ExampleData5Subjects.csv",405,644,47,1,0,1,2,"subject 1",NA
+"25","JHU","ExampleData5Subjects.csv",2994,3281,70,0,0,1,2,"subject 2",NA
+"26","JHU","ExampleData5Subjects.csv",3282,3569,81,0,0,1,2,"subject 2",NA
+"27","JHU","ExampleData5Subjects.csv",3570,3857,154,0,0,1,2,"subject 2",NA
+"28","JHU","ExampleData5Subjects.csv",3858,4144,104,0,0,1,2,"subject 2",NA
+"29","JHU","ExampleData5Subjects.csv",4145,4432,95,0,0,1,2,"subject 2",NA
+"30","JHU","ExampleData5Subjects.csv",5746,5842,89,0,1,1,2,"subject 3","microscopic gap"
+"31","JHU","ExampleData5Subjects.csv",7413,7698,75,0,0,1,2,"subject 4",NA
+"32","JHU","ExampleData5Subjects.csv",7699,7985,58,0,0,1,2,"subject 4",NA
+"33","JHU","ExampleData5Subjects.csv",7986,8273,45,0,0,1,2,"subject 4",NA
+"34","JHU","ExampleData5Subjects.csv",8274,8561,69,0,0,1,2,"subject 4",NA
+"35","JHU","ExampleData5Subjects.csv",8562,8849,32,0,0,1,2,"subject 4",NA
+"36","JHU","ExampleData5Subjects.csv",11018,11301,120,0,0,1,2,"subject 5","microscopic gap"
+"37","JHU","ExampleData5Subjects.csv",11302,11588,211,0,0,1,2,"subject 5",NA
+"38","JHU","ExampleData5Subjects.csv",11589,11830,147,1,0,1,2,"subject 5",NA
+"39","JHU","ExampleData5Subjects.csv",11831,12118,125,0,0,1,2,"subject 5",NA
+"40","JHU","ExampleData5Subjects.csv",12119,12406,227,0,0,1,2,"subject 5",NA
+"41","JHU","ExampleData5Subjects.csv",12653,12940,153,0,0,1,2,"subject 5",NA
+"42","Tsalikian2005","Tsalikian2005_processed.csv",1,135,138,0,1,0,1,"subject 7",NA
+"43","Tsalikian2005","Tsalikian2005_processed.csv",136,242,164,0,1,0,1,"subject 7",NA
+"44","Tsalikian2005","Tsalikian2005_processed.csv",243,384,135,0,1,0,1,"subject 43",NA
+"45","Tsalikian2005","Tsalikian2005_processed.csv",385,455,15,0,1,0,1,"subject 43","exclude"
+"46","Tsalikian2005","Tsalikian2005_processed.csv",456,561,45,0,1,0,1,"subject 2",NA
+"47","Tsalikian2005","Tsalikian2005_processed.csv",1601,1755,55,0,1,0,1,"subject 15",NA
+"48","Tsalikian2005","Tsalikian2005_processed.csv",3076,3230,87,0,1,0,1,"subject 11",NA
+"49","Tsalikian2005","Tsalikian2005_processed.csv",3319,3475,360,0,1,0,1,"subject 11",NA
+"50","Tsalikian2005","Tsalikian2005_processed.csv",3549,3701,105,0,1,0,1,"subject 8",NA
+"51","Tsalikian2005","Tsalikian2005_processed.csv",4272,4423,283,0,1,0,1,"subject 44",NA

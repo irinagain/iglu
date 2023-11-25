@@ -16,6 +16,7 @@
 #' @param xlab Label for x-axis of ggplot. Defaults to "Time"
 #' @param ylab Label for y-axis of ggplot. Defaults to "Glucose Level"
 #' @param show_ma Whether to show the moving average lines on the plot or not
+#' @param show_excursions Whether or not to visualize the excursions on the plot or not
 #' @param plot_type returns ggplot if "ggplot". Else returns plotly.
 #'
 #' @return The numeric MAGE value for the inputted glucose values or a ggplot if \code{plot = TRUE}
@@ -48,12 +49,12 @@ mage_ma_single <- function(data,
                            direction = c('service', 'avg', 'max', 'plus', 'minus'),
                            dt0 = NULL, tz = "", inter_gap = 45,
                            max_gap = 180,
-                           plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, plot_type='ggplot') {
+                           plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions = TRUE, plot_type='ggplot') {
 
   ## 0. Calculates MAGE on 1 segment of CGM trace
   mage_atomic <- function(.data) {
-    nmeasurements = list_cross = types = count = crosses = num_extrema = minmax = indexes = s1 = s2 = standardD = heights = nadir2peak = NULL
-    rm(list=c('nmeasurements', 'list_cross', 'types', 'count', 'crosses', 'num_extrema', 'minmax', 'indexes', 's1', 's2', 'standardD', 'heights', 'nadir2peak'))
+    nmeasurements = list_cross = types = count = crosses = num_extrema = minmax = indexes = s1 = s2 = standardD = heights = nadir2peak = idx = peak_or_nadir = plus_or_minus = first_excursion = NULL
+    rm(list=c('nmeasurements', 'list_cross', 'types', 'count', 'crosses', 'num_extrema', 'minmax', 'indexes', 's1', 's2', 'standardD', 'heights', 'nadir2peak', 'idx', 'peak_or_nadir', 'plus_or_minus', 'first_excursion'))
 
     if (all(is.na(.data$gl))) {
       return(data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
@@ -62,10 +63,10 @@ mage_ma_single <- function(data,
     nmeasurements = nrow(.data)
 
     if (nmeasurements < 7){
-      warning("The number of measurements is too small for MAGE calculation.")
+      # The number of measurements is too small for MAGE calculation.
       return(data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
     } else if (nmeasurements < long_ma){
-      warning("The total number of measurements is smaller than the long moving average. ")
+      # The total number of measurements is smaller than the long moving average window
       return(data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
     }
 
@@ -79,7 +80,6 @@ mage_ma_single <- function(data,
       dplyr::mutate(MA_Short = replace(MA_Short, 1:short_ma, MA_Short[short_ma]),
                     MA_Long  = replace(MA_Long, 1:long_ma, MA_Long[long_ma]),
                     DELTA_SHORT_LONG = MA_Short - MA_Long)
-
 
     # 2d. Create a preallocated list of crossing point ids & type
     idx = as.numeric(rownames(.data))
@@ -105,7 +105,7 @@ mage_ma_single <- function(data,
         }
 
         # needed for gaps, where DELTA_SHORT_LONG(i-1 | i-2) = NaN
-        # match(list_cross$id[count-1], idx) : get the index from start of .data, since the rowname in the overall DF might not match the index in .data since they may not both start @ 1 (i.e., if multiple gaps)
+        # Q: Why "match(list_cross$id[count-1], idx)"? A: get the index from start of .data, since the rowname in the overall DF might not match the index in .data since they may not both start @ 1 (i.e., if multiple gaps)
         else if (!is.na(.data$DELTA_SHORT_LONG[i]) && (.data$DELTA_SHORT_LONG[i] * .data$DELTA_SHORT_LONG[match(list_cross$id[count-1], idx)] < 0)) {
           prev_delta = .data$DELTA_SHORT_LONG[match(list_cross$id[count-1], idx)]
 
@@ -132,8 +132,7 @@ mage_ma_single <- function(data,
     indexes <- rep(NA_real_, num_extrema)
 
     for(i in 1:num_extrema) {
-      # s1 <- crosses[i,1]    # left boundary: prev turning point
-      s1 <- ifelse(i == 1, crosses[i, 1], indexes[i-1])
+      s1 <- ifelse(i == 1, crosses[i, 1], indexes[i-1]) # left boundary: prev turning point
       s2 <- crosses[i+1,1]  # right boundary: next crossing point
 
       if(crosses[i, "type"] == types$REL_MIN) {
@@ -179,9 +178,7 @@ mage_ma_single <- function(data,
             break
           }
         }
-      }
-
-      else {
+      } else {
         j = j + 1
       }
     }
@@ -224,10 +221,10 @@ mage_ma_single <- function(data,
     }
 
     plus_first = ifelse((length(mage_plus_heights) > 0) && (length(mage_minus_heights) == 0 || mage_plus_tp_pairs[[1]][2] <= mage_minus_tp_pairs[[1]][1]), TRUE, FALSE)
-    mage_plus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1),  mage=mean(mage_plus_heights, na.rm = TRUE), plus_or_minus="PLUS", first_excursion=plus_first)
-    mage_minus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=abs(mean(mage_minus_heights, na.rm = TRUE)), plus_or_minus="MINUS", first_excursion=!plus_first)
+    mage_plus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1),  mage=ifelse(length(mage_plus_heights), mean(mage_plus_heights, na.rm = TRUE), NA), plus_or_minus="PLUS", first_excursion=plus_first)
+    mage_minus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=ifelse(length(mage_minus_heights), abs(mean(mage_minus_heights, na.rm = TRUE)), NA), plus_or_minus="MINUS", first_excursion=!plus_first)
 
-    # plotting
+    # save data for plotting
     pframe = parent.frame()
     pframe$all_data = base::rbind(pframe$all_data, .data)
 
@@ -245,8 +242,8 @@ mage_ma_single <- function(data,
   }
 
   ## 1. Preprocessing
-  MA_Short = MA_Long = DELTA_SHORT_LONG = TP = id = .xmin = .xmax = NULL
-  rm(list = c("MA_Short", "MA_Long", "DELTA_SHORT_LONG", "TP", ".xmin", ".xmax", "id"))
+  MA_Short = MA_Long = DELTA_SHORT_LONG = TP = id = .xmin = .xmax = gap = x = y = xend = yend = hours = weight = idx = peak_or_nadir = plus_or_minus = first_excursion = NULL
+  rm(list = c("MA_Short", "MA_Long", "DELTA_SHORT_LONG", "TP", ".xmin", ".xmax", "id", "gap", "x", "y", "xend", "yend", "hours", "weight", "idx", "peak_or_nadir", "plus_or_minus", "first_excursion"))
 
   data = check_data_columns(data)
 
@@ -289,6 +286,28 @@ mage_ma_single <- function(data,
     temp = short_ma
     short_ma = long_ma
     long_ma = temp
+  }
+
+  if (nrow(data) < 7){
+    warning(paste0("The number of measurements (", length(data$id), ") is too small for MAGE calculation. Returning NA."))
+
+    return_type = match.arg(return_type, c('num', 'df'))
+
+    if (return_type == 'df') {
+      return(data.frame(start=utils::head(data$time, 1), end=utils::tail(data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
+    } else {
+      return(NA)
+    }
+  } else if (nrow(data) < long_ma){
+    warning(paste0("The total number of measurements (", length(data$id), ") is smaller than the long moving average. Returning NA."))
+
+    return_type = match.arg(return_type, c('num', 'df'))
+
+    if (return_type == 'df') {
+      return(data.frame(start=utils::head(data$time, 1), end=utils::tail(data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
+    } else {
+      return(NA)
+    }
   }
 
   # 3.2 Are any gaps > 12 hours?
@@ -348,16 +367,16 @@ mage_ma_single <- function(data,
     # 6.1 Label 'Peaks' and 'Nadirs'
     direction = match.arg(direction, c('service', 'avg', 'max', 'plus', 'minus'))
 
-    if (direction == "avg") {
-      stop("Plotting is not available with MAGEavg. Please generate plots for MAGE+ and MAGE- separately, via the direction argument.")
-    } else if (direction == "max") {
-      stop("Plotting functionality for MAGEmax is coming in iglu v4.1.0. Thank you for your patience.")
+    if (direction == "max") {
+      stop("Plotting functionality for MAGEmax is not possible right now. Please request this feature on GitHub if you'd like it. Thank you for your patience.")
     }
 
-    if (direction == 'service') {
-      tp_indexes <- dplyr::filter(all_tp_indexes, first_excursion==TRUE) %>% dplyr::select(idx, peak_or_nadir)
+    if (direction == "avg") {
+      tp_indexes <- dplyr::select(all_tp_indexes, idx, peak_or_nadir, plus_or_minus)
+    } else if (direction == 'service') {
+      tp_indexes <- dplyr::filter(all_tp_indexes, first_excursion==TRUE) %>% dplyr::select(idx, peak_or_nadir, plus_or_minus)
     } else {
-      tp_indexes <- dplyr::filter(all_tp_indexes, plus_or_minus==ifelse(direction == 'plus', "PLUS", "MINUS")) %>% dplyr::select(idx, peak_or_nadir)
+      tp_indexes <- dplyr::filter(all_tp_indexes, plus_or_minus==ifelse(direction == 'plus', "PLUS", "MINUS")) %>% dplyr::select(idx, peak_or_nadir, plus_or_minus)
     }
 
     plotting_data <- data %>%
@@ -373,7 +392,7 @@ mage_ma_single <- function(data,
     interval <- data_ip$dt0
 
     # filter out gl NAs to enable correct gap identification
-    plotting_data <- plotting_data[complete.cases(data$gl), ]
+    plotting_data <- plotting_data %>% dplyr::filter(gap != 1)
 
     # Find the start and end of each gap and merge/sort the two (Must do separately to solve the problem of "back to back" gaps not having correct start & end time)
     .gap_start <- plotting_data %>%
@@ -396,19 +415,40 @@ mage_ma_single <- function(data,
     .ymax <- max(plotting_data$gl)
 
     # 6.4 Generate ggplot
-    colors <- c("NADIR" = "blue", "PEAK"="red", "Short MA" = "#009E73", "Long MA" = "#D55E00")
+    colors <- c("NADIR" = "blue", "PEAK"="red", "Short MA" = "#009E73", "Long MA" = "#D55E00", "Excursion" = "brown")
     gap_colors <- c("Gap"="purple")
 
     .p <- ggplot2::ggplot(plotting_data, ggplot2::aes(x=time, y=gl)) +
       ggplot2::ggtitle(title) +
       ggplot2::geom_point() +
-      ggplot2::geom_point(data = subset(plotting_data, plotting_data$peak_or_nadir != ""), ggplot2::aes(color = peak_or_nadir), fill='white', size=2) +
+      ggplot2::geom_point(data = base::subset(plotting_data, plotting_data$peak_or_nadir != ""), ggplot2::aes(color = peak_or_nadir), fill='white', size=2) +
       ggplot2::scale_color_manual(values = colors) +
       ggplot2::labs(x=ifelse(!is.na(xlab), xlab, "Time"), y=ifelse(!is.na(ylab), ylab, 'Glucose Level')) +
       ggplot2::theme(
         legend.key = ggplot2::element_rect(fill='white'),
         legend.title = ggplot2::element_blank(),
       )
+
+    # add excursion_visualization
+    if (show_excursions == TRUE) {
+      plus <- plotting_data %>% dplyr::filter(plus_or_minus == "PLUS") %>% dplyr::arrange(idx)
+      minus <- plotting_data %>% dplyr::filter(plus_or_minus == "MINUS") %>% dplyr::arrange(idx)
+
+      if (nrow(plus) %% 2 != 0) {
+        stop("There appears to be an error in iglu::mage_ma_single's plotting functionality. Please rerun with `show_excursions = FALSE`. Also, please file a bug report on GitHub: https://github.com/irinagain/iglu/issues")
+      }
+
+      if (nrow(minus) %% 2 != 0) {
+        stop("There appears to be an error in iglu::mage_ma_single's plotting functionality. Please rerun with `show_excursions = FALSE`. Also, please file a bug report on GitHub: https://github.com/irinagain/iglu/issues")
+      }
+
+      arrows = plus %>% dplyr::filter(peak_or_nadir == "NADIR") %>% dplyr::select(x = time, xend = time, y = gl) %>% dplyr::mutate(yend = base::subset(plus, peak_or_nadir == "PEAK")$gl)
+      arrows = rbind(arrows, minus %>% dplyr::filter(peak_or_nadir == "PEAK") %>% dplyr::select(x = time, xend = time, y = gl) %>% dplyr::mutate(yend = base::subset(minus, peak_or_nadir == "NADIR")$gl))
+
+      if (nrow(arrows) > 0) {
+        .p <- .p + ggplot2::geom_segment(data = arrows, aes(x = x, y = y, xend = xend, yend = yend, color="Excursion"), arrow = grid::arrow(length = unit(0.2, "cm")))
+      }
+    }
 
     # add segment boundaries
     segment_boundaries <- return_val %>% dplyr::filter(!is.na(plus_or_minus))
@@ -444,8 +484,8 @@ mage_ma_single <- function(data,
     } else {
       return(.p)
     }
-  }
-  else {
+
+  } else {
     return_type = match.arg(return_type, c('num', 'df'))
     direction = match.arg(direction, c('service', 'avg', 'max', 'plus', 'minus'))
 
