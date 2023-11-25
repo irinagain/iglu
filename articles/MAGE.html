@@ -8,8 +8,8 @@
 <meta name="description" content="iglu">
 <title>MAGE Algorithm • iglu</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="MAGE Algorithm">
 <meta property="og:description" content="iglu">
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">iglu</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.5.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.5.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -188,13 +188,13 @@ MAGE daily. Manual MAGE calculations were performed on each of the 45
 CGM traces following the original description of MAGE calculations by
 Service et al. [3] by two of the authors, who were unaware of the
 outcome of the proposed algorithm’s outputs.</p>
-<table class="table">
+<table style="width:100%;" class="table">
 <colgroup>
-<col width="35%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
-<col width="16%">
+<col width="46%">
+<col width="9%">
+<col width="12%">
+<col width="8%">
+<col width="22%">
 </colgroup>
 <thead><tr class="header">
 <th align="center">Dataset</th>
@@ -450,7 +450,7 @@ adjusted by the user.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Subject 5 143.</span></span>
 <span></span>
 <span><span class="co"># Adjust default window sizes in mage calculation</span></span>
-<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, short_ma <span class="op">=</span> <span class="fl">3</span>, long_ma <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, short_ma <span class="op">=</span> <span class="fl">3</span>, long_ma <span class="op">=</span> <span class="fl">30</span>, plot_type <span class="op">=</span> <span class="st">'ggplot'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
 <span><span class="co">#&gt;   id         MAGE</span></span>
@@ -467,7 +467,7 @@ and nadirs used for MAGE calculation.</p>
 <code class="sourceCode R"><span><span class="co"># subset data to better see identified peaks and nadirs</span></span>
 <span><span class="va">fig1data</span> <span class="op">&lt;-</span> <span class="va">example_data_1_subject</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span></span>
 <span><span class="co"># plot using mage function with plot = TRUE and show_ma = TRUE </span></span>
-<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig1data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, show_ma <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace - Subject 1"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig1data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, show_ma <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace - Subject 1"</span>, plot_type <span class="op">=</span> <span class="st">'ggplot'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="MAGE_files/figure-html/figure%201-1.png" width="672"></p>
 <p><strong>Figure 1:</strong> Glucose trace of Subject 2 with Type 2
 diabetes from Broll et al. [8], the solid green line is a short MA with
