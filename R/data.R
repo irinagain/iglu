@@ -26,15 +26,26 @@
 
 #' @title Example data from Hall et al. (2018)
 #'
-#' @description Three subjects from the Hall publicly available dataset,
-#' primarily intended for use with example_meals_hall
+#' @description Dexcom G4 CGM measurements for 19 subjects from the Hall
+#' publicly available dataset. Chosen as a subset of all subjects to be only those
+#' with diabetes or pre-diabetes. Primarily intended for use with example_meals_hall
 #'
-#' @format a data.frame with 5567 rows and 3 columns, which are:
+#'
+#' @format a data.frame with 34890 rows and 4 columns, which are:
 #' \describe{
 #' \item{id}{identifier of subject}
 #' \item{time}{date and time stamp}
 #' \item{gl}{glucose level as measured by CGM (mg/dL)}
+#' \item{diagnosis}{character indicating diabetes diagnosis: diabetic or pre-diabetic}
 #' }
+#'
+#'
+#' @references
+#' Hall et al. (2018) : Glucotypes reveal new patterns of glucose dysregulation
+#' \emph{Plos Biology} \strong{16} (7): 3:e2005143
+#' \doi{10.1371/journal.pbio.2005143}.
+#'
+
 'example_data_hall'
 
 #' @title Example mealtimes data from Hall et al. (2018)
@@ -42,10 +53,16 @@
 #' @description Example of mealtimes data format for meal_metrics function,
 #' corresponds to example_data_hall data.
 #'
-#' @format A data.frame with 1 row and 3 columns, which are:
+#' @format A data.frame with 9 rows and 3 columns, which are:
 #' \describe{
 #' \item{id}{identifier of subject}
 #' \item{meal}{meal type identifier}
 #' \item{mealtime}{time of meal}
 #' }
+#'
+#' @references
+#' Hall et al. (2018) : Glucotypes reveal new patterns of glucose dysregulation
+#' \emph{Plos Biology} \strong{16} (7): 3:e2005143
+#' \doi{10.1371/journal.pbio.2005143}.
+
 "example_meals_hall"

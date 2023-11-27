@@ -82,7 +82,9 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
       rep(data_ip$dt0, ndays * 24 * 60 /data_ip$dt0)))
     # change data into id, interpolated times, interpolated glucose (t to get rowwise)
     data <- data %>%
-      dplyr::reframe(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d)))
+      dplyr::reframe(id = id[1], time = time_ip, gl = as.vector(t(data_ip$gd2d))) %>%
+      # remove leading and trailing NAs
+      dplyr::filter(!is.na(gl))
   } else {
     data = data
     timediff <- difftime(data$time[2:length(data$time)],
@@ -126,12 +128,12 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
     dplyr::rowwise() %>%
     # for each meal window, create 4 periods
     dplyr::reframe(meal = meal,
-              # time is total window (secondly)
-              time = start + lubridate::seconds(0:(total_win*60*60)),
-              # each window now has 4 periods: before, meal, after, recovery
-              period = c(rep("before", before_win*60*60), "meal",
-                         rep("after", after_win*60*60),
-                         rep("recovery", recovery_win*60*60)))
+                   # time is total window (secondly)
+                   time = start + lubridate::seconds(0:(total_win*60*60)),
+                   # each window now has 4 periods: before, meal, after, recovery
+                   period = c(rep("before", before_win*60*60), "meal",
+                              rep("after", after_win*60*60),
+                              rep("recovery", recovery_win*60*60)))
 
   # combine cgm data with mealtimes
   # if a given time corresponds to more than one meal, all possible
@@ -158,23 +160,23 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
       # calculate numbers necessary for adj_metrics calculation
       # base is average of gl values before
       dplyr::mutate(base = mean(gl[period == "before"], na.rm = TRUE),
-             # peak is max gl after meal
-             peak = max(gl[period == "after"], na.rm = TRUE),
-             # recovery is time one hour after peak
-             recover = time[period == "after"][which.max(gl[period == "after"])] +
-               1*60*60) %>%
+                    # peak is max gl after meal
+                    peak = max(gl[period == "after"], na.rm = TRUE),
+                    # recovery is time one hour after peak
+                    recover = time[period == "after"][which.max(gl[period == "after"])] +
+                      1*60*60) %>%
       dplyr::reframe(id = id[1], meal = meal[1],
-                mealtime = time[period == "meal"],
-                # deltag is change in gl from baseline to peak
-                deltag = peak[1] - base[1],
-                # deltat is time to peak (peak time is 1 hr before recovery)
-                # converted to numeric for later use (and to match default NAs)
-                deltat = as.numeric(difftime(recover[1] - 1*60*60, time[period == "meal"],
-                                             units = "mins")),
-                # baseline recovery is gl change from peak to 1hr after/deltag
-                # only calculate basereco if recovery time is within 4 hr window
-                basereco = ifelse(recover[1] %in% time,
-                                  (peak[1] - gl[time == recover[1]])/deltag[1], NA)) %>%
+                     mealtime = time[period == "meal"],
+                     # deltag is change in gl from baseline to peak
+                     deltag = peak[1] - base[1],
+                     # deltat is time to peak (peak time is 1 hr before recovery)
+                     # converted to numeric for later use (and to match default NAs)
+                     deltat = as.numeric(difftime(recover[1] - 1*60*60, time[period == "meal"],
+                                                  units = "mins")),
+                     # baseline recovery is gl change from peak to 1hr after/deltag
+                     # only calculate basereco if recovery time is within 4 hr window
+                     basereco = ifelse(recover[1] %in% time,
+                                       (peak[1] - gl[time == recover[1]])/deltag[1], NA)) %>%
       dplyr::select(id, time = mealtime, meal, deltag, deltat, basereco)
   }
 
@@ -229,7 +231,7 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 #' data(example_data_hall)
 #' data(example_meals_hall)
 #' meal_metrics(example_data_hall, example_meals_hall)
-#' meal_metrics(example_data_hall, example_meals_hall, interpolate = FALSE)
+#' meal_metrics(example_data_hall, example_meals_hall)
 #'
 
 
@@ -286,10 +288,10 @@ meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
     dplyr::group_by(id) %>%
     # calculate meal metrics for each subject
     dplyr::reframe(meal_metrics_single(data.frame(id, time, gl), mealtimes = mealtimes,
-                                  before_win = before_win, after_win = after_win,
-                                  recovery_win = recovery_win, interpolate = interpolate,
-                                  adjust_mealtimes = adjust_mealtimes, dt0 = dt0,
-                                  inter_gap = inter_gap, tz = tz)) %>%
+                                       before_win = before_win, after_win = after_win,
+                                       recovery_win = recovery_win, interpolate = interpolate,
+                                       adjust_mealtimes = adjust_mealtimes, dt0 = dt0,
+                                       inter_gap = inter_gap, tz = tz)) %>%
     dplyr::ungroup()
 
   return(out)
