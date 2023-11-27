@@ -55,7 +55,7 @@ with a unique number for each meal.
 data(example_data_hall)
 data(example_meals_hall)
 meal_metrics(example_data_hall, example_meals_hall)
-meal_metrics(example_data_hall, example_meals_hall, interpolate = FALSE)
+meal_metrics(example_data_hall, example_meals_hall)
 
 }
 \references{
