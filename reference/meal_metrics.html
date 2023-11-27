@@ -138,31 +138,67 @@ with a unique number for each meal.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_data_hall</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_meals_hall</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">meal_metrics</span><span class="op">(</span><span class="va">example_data_hall</span>, <span class="va">example_meals_hall</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 9 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   id       time                meal  deltag deltat basereco</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 2133-010 2016-11-22 <span style="color: #949494;">15:30:00</span> CF 1    42.1     60    0.741</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 2133-010 2016-11-23 <span style="color: #949494;">15:30:00</span> Bar 1   25.0     45    1.88 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 2133-010 2016-11-24 <span style="color: #949494;">13:00:00</span> PB 1    37.2    155    0.918</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 2133-013 2017-01-12 <span style="color: #949494;">13:30:00</span> Bar 1   32.6     55    0.703</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 2133-013 2017-01-16 <span style="color: #949494;">15:00:00</span> CF 1    61.9     65    1.06 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 2133-013 2017-01-19 <span style="color: #949494;">14:10:00</span> PB 1    10.2    120    0.109</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> 2133-018 2017-03-15 <span style="color: #949494;">14:40:00</span> PB 1    97.8     80    0.378</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> 2133-018 2017-03-16 <span style="color: #949494;">12:15:00</span> CF 1   171.      75    0.429</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span> 2133-018 2017-03-17 <span style="color: #949494;">14:05:00</span> Bar 1   77.6     75    0.670</span>
-<span class="r-in"><span><span class="fu">meal_metrics</span><span class="op">(</span><span class="va">example_data_hall</span>, <span class="va">example_meals_hall</span>, interpolate <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 9 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   id       time                meal  deltag deltat basereco</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 2133-010 2016-11-22 <span style="color: #949494;">15:28:42</span> CF 1    42.9   60    <span style="color: #BB0000;">NA</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 2133-010 2016-11-23 <span style="color: #949494;">15:28:38</span> Bar 1   25.8   45.0   1.90  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 2133-010 2016-11-24 <span style="color: #949494;">12:58:34</span> PB 1    38.2  155.    0.917 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 2133-013 2017-01-12 <span style="color: #949494;">13:30:08</span> Bar 1   32.7   55.0   0.704 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 2133-013 2017-01-16 <span style="color: #949494;">14:59:45</span> CF 1    62.2   65    <span style="color: #BB0000;">NA</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 2133-013 2017-01-19 <span style="color: #949494;">14:09:28</span> PB 1    10.5  120.    0.094<span style="text-decoration: underline;">8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> 2133-018 2017-03-15 <span style="color: #949494;">14:40:00</span> PB 1    97.8   80     0.378 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> 2133-018 2017-03-16 <span style="color: #949494;">12:14:57</span> CF 1   171.    75    <span style="color: #BB0000;">NA</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span> 2133-018 2017-03-17 <span style="color: #949494;">14:04:52</span> Bar 1   78.4   75     0.664 </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-001</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-026</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-032</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-090</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-091</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-114</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-70-1005</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-70-1010</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-015</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-017</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-019</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-021</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-024</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-027</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-035</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-036</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 23 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    id           time                meal  deltag deltat basereco</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1636-69-001  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1636-69-026  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1636-69-032  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 1636-69-090  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 1636-69-091  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 1636-69-114  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 1636-70-1005 <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 1636-70-1010 <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2133-004     2016-09-23 <span style="color: #949494;">15:10:00</span> CF 1    20.9     10    0.612</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2133-015     <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 13 more rows</span></span>
+<span class="r-in"><span><span class="fu">meal_metrics</span><span class="op">(</span><span class="va">example_data_hall</span>, <span class="va">example_meals_hall</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-001</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-026</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-032</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-090</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-091</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-114</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-70-1005</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-70-1010</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-015</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-017</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-019</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-021</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-024</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-027</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-035</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-036</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 23 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    id           time                meal  deltag deltat basereco</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1636-69-001  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1636-69-026  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1636-69-032  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 1636-69-090  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 1636-69-091  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 1636-69-114  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 1636-70-1005 <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 1636-70-1010 <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2133-004     2016-09-23 <span style="color: #949494;">15:10:00</span> CF 1    20.9     10    0.612</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2133-015     <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 13 more rows</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
