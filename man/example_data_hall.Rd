@@ -17,7 +17,7 @@ a data.frame with 34890 rows and 4 columns, which are:
 example_data_hall
 }
 \description{
-Dexcom G$ CGM measurements for 19 subjects from the Hall
+Dexcom G4 CGM measurements for 19 subjects from the Hall
 publicly available dataset. Chosen as a subset of all subjects to be only those
 with diabetes or pre-diabetes. Primarily intended for use with example_meals_hall
 }
