@@ -1,7 +1,8 @@
 # Test on one subject data
-test_hall = example_data_hall[example_data_hall$id == '2133-018', ]
-test_meals = example_meals_hall[example_meals_hall$id == '2133-018', ]
-out = meal_metrics(test_hall, test_meals, interpolate = TRUE, adjust_mealtimes = TRUE)
+test_hall = example_data_hall %>% dplyr::filter(id == '2133-018')
+test_meals = example_meals_hall %>% dplyr::filter(id == '2133-018')
+attr(test_hall, 'tz') = attr(test_meals, 'tz') = 'EST'
+out = meal_metrics(test_hall, test_meals)
 
 # delta G
 test_that("no changes on Hall 2133-018 for delta G", {
