@@ -94,6 +94,9 @@ shinyServer(function(input, output) {
     else if(input$metric == 'mage') {
       return("mage")
     }
+    else if(input$metric == 'pgs'){
+      return('pgs')
+    }
     else if(input$metric %in% c("hyper_index", "hypo_index")){
       return("value1")
     }
@@ -138,6 +141,9 @@ shinyServer(function(input, output) {
       if(input$metric == "mage") {
         radioButtons("parameter", "Mage Version", choiceNames=c('Version 2: ma (recommended)', 'Version 1: naive (superseded)'),choiceValues=c("ma","naive"))
       }
+    }
+    else if(parameter_type == 'pgs') {
+      textInput('parameter', 'Episode Duration', value = 20)
     }
     else if(parameter_type == "value"){
 
@@ -275,6 +281,9 @@ shinyServer(function(input, output) {
       }
 
     }
+    else if(parameter_type == 'pgs'){
+      helpText('Enter minimum duration in minutes for an episode')
+    }
     else if(parameter_type == "value1"){
       if(input$metric == "hyper_index"){
         helpText("Enter the upper limit of target glucose range.")
@@ -343,6 +352,9 @@ shinyServer(function(input, output) {
         textInput("parameter2", "Short MA length", value="5")
       }
     }
+    else if(parameter_type == 'pgs') {
+      textInput('parameter2', 'Episode Ending Duration', value = '30')
+    }
   })
 
   #add description of second parameter
@@ -366,6 +378,9 @@ shinyServer(function(input, output) {
       if(input$parameter == "ma") {
         helpText("Allowable values between 5 and 15. (5 recommended)")
       }
+    }
+    else if(parameter_type == 'pgs'){
+      helpText("Enter minimum duration in minutes of improved glycemia for episodes to end")
     }
 
   })
@@ -458,7 +473,7 @@ shinyServer(function(input, output) {
     } else if (!grepl(',', input$parameter)) {
       # print(input$parameter) # un-comment for bug-fixing
       validate(
-        need(parameter_type %in% c("value", "value1", "value_time", "none","time"),
+        need(parameter_type %in% c("value", "value1", "value_time", "none","time", "pgs"),
              "Please wait - Rendering")
       )
     }
@@ -517,6 +532,9 @@ shinyServer(function(input, output) {
       else if(input$parameter == "naive") {
         string = paste("iglu::", input$metric, "(data, version='",input$parameter,"')", sep="")
       }
+    }
+    else if(parameter_type == 'pgs'){
+      string = paste('iglu::', input$metric, '(data, dur_length=', input$parameter, ', end_length=', input$parameter2, ')', sep = '')
     }
     else if(parameter_type == "nested"){
       strlist = strsplit(input$parameter, ")")[[1]]

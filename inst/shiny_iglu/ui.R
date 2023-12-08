@@ -76,6 +76,7 @@ shinyUI(fluidPage(
                                                                                `Mean` = 'mean_glu',
                                                                                `Median` = 'median_glu',
                                                                                `MODD` = 'modd',
+                                                                               `PGS` = 'pgs',
                                                                                `Quantiles` = 'quantile_glu',
                                                                                `Range` = 'range_glu',
                                                                                `Rate of Change (ROC)` = 'roc',
