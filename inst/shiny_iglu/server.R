@@ -1,8 +1,4 @@
-# library(shiny)
-# library(DT)
-
 shinyServer(function(input, output) {
-
   ############################## DATA SECTION ############################
 
   data <- reactive({
@@ -39,7 +35,6 @@ shinyServer(function(input, output) {
                      buttons = c("copy", "csv", "excel", "pdf", "print"),
                      paging = FALSE)
     )
-
   })
 
   output$downloaddata <- downloadHandler(
@@ -68,10 +63,7 @@ shinyServer(function(input, output) {
     return(data)
   })
 
-
   ############################# METRIC SECTION ######################################################
-
-
   #add metric based on the parameter it takes in
   parameter_type <- reactive({
     #metric is considered as parameter type "none" if it only requires data as a parameter
@@ -116,6 +108,7 @@ shinyServer(function(input, output) {
       return("nested")
     }
   })
+
   #specify first parameter and the default values
   output$select_parameter <- renderUI({
     parameter_type = parameter_type()
@@ -219,7 +212,6 @@ shinyServer(function(input, output) {
   })
 
   #add description of first parameter
-
   output$help_text <- renderUI({
     parameter_type = parameter_type()
 
@@ -435,6 +427,50 @@ shinyServer(function(input, output) {
     }
   })
 
+  #specify fourth parameter and its default value
+  output$select_fourth_parameter <- renderUI({
+    parameter_type = parameter_type()
+
+    if(parameter_type == "mage") {
+      if(input$parameter == "ma") {
+        radioButtons("parameter4", "Direction", choiceNames=c('Average', 'Service', 'Max', 'Plus', 'Minus'),choiceValues=c('avg', 'service', 'max', 'plus', 'minus'))
+      }
+    }
+  })
+
+  #add description on fourth parameter
+  output$fourth_parameter_helptext <- renderUI({
+    parameter_type = parameter_type()
+
+    if(parameter_type == "mage"){
+      if(input$parameter == "ma") {
+        helpText("Whether you calculate MAGE+, MAGE-, MAGEservice, MAGEavg, or MAGEmax")
+      }
+    }
+  })
+
+  #specify third parameter and its default value
+  output$select_fifth_parameter <- renderUI({
+    parameter_type = parameter_type()
+
+    if(parameter_type == "mage") {
+      if(input$parameter == "ma") {
+        textInput("parameter5", "Max Gap", value="180")
+      }
+    }
+  })
+
+  #add description on third parameter
+  output$fifth_parameter_helptext <- renderUI({
+    parameter_type = parameter_type()
+
+    if(parameter_type == "mage"){
+      if(input$parameter == "ma") {
+        helpText("Maximum gap (minutes) in the glucose trace before MAGE is calculated on each segment independently. Recommended: >=120 min")
+      }
+    }
+  })
+
   output$sleep_wake_help <- renderUI({
     helpText("Enter a real number 0-24.")
   })
@@ -444,7 +480,6 @@ shinyServer(function(input, output) {
     string = ""
     parameter_type = parameter_type()
     data = transform_data()
-
 
     #### Validate catches for parameter 1 #####
     if (is.null(input$parameter)) {
@@ -527,7 +562,7 @@ shinyServer(function(input, output) {
     }
     else if(parameter_type == "mage"){
       if(input$parameter == "ma") {
-        string = paste("iglu::", input$metric, "(data, version='",input$parameter, "', short_ma=", input$parameter2,", long_ma=",input$parameter3,")", sep="")
+        string = paste("iglu::", input$metric, "(data, version='",input$parameter, "', short_ma=", input$parameter2,", long_ma=",input$parameter3,", direction='", input$parameter4,"', max_gap=", input$parameter5 ,")", sep="")
       }
       else if(input$parameter == "naive") {
         string = paste("iglu::", input$metric, "(data, version='",input$parameter,"')", sep="")
@@ -651,13 +686,32 @@ shinyServer(function(input, output) {
       helpText("Enter the ID of a subject to display their MAGE plot"),
       textInput("mage_short_ma", "Short MA length", value="5"),
       textInput("mage_long_ma", "Long MA length", value="32"),
+      selectInput("direction", "Direction", c(
+        'Average' = 'avg',
+        'Service' = 'service',
+        'Max' = 'max',
+        'Plus' = 'plus',
+        'Minus' = 'minus'
+      )),
+      helpText("Whether you calculate MAGE+, MAGE-, MAGEservice, MAGEavg, or MAGEmax"),
+      textInput("max_gap", "Max Gap", value="180"),
+      helpText("Maximum gap (minutes) in the glucose trace before MAGE is calculated on each segment independently. Recommended: >=120 min"),
       radioButtons("mage_show_ma", "Show Moving Averages on Plot", c(
         "No" = FALSE,
         "Yes" = TRUE
       ), inline=TRUE),
+      radioButtons("show_excursions", "Show Excursions on Plot", c(
+        "No" = FALSE,
+        "Yes" = TRUE
+      ), selected=TRUE, inline=TRUE),
       textInput("mage_title", "Title", value = "default"),
       textInput("mage_xlab", "X Label", value = "default"),
-      textInput("mage_ylab", "Y Label", value = "default")
+      textInput("mage_ylab", "Y Label", value = "default"),
+      # TODO: eventually incorporate Plotly
+      # radioButtons("plot_type", "Select Plot Type", c(
+      #   "Plotly (interactive)" = 'plotly',
+      #   "GGPlot (static)" = 'ggplot'
+      # ), inline=TRUE),
     )
   })
 
@@ -739,7 +793,6 @@ shinyServer(function(input, output) {
   ### Render Plot
 
   plotFunc <- reactive({
-
     library(iglu)
 
     plottype = plottype() # bring reactive input variable into this renderPlot call
@@ -808,16 +861,17 @@ shinyServer(function(input, output) {
       mage_ylab = ifelse(tolower(input$mage_ylab) == "default", NA, paste0("'",input$mage_ylab,"'"))
 
       string = paste0("iglu::mage_ma_single(data=data,plot=TRUE,short_ma=",input$mage_short_ma,",long_ma=",
-                      input$mage_long_ma,",show_ma=", input$mage_show_ma,",
-                      ,title=",mage_title,",xlab=", mage_xlab,",ylab=",mage_ylab,")")
+                      input$mage_long_ma,", direction='", input$direction, "', max_gap='", input$max_gap,
+                      "', show_ma=", input$mage_show_ma,", show_excursions=", input$show_excursions, ",title=",mage_title,",xlab=", mage_xlab,",ylab=",mage_ylab,")")
+
       eval(parse(text=string))
     }
-
   })
 
+  # TODO: Eventually incorporate Shiny for MAGE, using: https://stackoverflow.com/questions/48017341/how-to-correctly-output-plotly-plots-in-shiny
   output$plot <- renderPlot({
-    plotFunc()
-  })
+        plotFunc()
+      })
 
   options(shiny.usecairo = T)
 
@@ -901,7 +955,6 @@ shinyServer(function(input, output) {
   })
 
   output$agp_metrics <- DT::renderDataTable({
-
     DT::datatable(agpMetrics(), options = list(dom = 't'), rownames = FALSE, colnames = "")
   })
 
@@ -928,12 +981,10 @@ shinyServer(function(input, output) {
   })
 
   output$plot_agp <- renderPlot({
-
     plotAGP()
   })
 
   plotDaily <- reactive({
-
     library(iglu)
     data = agp_data()
     string = paste('iglu::plot_daily(data = data)')
