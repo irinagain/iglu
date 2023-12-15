@@ -54,8 +54,9 @@ metrics_heatmap_pure <- function(mecs, metric_cluster = 6, clustering_method = "
                             clustering_distance_metrics = "correlation",
                             clustering_distance_subjects = "correlation"){
 
-  # Remove subject id column and transfer to a matrix
-  mecs_mat = mecs[, -1] # this assumes first column is subject id
+  # Remove columns that have id, active_percent, ndays, start_date, end_date
+  metric_names = names(mecs)
+  mecs_mat = mecs[, !(metric_names %in% c("id", "active_percent", "ndays", "start_date", "end_date"))]
   # Check that the remaining columns are numeric
   isNumeric = sapply(mecs_mat, is.numeric)
   if (sum(!isNumeric) > 0){
