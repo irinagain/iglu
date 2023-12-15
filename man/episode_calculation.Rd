@@ -50,19 +50,20 @@ Defaults to FALSE which means only episode summary statistics will be returned}
 If return_data is FALSE, a single dataframe with columns:
 \item{id}{Subject id}
 \item{type}{Type of episode - either hypoglycemia or hyperglycemia}
-\item{level}{Level of episode - one of lv1, lv2, or extended}
+\item{level}{Level of episode - one of lv1, lv2, extended, lv1_excl}
 \item{avg_ep_per_day}{Average number of episodes per day calculated as
 (total # episodes)/(recording time in days (24hrs))}
 \item{avg_ep_duration}{Average duration of episodes in minutes}
 \item{avg_ep_gl}{Average glucose in the episode in mg/dL}
 
 If return_data is TRUE, returns a list where the first entry is the episode summary dataframe
-(see above) and the second entry is the input data with episode labels added.
+(see above) and the second entry is the input data with episode labels added. Note
+the data returned here has been interpolated using the CGMS2DayByDay() function.
 Mostly for use with epicalc_profile function. Format of the second list entry is:
 \item{id}{Subject id}
 \item{time}{Interpolated timestamps}
 \item{gl}{glucose in mg/dL}
-\item{**episode_label**}{One column per episode label - i.e. lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper, ext_hypo.
+\item{[episode_label]}{One column per episode label - i.e. lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper, ext_hypo.
 0 means not this type of episode, a positive integer label is assigned to each episode.
 Note the labels are *not* unique by subject only unique by segment}
 }
@@ -73,7 +74,8 @@ and optionally returns data with episode label columns added
 \details{
 We follow the definition of episodes given in the 2023 consensus by Battelino et al.
 Note we have classified lv2 as a subset of lv1 since we find the consensus to be
-slightly ambiguous.
+slightly ambiguous. For lv1 exclusive of lv2, please see lv1_excl which summarise
+episodes that were exclusively lv1 and did not cross the lv2 threshold.
 }
 \examples{
 episode_calculation(example_data_5_subject, lv1_hypo=100, lv1_hyper= 120)
