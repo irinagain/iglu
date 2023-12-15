@@ -138,7 +138,7 @@ Defaults to FALSE which means only episode summary statistics will be returned</
 <dd><p>Type of episode - either hypoglycemia or hyperglycemia</p></dd>
 
 <dt>level</dt>
-<dd><p>Level of episode - one of lv1, lv2, or extended</p></dd>
+<dd><p>Level of episode - one of lv1, lv2, extended, lv1_excl</p></dd>
 
 <dt>avg_ep_per_day</dt>
 <dd><p>Average number of episodes per day calculated as
@@ -152,7 +152,8 @@ Defaults to FALSE which means only episode summary statistics will be returned</
 
 
 </dl><p>If return_data is TRUE, returns a list where the first entry is the episode summary dataframe
-(see above) and the second entry is the input data with episode labels added.
+(see above) and the second entry is the input data with episode labels added. Note
+the data returned here has been interpolated using the CGMS2DayByDay() function.
 Mostly for use with epicalc_profile function. Format of the second list entry is:</p>
 <dl><dt>id</dt>
 <dd><p>Subject id</p></dd>
@@ -163,7 +164,7 @@ Mostly for use with epicalc_profile function. Format of the second list entry is
 <dt>gl</dt>
 <dd><p>glucose in mg/dL</p></dd>
 
-<dt>**episode_label**</dt>
+<dt>[episode_label]</dt>
 <dd><p>One column per episode label - i.e. lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper, ext_hypo.
 0 means not this type of episode, a positive integer label is assigned to each episode.
 Note the labels are *not* unique by subject only unique by segment</p></dd>
@@ -173,7 +174,8 @@ Note the labels are *not* unique by subject only unique by segment</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>We follow the definition of episodes given in the 2023 consensus by Battelino et al.
 Note we have classified lv2 as a subset of lv1 since we find the consensus to be
-slightly ambiguous.</p>
+slightly ambiguous. For lv1 exclusive of lv2, please see lv1_excl which summarise
+episodes that were exclusively lv1 and did not cross the lv2 threshold.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
