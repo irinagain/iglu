@@ -50,6 +50,8 @@ mage_ma_single <- function(data,
                            dt0 = NULL, tz = "", inter_gap = 45,
                            max_gap = 180,
                            plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions = TRUE, plot_type='ggplot') {
+  ## pre-0. Turn all tibbles --> DataFrame
+  data = as.data.frame(data)
 
   ## 0. Calculates MAGE on 1 segment of CGM trace
   mage_atomic <- function(.data) {
@@ -359,7 +361,7 @@ mage_ma_single <- function(data,
   return_val = setNames(data.frame(matrix(ncol = 5, nrow = 0)), c("start", "end", "mage", "plus_or_minus", "first_excursion"))
 
   for (e in dfs) {
-      return_val = base::rbind(return_val, mage_atomic(e))
+    return_val = base::rbind(return_val, mage_atomic(e))
   }
 
   # 6. Plotting
@@ -445,8 +447,11 @@ mage_ma_single <- function(data,
       arrows = plus %>% dplyr::filter(peak_or_nadir == "NADIR") %>% dplyr::select(x = time, xend = time, y = gl) %>% dplyr::mutate(yend = base::subset(plus, peak_or_nadir == "PEAK")$gl)
       arrows = rbind(arrows, minus %>% dplyr::filter(peak_or_nadir == "PEAK") %>% dplyr::select(x = time, xend = time, y = gl) %>% dplyr::mutate(yend = base::subset(minus, peak_or_nadir == "NADIR")$gl))
 
-      if (nrow(arrows) > 0) {
-        .p <- .p + ggplot2::geom_segment(data = arrows, aes(x = x, y = y, xend = xend, yend = yend, color="Excursion"), arrow = grid::arrow(length = unit(0.2, "cm")))
+      # plotly does not support rendering arrows by default - we use a workaround below (see ~line 487 when we return the plot)
+      if (plot_type != "plotly") {
+        if (nrow(arrows) > 0) {
+          .p <- .p + ggplot2::geom_segment(data = arrows, ggplot2::aes(x = x, y = y, xend = xend, yend = yend, color="Excursion"), arrow = grid::arrow(length = grid::unit(0.2, "cm")))
+        }
       }
     }
 
@@ -463,13 +468,13 @@ mage_ma_single <- function(data,
 
     if (nrow(.gaps)) {
       .p <- .p + ggplot2::geom_rect(data=.gaps, ggplot2::aes(
-          xmin=.xmin,
-          xmax=.xmax,
-          ymin= ifelse(plot_type == "plotly", .ymin, -Inf),
-          ymax= ifelse(plot_type == "plotly", .ymax, Inf),
-          fill = 'Gap'
-        ),
-        alpha=0.2, inherit.aes = FALSE, show.legend = T, na.rm = TRUE) +
+        xmin=.xmin,
+        xmax=.xmax,
+        ymin= ifelse(plot_type == "plotly", .ymin, -Inf),
+        ymax= ifelse(plot_type == "plotly", .ymax, Inf),
+        fill = 'Gap'
+      ),
+      alpha=0.2, inherit.aes = FALSE, show.legend = T, na.rm = TRUE) +
         ggplot2::scale_fill_manual(values=gap_colors)
     }
 
@@ -480,7 +485,29 @@ mage_ma_single <- function(data,
 
     # 4d. Return plot
     if (plot_type == 'plotly') {
-      return(plotly::ggplotly(.p))
+      .p <- plotly::ggplotly(.p)
+
+      if (show_excursions == TRUE && nrow(arrows) > 0) {
+        t <- .p %>% plotly::add_annotations(
+          text = "",
+          showarrow = TRUE,
+          arrowcolor="brown",
+          arrowhead = 1,
+          arrowsize = 1,
+          x = as.numeric(arrows$x),
+          y = arrows$yend,
+          ax = as.numeric(arrows$xend),
+          ay = arrows$y,
+          xref="x",
+          axref="x",
+          yref="y",
+          ayref="y"
+        )
+
+        return(t)
+      }
+
+      return(.p)
     } else {
       return(.p)
     }
