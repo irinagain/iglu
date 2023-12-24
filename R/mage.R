@@ -54,7 +54,7 @@ mage <- function(data,
 
   return(mage_ma(data, short_ma = short_ma, long_ma = long_ma, return_type=return_type, direction=direction,
                  plot = plot, dt0 = dt0, inter_gap = inter_gap, max_gap = max_gap, tz = tz,
-                 title = title, xlab = xlab, ylab = ylab, show_ma = show_ma, show_excursions=show_excursions, plot_type = plot_type))
+                 title = title, xlab = xlab, ylab = ylab, show_ma = show_ma, show_excursions=show_excursions))
 }
 
 mage_ma <- function(data,
