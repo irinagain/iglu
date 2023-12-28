@@ -188,13 +188,13 @@ MAGE daily. Manual MAGE calculations were performed on each of the 45
 CGM traces following the original description of MAGE calculations by
 Service et al. [3] by two of the authors, who were unaware of the
 outcome of the proposed algorithm’s outputs.</p>
-<table style="width:100%;" class="table">
+<table class="table">
 <colgroup>
-<col width="46%">
-<col width="9%">
-<col width="12%">
-<col width="8%">
-<col width="22%">
+<col width="35%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
 </colgroup>
 <thead><tr class="header">
 <th align="center">Dataset</th>
@@ -450,7 +450,7 @@ adjusted by the user.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Subject 5 143.</span></span>
 <span></span>
 <span><span class="co"># Adjust default window sizes in mage calculation</span></span>
-<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, short_ma <span class="op">=</span> <span class="fl">3</span>, long_ma <span class="op">=</span> <span class="fl">30</span>, plot_type <span class="op">=</span> <span class="st">'ggplot'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, short_ma <span class="op">=</span> <span class="fl">3</span>, long_ma <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># Rowwise: </span></span></span>
 <span><span class="co">#&gt;   id         MAGE</span></span>
@@ -467,7 +467,7 @@ and nadirs used for MAGE calculation.</p>
 <code class="sourceCode R"><span><span class="co"># subset data to better see identified peaks and nadirs</span></span>
 <span><span class="va">fig1data</span> <span class="op">&lt;-</span> <span class="va">example_data_1_subject</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span>, <span class="op">]</span></span>
 <span><span class="co"># plot using mage function with plot = TRUE and show_ma = TRUE </span></span>
-<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig1data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, show_ma <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace - Subject 1"</span>, plot_type <span class="op">=</span> <span class="st">'ggplot'</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/mage.html">mage</a></span><span class="op">(</span><span class="va">fig1data</span>, plot <span class="op">=</span> <span class="cn">TRUE</span>, show_ma <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"Glucose Trace - Subject 1"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="MAGE_files/figure-html/figure%201-1.png" width="672"></p>
 <p><strong>Figure 1:</strong> Glucose trace of Subject 2 with Type 2
 diabetes from Broll et al. [8], the solid green line is a short MA with
