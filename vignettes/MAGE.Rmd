@@ -132,7 +132,7 @@ Service et al. [3] by two of the authors, who were unaware of the
 outcome of the proposed algorithm's outputs.
 
 |                                Dataset                                 | Diabetes Type |     Age group      | Subject ID  | Number of days used (CGM traces) |
-|:----------------------------------------------------------------------:|:-------------:|:------------------:|:-----------:|:--------------------------------:|
+|:------------------------:|:----------:|:----------:|:----------:|:----------:|
 |   [Hall et al. (2018)](https://doi.org/10.1371/journal.pbio.2005143)   |     None      |   Adults (\> 18)   | 1636-69-001 |                5                 |
 |                                                                        |               |                    | 1636-69-026 |                6                 |
 | [Tsalikian et al. (2005)](https://doi.org/10.1016/j.jpeds.2005.04.065) |    Type 1     | Children (10 - 18) |      2      |                1                 |
@@ -275,7 +275,7 @@ library(iglu)
 mage(example_data_5_subject)
 
 # Adjust default window sizes in mage calculation
-mage(example_data_5_subject, short_ma = 3, long_ma = 30, plot_type = 'ggplot')
+mage(example_data_5_subject, short_ma = 3, long_ma = 30)
 ```
 
 In addition to providing a numerical MAGE value, the software allows the
@@ -286,7 +286,7 @@ nadirs used for MAGE calculation.
 # subset data to better see identified peaks and nadirs
 fig1data <- example_data_1_subject[1:200, ]
 # plot using mage function with plot = TRUE and show_ma = TRUE 
-mage(fig1data, plot = TRUE, show_ma = TRUE, title = "Glucose Trace - Subject 1", plot_type = 'ggplot')
+mage(fig1data, plot = TRUE, show_ma = TRUE, title = "Glucose Trace - Subject 1")
 ```
 
 **Figure 1:** Glucose trace of Subject 2 with Type 2 diabetes from Broll

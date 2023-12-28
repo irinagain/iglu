@@ -21,8 +21,7 @@ mage(
   xlab = NA,
   ylab = NA,
   show_ma = FALSE,
-  show_excursions = TRUE,
-  plot_type = "ggplot"
+  show_excursions = TRUE
 )
 }
 \arguments{
@@ -61,8 +60,6 @@ can be specified for \code{version = "naive"}, and it is ignored if \code{versio
 \item{show_ma}{Whether to show the moving average lines on the plot or not}
 
 \item{show_excursions}{Whether or not to visualize the excursions on the plot or not}
-
-\item{plot_type}{returns ggplot if "ggplot". Else returns plotly.}
 }
 \value{
 A tibble object with two columns: the subject id and corresponding MAGE value.
