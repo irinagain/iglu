@@ -76,4 +76,5 @@ Suggests:
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 URL: https://irinagain.github.io/iglu/
+BugReports: https://github.com/irinagain/iglu/issues
 Config/testthat/edition: 3
