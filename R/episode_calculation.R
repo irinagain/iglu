@@ -265,8 +265,11 @@ episode_single = function(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper,
 #'
 #' @details We follow the definition of episodes given in the 2023 consensus by Battelino et al.
 #' Note we have classified lv2 as a subset of lv1 since we find the consensus to be
-#' slightly ambiguous. For lv1 exclusive of lv2, please see lv1_excl which summarise
-#' episodes that were exclusively lv1 and did not cross the lv2 threshold.
+#' slightly ambiguous. For lv1 exclusive of lv2, please see lv1_excl which summarises
+#' episodes that were exclusively lv1 and did not cross the lv2 threshold. Also note,
+#' hypo extended refers to episodes that are >120 consecutive minutes below lv1 hypo
+#' and ends with at least 15 minutes of normoglycemia. For more details on each category
+#' please see the reference below (Battelino et al 2023).
 #'
 #' @seealso epicalc_profile()
 #'
