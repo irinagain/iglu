@@ -9,7 +9,7 @@
 #' @param short_ma Integer for period length of the short moving average. Must be positive and less than "long_ma", default value is 5. (Recommended <15)
 #' @param long_ma Integer for period length for the long moving average, default value is 32. (Recommended >20)
 #' @param return_type One of "num" and "df": will return a single value for MAGE or a DataFrame with the
-#' @param direction One of 'service', 'avg', 'max', 'plus', or 'minus'. (Default: "service"). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service").
+#' @param direction One of 'avg', 'service', 'max', 'plus', or 'minus'. (Default: "avg"). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service").
 #' @param plot Boolean. Returns ggplot if TRUE.
 #' @param max_gap The maximum length of a gap before MAGE is calculated on each segment independently (recommended: 180 minutes)
 #' @param title Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"
@@ -50,6 +50,7 @@ mage_ma_single <- function(data,
                            dt0 = NULL, tz = "", inter_gap = 45,
                            max_gap = 180,
                            plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions = TRUE, plot_type='ggplot') {
+
   ## pre-0. Turn all tibbles --> DataFrame
   data = as.data.frame(data)
 
@@ -367,7 +368,7 @@ mage_ma_single <- function(data,
   # 6. Plotting
   if(plot) {
     # 6.1 Label 'Peaks' and 'Nadirs'
-    direction = match.arg(direction, c('service', 'avg', 'max', 'plus', 'minus'))
+    direction = match.arg(direction, c('avg', 'service', 'max', 'plus', 'minus'))
 
     if (direction == "max") {
       stop("Plotting functionality for MAGEmax is not possible right now. Please request this feature on GitHub if you'd like it. Thank you for your patience.")
@@ -514,7 +515,7 @@ mage_ma_single <- function(data,
 
   } else {
     return_type = match.arg(return_type, c('num', 'df'))
-    direction = match.arg(direction, c('service', 'avg', 'max', 'plus', 'minus'))
+    direction = match.arg(direction, c('avg', 'service', 'max', 'plus', 'minus'))
 
     if (return_type == 'df') {
       return(return_val)

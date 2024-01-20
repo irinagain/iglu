@@ -68,8 +68,11 @@ shinyServer(function(input, output) {
   parameter_type <- reactive({
     #metric is considered as parameter type "none" if it only requires data as a parameter
     if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "episode_calculation", "grade", "gri", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi",
-                           "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
+                           "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu")){
       return("none")
+    }
+    else if(input$metric == "all_metrics") {
+      return("all_metrics")
     }
     #metric is considered as parameter type "time" if it takes in data and time zone as parameters
     else if(input$metric %in% c("auc","cv_measures", "sd_measures")){
@@ -113,6 +116,7 @@ shinyServer(function(input, output) {
   output$select_parameter <- renderUI({
     parameter_type = parameter_type()
 
+    print(parameter_type)
     if(parameter_type == "list"){
       if(input$metric == "above_percent"){
         textInput("parameter", "Specify Parameter", value = "140, 180, 250")
@@ -128,6 +132,11 @@ shinyServer(function(input, output) {
 
       else if(input$metric == "quantile_glu"){
         textInput("parameter", "Specify Parameter", value = "0, 25, 50, 75, 100")
+      }
+    }
+    else if(parameter_type == "all_metrics") {
+      if(input$metric == "all_metrics") {
+        radioButtons("parameter", "Metrics to Include", choiceNames=c('All', 'Consensus Only'), choiceValues=c('all', 'consensus_only'))
       }
     }
     else if(parameter_type == "mage") {

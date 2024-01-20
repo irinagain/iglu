@@ -9,7 +9,7 @@ mage_ma_single(
   short_ma = 5,
   long_ma = 32,
   return_type = c("num", "df"),
-  direction = c("service", "avg", "max", "plus", "minus"),
+  direction = c("avg", "service", "max", "plus", "minus"),
   dt0 = NULL,
   tz = "",
   inter_gap = 45,
@@ -32,7 +32,7 @@ mage_ma_single(
 
 \item{return_type}{One of "num" and "df": will return a single value for MAGE or a DataFrame with the}
 
-\item{direction}{One of 'service', 'avg', 'max', 'plus', or 'minus'. (Default: "service"). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service").}
+\item{direction}{One of 'avg', 'service', 'max', 'plus', or 'minus'. (Default: "avg"). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service").}
 
 \item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
