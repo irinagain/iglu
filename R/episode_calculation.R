@@ -109,9 +109,9 @@ episode_summary = function (data, dt0) {
     data = data[, c(1:4, which(colnames(data) == level_label))]
     colnames(data) = c("id", "time", "gl", "segment", "event")
 
-    # if none of this event exists, return NA and exit
+    # if none of this event exists, return 0 or NA and exit
     if (all(data$event == 0)) {
-      output = c(0, 0, NA)
+      output = c(0, 0, NA, 0)
       return(output)
     }
 
@@ -130,8 +130,9 @@ episode_summary = function (data, dt0) {
     avg_ep_per_day = nrow(data_sum)/(nrow(data) * dt0 / 60 / 24)
     avg_ep_duration = mean(data_sum$event_duration)
     avg_ep_glu = mean(data_sum$event_glucose)
+    total_episodes = nrow(data_sum)
 
-    output = c(avg_ep_per_day, avg_ep_duration, avg_ep_glu)
+    output = c(avg_ep_per_day, avg_ep_duration, avg_ep_glu, total_episodes)
     return(output)
   }
 
@@ -144,7 +145,8 @@ episode_summary = function (data, dt0) {
     level = c("lv1", 'lv2', 'extended', 'lv1', 'lv2', 'lv1_excl', 'lv1_excl'), # lv1/lv2/extended
     avg_ep_per_day = out_list[1, ],
     avg_ep_duration = out_list[2, ],
-    avg_ep_gl = out_list[3, ]
+    avg_ep_gl = out_list[3, ],
+    total_episodes = out_list[4, ]
   )
 
   return(output)
@@ -265,8 +267,11 @@ episode_single = function(data, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper,
 #'
 #' @details We follow the definition of episodes given in the 2023 consensus by Battelino et al.
 #' Note we have classified lv2 as a subset of lv1 since we find the consensus to be
-#' slightly ambiguous. For lv1 exclusive of lv2, please see lv1_excl which summarise
-#' episodes that were exclusively lv1 and did not cross the lv2 threshold.
+#' slightly ambiguous. For lv1 exclusive of lv2, please see lv1_excl which summarises
+#' episodes that were exclusively lv1 and did not cross the lv2 threshold. Also note,
+#' hypo extended refers to episodes that are >120 consecutive minutes below lv1 hypo
+#' and ends with at least 15 minutes of normoglycemia. For more details on each category
+#' please see the reference below (Battelino et al 2023).
 #'
 #' @seealso epicalc_profile()
 #'
