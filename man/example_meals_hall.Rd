@@ -19,6 +19,14 @@ example_meals_hall
 Example of mealtimes data format for meal_metrics function,
 corresponds to example_data_hall data.
 }
+\details{
+There are 3 types of meals available: Cereal Flakes (CF), Peanut Butter
+Sandwich (PB), and Protein Bar (Bar). The number after the abbreviation
+refers to the replication number for the original study. For more details
+on nutritional differences, please see the original study reference.
+
+This dataset should be used along with example_data_hall to calculate meal_metrics.
+}
 \references{
 Hall et al. (2018) : Glucotypes reveal new patterns of glucose dysregulation
 \emph{Plos Biology} \strong{16} (7): 3:e2005143
