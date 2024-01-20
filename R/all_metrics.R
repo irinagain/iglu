@@ -8,6 +8,7 @@
 #' all_metrics(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15, lag = 1)
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl".
+#' @param metrics_to_include Returns all metrics computed by iglu or all on the consensus list (Battelino 2023)
 #' @inheritParams optimized_iglu_functions
 #'
 #' @return
@@ -30,6 +31,10 @@
 #' data(example_data_1_subject)
 #' all_metrics(example_data_1_subject)
 #'
+#' @references
+#' Battelino T, Alexander CM, Amiel SA, et al. Continuous glucose monitoring and metrics for clinical trials: an international consensus statement.
+#' \emph{Lancet Diabetes Endocrinol.}  \strong{2023;11(1):}42-57.
+#' \doi{10.1016/S2213-8587(22)00319-9}.
 #'
 #' # Specify the meter frequency and change the interpolation gap to 30 min
 #' all_metrics(example_data_1_subject, dt0 = 5, inter_gap = 30)
@@ -60,6 +65,13 @@ all_metrics <- function(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15,
 
   # Mean, Median, and Quantile Metrics not included. Summary covers all
   if (metrics_to_include == "consensus_only") {
+    extended_hypo <- episode_calculation(data) %>% dplyr::filter(type == 'hypo' & level == 'extended') %>% dplyr::select(id = id, total_extended_hypo_episodes = total_episodes)
+
+    # Episode calculation warns that dur_length = 120 > inter_gap = 45, thus some true extended hyperglycemic episodes may be lost when the trace is split by gaps longer than 45 minutes
+    extended_hyper <- suppressWarnings({
+      episode_calculation(data, dur_length = 120) %>% dplyr::filter(type == 'hyper' & level == 'lv2') %>% dplyr::select(id = id, total_extended_hyper_episodes = total_episodes)
+    })
+
     out = list(
       "Percent_Below" = below_percent(data, targets_below = c(54,70)),
       "Percent_In_Range" = in_range_percent(data, target_ranges = list(c(70,180))),
@@ -70,7 +82,9 @@ all_metrics <- function(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15,
       "Active_Percent" = active_percent(data), # TODO: potentially only keep the 'active_percent' column
       "Percent_In_Tight_Range" = in_range_percent(data, target_ranges = list(c(70,140))),
       "GMI" = gmi(data),
-      "GRI" = gri(data)
+      "GRI" = gri(data),
+      "Extended_Hypo" = extended_hypo,
+      "Extended_Hyper" = extended_hyper
     )
   }
 

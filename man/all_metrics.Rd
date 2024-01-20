@@ -20,6 +20,8 @@ of change is calculated. Default is 15, e.g. rate of change is the change in
 glucose over the past 15 minutes divided by 15.}
 
 \item{lag}{Integer indicating which lag (# days) to use. Default is 1.}
+
+\item{metrics_to_include}{Returns all metrics computed by iglu or all on the consensus list (Battelino 2023)}
 }
 \value{
 A tibble object with 1 row per subject and one column per metric is returned.
@@ -43,8 +45,12 @@ For metric specific information, please see the corresponding function documenta
 data(example_data_1_subject)
 all_metrics(example_data_1_subject)
 
+}
+\references{
+Battelino T, Alexander CM, Amiel SA, et al. Continuous glucose monitoring and metrics for clinical trials: an international consensus statement.
+\emph{Lancet Diabetes Endocrinol.}  \strong{2023;11(1):}42-57.
+\doi{10.1016/S2213-8587(22)00319-9}.
 
 # Specify the meter frequency and change the interpolation gap to 30 min
 all_metrics(example_data_1_subject, dt0 = 5, inter_gap = 30)
-
 }
