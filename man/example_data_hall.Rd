@@ -21,6 +21,10 @@ Dexcom G4 CGM measurements for 19 subjects from the Hall
 publicly available dataset. Chosen as a subset of all subjects to be only those
 with diabetes or pre-diabetes. Primarily intended for use with example_meals_hall
 }
+\details{
+This dataset can be used along with the example_meals_hall dataset in this package
+to calculate meal_metrics.
+}
 \references{
 Hall et al. (2018) : Glucotypes reveal new patterns of glucose dysregulation
 \emph{Plos Biology} \strong{16} (7): 3:e2005143

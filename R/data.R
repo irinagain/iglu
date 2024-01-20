@@ -39,6 +39,10 @@
 #' \item{diagnosis}{character indicating diabetes diagnosis: diabetic or pre-diabetic}
 #' }
 #'
+#' @details
+#' This dataset can be used along with the example_meals_hall dataset in this package
+#' to calculate meal_metrics.
+#'
 #'
 #' @references
 #' Hall et al. (2018) : Glucotypes reveal new patterns of glucose dysregulation
@@ -59,6 +63,15 @@
 #' \item{meal}{meal type identifier}
 #' \item{mealtime}{time of meal}
 #' }
+#'
+#' @details
+#' There are 3 types of meals available: Cereal Flakes (CF), Peanut Butter
+#' Sandwich (PB), and Protein Bar (Bar). The number after the abbreviation
+#' refers to the replication number for the original study. For more details
+#' on nutritional differences, please see the original study reference.
+#'
+#' This dataset should be used along with example_data_hall to calculate meal_metrics.
+#'
 #'
 #' @references
 #' Hall et al. (2018) : Glucotypes reveal new patterns of glucose dysregulation
