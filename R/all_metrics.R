@@ -44,7 +44,7 @@
 # function calls all metrics on a dataset.
 # returns a list
 all_metrics <- function(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15, lag = 1, metrics_to_include=c('all', 'consensus_only')){
-  . = id = type = level = avg_ep_per_day = lvl = NULL
+  . = id = type = level = avg_ep_per_day = lvl = total_episodes = NULL
   rm(list = c(".", 'id', 'type', 'level', 'avg_ep_per_day', 'lvl'))
 
   metrics_to_include = match.arg(metrics_to_include, c('all', 'consensus_only'))
