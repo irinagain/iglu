@@ -5,7 +5,7 @@
 #' one column per metric.
 #'
 #' @usage
-#' all_metrics(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15, lag = 1)
+#' all_metrics(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15, lag = 1, metrics_to_include=c('all', 'consensus_only'))
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl".
 #' @param metrics_to_include Returns all metrics computed by iglu or all on the consensus list (Battelino 2023)
