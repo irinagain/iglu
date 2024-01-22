@@ -39,7 +39,7 @@ mage <- function(data,
                  sd_multiplier = 1,
                  short_ma = 5, long_ma = 32,
                  return_type = c('num', 'df'),
-                 direction = c('service', 'avg', 'max', 'plus', 'minus'),
+                 direction = c('avg', 'service', 'max', 'plus', 'minus'),
                  dt0 = NULL,  tz = "", inter_gap = 45,
                  max_gap=180,
                  plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions = TRUE) {
@@ -52,6 +52,8 @@ mage <- function(data,
     return(mage_sd(data, sd_multiplier = sd_multiplier))
   }
 
+  direction = match.arg(direction, c('avg', 'service', 'max', 'plus', 'minus'))
+
   return(mage_ma(data, short_ma = short_ma, long_ma = long_ma, return_type=return_type, direction=direction,
                  plot = plot, dt0 = dt0, inter_gap = inter_gap, max_gap = max_gap, tz = tz,
                  title = title, xlab = xlab, ylab = ylab, show_ma = show_ma, show_excursions=show_excursions))
@@ -60,7 +62,7 @@ mage <- function(data,
 mage_ma <- function(data,
                     short_ma = 5, long_ma = 32,
                     return_type = c('num', 'df'),
-                    direction = c('service', 'avg', 'max', 'plus', 'minus'),
+                    direction = c('avg', 'service', 'max', 'plus', 'minus'),
                     dt0 = NULL, inter_gap = 45, tz = "",
                     max_gap = 180,
                     plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions=TRUE) {
@@ -69,6 +71,7 @@ mage_ma <- function(data,
 
   data = check_data_columns(data)
   is_vector = attr(data, "is_vector")
+  direction = match.arg(direction, c('avg', 'service', 'max', 'plus', 'minus'))
 
   out <- data %>%
     dplyr::filter(!is.na(gl)) %>%

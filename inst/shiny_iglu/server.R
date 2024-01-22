@@ -40,7 +40,7 @@ shinyServer(function(input, output) {
   output$downloaddata <- downloadHandler(
     filename = function() {
       filename <- paste0(gsub("\\.csv", "",basename(input$datafile$name)), "_processed")
-      paste(filename, ".csv", sep = "")
+      paste0(filename, ".csv")
     },
     content = function(file) {
       write.csv(data(), file, row.names = FALSE)
@@ -68,8 +68,11 @@ shinyServer(function(input, output) {
   parameter_type <- reactive({
     #metric is considered as parameter type "none" if it only requires data as a parameter
     if(input$metric %in% c("adrr", "cv_glu", "ea1c", "gmi", "cv_measures", "episode_calculation", "grade", "gri", "gvp", "hbgi", "iqr_glu", "j_index", "lbgi",
-                           "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu", "all_metrics")){
+                           "mean_glu", "median_glu", "range_glu", "sd_glu", "sd_measures", "summary_glu")){
       return("none")
+    }
+    else if(input$metric == "all_metrics") {
+      return("all_metrics")
     }
     #metric is considered as parameter type "time" if it takes in data and time zone as parameters
     else if(input$metric %in% c("auc","cv_measures", "sd_measures")){
@@ -128,6 +131,11 @@ shinyServer(function(input, output) {
 
       else if(input$metric == "quantile_glu"){
         textInput("parameter", "Specify Parameter", value = "0, 25, 50, 75, 100")
+      }
+    }
+    else if(parameter_type == "all_metrics") {
+      if(input$metric == "all_metrics") {
+        radioButtons("parameter", "Metrics to Include", choiceNames=c('All', 'Consensus Only'), choiceValues=c('all', 'consensus_only'))
       }
     }
     else if(parameter_type == "mage") {
@@ -491,7 +499,13 @@ shinyServer(function(input, output) {
         need (input$metric == "mage" | parameter_type == "none",
               "Please wait - Rendering")
       )
-    } else if (grepl(',', input$parameter) & !grepl("\\(", input$parameter)) {
+    }
+    else if (parameter_type == "all_metrics") {
+      validate (
+        need(input$parameter %in% c("all", "consensus_only"), "Please wait - Rendering")
+      )
+    }
+    else if (grepl(',', input$parameter) & !grepl("\\(", input$parameter)) {
       if (length(strsplit(input$parameter, split = ",")[[1]]) != 2) {
         validate (
           need(parameter_type %in% c("list", "none","time"), "Please wait - Rendering")
@@ -506,12 +520,12 @@ shinyServer(function(input, output) {
         need(parameter_type %in% c("nested", "none","time"), "Please wait - Rendering")
       )
     } else if (!grepl(',', input$parameter)) {
-      # print(input$parameter) # un-comment for bug-fixing
       validate(
         need(parameter_type %in% c("value", "value1", "value_time", "none","time", "pgs"),
              "Please wait - Rendering")
       )
     }
+
     # because MAGE input is unique (character)
     if (input$metric == "mage") {
       validate(
@@ -531,51 +545,53 @@ shinyServer(function(input, output) {
       )
     }
 
-
     #loading iglu library and using metric function
     library(iglu)
     if(is.null(input$parameter) | parameter_type == "none"){
-      string = paste("iglu::", input$metric, "(data)", sep = "")
+      string = paste0("iglu::", input$metric, "(data)")
     }
     else if(is.null(input$parameter) | parameter_type == "time"){
-      string = paste("iglu::", input$metric, "(data,", "tz=","'",input$tz,"')",sep = "")
+      string = paste0("iglu::", input$metric, "(data,", "tz=","'",input$tz,"')")
     }
 
     else if(parameter_type == "list"){
-      string = paste("iglu::", input$metric, "(data, c(", input$parameter, "))", sep = "")
+      string = paste0("iglu::", input$metric, "(data, c(", input$parameter, "))")
     }
 
     else if(parameter_type == "value"){
-      string = paste("iglu::", input$metric, "(data, ", input$parameter, ")", sep = "")
+      string = paste0("iglu::", input$metric, "(data, ", input$parameter, ")")
     }
     else if(parameter_type == "value1"){
-      string = paste("iglu::", input$metric, "(data, ", input$parameter, ",",input$parameter2,",",input$parameter3, ")", sep = "")
+      string = paste0("iglu::", input$metric, "(data, ", input$parameter, ",",input$parameter2,",",input$parameter3, ")")
     }
     else if(parameter_type == "value_time"){
-      string = paste("iglu::", input$metric, "(data, ", input$parameter, ",","tz=" ,"'", input$tz,"'" ,")", sep = "")
+      string = paste0("iglu::", input$metric, "(data, ", input$parameter, ",","tz=" ,"'", input$tz,"'" ,")")
     }
     else if(parameter_type == "lwrupr"){
-      string = paste("iglu::", input$metric, "(data, " , input$parameter, ")", sep = "")
+      string = paste0("iglu::", input$metric, "(data, " , input$parameter, ")")
     }
     else if(parameter_type == "lwrupr1"){
-      string = paste("iglu::", input$metric, "(data, " , input$parameter,",",input$parameter2,",",input$parameter3, ")", sep = "")
+      string = paste0("iglu::", input$metric, "(data, " , input$parameter,",",input$parameter2,",",input$parameter3, ")")
     }
     else if(parameter_type == "mage"){
       if(input$parameter == "ma") {
-        string = paste("iglu::", input$metric, "(data, version='",input$parameter, "', short_ma=", input$parameter2,", long_ma=",input$parameter3,", direction='", input$parameter4,"', max_gap=", input$parameter5 ,")", sep="")
+        string = paste0("iglu::", input$metric, "(data, version='",input$parameter, "', short_ma=", input$parameter2,", long_ma=",input$parameter3,", direction='", input$parameter4,"', max_gap=", input$parameter5 ,")")
       }
       else if(input$parameter == "naive") {
-        string = paste("iglu::", input$metric, "(data, version='",input$parameter,"')", sep="")
+        string = paste0("iglu::", input$metric, "(data, version='",input$parameter,"')")
       }
     }
+    else if(parameter_type == "all_metrics") {
+      string = paste0("iglu::", input$metric, "(data, metrics_to_include='", input$parameter , "')")
+    }
     else if(parameter_type == 'pgs'){
-      string = paste('iglu::', input$metric, '(data, dur_length=', input$parameter, ', end_length=', input$parameter2, ')', sep = '')
+      string = paste0('iglu::', input$metric, '(data, dur_length=', input$parameter, ', end_length=', input$parameter2, ')')
     }
     else if(parameter_type == "nested"){
       strlist = strsplit(input$parameter, ")")[[1]]
       paramstr = rep.int(0, length(strlist))
       if(length(strlist) == 1){
-        paramstr = paste("c", strlist[1], ")", sep = "")
+        paramstr = paste0("c", strlist[1], ")")
       }
 
       else {
@@ -583,11 +599,11 @@ shinyServer(function(input, output) {
           strlist[i] = substring(strlist[i], 3)
         }
         for(s in 1:length(strlist)){
-          paramstr[s] = paste("c", strlist[s], ")", sep = "")
+          paramstr[s] = paste0("c", strlist[s], ")")
         }
         paramstr = paste(paramstr, collapse = ", ")
       }
-      string = paste("iglu::", input$metric, "(data, list(", paramstr, "))", sep= "")
+      string = paste0("iglu::", input$metric, "(data, list(", paramstr, "))")
     }
 
     if (input$filter_sleep_wake) {
@@ -716,7 +732,6 @@ shinyServer(function(input, output) {
   })
 
   output$lasagna_sidebar <- renderUI({
-
     data = transform_data()
     plottype = plottype()
 
@@ -775,7 +790,6 @@ shinyServer(function(input, output) {
   })
 
   output$rocplots_sidebar <- renderUI({
-
     data = transform_data()
     plottype = plottype()
 
@@ -806,8 +820,8 @@ shinyServer(function(input, output) {
       )
 
       data = transform_data()
-      string = paste('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
-                     input$plot_TR, ', subjects = NULL, inter_gap = 45, tz = "", "blue-orange", log = ', input$plot_log, ')' ,sep = "")
+      string = paste0('iglu::plot_glu(data = data, plottype = "tsplot", datatype = "all", lasagnatype = NULL, ',
+                     input$plot_TR, ', subjects = NULL, inter_gap = 45, tz = "", "blue-orange", log = ', input$plot_log, ')')
       eval(parse(text = string))
     }
     else if(plottype == "lasagnamulti"){
@@ -818,10 +832,10 @@ shinyServer(function(input, output) {
       )
 
       data = transform_data()
-      string = paste('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
+      string = paste0('iglu::plot_lasagna(data = data, datatype = "', input$plot_datatype, '", lasagnatype = "',
                      input$plot_lasagnatype, '", maxd = ', input$plot_maxd, ', limits = c(', input$plot_limits, ') ,',
                      input$plot_midpoint, ', ', input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz ="",',
-                     input$plot_color_scheme, ', ', input$plot_log, ')', sep = "")
+                     input$plot_color_scheme, ', ', input$plot_log, ')')
       eval(parse(text = string))
     }
     else if(plottype == "lasagnasingle"){
@@ -831,22 +845,22 @@ shinyServer(function(input, output) {
       )
 
       data = subset_data() # subset data to only user-specified subject
-      string = paste('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
+      string = paste0('iglu::plot_lasagna_1subject(data = data, lasagnatype = "',
                      input$plot_lasagnatype, '", limits = c(', input$plot_limits, ') ,',
                      input$plot_midpoint, ', ', input$plot_TR, ', dt0 = NULL, inter_gap = 60, tz = "",',
-                     input$plot_color_scheme, ', ', input$plot_log, ')', sep = "")
+                     input$plot_color_scheme, ', ', input$plot_log, ')')
       eval(parse(text = string))
     }
     else if(plottype == "plot_roc"){
       data = subset_data() # subset data to only user-specified subject
-      string = paste('iglu::plot_roc(data = data',
-                     ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
+      string = paste0('iglu::plot_roc(data = data',
+                     ', timelag = ', input$plot_timelag, ', tz = "")')
       eval(parse(text = string))
     }
     else if(plottype == "hist_roc"){
       data = subset_data() # subset data to only user-specified subject
-      string = paste('iglu::hist_roc(data = data',
-                     ', timelag = ', input$plot_timelag, ', tz = "")', sep = "")
+      string = paste0('iglu::hist_roc(data = data',
+                     ', timelag = ', input$plot_timelag, ', tz = "")')
       eval(parse(text = string))
     }
     else if(plottype == "mage"){
@@ -878,7 +892,7 @@ shinyServer(function(input, output) {
   output$pdfButton <- downloadHandler(
     filename = function() {
       plottype = plottype()
-      paste(plottype, '.pdf', sep = '')
+      paste0(plottype, '.pdf')
     },
     content = function(file) {
       cairo_pdf(filename = file, width = 20, height = 18, bg = "transparent")
@@ -890,7 +904,7 @@ shinyServer(function(input, output) {
   output$pngButton <- downloadHandler(
     filename = function() {
       plottype = plottype()
-      paste(plottype, '.png', sep = '')
+      paste0(plottype, '.png')
     },
     content = function(file) {
       png(file)
@@ -902,7 +916,7 @@ shinyServer(function(input, output) {
   output$epsButton <- downloadHandler(
     filename = function() {
       plottype = plottype()
-      paste(plottype, '.eps', sep = '')
+      paste0(plottype, '.eps')
     },
     content = function(file) {
       postscript(file)
@@ -992,7 +1006,6 @@ shinyServer(function(input, output) {
   })
 
   output$plot_daily <- renderPlot({
-
     plotDaily()
   })
 
@@ -1000,7 +1013,7 @@ shinyServer(function(input, output) {
 
   output$pdfAGP<- downloadHandler(
     filename = function() {
-      paste("AGP", '.pdf', sep = '')
+      paste0("AGP", '.pdf')
     },
     content = function(file) {
       cairo_pdf(filename = file, width = 20, height = 18, bg = "transparent")
@@ -1012,9 +1025,8 @@ shinyServer(function(input, output) {
   )
 
   output$pngAGP <- downloadHandler(
-
     filename = function() {
-      paste("AGP", '.png', sep = '')
+      paste0("AGP", '.png')
     },
     content = function(file) {
       png(file)
@@ -1027,7 +1039,7 @@ shinyServer(function(input, output) {
 
   output$epsAGP <- downloadHandler(
     filename = function() {
-      paste("AGP", '.eps', sep = '')
+      paste0("AGP", '.eps')
     },
     content = function(file) {
       postscript(file)
@@ -1038,7 +1050,6 @@ shinyServer(function(input, output) {
     }
   )
 
-
   ########## Episode calculation section#########
   ### Get desired subject
   output$episode_subject <- renderUI({
@@ -1048,7 +1059,6 @@ shinyServer(function(input, output) {
   })
 
   episode_data <- reactive({ # define reactive function to subset data for plotting each time user changes subjects list
-
     validate (
       if (is.null(input$episode_subject)) {
         need(!is.null(input$episode_subject), "Please wait - Rendering")
@@ -1081,7 +1091,7 @@ shinyServer(function(input, output) {
 
   output$pdfEpisode<- downloadHandler(
     filename = function() {
-      paste("Episode", '.pdf', sep = '')
+      paste0("Episode", '.pdf')
     },
     content = function(file) {
       cairo_pdf(filename = file, width = 20, height = 18, bg = "transparent")
@@ -1092,9 +1102,8 @@ shinyServer(function(input, output) {
   )
 
   output$pngEpisode <- downloadHandler(
-
     filename = function() {
-      paste("Episode", '.png', sep = '')
+      paste0("Episode", '.png')
     },
     content = function(file) {
       png(file)
@@ -1106,7 +1115,7 @@ shinyServer(function(input, output) {
 
   output$epsEpisode <- downloadHandler(
     filename = function() {
-      paste("Episode", '.eps', sep = '')
+      paste0("Episode", '.eps')
     },
     content = function(file) {
       postscript(file)
@@ -1115,5 +1124,4 @@ shinyServer(function(input, output) {
       dev.off()
     }
   )
-
 })
