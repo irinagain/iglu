@@ -66,7 +66,7 @@ one column per metric.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">all_metrics</span><span class="op">(</span><span class="va">data</span>, dt0 <span class="op">=</span> <span class="cn">NULL</span>, inter_gap <span class="op">=</span> <span class="fl">45</span>, tz <span class="op">=</span> <span class="st">""</span>, timelag <span class="op">=</span> <span class="fl">15</span>, lag <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">all_metrics</span><span class="op">(</span><span class="va">data</span>, dt0 <span class="op">=</span> <span class="cn">NULL</span>, inter_gap <span class="op">=</span> <span class="fl">45</span>, tz <span class="op">=</span> <span class="st">""</span>, timelag <span class="op">=</span> <span class="fl">15</span>, lag <span class="op">=</span> <span class="fl">1</span>, metrics_to_include<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'all'</span>, <span class="st">'consensus_only'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -96,6 +96,10 @@ glucose over the past 15 minutes divided by 15.</p></dd>
 <dt>lag</dt>
 <dd><p>Integer indicating which lag (# days) to use. Default is 1.</p></dd>
 
+
+<dt>metrics_to_include</dt>
+<dd><p>Returns all metrics computed by iglu or all on the consensus list (Battelino 2023)</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -114,26 +118,20 @@ average episodes per day. To get the average duration and glucose, please use th
 episodes function</p>
 <p>For metric specific information, please see the corresponding function documentation.</p>
     </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Battelino T, Alexander CM, Amiel SA, et al. Continuous glucose monitoring and metrics for clinical trials: an international consensus statement.
+<em>Lancet Diabetes Endocrinol.</em>  <strong>2023;11(1):</strong>42-57.
+<a href="https://doi.org/10.1016/S2213-8587%2822%2900319-9" class="external-link">doi:10.1016/S2213-8587(22)00319-9</a>
+.</p>
+<p># Specify the meter frequency and change the interpolation gap to 30 min
+all_metrics(example_data_1_subject, dt0 = 5, inter_gap = 30)</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">all_metrics</span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 62</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   id         ADRR  COGI    CV  eA1C hypo_lv1 hypo_lv2 hypo_extended hyper_lv1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Subject 1  15.1  93.0  26.9  5.94   0.089<span style="text-decoration: underline;">9</span>        0             0      1.44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 53 more variables: hyper_lv2 &lt;dbl&gt;, hypo_lv1_excl &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hyper_lv1_excl &lt;dbl&gt;, GMI &lt;dbl&gt;, GRI &lt;dbl&gt;, GRADE &lt;dbl&gt;, GRADE_eugly &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   GRADE_hyper &lt;dbl&gt;, GRADE_hypo &lt;dbl&gt;, HBGI &lt;dbl&gt;, LBGI &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hyper_index &lt;dbl&gt;, hypo_index &lt;dbl&gt;, IGC &lt;dbl&gt;, IQR &lt;dbl&gt;, J_index &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   M_value &lt;dbl&gt;, MAD &lt;dbl&gt;, MAGE &lt;dbl&gt;, active_percent &lt;dbl&gt;, ndays &lt;drtn&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   start_date &lt;dttm&gt;, end_date &lt;dttm&gt;, above_140 &lt;dbl&gt;, above_180 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   above_250 &lt;dbl&gt;, below_54 &lt;dbl&gt;, below_70 &lt;dbl&gt;, in_range_63_140 &lt;dbl&gt;, …</span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Specify the meter frequency and change the interpolation gap to 30 min</span></span></span>
-<span class="r-in"><span><span class="fu">all_metrics</span><span class="op">(</span><span class="va">example_data_1_subject</span>, dt0 <span class="op">=</span> <span class="fl">5</span>, inter_gap <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 62</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   id         ADRR  COGI    CV  eA1C hypo_lv1 hypo_lv2 hypo_extended hyper_lv1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
