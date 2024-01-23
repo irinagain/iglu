@@ -55,6 +55,7 @@ If return_data is FALSE, a single dataframe with columns:
 (total # episodes)/(recording time in days (24hrs))}
 \item{avg_ep_duration}{Average duration of episodes in minutes}
 \item{avg_ep_gl}{Average glucose in the episode in mg/dL}
+\item{total_episodes}{Total number of episodes in the subject's glucose trace}
 
 If return_data is TRUE, returns a list where the first entry is the episode summary dataframe
 (see above) and the second entry is the input data with episode labels added. Note
