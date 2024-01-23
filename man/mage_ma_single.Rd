@@ -54,7 +54,7 @@ mage_ma_single(
 
 \item{show_excursions}{Whether or not to visualize the excursions on the plot or not}
 
-\item{plot_type}{returns ggplot if "ggplot". Else returns plotly.}
+\item{plot_type}{returns ggplot if "ggplot" or plotly if "plotly". Default = "gglplot".}
 }
 \value{
 The numeric MAGE value for the inputted glucose values or a ggplot if \code{plot = TRUE}

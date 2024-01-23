@@ -17,7 +17,7 @@
 #' @param ylab Label for y-axis of ggplot. Defaults to "Glucose Level"
 #' @param show_ma Whether to show the moving average lines on the plot or not
 #' @param show_excursions Whether or not to visualize the excursions on the plot or not
-#' @param plot_type returns ggplot if "ggplot". Else returns plotly.
+#' @param plot_type returns ggplot if "ggplot" or plotly if "plotly". Default = "gglplot".
 #'
 #' @return The numeric MAGE value for the inputted glucose values or a ggplot if \code{plot = TRUE}
 #'
@@ -369,6 +369,7 @@ mage_ma_single <- function(data,
   if(plot) {
     # 6.1 Label 'Peaks' and 'Nadirs'
     direction = match.arg(direction, c('avg', 'service', 'max', 'plus', 'minus'))
+    plot_type = match.arg(plot_type, c('ggplot', 'plotly'))
 
     if (direction == "max") {
       stop("Plotting functionality for MAGEmax is not possible right now. Please request this feature on GitHub if you'd like it. Thank you for your patience.")
@@ -449,7 +450,7 @@ mage_ma_single <- function(data,
       arrows = rbind(arrows, minus %>% dplyr::filter(peak_or_nadir == "PEAK") %>% dplyr::select(x = time, xend = time, y = gl) %>% dplyr::mutate(yend = base::subset(minus, peak_or_nadir == "NADIR")$gl))
 
       # plotly does not support rendering arrows by default - we use a workaround below (see ~line 487 when we return the plot)
-      if (plot_type != "plotly") {
+      if (plot_type == "ggplot") {
         if (nrow(arrows) > 0) {
           .p <- .p + ggplot2::geom_segment(data = arrows, ggplot2::aes(x = x, y = y, xend = xend, yend = yend, color="Excursion"), arrow = grid::arrow(length = grid::unit(0.2, "cm")))
         }
