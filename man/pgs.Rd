@@ -7,7 +7,7 @@
 pgs(data, dur_length = 20, end_length = 30)
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.}
+\item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, a warning is produced and only 1st subject is used.}
 
 \item{dur_length}{Numeric value specifying the minimum duration in minutes to
 be considered an episode. Note dur_length should be a multiple of the data recording

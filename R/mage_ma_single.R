@@ -8,9 +8,9 @@
 #' @inheritParams CGMS2DayByDay
 #' @param short_ma Integer for period length of the short moving average. Must be positive and less than "long_ma", default value is 5. (Recommended <15)
 #' @param long_ma Integer for period length for the long moving average, default value is 32. (Recommended >20)
-#' @param return_type One of "num" and "df": will return a single value for MAGE or a DataFrame with the
-#' @param direction One of 'avg', 'service', 'max', 'plus', or 'minus'. (Default: "avg"). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service").
-#' @param plot Boolean. Returns ggplot if TRUE.
+#' @param return_type One of "num" or "df": will return a single value for MAGE over the entire trace (weighted by segment length) or a DataFrame with the MAGE value for each segment (see the MAGE vignette for discussion of handling gaps by splitting trace into multiple segments).
+#' @param direction One of 'avg', 'service', 'max', 'plus', or 'minus'. (Default: "avg"). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service"). NOTE: selection used independently on each segments, thus MAGEservice may choose MAGE+ on one segment and MAGE- on another.
+#' @param plot Boolean. Returns ggplot by default if TRUE.
 #' @param max_gap The maximum length of a gap before MAGE is calculated on each segment independently (recommended: 180 minutes)
 #' @param title Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"
 #' @param xlab Label for x-axis of ggplot. Defaults to "Time"

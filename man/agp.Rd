@@ -7,7 +7,7 @@
 agp(data, maxd = 14, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE)
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.}
+\item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, a warning is produced and only 1st subject is used.}
 
 \item{maxd}{Number of days to plot, default is the last 14 days, or if
 less than 14 days of data are available, all days are plotted.}
