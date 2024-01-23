@@ -27,19 +27,19 @@ mage(
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl" OR numeric vector of glucose values.}
 
-\item{version}{Either \code{'ma'} or \code{'naive'}. Chooses which version of the MAGE algorithm to use. \code{'ma'} algorithm is more accurate, and is the default. Earlier versions of iglu package (<=2.0.0) used \code{'naive'}.}
+\item{version}{Either \code{'ma'} or \code{'naive'}. \strong{Default: 'ma'.} Chooses which version of the MAGE algorithm to use. \code{'ma'} algorithm is more accurate, and is the default. Earlier versions of iglu package (<=2.0.0) used \code{'naive'}.}
 
 \item{sd_multiplier}{A numeric value that can change the sd value used to determine size of
 glycemic excursions used in the calculation. This is the only parameter that
 can be specified for \code{version = "naive"}, and it is ignored if \code{version = "ma"}.}
 
-\item{short_ma}{Integer for period length of the short moving average. Must be positive and less than "long_ma", default value is 5. (Recommended <15)}
+\item{short_ma}{Integer for period length of the short moving average. \strong{Default: 5.} Must be positive and less than "long_ma". (Recommended <15)}
 
-\item{long_ma}{Integer for period length for the long moving average, default value is 32. (Recommended >20)}
+\item{long_ma}{Integer for period length for the long moving average. \strong{Default: 32.} Must be positive and greater than "short_ma". (Recommended >20)}
 
-\item{return_type}{One of "num" or "df": will return a single value for MAGE over the entire trace (weighted by segment length) or a DataFrame with the MAGE value for each segment (see the MAGE vignette for discussion of handling gaps by splitting trace into multiple segments).}
+\item{return_type}{One of "num" or "df". \strong{Default: "num".} Will return either a single number for the "MAGE over the entire trace" (weighted by segment length) or a DataFrame with the MAGE value for each segment (see the MAGE vignette for discussion of handling gaps by splitting trace into multiple segments).}
 
-\item{direction}{One of 'avg', 'service', 'max', 'plus', or 'minus'. (Default: "avg"). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service"). NOTE: selection used independently on each segments, thus MAGEservice may choose MAGE+ on one segment and MAGE- on another.}
+\item{direction}{One of "avg", "service", "max", "plus", or "minus". \strong{Default: "avg".} Algorithm will calculate one of the following: MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service"). NOTE: the selection of peak-to-nadir or nadir-to-peak is chosen independently on each segment, thus MAGEservice may choose peak-to-nadir on one segment and nadir-to-peak on another, for example.}
 
 \item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
@@ -47,25 +47,27 @@ can be specified for \code{version = "naive"}, and it is ignored if \code{versio
 
 \item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
 
-\item{max_gap}{The maximum length of a gap before MAGE is calculated on each segment independently (recommended: 180 minutes)}
+\item{max_gap}{Integer for the maximum length of a gap in minutes before the trace is split into segments and MAGE is calculated on each segment independently. \strong{Default: 180.}}
 
-\item{plot}{Boolean. Returns ggplot by default if TRUE.}
+\item{plot}{Boolean. \strong{Default: FALSE.} If TRUE, returns a plot that visualizes all identified peaks and nadirs, excursions, and  missing gaps. An interactive GUI can be loaded with \code{plot_type = 'plotly'}.}
 
-\item{title}{Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"}
+\item{title}{Title for the ggplot. \strong{Default: "Glucose Trace - Subject [ID]".}}
 
-\item{xlab}{Label for x-axis of ggplot. Defaults to "Time"}
+\item{xlab}{Label for x-axis of ggplot. \strong{Default: "Time".}}
 
-\item{ylab}{Label for y-axis of ggplot. Defaults to "Glucose Level"}
+\item{ylab}{Label for y-axis of ggplot. \strong{Default: "Glucose Level".}}
 
-\item{show_ma}{Whether to show the moving average lines on the plot or not}
+\item{show_ma}{Boolean. \strong{Default: FALSE.} If TRUE, plots the moving average lines on the plot.}
 
-\item{show_excursions}{Whether or not to visualize the excursions on the plot or not}
+\item{show_excursions}{Boolean. \strong{Default: TRUE.} If TRUE, shows identified excursions as arrows from peak-to-nadir/nadir-to-peak on the plot.}
 }
 \value{
 A tibble object with two columns: the subject id and corresponding MAGE value.
 If a vector of glucose values is passed, then a tibble object with just the MAGE value
-is returned. In \code{version = "ma"}, if \code{plot = TRUE}, a list of ggplots will
-be returned with one plot per subject.
+is returned.
+
+In \code{version = "ma"}, if \code{plot = TRUE}, a list of ggplots will
+be returned with one plot per subject. To return an interactive plot, use iglu::mage_ma_single with \code{plot_type='plotly'} on each subject individually.
 }
 \description{
 The function calculates MAGE values and can optionally return a plot of the glucose trace.
@@ -73,7 +75,7 @@ The function calculates MAGE values and can optionally return a plot of the gluc
 \details{
 If version \code{'ma'} is selected, the function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in "Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability", (Service, 1970). For this version, glucose values will be interpolated over a uniform time grid prior to calculation.
 
-\code{'ma'} is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the *original* (not moving average) glucose values.
+\code{'ma'} is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the _original_ (not moving average) glucose values.
 
 \code{'naive'} algorithm calculates MAGE by taking the mean of absolute glucose differences (between each value and the mean) that are greater than the standard deviation. A multiplier can be added to the standard deviation using the \code{sd_multiplier} argument.
 }

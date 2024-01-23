@@ -2,24 +2,24 @@
 #'
 #' @description This function is an internal function used by "mage". The function will calculate the Mean Amplitude of Glycemic Excursions (MAGE) on \strong{all} the values of the inputted data set. To calculate separate MAGE values for a group of subjects, use the "mage" function.
 #'
-#' @author Nathaniel Fernandes
+#' @author Nathaniel J. Fernandes
 #' @details See "mage".
 #'
 #' @inheritParams CGMS2DayByDay
-#' @param short_ma Integer for period length of the short moving average. Must be positive and less than "long_ma", default value is 5. (Recommended <15)
-#' @param long_ma Integer for period length for the long moving average, default value is 32. (Recommended >20)
-#' @param return_type One of "num" or "df": will return a single value for MAGE over the entire trace (weighted by segment length) or a DataFrame with the MAGE value for each segment (see the MAGE vignette for discussion of handling gaps by splitting trace into multiple segments).
-#' @param direction One of 'avg', 'service', 'max', 'plus', or 'minus'. (Default: "avg"). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service"). NOTE: selection used independently on each segments, thus MAGEservice may choose MAGE+ on one segment and MAGE- on another.
-#' @param plot Boolean. Returns ggplot by default if TRUE.
-#' @param max_gap The maximum length of a gap before MAGE is calculated on each segment independently (recommended: 180 minutes)
-#' @param title Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"
-#' @param xlab Label for x-axis of ggplot. Defaults to "Time"
-#' @param ylab Label for y-axis of ggplot. Defaults to "Glucose Level"
-#' @param show_ma Whether to show the moving average lines on the plot or not
-#' @param show_excursions Whether or not to visualize the excursions on the plot or not
-#' @param plot_type returns ggplot if "ggplot" or plotly if "plotly". Default = "gglplot".
+#' @param short_ma Integer for period length of the short moving average. \strong{Default: 5.} Must be positive and less than "long_ma". (Recommended <15)
+#' @param long_ma Integer for period length for the long moving average. \strong{Default: 32.} Must be positive and greater than "short_ma". (Recommended >20)
+#' @param return_type One of "num" or "df". \strong{Default: "num".} Will return either a single number for the "MAGE over the entire trace" (weighted by segment length) or a DataFrame with the MAGE value for each segment (see the MAGE vignette for discussion of handling gaps by splitting trace into multiple segments).
+#' @param direction One of "avg", "service", "max", "plus", or "minus". \strong{Default: "avg".} Algorithm will calculate one of the following: MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service"). NOTE: the selection of peak-to-nadir or nadir-to-peak is chosen independently on each segment, thus MAGEservice may choose peak-to-nadir on one segment and nadir-to-peak on another, for example.
+#' @param plot Boolean. \strong{Default: FALSE.} If TRUE, returns a plot that visualizes all identified peaks and nadirs, excursions, and  missing gaps. An interactive GUI can be loaded with \code{plot_type = 'plotly'}.
+#' @param plot_type One of "ggplot" or "plotly". \strong{Default: "gglplot".} Returns either a ggplot (static image) or Plotly chart (interactive GUI).
+#' @param max_gap Integer for the maximum length of a gap in minutes before the trace is split into segments and MAGE is calculated on each segment independently. \strong{Default: 180.}
+#' @param title Title for the ggplot. \strong{Default: "Glucose Trace - Subject [ID]".}
+#' @param xlab Label for x-axis of ggplot. \strong{Default: "Time".}
+#' @param ylab Label for y-axis of ggplot. \strong{Default: "Glucose Level".}
+#' @param show_ma Boolean. \strong{Default: FALSE.} If TRUE, plots the moving average lines on the plot.
+#' @param show_excursions Boolean. \strong{Default: TRUE.} If TRUE, shows identified excursions as arrows from peak-to-nadir/nadir-to-peak on the plot.
 #'
-#' @return The numeric MAGE value for the inputted glucose values or a ggplot if \code{plot = TRUE}
+#' @return A ggplot or Plotly chart if \code{plot = TRUE}, depending on \code{plot_type}. Otherwise, a numeric MAGE value for the inputted glucose trace or a DataFrame with the MAGE values on each segment, depending on \code{return_type}.
 #'
 #' @export
 #'
