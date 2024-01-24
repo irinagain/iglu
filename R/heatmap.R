@@ -13,9 +13,6 @@
 #' @examples
 #' # Using default (all metrics)
 #' metrics_heatmap(example_data_5_subject)
-#' # Using pre-calculated metrics
-#' mecs = all_metrics(example_data_5_subject)
-#' metrics_heatmap(metrics = mecs)
 #'
 #' # Using pre-calculated sd metrics only
 #' mecs = sd_measures(example_data_5_subject)
