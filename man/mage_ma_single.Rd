@@ -20,7 +20,7 @@ mage_ma_single(
   ylab = NA,
   show_ma = FALSE,
   show_excursions = TRUE,
-  plot_type = "ggplot"
+  plot_type = c("ggplot", "plotly")
 )
 }
 \arguments{

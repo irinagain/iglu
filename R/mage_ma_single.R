@@ -49,7 +49,8 @@ mage_ma_single <- function(data,
                            direction = c('avg', 'service', 'max', 'plus', 'minus'),
                            dt0 = NULL, tz = "", inter_gap = 45,
                            max_gap = 180,
-                           plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions = TRUE, plot_type='ggplot') {
+                           plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions = TRUE,
+                           plot_type=c('ggplot','plotly')) {
 
   ## pre-0. Turn all tibbles --> DataFrame
   data = as.data.frame(data)
