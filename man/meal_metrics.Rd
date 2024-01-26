@@ -9,7 +9,7 @@ recovery_win = 1, interpolate = TRUE, adjust_mealtimes = TRUE, dt0 = NULL,
 inter_gap = 45, tz = "")
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.}
+\item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, a warning is produced and only 1st subject is used.}
 
 \item{mealtimes}{Either a vector of mealtimes, corresponding
 to data being from a single subject, OR a dataframe with at least 2 columns labeled

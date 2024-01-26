@@ -104,7 +104,7 @@ read_df_or_vec <- function(data, id = 'id', time = 'time', gl = 'gl'){
 #' Interpolate glucose value on an equally spaced grid from day to day
 #'
 #' @inheritParams conga
-#' @param data DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.
+#' @param data DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, a warning is produced and only 1st subject is used.
 #' @param dt0 The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).
 #' @param inter_gap The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.
 #'

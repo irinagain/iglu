@@ -19,7 +19,7 @@ episode_calculation(
 )
 }
 \arguments{
-\item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.}
+\item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, a warning is produced and only 1st subject is used.}
 
 \item{lv1_hypo}{Numeric value specifying a hypoglycemia threshold for level 1}
 
