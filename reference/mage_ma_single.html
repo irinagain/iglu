@@ -79,30 +79,30 @@
 <span>  ylab <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  show_ma <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_excursions <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  plot_type <span class="op">=</span> <span class="st">"ggplot"</span></span>
+<span>  plot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ggplot"</span>, <span class="st">"plotly"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
-<dd><p>DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, the warning is produced and only 1st subject is used.</p></dd>
+<dd><p>DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, a warning is produced and only 1st subject is used.</p></dd>
 
 
 <dt>short_ma</dt>
-<dd><p>Integer for period length of the short moving average. Must be positive and less than "long_ma", default value is 5. (Recommended &lt;15)</p></dd>
+<dd><p>Integer for period length of the short moving average. <strong>Default: 5.</strong> Must be positive and less than "long_ma". (Recommended &lt;15)</p></dd>
 
 
 <dt>long_ma</dt>
-<dd><p>Integer for period length for the long moving average, default value is 32. (Recommended &gt;20)</p></dd>
+<dd><p>Integer for period length for the long moving average. <strong>Default: 32.</strong> Must be positive and greater than "short_ma". (Recommended &gt;20)</p></dd>
 
 
 <dt>return_type</dt>
-<dd><p>One of "num" and "df": will return a single value for MAGE or a DataFrame with the</p></dd>
+<dd><p>One of "num" or "df". <strong>Default: "num".</strong> Will return either a single number for the "MAGE over the entire trace" (weighted by segment length) or a DataFrame with the MAGE value for each segment (see the MAGE vignette for discussion of handling gaps by splitting trace into multiple segments).</p></dd>
 
 
 <dt>direction</dt>
-<dd><p>One of 'avg', 'service', 'max', 'plus', or 'minus'. (Default: "avg"). Algorithm will either calculate MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service").</p></dd>
+<dd><p>One of "avg", "service", "max", "plus", or "minus". <strong>Default: "avg".</strong> Algorithm will calculate one of the following: MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service"). NOTE: the selection of peak-to-nadir or nadir-to-peak is chosen independently on each segment, thus MAGEservice may choose peak-to-nadir on one segment and nadir-to-peak on another, for example.</p></dd>
 
 
 <dt>dt0</dt>
@@ -118,44 +118,42 @@
 
 
 <dt>max_gap</dt>
-<dd><p>The maximum length of a gap before MAGE is calculated on each segment independently (recommended: 180 minutes)</p></dd>
+<dd><p>Integer for the maximum length of a gap in minutes before the trace is split into segments and MAGE is calculated on each segment independently. <strong>Default: 180.</strong></p></dd>
 
 
 <dt>plot</dt>
-<dd><p>Boolean. Returns ggplot if TRUE.</p></dd>
+<dd><p>Boolean. <strong>Default: FALSE.</strong> If TRUE, returns a plot that visualizes all identified peaks and nadirs, excursions, and  missing gaps. An interactive GUI can be loaded with <code>plot_type = 'plotly'</code>.</p></dd>
 
 
 <dt>title</dt>
-<dd><p>Title for the ggplot. Defaults to "Glucose Trace - Subject [ID]"</p></dd>
+<dd><p>Title for the ggplot. <strong>Default: "Glucose Trace - Subject [ID]".</strong></p></dd>
 
 
 <dt>xlab</dt>
-<dd><p>Label for x-axis of ggplot. Defaults to "Time"</p></dd>
+<dd><p>Label for x-axis of ggplot. <strong>Default: "Time".</strong></p></dd>
 
 
 <dt>ylab</dt>
-<dd><p>Label for y-axis of ggplot. Defaults to "Glucose Level"</p></dd>
+<dd><p>Label for y-axis of ggplot. <strong>Default: "Glucose Level".</strong></p></dd>
 
 
 <dt>show_ma</dt>
-<dd><p>Whether to show the moving average lines on the plot or not</p></dd>
+<dd><p>Boolean. <strong>Default: FALSE.</strong> If TRUE, plots the moving average lines on the plot.</p></dd>
 
 
 <dt>show_excursions</dt>
-<dd><p>Whether or not to visualize the excursions on the plot or not</p></dd>
+<dd><p>Boolean. <strong>Default: TRUE.</strong> If TRUE, shows identified excursions as arrows from peak-to-nadir/nadir-to-peak on the plot.</p></dd>
 
 
 <dt>plot_type</dt>
-<dd><p>returns ggplot if "ggplot". Else returns plotly.</p></dd>
+<dd><p>One of "ggplot" or "plotly". <strong>Default: "gglplot".</strong> Returns either a ggplot (static image) or Plotly chart (interactive GUI).</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>The numeric MAGE value for the inputted glucose values or a ggplot if <code>plot = TRUE</code></p>
-
-
+<p>A ggplot or Plotly chart if <code>plot = TRUE</code>, depending on <code>plot_type</code>. Otherwise, a numeric MAGE value for the inputted glucose trace or a DataFrame with the MAGE values on each segment, depending on <code>return_type</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -163,7 +161,7 @@
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
-    <p>Nathaniel Fernandes</p>
+    <p>Nathaniel J. Fernandes</p>
     </div>
 
     <div class="section level2">
