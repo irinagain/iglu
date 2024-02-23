@@ -11,10 +11,7 @@
 #' @export
 #'
 #' @examples
-#' # Using default (all metrics)
-#' metrics_heatmap(example_data_5_subject)
-#'
-#' # Using pre-calculated sd metrics only
+#' # Using pre-calculated sd metrics only rather than default (all metrics)
 #' mecs = sd_measures(example_data_5_subject)
 #' metrics_heatmap(metrics = mecs)
 metrics_heatmap <- function(data = NULL, metrics = NULL, metric_cluster = 6, clustering_method = "complete",
