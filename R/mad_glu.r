@@ -27,7 +27,7 @@
 #'
 #' MAD is calculated by taking the median of the difference of the
 #' glucose readings from their median and multiplying it by a scaling factor
-#' \eqn{1.4826*median(|gl-median(gl)|)}, where gl is the list of Blood Glucose measurements.
+#' \eqn{1.4826*median(|gl-median(gl)|)}, where gl is the list of Glucose measurements.
 #'
 #'
 #' @author David Buchanan, Marielle Hicban

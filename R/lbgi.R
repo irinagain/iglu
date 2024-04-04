@@ -22,8 +22,8 @@
 #' omitted from the calculation of the LBGI.
 #'
 #' LBGI is calculated by \eqn{1/n * \sum (10 * fbg_i ^2)},
-#' where \eqn{fbg_i = min(0, 1.509 * (log(BG_i)^{1.084} - 5.381)},
-#' BG_i is the ith Blood Glucose measurement for a subject, and
+#' where \eqn{fbg_i = min(0, 1.509 * (log(G_i)^{1.084} - 5.381)},
+#' G_i is the ith Glucose measurement for a subject, and
 #' n is the total number of measurements for that subject.
 #'
 #' @references

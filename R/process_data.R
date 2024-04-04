@@ -18,14 +18,14 @@
 #' in any format parsable by as.POSIXct, or any format accepted by the parser passed to time_parser. See time_parser param for an explanation
 #' on how to handle arbitrary formats.
 #'
-#' @param glu Required column name (character string) corresponding to blood glucose values, mg/dl
+#' @param glu Required column name (character string) corresponding to glucose values, mg/dL
 #'
 #' @param time_parser Optional function used to convert datetime strings to time objects. Defaults to as.POSIXct.
 #' If your times are in a format not parsable by as.POSIXct, you can parse a custom format by passing
 #' function(time_string) \{strptime(time_string, format = <format string>)\} as the time_parser parameter.
 #'
 #' @details A dataframe with the columns "id", "time", and "gl" will be returned. All NAs will be removed.
-#' If there is a mention of "mmol/l" in the glucose column name, the glucose values will be multipled by 18 to convert to mg/dl
+#' If there is a mention of "mmol/l" in the glucose column name, the glucose values will be multipled by 18 to convert to mg/dL
 #' Based on John Schwenck's data_process for his bp package
 #' https://github.com/johnschwenck/bp
 #'

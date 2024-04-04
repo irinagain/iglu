@@ -21,8 +21,8 @@
 #' a column for eA1C values is returned. NA glucose values are
 #' omitted from the calculation of the eA1C.
 #'
-#' eA1C score is calculated by \eqn{(46.7+mean(BG))/28.7}
-#' where BG is the vector of Blood Glucose Measurements (mg/dL).
+#' eA1C score is calculated by \eqn{(46.7+mean(G))/28.7}
+#' where G is the vector of Glucose Measurements (mg/dL).
 #'
 #' @references
 #' Nathan (2008) Translating the A1C assay into estimated average glucose

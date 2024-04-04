@@ -80,8 +80,8 @@ plot_roc <- function(data, subjects = NULL, timelag = 15, dt0 = NULL, inter_gap 
                   ggplot2::aes(x = time_ip, y = gl_ip, color = category)) +
     ggplot2::geom_point() +
     ggplot2::scale_x_datetime(name = 'Date') +
-    ggplot2::scale_y_continuous(name = 'Blood Glucose') +
+    ggplot2::scale_y_continuous(name = 'Glucose (mg/dL)') +
     ggplot2::facet_wrap(~id, scales = "free_x") +
     ggplot2::scale_color_manual(values = colours, na.value = "gray",
-                                name = "Category (mg/dl/min)")
+                                name = "Category (mg/dL/min)")
 }

@@ -21,8 +21,8 @@
 #' a column for GMI values is returned. NA glucose values are
 #' omitted from the calculation of the GMI.
 #'
-#' GMI score is calculated by \eqn{3.31 + (.02392*mean(BG))}
-#' where BG is the vector of Blood Glucose Measurements (mg/dL).
+#' GMI score is calculated by \eqn{3.31 + (.02392*mean(G))}
+#' where G is the vector of Glucose Measurements (mg/dL).
 #'
 #' @references
 #' Bergenstal (2018) Glucose Management Indicator (GMI): A New Term for
