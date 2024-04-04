@@ -31,8 +31,8 @@ a column for the Hyperglycemia Index values is returned. NA glucose values are
 omitted from the calculation of the Hyperglycemia Index values.
 
 Hyperglycemia Index is calculated by \eqn{n/c * \sum [(hyperBG_j-ULTR) ^{a}]}
-Here n is the total number of Blood Glucose measurements (excluding NA values), \eqn{hyperBG_j}
-is the jth Blood Glucose measurement above the ULTR cutoff, a is an exponent, and c is a scaling factor.
+Here n is the total number of Glucose measurements (excluding NA values), \eqn{hyperBG_j}
+is the jth Glucose measurement above the ULTR cutoff, a is an exponent, and c is a scaling factor.
 }
 \examples{
 data(example_data_1_subject)

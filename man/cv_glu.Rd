@@ -24,8 +24,8 @@ A tibble object with 1 row for each subject, a column for subject id and
 a column for CV values is returned. NA glucose values are
 omitted from the calculation of the CV.
 
-CV (Coefficient of Variation) is calculated by \eqn{100 * sd(BG) / mean(BG)}
-Where BG is the list of all Blood Glucose measurements for a subject.
+CV (Coefficient of Variation) is calculated by \eqn{100 * sd(G) / mean(G)}
+Where G is the list of all Glucose measurements for a subject.
 }
 \examples{
 

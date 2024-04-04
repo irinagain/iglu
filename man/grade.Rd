@@ -25,8 +25,8 @@ a column for GRADE values is returned. NA glucose values are
 omitted from the calculation of the GRADE.
 
 GRADE score is calculated by \eqn{1/n * \sum [425 *
-(log(log(BG_i / 18)) + .16)^2]}
-Where \eqn{BG_i} is the ith Blood Glucose measurement and n is the total
+(log(log(G_i / 18)) + .16)^2]}
+Where \eqn{G_i} is the ith Glucose measurement and n is the total
 number of measurements.
 }
 \examples{
