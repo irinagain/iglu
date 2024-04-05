@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">iglu</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,9 +108,9 @@ of this, there may be many NAs at the beginning and the end of the roc values
 for each subject. These NAs are a result of interpolated time points that do
 not have recorded glucose values near them because recording had either not
 yet begun for the day or had already ended.</p>
-<p>The ROC is calculated as \(\frac{BG(t_i) - BG(t_{i-1})}{t_i - t_{i-1}}\)
-where BG_i is the Blood Glucose measurement at time \(t_i\) and \(BG_{i-1}\) is the
-Blood Glucose measurement at time \(t_{i-1}\). The time difference between the points,
+<p>The ROC is calculated as \(\frac{G(t_i) - G(t_{i-1})}{t_i - t_{i-1}}\)
+where \(G_i\) is the Glucose measurement at time \(t_i\) and \(G_{i-1}\) is the
+Glucose measurement at time \(t_{i-1}\). The time difference between the points,
 \(t_i - t_{i-1}\), is selectable and set at a default of 15 minutes.</p>
     </div>
     <div class="section level2">

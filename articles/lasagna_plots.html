@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">iglu</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,29 +104,34 @@ scheme can be selected by the user by corresponding modification of the
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://irinagain.github.io/iglu/">iglu</a></span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">"single"</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">"single"</span>, color_scheme <span class="op">=</span> <span class="st">"red-orange"</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-2-2.png" width="672"></p>
 <p>For plots with a single subject, setting the datatype parameter to
 “single” will display a plot where the rows represent days.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, datatype <span class="op">=</span> <span class="st">'single'</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 <p>We can additionally sort the values at each time point by setting
 <code>lasagnatype = 'timesorted'</code></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">'single'</span>, lasagnatype <span class="op">=</span> <span class="st">'timesorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 <p>To average across days at each time point, we can use
 <code>datatype = 'average'</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">'average'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 1 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 <p>You can also produce plots for multiple subjects, by using data with
 multiple values for “id”. By default, this will produce an unsorted
@@ -144,7 +149,8 @@ displayed in separate rows.</p>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'lasagna'</span>, datatype <span class="op">=</span> <span class="st">'average'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 5 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 5 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 <p>Lasagna plots are also an excellent way to visualize gaps in data.
 The inter_gap parameter controls the maximum length of time (in minutes)
@@ -152,15 +158,18 @@ between glucose readings for interpolation to occur between them. See
 how more gaps appear in the plot below as inter_gap shrinks.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span><span class="st">"lasagna"</span>, datatype <span class="op">=</span> <span class="st">"single"</span>, inter_gap <span class="op">=</span> <span class="fl">150</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span><span class="st">"lasagna"</span>, datatype <span class="op">=</span> <span class="st">"single"</span>, inter_gap <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span><span class="st">"lasagna"</span>, datatype <span class="op">=</span> <span class="st">"single"</span>, inter_gap <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 <p>For further customization of lasagna plots, use the
 <code>plot_lasagna</code> and <code>plot_lasagna_1subject</code>
@@ -171,7 +180,8 @@ default is 105 mg/dL), and the “limit” parameter specifies the range
 (the default is [50, 500] mg/dL)</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_lasagna.html">plot_lasagna</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, datatype <span class="op">=</span> <span class="st">"average"</span>, midpoint <span class="op">=</span> <span class="fl">140</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>,<span class="fl">400</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 5 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 5 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
 <p><code>plot_lasagna</code> allows for multi-subject lasagna plots with
 the additional options of sorting the hours by glucose values for each
@@ -179,7 +189,8 @@ subject, i.e. horizontal sorting, by setting
 <code>lasagnatype = 'subjectsorted'</code>.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_lasagna.html">plot_lasagna</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, datatype <span class="op">=</span> <span class="st">'average'</span>, lasagnatype <span class="op">=</span> <span class="st">'subjectsorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 5 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 5 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 <p><code>plot_lasagna</code> also supports changing the maximum number
 of days to display, as well as the upper and lower target range limits
@@ -187,7 +198,8 @@ of days to display, as well as the upper and lower target range limits
 all of which will affect the colorbar.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_lasagna.html">plot_lasagna</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, datatype <span class="op">=</span> <span class="st">'average'</span>, lasagnatype <span class="op">=</span> <span class="st">'subjectsorted'</span>, LLTR <span class="op">=</span> <span class="fl">100</span>, ULTR <span class="op">=</span> <span class="fl">180</span>, midpoint <span class="op">=</span> <span class="fl">150</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">500</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 5 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 5 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 <p><code>plot_lasagna_1subject</code> allows for customization of the
 more detailed single subject lasagna plots. There is no datatype
@@ -196,21 +208,25 @@ types of plots available, accessed with the <code>lasagnatype</code>
 parameter.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lasagnatype <span class="op">=</span> <span class="st">'unsorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lasagnatype <span class="op">=</span> <span class="st">'timesorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lasagnatype <span class="op">=</span> <span class="st">'daysorted'</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
 <p>As with the <code>lasagna_plot</code> function, changing the LLTR,
 ULTR, midpoint, and limits parameters will affect the colorbar.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_lasagna_1subject.html">plot_lasagna_1subject</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, lasagnatype <span class="op">=</span> <span class="st">'daysorted'</span>, midpoint <span class="op">=</span> <span class="fl">150</span>, limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>,<span class="fl">500</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values (`geom_tile()`).</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Removed 14 rows containing missing values or values outside the scale range</span></span>
+<span><span class="co">## (`geom_tile()`).</span></span></code></pre>
 <p><img src="lasagna_plots_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
   </main>
 </div>

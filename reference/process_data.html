@@ -18,7 +18,7 @@ function within the iglu package. All NAs will be removed. See Vignette for furt
     
     <a class="navbar-brand me-2" href="../index.html">iglu</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,7 +97,7 @@ on how to handle arbitrary formats.</p></dd>
 
 
 <dt>glu</dt>
-<dd><p>Required column name (character string) corresponding to blood glucose values, mg/dl</p></dd>
+<dd><p>Required column name (character string) corresponding to glucose values, mg/dL</p></dd>
 
 
 <dt>time_parser</dt>
@@ -116,7 +116,7 @@ function within the iglu package - all column names and formats comply.</p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>A dataframe with the columns "id", "time", and "gl" will be returned. All NAs will be removed.
-If there is a mention of "mmol/l" in the glucose column name, the glucose values will be multipled by 18 to convert to mg/dl
+If there is a mention of "mmol/l" in the glucose column name, the glucose values will be multipled by 18 to convert to mg/dL
 Based on John Schwenck's data_process for his bp package
 https://github.com/johnschwenck/bp</p>
     </div>

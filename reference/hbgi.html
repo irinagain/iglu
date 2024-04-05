@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">iglu</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,9 +87,9 @@ as.numeric() can be wrapped around the latter to output just a numeric value.</p
     <p>A tibble object with 1 row for each subject, a column for subject id and
 a column for HBGI values is returned. NA glucose values are
 omitted from the calculation of the HBGI.</p>
-<p>HBGI is calculated by \(1/n * \sum (10 * fbg_i ^2)\),
-where \(fbg_i = max(0, 1.509 * (log(BG_i)^{1.084} - 5.381)\),
-BG_i is the ith Blood Glucose measurement for a subject, and
+<p>HBGI is calculated by \(1/n * \sum (10 * fg_i ^2)\),
+where \(fg_i = max(0, 1.509 * (log(G_i)^{1.084} - 5.381)\),
+G_i is the ith Glucose measurement for a subject, and
 n is the total number of measurements for that subject.</p>
     </div>
     <div class="section level2">
