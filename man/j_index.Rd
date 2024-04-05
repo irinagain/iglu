@@ -24,8 +24,8 @@ A tibble object with 1 row for each subject, a column for subject id and
 a column for J-Index values is returned. NA glucose values are
 omitted from the calculation of the J-Index.
 
-J-Index score is calculated by \eqn{.001 * [mean(BG) + sd(BG)]^2}
-where BG is the list of Blood Glucose Measurements.
+J-Index score is calculated by \eqn{.001 * [mean(G) + sd(G)]^2}
+where G is the list of Glucose Measurements.
 }
 \examples{
 

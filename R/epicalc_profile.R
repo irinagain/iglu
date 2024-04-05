@@ -169,7 +169,7 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
     scale_color_manual(values = colors, drop = FALSE,
                        labels = c("lv2_hypo", "lv1_hypo", "Normal", "lv1_hyper", "lv2_hyper")) +
     ggplot2::scale_x_datetime(name = 'Date') +
-    ggplot2::scale_y_continuous(name = 'Blood Glucose')
+    ggplot2::scale_y_continuous(name = 'Glucose (mg/dL)')
 
 
   #adding all figures together ---------------------------
