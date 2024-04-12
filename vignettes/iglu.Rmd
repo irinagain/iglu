@@ -24,7 +24,7 @@ Multiple CGM-derived metrics have been developed to assess the quality of glycem
 
 The iglu package is designed to work with Continuous Glucose Monitor (CGM) data in the form of a data frame with the following three columns present:
 
-* Blood glucose level measurement [in mg/dL] (`"gl"`)
+* Glucose level measurement [in mg/dL] (`"gl"`)
 
 * Timestamp for glucose measurement (`"time"`)
 
