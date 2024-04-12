@@ -22,7 +22,7 @@
 #' GVP is calculated by dividing the total length of the line of the glucose trace
 #' by the length of a perfectly flat trace. The formula for this is
 #' \eqn{sqrt(diff^2+dt0^2)/(n*dt0)}, where diff is the change in
-#' Blood Glucose measurements from one reading to the next,
+#' Glucose measurements from one reading to the next,
 #' dt0 is the time gap between measurements and n is the number of glucose readings
 #'
 #' @author David Buchanan, Mary Martin

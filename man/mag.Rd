@@ -30,9 +30,9 @@ returned.
 
 The glucose values are linearly interpolated over a time grid starting at the
 beginning of the first day of data and ending on the last day of data. Then, MAG
-is calculated as \eqn{\frac{|\Delta BG|}{\Delta t}} where \eqn{|\Delta BG|} is
-the sum of the absolute change in blood glucose calculated for each interval as specified
-by n, default n = 60 for hourly change in blood glucose. The sum is then divided by
+is calculated as \eqn{\frac{|\Delta G|}{\Delta t}} where \eqn{|\Delta G|} is
+the sum of the absolute change in glucose calculated for each interval as specified
+by n, default n = 60 for hourly change in glucose. The sum is then divided by
 \eqn{\Delta t} which is the total time in hours.
 }
 \examples{

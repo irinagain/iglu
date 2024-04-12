@@ -102,6 +102,15 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
   tableStat[6, 7] = paste0(as.character(format(round(ep_summary$avg_ep_gl[6], 2), nsmall = 2)), " mg/dl")
   tableStat[6, 8] = paste0(as.character(format(round(ep_summary$avg_ep_gl[7], 2), nsmall = 2)), " mg/dl")
 
+  tableStat[7, 1] = "Total episodes"
+  tableStat[7, 2] = paste0(as.character(format(round(ep_summary$total_episodes[1], 2), nsmall = 2)))
+  tableStat[7, 3] = paste0(as.character(format(round(ep_summary$total_episodes[2], 2), nsmall = 2)))
+  tableStat[7, 4] = paste0(as.character(format(round(ep_summary$total_episodes[3], 2), nsmall = 2)))
+  tableStat[7, 5] = paste0(as.character(format(round(ep_summary$total_episodes[4], 2), nsmall = 2)))
+  tableStat[7, 6] = paste0(as.character(format(round(ep_summary$total_episodes[5], 2), nsmall = 2)))
+  tableStat[7, 7] = paste0(as.character(format(round(ep_summary$total_episodes[6], 2), nsmall = 2)))
+  tableStat[7, 8] = paste0(as.character(format(round(ep_summary$total_episodes[7], 2), nsmall = 2)))
+
   #Styling the table
   mytheme <- gridExtra::ttheme_minimal(base_size = 10, padding = unit(c(4,2),"mm"))
   t1 <- gridExtra::tableGrob(tableStat, rows = NULL, cols = NULL, theme = mytheme )
@@ -109,7 +118,7 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
   #Adding border(t1)
   t1 <- gtable::gtable_add_grob(t1,
                                 grobs = grid::rectGrob(gp = grid::gpar(fill = NA, lwd = 5)),
-                                t = 1, b = 6, l = 1, r = 8)
+                                t = 1, b = 7, l = 1, r = 8)
   #Adding dotted separator(t1)
   separators <- replicate(ncol(t1) - 2,
                           grid::segmentsGrob(x1 = unit(0, "npc"), gp=grid::gpar(lty=2)),
@@ -120,7 +129,7 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
   padding <- unit(0.5,"line")
 
   #Adding title and footnote(t1)
-  title <- grid::textGrob("Episode Metrics",gp=grid::gpar(fontsize=18), x=0, hjust=0)
+  title <- grid::textGrob(paste0("Episode Metrics - ", data$id[1]),gp=grid::gpar(fontsize=18), x=0, hjust=0)
   footnote <- grid::textGrob(paste0("An episode is >= ", dur_length, " continuous minutes"), x=1, hjust=1,
                              gp=grid::gpar( fontface="italic", fontsize = 8))
 
@@ -160,7 +169,7 @@ epicalc_profile <- function(data,lv1_hypo=70,lv2_hypo=54,lv1_hyper=180,lv2_hyper
     scale_color_manual(values = colors, drop = FALSE,
                        labels = c("lv2_hypo", "lv1_hypo", "Normal", "lv1_hyper", "lv2_hyper")) +
     ggplot2::scale_x_datetime(name = 'Date') +
-    ggplot2::scale_y_continuous(name = 'Blood Glucose')
+    ggplot2::scale_y_continuous(name = 'Glucose (mg/dL)')
 
 
   #adding all figures together ---------------------------

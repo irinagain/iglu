@@ -30,9 +30,9 @@
 #' not have recorded glucose values near them because recording had either not
 #' yet begun for the day or had already ended.
 #'
-#' The ROC is calculated as \eqn{\frac{BG(t_i) - BG(t_{i-1})}{t_i - t_{i-1}}}
-#' where BG_i is the Blood Glucose measurement at time \eqn{t_i} and \eqn{BG_{i-1}} is the
-#' Blood Glucose measurement at time \eqn{t_{i-1}}. The time difference between the points,
+#' The ROC is calculated as \eqn{\frac{G(t_i) - G(t_{i-1})}{t_i - t_{i-1}}}
+#' where \eqn{G_i} is the Glucose measurement at time \eqn{t_i} and \eqn{G_{i-1}} is the
+#' Glucose measurement at time \eqn{t_{i-1}}. The time difference between the points,
 #' \eqn{t_i - t_{i-1}}, is selectable and set at a default of 15 minutes.
 #'
 #' @author Elizabeth Chun, David Buchanan

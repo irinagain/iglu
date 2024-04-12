@@ -33,13 +33,7 @@ A heatmap of metrics by subjects generated via \code{\link{pheatmap}}
 Create a heatmap of metric values by subject based on hierarchical clustering order
 }
 \examples{
-# Using default (all metrics)
-metrics_heatmap(example_data_5_subject)
-# Using pre-calculated metrics
-mecs = all_metrics(example_data_5_subject)
-metrics_heatmap(metrics = mecs)
-
-# Using pre-calculated sd metrics only
+# Using pre-calculated sd metrics only rather than default (all metrics)
 mecs = sd_measures(example_data_5_subject)
 metrics_heatmap(metrics = mecs)
 }

@@ -34,10 +34,10 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
     geom_point(size = 0.3)
 
     if(log){
-      p = p + scale_y_continuous(name = 'Blood Glucose (mg/dL,  semilogarithmic scale).', trans = 'log10')
+      p = p + scale_y_continuous(name = 'Glucose (mg/dL,  semilogarithmic scale).', trans = 'log10')
     }
     else{
-      p = p + scale_y_continuous(name = 'Blood Glucose (mg/dL)')
+      p = p + scale_y_continuous(name = 'Glucose (mg/dL)')
 
     }
        p

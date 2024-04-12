@@ -21,8 +21,8 @@
 #' a column for CV values is returned. NA glucose values are
 #' omitted from the calculation of the CV.
 #'
-#' CV (Coefficient of Variation) is calculated by \eqn{100 * sd(BG) / mean(BG)}
-#' Where BG is the list of all Blood Glucose measurements for a subject.
+#' CV (Coefficient of Variation) is calculated by \eqn{100 * sd(G) / mean(G)}
+#' Where G is the list of all Glucose measurements for a subject.
 #'
 #' @references
 #' Rodbard (2009) Interpretation of continuous glucose monitoring data:

@@ -21,8 +21,8 @@
 #' omitted from the calculation of the Hypoglycemia Index values.
 #'
 #' Hypoglycemia Index is calculated by \eqn{n/d * \sum [(LLTR-hypoBG_j)^{b}]}
-#' Here n is the total number of Blood Glucose measurements (excluding NA values),
-#' and \eqn{hypoBG_j} is the jth Blood Glucose measurement below the LLTR cutoff, b is an exponent, and d is a scaling factor.
+#' Here n is the total number of Glucose measurements (excluding NA values),
+#' and \eqn{hypoBG_j} is the jth Glucose measurement below the LLTR cutoff, b is an exponent, and d is a scaling factor.
 #'
 #' @return If a data.frame object is passed, then a tibble object with
 #' two columns: subject id and corresponding Hypoglycemia Index value is returned. If a vector of glucose

@@ -24,9 +24,9 @@ A tibble object with 1 row for each subject, a column for subject id and
 a column for HBGI values is returned. NA glucose values are
 omitted from the calculation of the HBGI.
 
-HBGI is calculated by \eqn{1/n * \sum (10 * fbg_i ^2)},
-where \eqn{fbg_i = max(0, 1.509 * (log(BG_i)^{1.084} - 5.381)},
-BG_i is the ith Blood Glucose measurement for a subject, and
+HBGI is calculated by \eqn{1/n * \sum (10 * fg_i ^2)},
+where \eqn{fg_i = max(0, 1.509 * (log(G_i)^{1.084} - 5.381)},
+G_i is the ith Glucose measurement for a subject, and
 n is the total number of measurements for that subject.
 }
 \examples{
