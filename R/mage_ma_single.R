@@ -224,22 +224,23 @@ mage_ma_single <- function(data,
       return(data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
     }
 
-    plus_first = ifelse((length(mage_plus_heights) > 0) && (length(mage_minus_heights) == 0 || mage_plus_tp_pairs[[1]][2] <= mage_minus_tp_pairs[[1]][1]), TRUE, FALSE)
-    mage_plus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1),  mage=ifelse(length(mage_plus_heights), mean(mage_plus_heights, na.rm = TRUE), NA), plus_or_minus="PLUS", first_excursion=plus_first)
-    mage_minus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=ifelse(length(mage_minus_heights), abs(mean(mage_minus_heights, na.rm = TRUE)), NA), plus_or_minus="MINUS", first_excursion=!plus_first)
+    is_plus_first = ifelse((length(mage_plus_heights) > 0) && (length(mage_minus_heights) == 0 || mage_plus_tp_pairs[[1]][2] <= mage_minus_tp_pairs[[1]][1]), TRUE, FALSE)
+    mage_plus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1),  mage=ifelse(length(mage_plus_heights), mean(mage_plus_heights, na.rm = TRUE), NA), plus_or_minus="PLUS", first_excursion=is_plus_first)
+    mage_minus = data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=ifelse(length(mage_minus_heights), abs(mean(mage_minus_heights, na.rm = TRUE)), NA), plus_or_minus="MINUS", first_excursion=!is_plus_first)
+    is_plus_max = ifelse(mage_plus$mage >= mage_minus$mage, TRUE, FALSE)
 
     # save data for plotting
     pframe = parent.frame()
     pframe$all_data = base::rbind(pframe$all_data, .data)
 
     for (e in mage_plus_tp_pairs) {
-      pframe$all_tp_indexes = base::rbind(pframe$all_tp_indexes, data.frame(idx=indexes[e[1]], peak_or_nadir="NADIR", plus_or_minus="PLUS", first_excursion=plus_first))
-      pframe$all_tp_indexes = base::rbind(pframe$all_tp_indexes, data.frame(idx=indexes[e[2]], peak_or_nadir="PEAK", plus_or_minus="PLUS", first_excursion=plus_first))
+      pframe$all_tp_indexes = base::rbind(pframe$all_tp_indexes, data.frame(idx=indexes[e[1]], peak_or_nadir="NADIR", plus_or_minus="PLUS", first_excursion=is_plus_first, max_direction=is_plus_max))
+      pframe$all_tp_indexes = base::rbind(pframe$all_tp_indexes, data.frame(idx=indexes[e[2]], peak_or_nadir="PEAK", plus_or_minus="PLUS", first_excursion=is_plus_first, max_direction=is_plus_max))
     }
 
     for (e in mage_minus_tp_pairs) {
-      pframe$all_tp_indexes = base::rbind(pframe$all_tp_indexes, data.frame(idx=indexes[e[1]], peak_or_nadir="PEAK", plus_or_minus="MINUS", first_excursion=!plus_first))
-      pframe$all_tp_indexes = base::rbind(pframe$all_tp_indexes, data.frame(idx=indexes[e[2]], peak_or_nadir="NADIR", plus_or_minus="MINUS", first_excursion=!plus_first))
+      pframe$all_tp_indexes = base::rbind(pframe$all_tp_indexes, data.frame(idx=indexes[e[1]], peak_or_nadir="PEAK", plus_or_minus="MINUS", first_excursion=!is_plus_first, max_direction=!is_plus_max))
+      pframe$all_tp_indexes = base::rbind(pframe$all_tp_indexes, data.frame(idx=indexes[e[2]], peak_or_nadir="NADIR", plus_or_minus="MINUS", first_excursion=!is_plus_first, max_direction=!is_plus_max))
     }
 
     return(base::rbind(mage_plus, mage_minus))
@@ -372,14 +373,12 @@ mage_ma_single <- function(data,
     direction = match.arg(direction, c('avg', 'service', 'max', 'plus', 'minus'))
     plot_type = match.arg(plot_type, c('ggplot', 'plotly'))
 
-    if (direction == "max") {
-      stop("Plotting functionality for MAGEmax is not possible right now. Please request this feature on GitHub if you'd like it. Thank you for your patience.")
-    }
-
-    if (direction == "avg") {
+    if (direction == 'avg') {
       tp_indexes <- dplyr::select(all_tp_indexes, idx, peak_or_nadir, plus_or_minus)
     } else if (direction == 'service') {
       tp_indexes <- dplyr::filter(all_tp_indexes, first_excursion==TRUE) %>% dplyr::select(idx, peak_or_nadir, plus_or_minus)
+    } else if (direction == 'max') {
+      tp_indexes <- dplyr::filter(all_tp_indexes, max_direction==TRUE) %>% dplyr::select(idx, peak_or_nadir, plus_or_minus)
     } else {
       tp_indexes <- dplyr::filter(all_tp_indexes, plus_or_minus==ifelse(direction == 'plus', "PLUS", "MINUS")) %>% dplyr::select(idx, peak_or_nadir, plus_or_minus)
     }
