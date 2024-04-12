@@ -132,7 +132,7 @@ Service et al. [3] by two of the authors, who were unaware of the
 outcome of the proposed algorithm's outputs.
 
 |                                Dataset                                 | Diabetes Type |     Age group      | Subject ID  | Number of days used (CGM traces) |
-|:------------------------:|:----------:|:----------:|:----------:|:----------:|
+|:------------------:|:-----------:|:-----------:|:-----------:|:-----------:|
 |   [Hall et al. (2018)](https://doi.org/10.1371/journal.pbio.2005143)   |     None      |   Adults (\> 18)   | 1636-69-001 |                5                 |
 |                                                                        |               |                    | 1636-69-026 |                6                 |
 | [Tsalikian et al. (2005)](https://doi.org/10.1016/j.jpeds.2005.04.065) |    Type 1     | Children (10 - 18) |      2      |                1                 |
@@ -551,7 +551,7 @@ correction for whiplash. Notice the true peak is properly identified for
 $tp_{12}$.
 
 ```{r, echo=FALSE, fig.width=10, fig.height=7, out.width="700px", out.height ="400px"}
-knitr::include_graphics("mage_figures/boxplot-of-errors.png")
+knitr::include_graphics("mage_figures/whiplash2.png")
 ```
 
 **Figure 6.** Plot of Subject 1636-69-026 via MAGE iglu v3.5.0 without
