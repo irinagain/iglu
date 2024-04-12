@@ -57,7 +57,7 @@ mage_ma_single <- function(data,
 
   ## 0. Calculates MAGE on 1 segment of CGM trace
   mage_atomic <- function(.data) {
-    nmeasurements = list_cross = types = count = crosses = num_extrema = minmax = indexes = s1 = s2 = standardD = heights = nadir2peak = idx = peak_or_nadir = plus_or_minus = first_excursion = NULL
+    nmeasurements = list_cross = types = count = crosses = num_extrema = minmax = indexes = s1 = s2 = standardD = heights = nadir2peak = idx = peak_or_nadir = plus_or_minus = first_excursion = max_direction = NULL
     rm(list=c('nmeasurements', 'list_cross', 'types', 'count', 'crosses', 'num_extrema', 'minmax', 'indexes', 's1', 's2', 'standardD', 'heights', 'nadir2peak', 'idx', 'peak_or_nadir', 'plus_or_minus', 'first_excursion'))
 
     if (all(is.na(.data$gl))) {
@@ -247,7 +247,7 @@ mage_ma_single <- function(data,
   }
 
   ## 1. Preprocessing
-  MA_Short = MA_Long = DELTA_SHORT_LONG = TP = id = .xmin = .xmax = gap = x = y = xend = yend = hours = weight = idx = peak_or_nadir = plus_or_minus = first_excursion = NULL
+  MA_Short = MA_Long = DELTA_SHORT_LONG = TP = id = .xmin = .xmax = gap = x = y = xend = yend = hours = weight = idx = peak_or_nadir = plus_or_minus = first_excursion = max_direction = NULL
   rm(list = c("MA_Short", "MA_Long", "DELTA_SHORT_LONG", "TP", ".xmin", ".xmax", "id", "gap", "x", "y", "xend", "yend", "hours", "weight", "idx", "peak_or_nadir", "plus_or_minus", "first_excursion"))
 
   data = check_data_columns(data)
