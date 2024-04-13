@@ -1,3 +1,7 @@
+# iglu 4.0.2
+* Fixed broken whiplash plot in MAGE documentation
+* Added MAGEmax plotting functionality
+
 # iglu 4.0.0
 * CRAN release to match upcoming paper summarizing updated MAGE algorithm, episode calculation functionality, meal metrics, clustering and new example data inclusion
 
