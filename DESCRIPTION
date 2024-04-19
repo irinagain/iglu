@@ -13,6 +13,8 @@ Authors@R: c(person("Elizabeth", "Chun",
             email = "muschellij2@gmail.com",
             comment = c(ORCID = "0000-0001-6469-1750")),
             person("Nathaniel", "Fernandes",
+            email = "njfernandes24@tamu.edu",
+            comment = c(ORCID = "0000-0003-0485-0726")
             role = c("aut")),
             person("Jung Hoon", "Seo",
             role = c("ctb")),
