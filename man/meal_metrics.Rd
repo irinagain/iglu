@@ -6,7 +6,7 @@
 \usage{
 meal_metrics(data, mealtimes, before_win = 1, after_win = 3,
 recovery_win = 1, interpolate = TRUE, adjust_mealtimes = TRUE, dt0 = NULL,
-inter_gap = 45, tz = "")
+inter_gap = 45, tz = "", glucose_times = FALSE)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, a warning is produced and only 1st subject is used.}
@@ -36,10 +36,15 @@ that don't match with a corresponding CGM time stamp.}
 \item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
+
+\item{glucose_times}{Boolean to indicate if underlying glucose and times should be returned
+- e.g. baseline glucose value used to calculate \eqn{Delta G}. Intended for use in plotting function}
 }
 \value{
-A tibble object with 6 columns will be returned: id, time, meal, deltag,
-deltat, and basereco.
+By default tibble object with 6 columns will be returned: id, time, meal, deltag,
+deltat, and basereco. If glucose_times = TRUE then 5 more columns are returned
+for baseline glucose (basegl), peak glucose (peakgl), recover glucose (recovergl),
+peak timestamp (peaktime), and recovery timestamp (recovertime)
 }
 \description{
 The function meal_metrics calculates three simple glucose meal metrics
@@ -55,10 +60,12 @@ with a unique number for each meal.
 data(example_data_hall)
 data(example_meals_hall)
 meal_metrics(example_data_hall, example_meals_hall)
-meal_metrics(example_data_hall, example_meals_hall)
 
 }
 \references{
 Service, F. John. (2013) Glucose Variability, \emph{Diabetes}
 \strong{62(5)}: 1398-1404, \doi{10.2337/db12-1396}
+}
+\seealso{
+plot_meals()
 }
