@@ -4,7 +4,7 @@
 \alias{plot_meals}
 \title{Plot meal metrics visualization}
 \usage{
-plot_meals(data, mealtimes, plotly = FALSE)
+plot_meals(data, mealtimes, plot_type=c('ggplot','plotly'))
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, a warning is produced and only 1st subject is used.}
@@ -14,8 +14,7 @@ to data being from a single subject, OR a dataframe with at least 2 columns labe
 id and mealtime. Optionally the mealtimes dataframe can include a column labeled meal,
 giving the meal type (helps to compensate for overlapping meals)}
 
-\item{plotly}{Boolean indicated whether to return a plotly interactive visual. Default
-is FALSE (i.e. display ggplot)}
+\item{plot_type}{One of "ggplot" or "plotly". \strong{Default: "gglplot".} Returns either a ggplot (static image) or Plotly chart (interactive GUI).}
 }
 \value{
 Plot to visualize meals data.
@@ -28,7 +27,7 @@ Only a single subject's data may be plotted. The solid black line is the glucose
 Vertical dashed red lines show the mealtimes, and the horizontal blue lines
 show the baseline for each meal. Purple triangles are plotted to illustrate the 3 meal_metrics
 Namely the three vertices show the baseline, peak, and 1hr post-peak recovery. If
-plotly = TRUE, plotly is used to display an interactive visual that allows
+plot_type = 'plotly', plotly is used to display an interactive visual that allows
 one to zoom into specific areas of the plot.
 }
 \examples{

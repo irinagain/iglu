@@ -4,11 +4,10 @@
 #' The function plot_meals produces a visual for meals data
 #'
 #' @usage
-#' plot_meals(data, mealtimes, plotly = FALSE)
+#' plot_meals(data, mealtimes, plot_type=c('ggplot','plotly'))
 #'
 #' @inheritParams meal_metrics
-#' @param plotly Boolean indicated whether to return a plotly interactive visual. Default
-#' is FALSE (i.e. display ggplot)
+#' @inheritParams mage_ma_single
 #'
 #' @return Plot to visualize meals data.
 #'
@@ -21,7 +20,7 @@
 #' Vertical dashed red lines show the mealtimes, and the horizontal blue lines
 #' show the baseline for each meal. Purple triangles are plotted to illustrate the 3 meal_metrics
 #' Namely the three vertices show the baseline, peak, and 1hr post-peak recovery. If
-#' plotly = TRUE, plotly is used to display an interactive visual that allows
+#' plot_type = 'plotly', plotly is used to display an interactive visual that allows
 #' one to zoom into specific areas of the plot.
 #'
 #' @seealso meal_metrics()
@@ -38,7 +37,7 @@
 #' meal_metrics(example_data_hall, example_meals_hall)
 #'
 
-plot_meals = function(data, mealtimes, plotly = FALSE) {
+plot_meals = function(data, mealtimes, plot_type=c('ggplot','plotly')) {
 
   id = meal = mealtime = peaktime = recovertime = basegl = peakgl = recovergl =
     time_window = x = y = NULL
@@ -92,7 +91,7 @@ plot_meals = function(data, mealtimes, plotly = FALSE) {
     ggplot2::ggtitle(label = "Meal Metrics Plot") +
     ggplot2::xlab("Time") + ggplot2::ylab("Glucose (mg/dl)")
 
-  if (plotly) {
+  if (plot_type == 'plotly') {
     out =  plotly::ggplotly(meals_plot)
   } else {
     out = meals_plot
