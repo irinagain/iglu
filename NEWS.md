@@ -1,3 +1,6 @@
+# iglu 4.1.0
+* Add meal plotting functionality
+
 # iglu 4.0.0
 * CRAN release to match upcoming paper summarizing updated MAGE algorithm, episode calculation functionality, meal metrics, clustering and new example data inclusion
 
