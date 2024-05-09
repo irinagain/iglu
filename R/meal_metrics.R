@@ -255,6 +255,7 @@ meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
 
   # check with iglu internal function
   data = check_data_columns(data, time_check = TRUE, tz = tz)
+  tz = lubridate::tz(data$time) #reset timezone based on what is in the data
 
   ## need time format check for mealtimes
 
@@ -293,6 +294,7 @@ meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
     }
   }
   # at this point, mealtimes should be a df with at least id, time, meal cols
+
   out <- data %>%
     dplyr::group_by(id) %>%
     # calculate meal metrics for each subject

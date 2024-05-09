@@ -238,7 +238,7 @@ CGMS2DayByDay <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
   gd2d = matrix(new$y, nrow = ndays, byrow = TRUE)
 
   # Assign rownames that correspond to actual dates
-  actual_dates = as.Date(minD) + lubridate::days(0:(ndays - 1))
+  actual_dates = as.Date(minD, tz = tz) + lubridate::days(0:(ndays - 1))
 
   return(list(gd2d = gd2d, actual_dates = actual_dates, dt0 = dt0))
 }
