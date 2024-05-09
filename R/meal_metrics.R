@@ -43,9 +43,10 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
                                  recovery_win, interpolate, adjust_mealtimes,
                                  dt0, inter_gap, tz) {
 
-  id = meal = mealtime = idx = period = peak = base = recover = deltag = basereco = NULL
+  id = meal = mealtime = idx = period = peak = base = recover = deltag = basereco =
+    basegl = peakgl = recovergl = peaktime = recovertime = NULL
   rm(list = c("id", "meal", "mealtime", "idx", "period", "peak", "base", "recover",
-              "deltag", "basereco"))
+              "deltag", "basereco", "basegl", "peakgl", "recovergl", "peaktime", "recovertime"))
 
   # if id is not in mealtimes data
   if (!(unique(data$id) %in% unique(mealtimes$id))) {
@@ -167,6 +168,9 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
                       1*60*60) %>%
       dplyr::reframe(id = id[1], meal = meal[1],
                      mealtime = time[period == "meal"],
+                     basegl = base[1], peakgl = peak[1],
+                     recovergl = ifelse(recover[1] %in% time, gl[time == recover[1]], NA),
+                     peaktime = recover[1] - 1*60*60, recovertime = recover[1],
                      # deltag is change in gl from baseline to peak
                      deltag = peak[1] - base[1],
                      # deltat is time to peak (peak time is 1 hr before recovery)
@@ -177,7 +181,7 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
                      # only calculate basereco if recovery time is within 4 hr window
                      basereco = ifelse(recover[1] %in% time,
                                        (peak[1] - gl[time == recover[1]])/deltag[1], NA)) %>%
-      dplyr::select(id, time = mealtime, meal, deltag, deltat, basereco)
+      dplyr::select(id, time = mealtime, meal, deltag, deltat, basereco, basegl, peakgl, recovergl, peaktime, recovertime)
   }
 
   # may need to check
@@ -193,7 +197,7 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 #'
 #' @usage meal_metrics(data, mealtimes, before_win = 1, after_win = 3,
 #' recovery_win = 1, interpolate = TRUE, adjust_mealtimes = TRUE, dt0 = NULL,
-#' inter_gap = 45, tz = "")
+#' inter_gap = 45, tz = "", glucose_times = FALSE)
 #'
 #' @inheritParams CGMS2DayByDay
 #'
@@ -211,9 +215,13 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 #' mealtimes with CGM data times. This is important if mealtimes and CGM data times
 #' are not exactly aligned, because the function will return NA's for mealtimes
 #' that don't match with a corresponding CGM time stamp.
+#' @param glucose_times Boolean to indicate if underlying glucose and times should be returned
+#' - e.g. baseline glucose value used to calculate \eqn{Delta G}. Intended for use in plotting function
 #'
-#' @return A tibble object with 6 columns will be returned: id, time, meal, deltag,
-#' deltat, and basereco.
+#' @return By default tibble object with 6 columns will be returned: id, time, meal, deltag,
+#' deltat, and basereco. If glucose_times = TRUE then 5 more columns are returned
+#' for baseline glucose (basegl), peak glucose (peakgl), recover glucose (recovergl),
+#' peak timestamp (peaktime), and recovery timestamp (recovertime)
 #'
 #' @export
 #'
@@ -223,6 +231,8 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 #' If no meal column is given in the original data, one will be automatically generated
 #' with a unique number for each meal.
 #'
+#' @seealso plot_meals()
+#'
 #' @references
 #' Service, F. John. (2013) Glucose Variability, \emph{Diabetes}
 #' \strong{62(5)}: 1398-1404, \doi{10.2337/db12-1396}
@@ -231,14 +241,13 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 #' data(example_data_hall)
 #' data(example_meals_hall)
 #' meal_metrics(example_data_hall, example_meals_hall)
-#' meal_metrics(example_data_hall, example_meals_hall)
 #'
 
 
 meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
                           recovery_win = 1, interpolate = TRUE,
                           adjust_mealtimes = TRUE, dt0 = NULL, inter_gap = 45,
-                          tz = "") {
+                          tz = "", glucose_times = FALSE) {
 
   id = meal = mealtime = idx = period = peak = base = recover = deltag = basereco = NULL
   rm(list = c("id", "meal", "mealtime", "idx", "period", "peak", "base", "recover",
