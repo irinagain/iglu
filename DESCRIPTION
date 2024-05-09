@@ -1,7 +1,7 @@
 Package: iglu
 Type: Package
 Title: Interpreting Glucose Data from Continuous Glucose Monitors
-Version: 4.1.1
+Version: 4.1.2
 Authors@R: c(person("Elizabeth", "Chun",
             role = c("aut")),
             person("Steve", "Broll",
@@ -39,7 +39,7 @@ Description: Implements a wide range of metrics for measuring glucose control an
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Depends: R (>= 3.1.0)
 Imports:
     caTools,

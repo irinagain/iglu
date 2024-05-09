@@ -65,6 +65,8 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
     warning("Data and meals timezone do not match, mealtimes timezone chosen for all")
   }
 
+
+
   ## interpolate data (important especially for baseline recovery)
   # make optional since interpolation can be time consuming
   if (interpolate) {
@@ -265,6 +267,12 @@ meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
     # check if posixct and force if not
     mealtimes <- time_check(mealtimes, name = "mealtimes", tz = tz)
 
+    # Check for missing mealtime
+    if (any(is.na(mealtimes))){
+      message(paste0("Some meal times are NA. Those records are removed."))
+      mealtimes <- mealtimes[!is.na(mealtimes)]
+    }
+
     # create tibble of id and mealtime to be used in meal_metrics_single
     # repeat id a mealtime # of times for each id
     ids <- unique(data$id)
@@ -284,6 +292,13 @@ meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
     }
     # check time format
     mealtimes$mealtime <- time_check(mealtimes$mealtime, "mealtimes", tz = tz)
+
+    # Check for missing mealtime
+    if (any(is.na(mealtimes$mealtime))){
+      message(paste0("Some meal times are NA. Those records are removed."))
+      mealtimes <- mealtimes %>% dplyr::filter(!is.na(mealtime))
+    }
+
     # if lacking meal type in mealtimes, message
     if (!("meal" %in% names(mealtimes))) {
       message(paste0("Meal types unspecified. Each mealtime will be assigned a ",
