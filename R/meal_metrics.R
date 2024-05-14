@@ -145,6 +145,10 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
     NAflag = FALSE
   }
 
+  # Assign each meal a unique id
+  meals_single = meals_single %>%
+    dplyr::mutate(mealid = 1:n())
+
   # find total window time
   total_win <- before_win + after_win + recovery_win
   meals_annotated = meals_single %>%
@@ -152,7 +156,8 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
     dplyr::mutate(start = mealtime - before_win*60*60) %>%
     dplyr::rowwise() %>%
     # for each meal window, create 4 periods
-    dplyr::reframe(meal = meal,
+    dplyr::reframe(mealid = mealid,
+                   meal = meal,
                    # time is total window (secondly)
                    time = start + lubridate::seconds(0:(total_win*60*60)),
                    # each window now has 4 periods: before, meal, after, recovery
@@ -170,17 +175,18 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 
   list_all <- list()
   # list types of meals present for this subject
-  mealtypes <- unique(out$meal[!is.na(out$meal)])
+  # mealtypes <- unique(out$meal[!is.na(out$meal)])
+  mealids <- unique(out$mealid[!is.na(out$mealid)])
 
-  for (i in 1:length(mealtypes)) {
+  for (i in 1:length(mealids)) {
     list_all[[i]] <- out %>%
       # filter down to NAs and specified meals
       # removes overlap from other meal windows
-      dplyr::filter(is.na(meal) | meal == mealtypes[i]) %>%
+      dplyr::filter(is.na(mealid) | mealid == mealids[i]) %>%
       # index by each individual meal + intervening - NA, meal, NA, etc.
-      dplyr::mutate(idx = rep(1:length(rle(meal)[[1]]), rle(meal)[[1]])) %>%
+      dplyr::mutate(idx = rep(1:length(rle(mealid)[[1]]), rle(mealid)[[1]])) %>%
       # filter down to only meals, will have unique idx for each meal
-      dplyr::filter(!is.na(meal)) %>%
+      dplyr::filter(!is.na(mealid)) %>%
       dplyr::group_by(idx) %>%
       # calculate numbers necessary for adj_metrics calculation
       # base is average of gl values before
@@ -190,7 +196,7 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
                     # recovery is time one hour after peak
                     recover = time[period == "after"][which.max(gl[period == "after"])] +
                       1*60*60) %>%
-      dplyr::reframe(id = id[1], meal = meal[1],
+      dplyr::reframe(id = id[1], meal = meal[1], mealid = mealid[1],
                      mealtime = time[period == "meal"],
                      basegl = base[1], peakgl = peak[1],
                      recovergl = ifelse(recover[1] %in% time, gl[time == recover[1]], NA),
