@@ -53,10 +53,10 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
     # message no mealtimes found for specific subject
     message(paste0("No mealtimes found for subject: ", unique(data$id)))
     # return compatible tibble with NA for all missing values
-    out <- tibble::tibble(id = unique(data$id), time = as.POSIXct(NA), meal = NA_character_,
+    out <- tibble::tibble(id = unique(data$id), time = as.POSIXct(NA, tz = tz), meal = NA_character_,
                           deltag = NA_real_, deltat = NA_real_, basereco = NA_real_,
                           basegl = NA_real_, peakgl = NA_real_, recovergl = NA_real_,
-                          peaktime = as.POSIXct(NA), recovertime = as.POSIXct(NA))
+                          peaktime = as.POSIXct(NA, tz = tz), recovertime = as.POSIXct(NA, tz = tz))
     return(out)
   }
 
@@ -117,14 +117,33 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
     out = meals_single %>%
       dplyr::mutate(deltag = NA_real_, deltat = NA_real_, basereco = NA_real_,
                     basegl = NA_real_, peakgl = NA_real_, recovergl = NA_real_,
-                    peaktime = as.POSIXct(NA), recovertime = as.POSIXct(NA)) %>%
+                    peaktime = as.POSIXct(NA, tz = tz), recovertime = as.POSIXct(NA, tz = tz)) %>%
       dplyr::select(id, time = mealtime, meal, deltag, deltat, basereco)
 
-    warning("No meals match with recorded CGM timestamps. Please try running with interpolate = TRUE and/or adjust_mealtimes = TRUE")
+    warning("No meals match with recorded CGM timestamps.
+            Please try running with interpolate = TRUE and/or adjust_mealtimes = TRUE")
 
     return(out)
   }
 
+  if (any(!(meals_single$mealtime %in% data$time))) {
+    non_match = meals_single %>%
+      dplyr::filter(!(mealtime %in% data$time)) %>%
+      dplyr::mutate(
+        deltag = NA_real_, deltat = NA_real_, basereco = NA_real_,
+        basegl = NA_real_, peakgl = NA_real_, recovergl = NA_real_,
+        peaktime = as.POSIXct(NA, tz = tz), recovertime = as.POSIXct(NA, tz = tz)
+      ) %>%
+      dplyr::select(id, time = mealtime, meal, deltag, deltat, basereco, basegl, peakgl, recovergl, peaktime, recovertime)
+
+    warning("Some meals don't match with CGM readings. Mealtimes returned with NA for metric values")
+
+    # Filter to only matching ones
+    meals_single = meals_single[meals_single$mealtime %in% data$time, ]
+    NAflag = TRUE
+  }else{
+    NAflag = FALSE
+  }
 
   # find total window time
   total_win <- before_win + after_win + recovery_win
@@ -193,21 +212,13 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
   out <- do.call(rbind, list_all)
 
   # if any of the meals didn't match, save them as NAs
-  if (any(!(meals_single$mealtime %in% data$time))) {
-    non_match = meals_single %>%
-      dplyr::filter(!(mealtime %in% data$time)) %>%
-      dplyr::mutate(
-        deltag = NA_real_, deltat = NA_real_, basereco = NA_real_,
-        basegl = NA_real_, peakgl = NA_real_, recovergl = NA_real_,
-        peaktime = as.POSIXct(NA), recovertime = as.POSIXct(NA)
-      ) %>%
-      dplyr::select(id, time = mealtime, meal, deltag, deltat, basereco, basegl, peakgl, recovergl, peaktime, recovertime)
-
-    warning("Some meals don't match with CGM readings. Mealtimes returned with NA for metric values")
-
+  if (NAflag){
     out = rbind(out, non_match)
   }
 
+
+  # Resort to match original order
+  out <- out[order(out$time), ]
 
 
   return(out)
