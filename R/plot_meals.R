@@ -8,7 +8,7 @@
 #'
 #' @inheritParams meal_metrics
 #' @inheritParams mage_ma_single
-#'
+#' @param plot_type Default: "ggplot". One of 'ggplot', 'plotly'. Determines whether the function returns a static publication-ready image or an interactive GUI.
 #' @return Plot to visualize meals data.
 #'
 #' @export

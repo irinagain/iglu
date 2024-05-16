@@ -77,6 +77,7 @@ mage_ma_single(
 mage_ma_single(
    example_data_1_subject,
    plot=TRUE,
+   static_or_gui='ggplot',
    title="Patient X",
    xlab="Time",
    ylab="Glucose Level (mg/dL)",
