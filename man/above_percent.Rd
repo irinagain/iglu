@@ -17,7 +17,7 @@ data argument will be compared to each value in the targets_above vector.}
 If a DataFrame object is passed, then a tibble object with
 a column for subject id and then a column for each target value is returned. If a vector of glucose
 values is passed, then a tibble object without the subject id is returned. Wrap
-\code{as.numeric()} around the latter to output a numeric vector.
+`as.numeric()` around the latter to output a numeric vector.
 }
 \description{
 The function \code{above_percent} produces a tibble object with values equal to

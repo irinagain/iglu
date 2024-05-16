@@ -28,10 +28,10 @@ A tibble object with 1 row for each subject, a column for subject id and
 a column for hourly average AUC values is returned. NA glucose values are
 omitted from the calculation of the AUC.
 
-AUC is calculated using the formula: (dt0/60) * ((gl\link{2:length(gl)} + gl\link{1:(length(gl)-1)})/2),
+AUC is calculated using the formula: (dt0/60) * ((gl[2:length(gl)] + gl[1:(length(gl)-1)])/2),
 where dt0/60 is the frequency of the cgm measurements in hours and gl are the glucose values.
 
-This formula is based off the Trapezoidal Rule: (time\link{2}-time\link{1} * ((glucose\link{1}+glucose\link{2})/2)).
+This formula is based off the Trapezoidal Rule: (time[2]-time[1] * ((glucose[1]+glucose[2])/2)).
 }
 \examples{
 data(example_data_1_subject)

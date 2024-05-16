@@ -1,3 +1,7 @@
+# iglu 4.1.5
+* Updates to the MAGE vignette
+* In MAGE function, linearly interpolate data to 5 min intervals using CGMS2DayByDay
+
 # iglu 4.1.1
 * Breaking change: changed parameter `plot_type` in iglu::mage, iglu::mage_ma_single to `static_or_cgm`
 * Added plotly functionality to `plot_glu()` and the lasagna plots

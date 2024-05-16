@@ -13,8 +13,6 @@ plot_meals(data, mealtimes, plot_type=c('ggplot','plotly'))
 to data being from a single subject, OR a dataframe with at least 2 columns labeled
 id and mealtime. Optionally the mealtimes dataframe can include a column labeled meal,
 giving the meal type (helps to compensate for overlapping meals)}
-
-\item{plot_type}{One of "ggplot" or "plotly". \strong{Default: "gglplot".} Returns either a ggplot (static image) or Plotly chart (interactive GUI).}
 }
 \value{
 Plot to visualize meals data.

@@ -37,10 +37,10 @@ The function plot_agp produces an AGP plot that collapses all data into a single
 Only a single subject's data may be plotted. If smooth = TRUE, then the quantiles are
 loess smoothed with the specified span before plotting. The horizontal green lines represent the target range,
 default is 70-180 mg/dL. The black line is the median glucose value for each time of day. The dark blue shaded area
-represents 50\\% of glucose values - those between the 25th and 75 quantiles. The light
-blue shaded area shows 90\\% of the glucose values - those between the 5th and 95th quantiles.
+represents 50\% of glucose values - those between the 25th and 75 quantiles. The light
+blue shaded area shows 90\% of the glucose values - those between the 5th and 95th quantiles.
 Additionally, the percents shown on the right hand side of the plot show which quantiles each line refers to -
-e.g. the line ending at 95\\% is the line corresponding to the 95th quantiles of glucose values.
+e.g. the line ending at 95\% is the line corresponding to the 95th quantiles of glucose values.
 }
 \examples{
 

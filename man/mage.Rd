@@ -12,7 +12,6 @@ mage(
   long_ma = 32,
   return_type = c("num", "df"),
   direction = c("avg", "service", "max", "plus", "minus"),
-  dt0 = NULL,
   tz = "",
   inter_gap = 45,
   max_gap = 180,
@@ -33,15 +32,13 @@ mage(
 glycemic excursions used in the calculation. This is the only parameter that
 can be specified for \code{version = "naive"}, and it is ignored if \code{version = "ma"}.}
 
-\item{short_ma}{\strong{Default: 5.} Integer for period length of the short moving average. Must be positive and less than \code{long_ma}. (Recommended <15)}
+\item{short_ma}{\strong{Default: 5.} Integer for period length of the short moving average. Must be positive and less than `long_ma`. (Recommended <15)}
 
-\item{long_ma}{\strong{Default: 32.} Integer for period length for the long moving average. Must be positive and greater than \code{short_ma}. (Recommended >20)}
+\item{long_ma}{\strong{Default: 32.} Integer for period length for the long moving average. Must be positive and greater than `short_ma`. (Recommended >20)}
 
 \item{return_type}{\strong{Default: "num".} One of ("num", "df"). Will return either a single number for the "MAGE over the entire trace" (weighted by segment length) or a DataFrame with the MAGE value for each segment (see the MAGE vignette for discussion of handling large gaps by splitting trace into multiple segments).}
 
 \item{direction}{\strong{Default: "avg".} One of ("avg", "service", "max", "plus", or "minus"). Algorithm will calculate one of the following: MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service"). NOTE: the selection of peak-to-nadir or nadir-to-peak is chosen independently on each segment, thus MAGEservice may choose peak-to-nadir on one segment and nadir-to-peak on another, for example.}
-
-\item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 
@@ -49,9 +46,9 @@ can be specified for \code{version = "naive"}, and it is ignored if \code{versio
 
 \item{max_gap}{\strong{Default: 180.} Integer for the maximum length of a gap in minutes before the trace is split into segments and MAGE is calculated on each segment independently.}
 
-\item{plot}{\strong{Default: FALSE.} Boolean. If \code{TRUE}, returns a plot that visualizes all identified peaks and nadirs, excursions, and  missing gaps. An interactive GUI can be loaded with \code{static_or_gui = 'plotly'}.}
+\item{plot}{\strong{Default: FALSE.} Boolean. If `TRUE`, returns a plot that visualizes all identified peaks and nadirs, excursions, and  missing gaps. An interactive GUI can be loaded with `static_or_gui = 'plotly'`.}
 
-\item{title}{\strong{Default: "Glucose Trace - Subject \link{ID}".} Title for the ggplot.}
+\item{title}{\strong{Default: "Glucose Trace - Subject [ID]".} Title for the ggplot.}
 
 \item{xlab}{\strong{Default: "Time".} Label for x-axis of ggplot.}
 
@@ -75,7 +72,7 @@ The function calculates MAGE values and can optionally return a plot of the gluc
 \details{
 If version \code{'ma'} is selected, the function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in "Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability", (Service, 1970). For this version, glucose values will be interpolated over a uniform time grid prior to calculation.
 
-\code{'ma'} is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the \emph{original} (not moving average) glucose values.
+\code{'ma'} is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the _original_ (not moving average) glucose values. (Note: this function internally uses CGMS2DayByDay with dt0 = 5. Thus, all CGM data is linearly interpolated to 5 minute intervals. See the MAGE vignette for more details.)
 
 \code{'naive'} algorithm calculates MAGE by taking the mean of absolute glucose differences (between each value and the mean) that are greater than the standard deviation. A multiplier can be added to the standard deviation using the \code{sd_multiplier} argument.
 }

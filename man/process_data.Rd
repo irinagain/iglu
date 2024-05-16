@@ -21,7 +21,7 @@ on how to handle arbitrary formats.}
 
 \item{time_parser}{Optional function used to convert datetime strings to time objects. Defaults to as.POSIXct.
 If your times are in a format not parsable by as.POSIXct, you can parse a custom format by passing
-function(time_string) \{strptime(time_string, format = \if{html}{\out{<format string>}})\} as the time_parser parameter.}
+function(time_string) \{strptime(time_string, format = <format string>)\} as the time_parser parameter.}
 }
 \value{
 A processed dataframe object that cooperates with every other

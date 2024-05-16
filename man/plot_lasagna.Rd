@@ -26,7 +26,7 @@ plot_lasagna(
 
 \item{datatype}{String corresponding to data aggregation used for plotting, currently supported options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject}
 
-\item{lasagnatype}{String corresponding to plot type when using \code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '\code{subjectsorted}' for a lasagna plot with glucose values sorted within each subject across time points.}
+\item{lasagnatype}{String corresponding to plot type when using \code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.}
 
 \item{maxd}{For datatype "all", maximal number of days to be plotted from the study. The default value is 14 days (2 weeks).}
 
@@ -47,7 +47,7 @@ The default value is 45 min.}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 
-\item{color_scheme}{String corresponding to the chosen color scheme. By default, 'blue-red' scheme is used, with the values below \code{LLTR} colored in shades of blue, and values above \code{ULTR} colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.}
+\item{color_scheme}{String corresponding to the chosen color scheme. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.}
 
 \item{log}{Logical value indicating whether log10 of glucose values should be taken, default value is FALSE.
 When log = TRUE the glucose values, limits, midpoint, LLTR, and ULTR will all be log transformed.}

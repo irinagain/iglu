@@ -9,7 +9,7 @@ plot_daily(data, maxd = 14, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "")
 \arguments{
 \item{data}{DataFrame with column names ("id", "time", and "gl").}
 
-\item{maxd}{\strong{Default: 14.} Number of days to plot. If less than \code{maxd} days of data are available, all days are plotted.}
+\item{maxd}{\strong{Default: 14.} Number of days to plot. If less than `maxd` days of data are available, all days are plotted.}
 
 \item{LLTR}{\strong{Default: 70.} Lower Limit of Target Range in mg/dL.}
 
@@ -23,7 +23,7 @@ plot_daily(data, maxd = 14, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "")
 Daily glucose time series plots for a single subject
 }
 \description{
-The function \code{plot_daily} plots daily glucose time series profiles for a single subject.
+The function `plot_daily` plots daily glucose time series profiles for a single subject.
 }
 \details{
 Only a single subject's data may be plotted. The black line shows the glucose values.

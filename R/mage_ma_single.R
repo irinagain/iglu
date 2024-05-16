@@ -48,7 +48,7 @@ mage_ma_single <- function(data,
                            short_ma = 5, long_ma = 32,
                            return_type = c('num', 'df'),
                            direction = c('avg', 'service', 'max', 'plus', 'minus'),
-                           dt0 = NULL, tz = "", inter_gap = 45,
+                           tz = "", inter_gap = 45,
                            max_gap = 180,
                            plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions = TRUE,
                            static_or_gui=c('plotly', 'ggplot')) {
@@ -254,7 +254,8 @@ mage_ma_single <- function(data,
   data = check_data_columns(data)
 
   # 1.1 Interpolate over uniform grid
-  data_ip <- CGMS2DayByDay(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
+  # Note: always interpolate to 5 minute grid
+  data_ip <- CGMS2DayByDay(data, dt0 = 5, inter_gap = inter_gap, tz = tz)
   day_one = lubridate::as_datetime(data_ip$actual_dates[1])
   ndays = length(data_ip$actual_dates)
 

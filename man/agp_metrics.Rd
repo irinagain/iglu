@@ -29,29 +29,29 @@ a column for above_180 value,
 a column for above_250 value,
 }
 \description{
-The function \code{agp_metrics} runs the following functions
-and combines them into a tibble object: \code{active_percent}, \code{mean_glu}, \code{gmi},
-\code{cv_glu}, \code{below_percent}, \code{in_range_percent}, \code{above_percent}.
+The function `agp_metrics` runs the following functions
+and combines them into a tibble object: `active_percent`, `mean_glu`, `gmi`,
+`cv_glu`, `below_percent`, `in_range_percent`, `above_percent`.
 }
 \details{
 The function uses recommended cutoffs of 54, 70, 180, and 250 mg/dL for calculation.
 
-If \code{shinyformat == FALSE} (default), returns a tibble object with 1 row for each subject, and 12 columns:
-a column for subject id (\code{id}),
-a column for start date (\code{start_date}),
-a column for end date (\code{end_date}),
-a column for number of days (\code{ndays}),
-a column for active percent (\code{active_percent}),
-a column for mean value (\code{mean}),
-a column for GMI value (\code{GMI}),
-a column for CV value (\code{CV}),
-a column for \% below 54 mg/dL (\code{below_54}),
-a column for \% below 70 mg/dL (\code{below_70}),
-a column for \% in range \link{70, 180} mg/dL (\code{in_range_70_180}),
-a column for \% above 180 mg/dL (\code{above_180}),
-a column for \% above 250 mg/dL (\code{above_250}).
+If `shinyformat == FALSE` (default), returns a tibble object with 1 row for each subject, and 12 columns:
+a column for subject id (`id`),
+a column for start date (`start_date`),
+a column for end date (`end_date`),
+a column for number of days (`ndays`),
+a column for active percent (`active_percent`),
+a column for mean value (`mean`),
+a column for GMI value (`GMI`),
+a column for CV value (`CV`),
+a column for % below 54 mg/dL (`below_54`),
+a column for % below 70 mg/dL (`below_70`),
+a column for % in range [70, 180] mg/dL (`in_range_70_180`),
+a column for % above 180 mg/dL (`above_180`),
+a column for % above 250 mg/dL (`above_250`).
 
-If \code{shinyformat == TRUE}, a tibble with 2 columns: metric and value, is returned.
+If `shinyformat == TRUE`, a tibble with 2 columns: metric and value, is returned.
 This output is used when generating the single subject AGP shiny page.
 }
 \examples{

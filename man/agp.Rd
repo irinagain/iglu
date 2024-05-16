@@ -9,7 +9,7 @@ agp(data, maxd = 14, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE)
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, a warning is produced and only 1st subject is used.}
 
-\item{maxd}{\strong{Default: 14.} Number of days to plot. If less than \code{maxd} days of data are available, all days are plotted.}
+\item{maxd}{\strong{Default: 14.} Number of days to plot. If less than `maxd` days of data are available, all days are plotted.}
 
 \item{inter_gap}{The maximum allowable gap (in minutes) for interpolation. The values will not be interpolated between the glucose measurements that are more than inter_gap minutes apart. The default value is 45 min.}
 
@@ -20,7 +20,7 @@ agp(data, maxd = 14, inter_gap = 45, dt0 = NULL, tz = "", daily = TRUE)
 \item{daily}{\strong{Default: TRUE.} Logical indicator whether AGP should include separate daily plots.}
 }
 \value{
-A plot displaying glucose measurements range, selected glucose statistics (average glucose, Glucose Management Indicator, \%CV), percentage spent in target ranges and quantiles of 24 hour profile.
+A plot displaying glucose measurements range, selected glucose statistics (average glucose, Glucose Management Indicator, %CV), percentage spent in target ranges and quantiles of 24 hour profile.
 }
 \description{
 Display Ambulatory Glucose Profile (AGP) statistics for selected subject

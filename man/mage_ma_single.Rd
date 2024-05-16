@@ -10,7 +10,6 @@ mage_ma_single(
   long_ma = 32,
   return_type = c("num", "df"),
   direction = c("avg", "service", "max", "plus", "minus"),
-  dt0 = NULL,
   tz = "",
   inter_gap = 45,
   max_gap = 180,
@@ -26,15 +25,13 @@ mage_ma_single(
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, a warning is produced and only 1st subject is used.}
 
-\item{short_ma}{\strong{Default: 5.} Integer for period length of the short moving average. Must be positive and less than \code{long_ma}. (Recommended <15)}
+\item{short_ma}{\strong{Default: 5.} Integer for period length of the short moving average. Must be positive and less than `long_ma`. (Recommended <15)}
 
-\item{long_ma}{\strong{Default: 32.} Integer for period length for the long moving average. Must be positive and greater than \code{short_ma}. (Recommended >20)}
+\item{long_ma}{\strong{Default: 32.} Integer for period length for the long moving average. Must be positive and greater than `short_ma`. (Recommended >20)}
 
 \item{return_type}{\strong{Default: "num".} One of ("num", "df"). Will return either a single number for the "MAGE over the entire trace" (weighted by segment length) or a DataFrame with the MAGE value for each segment (see the MAGE vignette for discussion of handling large gaps by splitting trace into multiple segments).}
 
 \item{direction}{\strong{Default: "avg".} One of ("avg", "service", "max", "plus", or "minus"). Algorithm will calculate one of the following: MAGE+ (nadir to peak), MAGE- (peak to nadir), MAGEavg = avg(MAGE+, MAGE-), MAGEmax = max(MAGE+, MAGE-), or automatically choose MAGE+/MAGE- based on the first countable excursion (i.e., "service"). NOTE: the selection of peak-to-nadir or nadir-to-peak is chosen independently on each segment, thus MAGEservice may choose peak-to-nadir on one segment and nadir-to-peak on another, for example.}
-
-\item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 
@@ -42,9 +39,9 @@ mage_ma_single(
 
 \item{max_gap}{\strong{Default: 180.} Integer for the maximum length of a gap in minutes before the trace is split into segments and MAGE is calculated on each segment independently.}
 
-\item{plot}{\strong{Default: FALSE.} Boolean. If \code{TRUE}, returns a plot that visualizes all identified peaks and nadirs, excursions, and  missing gaps. An interactive GUI can be loaded with \code{static_or_gui = 'plotly'}.}
+\item{plot}{\strong{Default: FALSE.} Boolean. If `TRUE`, returns a plot that visualizes all identified peaks and nadirs, excursions, and  missing gaps. An interactive GUI can be loaded with `static_or_gui = 'plotly'`.}
 
-\item{title}{\strong{Default: "Glucose Trace - Subject \link{ID}".} Title for the ggplot.}
+\item{title}{\strong{Default: "Glucose Trace - Subject [ID]".} Title for the ggplot.}
 
 \item{xlab}{\strong{Default: "Time".} Label for x-axis of ggplot.}
 
@@ -60,10 +57,10 @@ mage_ma_single(
 A ggplot or Plotly chart if \code{plot = TRUE}, depending on \code{static_or_gui}. Otherwise, a numeric MAGE value for the inputted glucose trace or a DataFrame with the MAGE values on each segment, depending on \code{return_type}.
 }
 \description{
-This function is an internal function used \code{mage}. The function will calculate the Mean Amplitude of Glycemic Excursions (MAGE) on \strong{all} the values of the inputted data set regardless of subject. To calculate separate MAGE values for a group of subjects, use the \code{mage} function.
+This function is an internal function used `mage`. The function will calculate the Mean Amplitude of Glycemic Excursions (MAGE) on \strong{all} the values of the inputted data set regardless of subject. To calculate separate MAGE values for a group of subjects, use the `mage` function.
 }
 \details{
-See \code{mage}.
+See `mage`.
 }
 \examples{
 data(example_data_1_subject)

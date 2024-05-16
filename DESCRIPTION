@@ -1,7 +1,7 @@
 Package: iglu
 Type: Package
 Title: Interpreting Glucose Data from Continuous Glucose Monitors
-Version: 4.1.1
+Version: 4.1.9
 Authors@R: c(person("Elizabeth", "Chun",
             role = c("aut")),
             person("Steve", "Broll",
@@ -41,12 +41,7 @@ Description: Implements a wide range of metrics for measuring glucose control an
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-<<<<<<< HEAD
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
-=======
 RoxygenNote: 7.3.1
->>>>>>> 0103e70b076231a6b74c59cc238e12c1842a8ce4
 Depends: R (>= 3.1.0)
 Imports:
     caTools,
@@ -72,7 +67,6 @@ Imports:
     plotly
 Suggests:
     knitr,
-    rmarkdown,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 URL: https://irinagain.github.io/iglu/

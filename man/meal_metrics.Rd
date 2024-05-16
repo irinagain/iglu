@@ -52,7 +52,7 @@ The function meal_metrics calculates three simple glucose meal metrics
 \details{
 A tibble object is returned with three metrics calculated for each mealtime.
 The last three columns of the output correspond to the three metrics: deltag
-refers to \eqn{\Delta G}, deltat is \eqn{\Delta T}, and basereco is \\% Baseline recovery.
+refers to \eqn{\Delta G}, deltat is \eqn{\Delta T}, and basereco is \% Baseline recovery.
 If no meal column is given in the original data, one will be automatically generated
 with a unique number for each meal.
 }

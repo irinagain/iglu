@@ -23,11 +23,11 @@ plot_glu(
 \item{data}{DataFrame with column names ("id", "time", and "gl").}
 
 \item{plottype}{\strong{Default: "tsplot".} One of ('tsplot', 'lasagna'). String corresponding to the desired plot type. Options are
-'tsplot' for a time series plot and 'lasagna' for a lasagna plot. See the \code{lasagnatype} parameter for further options corresponding to the 'lasagna' \code{plottype}.}
+'tsplot' for a time series plot and 'lasagna' for a lasagna plot. See the `lasagnatype` parameter for further options corresponding to the 'lasagna' `plottype`.}
 
 \item{datatype}{String corresponding to data aggregation used for plotting, currently supported options are 'all' which plots all glucose measurements within the first \code{maxd} days for each subject, and 'average' which plots average 24 hour glucose values across days for each subject}
 
-\item{lasagnatype}{String corresponding to plot type when using \code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '\code{subjectsorted}' for a lasagna plot with glucose values sorted within each subject across time points.}
+\item{lasagnatype}{String corresponding to plot type when using \code{datatype = "average"}, currently supported options are 'unsorted' for an unsorted lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across subjects, and '`subjectsorted`' for a lasagna plot with glucose values sorted within each subject across time points.}
 
 \item{LLTR}{\strong{Default: 70.} Lower Limit of Target Range in mg/dL.}
 
@@ -39,10 +39,10 @@ plot_glu(
 
 \item{tz}{A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 
-\item{color_scheme}{\strong{Default: "blue-red".} String corresponding to the chosen color scheme when the \code{plottype} is 'lasagna'. By default, 'blue-red' scheme is used, with the values below \code{LLTR} colored in shades of blue, and values above \code{ULTR} colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.}
+\item{color_scheme}{\strong{Default: "blue-red".} String corresponding to the chosen color scheme when the `plottype` is 'lasagna'. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.}
 
-\item{log}{\strong{Default: FALSE.} Boolean indicating whether \code{log10} of glucose values should be taken.
-When \code{log = TRUE}, the glucose values, LLTR, and ULTR will all be log transformed, and time series plots will
+\item{log}{\strong{Default: FALSE.} Boolean indicating whether `log10` of glucose values should be taken.
+When `log = TRUE`, the glucose values, LLTR, and ULTR will all be log transformed, and time series plots will
 be on a semilogarithmic scale.}
 
 \item{static_or_gui}{\strong{Default: "plotly".} One of ("ggplot", "plotly"). Returns either a ggplot (static image) or Plotly chart (interactive GUI).}
@@ -51,11 +51,11 @@ be on a semilogarithmic scale.}
 Any output from the plot object
 }
 \description{
-The function \code{plot_glu} supports several plotting methods for both single and multiple
+The function `plot_glu` supports several plotting methods for both single and multiple
 subject data.
 }
 \details{
-For the default option \code{plottype = tsplot}, a time series graph for each subject is
+For the default option `plottype = tsplot`, a time series graph for each subject is
 produced with hypo- and hyperglycemia cutoffs shown as horizontal red lines.
 The time series plots for all subjects chosen (all by default) are displayed
 on a grid.

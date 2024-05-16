@@ -16,15 +16,15 @@ A tibble object with five columns: subject id,
 corresponding active_percent value, duration of measurement period in days, start date, and end date.
 }
 \description{
-The function \code{active_percent} produces the \% of time CGM is active together with the length of the measurement period
+The function `active_percent` produces the % of time CGM is active together with the length of the measurement period
 }
 \details{
-The function \code{active_percent} produces a tibble object with values equal to the
+The function `active_percent` produces a tibble object with values equal to the
 percentage of time the CGM was active, the total number of observed days, the start date, and the end date. For example, if a CGM's (5 min frequency) times were 0, 5, 10, 15 and
-glucose values were missing at time 5, then percentage of time the CGM was active is 75\%.
+glucose values were missing at time 5, then percentage of time the CGM was active is 75%.
 The output columns correspond to the subject id, the percentage of time for which the CGM was active, the number of days of measurements, the start date and the end date of measurements.
 The output rows correspond to the subjects.
-The values of \code{active_percent} are always between 0\% (no measurements) and 100\% (all measurements).
+The values of `active_percent` are always between 0% (no measurements) and 100% (all measurements).
 }
 \examples{
 
