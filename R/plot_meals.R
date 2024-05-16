@@ -32,10 +32,10 @@
 #'
 #' @examples
 #'
-#' data(example_data_hall)
-#' data(example_meals_hall)
-#' meal_metrics(example_data_hall, example_meals_hall)
-#'
+#' select_subject = example_data_hall[example_data_hall$id == "2133-018", ]
+#' select_meals = example_meals_hall[example_meals_hall$id == "2133-018", ]
+#' plot_meals(select_subject, select_meals)
+
 
 plot_meals = function(data, mealtimes, plot_type=c('ggplot','plotly')) {
 
@@ -43,6 +43,7 @@ plot_meals = function(data, mealtimes, plot_type=c('ggplot','plotly')) {
     time_window = x = y = NULL
   rm(list = c("id", "meal", "mealtime", "peaktime", "recovertime", "basegl", "peakgl", "recovergl",
               "time_window", "x", "y"))
+  plot_type = match.arg(plot_type)
 
   #Checking for more than 1 subject
   ns = length(unique(data$id))
@@ -83,7 +84,7 @@ plot_meals = function(data, mealtimes, plot_type=c('ggplot','plotly')) {
     # gl time-series
     ggplot2::geom_line(ggplot2::aes(time, gl)) +
     # baseline glucose
-    ggplot2::geom_line(ggplot2::aes(time, basegl, group = meal), color = "dodgerblue") +
+    ggplot2::geom_line(ggplot2::aes(time, basegl, group = meal), color = "dodgerblue", data = na.omit(merged)) +
     # mealtime vertical line
     ggplot2::geom_vline(xintercept = as.numeric(unique(merged$mealtime[!is.na(merged$mealtime)])),
                color = "red", linetype = "dashed") +
