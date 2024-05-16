@@ -43,10 +43,10 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
                                  recovery_win, interpolate, adjust_mealtimes,
                                  dt0, inter_gap, tz) {
 
-  id = meal = mealtime = idx = period = peak = base = recover = deltag = basereco =
-    basegl = peakgl = recovergl = peaktime = recovertime = NULL
+   id = meal = mealtime = idx = period = peak = base = recover = deltag = basereco =
+    basegl = peakgl = recovergl = peaktime = recovertime = mealid = NULL
   rm(list = c("id", "meal", "mealtime", "idx", "period", "peak", "base", "recover",
-              "deltag", "basereco", "basegl", "peakgl", "recovergl", "peaktime", "recovertime"))
+              "deltag", "basereco", "basegl", "peakgl", "recovergl", "peaktime", "recovertime", "mealid"))
 
   # if id is not in mealtimes data
   if (!(unique(data$id) %in% unique(mealtimes$id))) {
@@ -289,9 +289,9 @@ meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
                           adjust_mealtimes = TRUE, dt0 = NULL, inter_gap = 45,
                           tz = "", glucose_times = FALSE) {
 
-  id = meal = mealtime = idx = period = peak = base = recover = deltag = basereco = NULL
+  . = id = meal = mealtime = idx = period = peak = base = recover = deltag = basereco = NULL
   rm(list = c("id", "meal", "mealtime", "idx", "period", "peak", "base", "recover",
-              "deltag", "basereco"))
+              "deltag", "basereco", "."))
 
   # check with iglu internal function
   data = check_data_columns(data, time_check = TRUE, tz = tz)
@@ -356,7 +356,8 @@ meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
                                        recovery_win = recovery_win, interpolate = interpolate,
                                        adjust_mealtimes = adjust_mealtimes, dt0 = dt0,
                                        inter_gap = inter_gap, tz = tz)) %>%
-    dplyr::ungroup()
+    dplyr::ungroup() %>%
+    { if (glucose_times) . else dplyr::select(., 1:6) }
 
   return(out)
 }

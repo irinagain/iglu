@@ -23,6 +23,7 @@ metrics_heatmap <- function(data = NULL, metrics = NULL, metric_cluster = 6, clu
     if(is.null(data)){
       stop("Either CGM data or precalculated metrics must be provided")
     }else{
+      data = check_data_columns(data, time_check=TRUE)
       # No metrics are provided, calculate all by default
       mecs = all_metrics(data)
     }

@@ -30,10 +30,9 @@ one to zoom into specific areas of the plot.
 }
 \examples{
 
-data(example_data_hall)
-data(example_meals_hall)
-meal_metrics(example_data_hall, example_meals_hall)
-
+select_subject = example_data_hall[example_data_hall$id == "2133-018", ]
+select_meals = example_meals_hall[example_meals_hall$id == "2133-018", ]
+plot_meals(select_subject, select_meals)
 }
 \references{
 Service, F. John. (2013) Glucose Variability, \emph{Diabetes}
