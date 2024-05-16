@@ -54,16 +54,16 @@ diabetes, Type 2 diabetes, and those without diabetes) following the
 definition described in Service et al. [3]. An automated algorithm for
 MAGE calculation was developed to identify peaks and nadirs of glycemic
 excursions based on the crosses of a short and long moving average of
-the glucose profile, and implemented in version 3 of R package iglu. The
-accuracy of the algorithm was evaluated relative to manual calculations
-using a five-fold cross-validation and compared to other publicly
-available MAGE calculators, as listed in Table .
+the glucose profile, and implemented in version 3+ of R package iglu.
+The accuracy of the algorithm was evaluated relative to manual
+calculations using a five-fold cross-validation and compared to other
+publicly available MAGE calculators, as listed in Table 2.
 
 **Results**: The newly developed algorithm had the median error of 1.4%
-relative to manual calculations (iglu v3.5.1+). The median errors of the
-four other approaches including cgmanalysis, cgmquantify, EasyGV and the
-naive algorithm in the earlier versions of iglu were 20.3%, 78.4%,
-11.3%, and 42.0%, respectively.
+relative to manual calculations (iglu v4.1.1+). The median errors of the
+six other approaches including cgmanalysis, cgmquantify, EasyGV, rGV,
+AGATA, and the naive algorithm in the earlier versions of iglu were
+20.3%, 78.4%, 11.3%, X%, X%, and 42.0%, respectively.
 
 **Conclusions**: The newly developed algorithm eliminates the need for
 tedious manual MAGE calculations and approximates the manual derivation
@@ -132,24 +132,68 @@ CGM traces following the original description of MAGE calculations by
 Service et al. [3] by two of the authors, who were unaware of the
 outcome of the proposed algorithm's outputs.
 
-|                                Dataset                                 | Diabetes Type |     Age group      | Subject ID  | Number of days used (CGM traces) |
-|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|
-|   [Hall et al. (2018)](https://doi.org/10.1371/journal.pbio.2005143)   |     None      |   Adults (\> 18)   | 1636-69-001 |                5                 |
-|                                                                        |               |                    | 1636-69-026 |                6                 |
-| [Tsalikian et al. (2005)](https://doi.org/10.1016/j.jpeds.2005.04.065) |    Type 1     | Children (10 - 18) |      2      |                1                 |
-|                                                                        |               |                    |      7      |                2                 |
-|                                                                        |               |                    |      8      |                1                 |
-|                                                                        |               |                    |     11      |                2                 |
-|                                                                        |               |                    |     15      |                1                 |
-|                                                                        |               |                    |     43      |                1                 |
-|                                                                        |               |                    |     44      |                1                 |
-|  [Dubosson et al. (2005)](https://doi.org/10.1016/j.imu.2018.09.003)   |    Type 1     |   Adults (\> 18)   |      1      |                5                 |
-|                                                                        |               |                    |      2      |                2                 |
-|  [Broll et al. (2021)](https://doi.org/10.1371/journal.pone.0248560)   |    Type 2     |   Adults (\> 18)   |  Subject 1  |                1                 |
-|                                                                        |               |                    |  Subject 2  |                5                 |
-|                                                                        |               |                    |  Subject 3  |                1                 |
-|                                                                        |               |                    |  Subject 4  |                5                 |
-|                                                                        |               |                    |  Subject 5  |                6                 |
++-------------+-------------+-------------+-------------+-------------+
+| Dataset     | Diabetes    | Age group   | Subject ID  | Number of   |
+|             | Type        |             |             | days used   |
+|             |             |             |             | (CGM        |
+|             |             |             |             | traces)     |
++:===========:+:===========:+:===========:+:===========:+:===========:+
+| [Hall et    | None        | Adults (\>  | 1636-69-001 | 5           |
+| al.         |             | 18)         |             |             |
+| (2018)](h   |             |             |             |             |
+| ttps://doi. |             |             |             |             |
+| org/10.1371 |             |             |             |             |
+| /journal.pb |             |             |             |             |
+| io.2005143) |             |             |             |             |
++-------------+-------------+-------------+-------------+-------------+
+|             |             |             | 1636-69-026 | 6           |
++-------------+-------------+-------------+-------------+-------------+
+| [Tsalikian  | Type 1      | Children    | 2           | 1           |
+| et al.      |             | (10 - 18)   |             |             |
+| (2005)](    |             |             |             |             |
+| https://doi |             |             |             |             |
+| .org/10.101 |             |             |             |             |
+| 6/j.jpeds.2 |             |             |             |             |
+| 005.04.065) |             |             |             |             |
++-------------+-------------+-------------+-------------+-------------+
+|             |             |             | 7           | 2           |
++-------------+-------------+-------------+-------------+-------------+
+|             |             |             | 8           | 1           |
++-------------+-------------+-------------+-------------+-------------+
+|             |             |             | 11          | 2           |
++-------------+-------------+-------------+-------------+-------------+
+|             |             |             | 15          | 1           |
++-------------+-------------+-------------+-------------+-------------+
+|             |             |             | 43          | 1           |
++-------------+-------------+-------------+-------------+-------------+
+|             |             |             | 44          | 1           |
++-------------+-------------+-------------+-------------+-------------+
+| [Dubosson   | Type 1      | Adults (\>  | 1           | 5           |
+| et al.      |             | 18)         |             |             |
+| (2005)      |             |             |             |             |
+| ](https://d |             |             |             |             |
+| oi.org/10.1 |             |             |             |             |
+| 016/j.imu.2 |             |             |             |             |
+| 018.09.003) |             |             |             |             |
++-------------+-------------+-------------+-------------+-------------+
+|             |             |             | 2           | 2           |
++-------------+-------------+-------------+-------------+-------------+
+| [Broll et   | Type 2      | Adults (\>  | Subject 1   | 1           |
+| al.         |             | 18)         |             |             |
+| (2021)](h   |             |             |             |             |
+| ttps://doi. |             |             |             |             |
+| org/10.1371 |             |             |             |             |
+| /journal.po |             |             |             |             |
+| ne.0248560) |             |             |             |             |
++-------------+-------------+-------------+-------------+-------------+
+|             |             |             | Subject 2   | 5           |
++-------------+-------------+-------------+-------------+-------------+
+|             |             |             | Subject 3   | 1           |
++-------------+-------------+-------------+-------------+-------------+
+|             |             |             | Subject 4   | 5           |
++-------------+-------------+-------------+-------------+-------------+
+|             |             |             | Subject 5   | 6           |
++-------------+-------------+-------------+-------------+-------------+
 
 **Table 1:** Summary of the 45 CGM traces used for manual calculations.
 The first three datasets have been obtained as described in [13]. The
@@ -158,36 +202,269 @@ last dataset is available within R package iglu [8].
 *Existing MAGE Calculators*
 
 We benchmarked the proposed algorithm against a variety of open and
-closed-source tools. To the best of our knowledge, this comprises a
-comprehensive list of all existing calculators or methods to compute
-MAGE
+closed-source tools. We looked into the packages below. To the best of
+our knowledge, this comprises a relatively exhaustive list of existing
+packages to compute metrics on CGM data as of May 15, 2024.
 
-|                                                                                                                                                                                                                                                                                                      Tool or Algorithm Name                                                                                                                                                                                                                                                                                                      |                                                                Benchmarked Against?                                                                | **Version Used** |
-|:-----------------:|:-------------------------:|:-------------------------:|
-|                                                                                                                                                                                                                                                                                                     iglu::mage_ma (Proposed)                                                                                                                                                                                                                                                                                                     |                                                                        Yes                                                                         |     iglu v4.     |
-|                                                                                                                                                                                                                                                                                                  iglu::mage_naive (Deprecated)                                                                                                                                                                                                                                                                                                   |                                                                        Yes                                                                         |    iglu v2.1     |
-|                                                                                                                                                                                                                                                                                 [EasyGV](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7591379/)                                                                                                                                                                                                                                                                                  |                                                                        Yes                                                                         |    Version 10    |
-|                                                                                                                                                                                                                                                                                [GVAP Tool](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7591379/)                                                                                                                                                                                                                                                                                |                                                                        todo                                                                        |       N/A        |
-|                                                                                                                                                                                                                                                                          [CGMAnalyzer](https://cran.r-project.org/web/packages/CGManalyzer/index.html)                                                                                                                                                                                                                                                                           |                                                                        todo                                                                        |       N/A        |
-|                                                                                                                                                                                                                                                                               [cgmanalysis](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6788735/)                                                                                                                                                                                                                                                                               |                                                                        todo                                                                        |                  |
-|                                                                                                                                                                                                                                                                                               [GLU](https://github.com/MRCIEU/GLU)                                                                                                                                                                                                                                                                                               |                                                                        todo                                                                        |                  |
-|                                                                                                                                                                                                                                                                            [CGMStatsAnalyser](https://baker-biostats.shinyapps.io/CGMStatsAnalyser/)                                                                                                                                                                                                                                                                             |                                                                        todo                                                                        |                  |
-|                                                                                                                                                                                                                                                                                  [rGV](https://cran.r-project.org/web/packages/rGV/index.html)                                                                                                                                                                                                                                                                                   |                                                                        todo                                                                        |                  |
-|                                                                                                                                                                                                                                                                              [cgmquantify](https://cran.r-project.org/web/packages/rGV/index.html)                                                                                                                                                                                                                                                                               |                                                                        todo                                                                        |                  |
-|                                                                                                                                                                                                                                                                                             [AGATA](https://gcappon.github.io/agata)                                                                                                                                                                                                                                                                                             |                                                                        todo                                                                        |                  |
-|                                                                                                                                                                                                                                                                                            [CGDA](https://github.com/EvdVossen/CGDA)                                                                                                                                                                                                                                                                                             |                                                                        todo                                                                        |                  |
-|                                                                                                                                                                                                                                                                                          [CGMTSA](https://github.com/RyanJ-Shao/CGMTSA)                                                                                                                                                                                                                                                                                          |                                                                        todo                                                                        |                  |
-|                                                                                                                                                                                                                                                                               [CGM Shiny](https://github.com/rolandhangelbroek/cgmshiny/tree/main)                                                                                                                                                                                                                                                                               |                                                                        todo                                                                        |                  |
-|                                                                                                                                                                                                                                                                                   [CGM Viewer](https://adaychen.shinyapps.io/shinyspecclust/)                                                                                                                                                                                                                                                                                    |                                                                        todo                                                                        |                  |
-|                                                                                                                                                                                                                                                                    ["Group of Signs" Method](https://journals.sagepub.com/doi/abs/10.1177/193229680800200614)                                                                                                                                                                                                                                                                    |                       In Progress: no open-source implementation provided. Coding from scratch as per paper specifications.                        |                  |
-|                                                                                                                                                                                                                                                                     ["Spline Interpolation" Method](https://www.ijeei.org/docs-11671079585b6939d30eb25.pdf)                                                                                                                                                                                                                                                                      |                       In Progress: no open-source implementation provided. Coding from scratch as per paper specifications.                        |                  |
-| ["Linear Interpolation" Method](https://d1wqtxts1xzle7.cloudfront.net/97165680/1111-libre.pdf?1673493701=&response-content-disposition=inline%3B+filename%3DMeasurement_of_MAGE_Mean_Amplitude_of_Gl.pdf&Expires=1715694784&Signature=L83vsE7uLy9wiVjqnnLfLCFQuisXMxX-sDtuc~b-8yIV0BsfxSI7S1NTvytr-00bLPvPx7yy9PZwK3B9o2L6IVKS723kkjT2vVDPo7lQFB96z4y30iclITG9rT-NZROEumDffb9hb~0tPov6GEQJUfRvEbnN0htcXM1832E9n0GhM7LrsYq1~siMmfSpKfkj8fdSUVFjQ2H8U-e-x0TwmUmerEwtbmVhsjmqSGCQ21slLhZdp18bK0XokncafAP5sJAiRpuwcz63ssaNfbk4GcUh0AJC7SXCwz6Y2kN5TSGjbaLMz5pUcafM7vRqA-GaEc3Rcl0DrI8l4u6X3Zdzbw__&Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA) |                       In Progress: no open-source implementation provided. Coding from scratch as per paper specifications.                        |                  |
-|                                                                                                                                                                                                                                                                                  [MAGECAA v1.0](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5)                                                                                                                                                                                                                                                                                  |                                                 No: Closed-source - copy requested from the author                                                 |       N/A        |
-|                                                                                                                                                                                                                                                                                      [Baghurst](https://pubmed.ncbi.nlm.nih.gov/21291334/)                                                                                                                                                                                                                                                                                       |                                            No: Closed-source - unsuccessful attempt to contact author.                                             |       N/A        |
-|                                                                                                                                                                                                                                                                                      [Fritzche](https://pubmed.ncbi.nlm.nih.gov/21291337/)                                                                                                                                                                                                                                                                                       |                                    No: Software incompatible with modern operating systems (Windows 10 / MacOS)                                    |       N/A        |
-|                                                                                                                                                                                                                                 [GlyCulator2](https://docs.google.com/spreadsheets/d/11FA_kZiYe1CGuzI7J7daHi289qyEAAtMZ-ylcwg4CYM/edit#gid=0) & [GlyCulator3](https://doi.org/10.2337/dc22-0534)                                                                                                                                                                                                                                 | No: program requires specification of exact \# of glucose values which fails to work with variable-length MAGE computation or CGM traces with gaps |       N/A        |
-|                                                                                                                                                                                                                                                                                                            CGM-Guide                                                                                                                                                                                                                                                                                                             |                                                    No: closed-source. Unable to acquire a copy.                                                    |       N/A        |
-|                                                                                                                                                                                                                                                                                                             KAMOGAWA                                                                                                                                                                                                                                                                                                             |                                                    No: closed-source. Unable to acquire a copy.                                                    |                  |
++-----------------+------------+------------+------------+------------+
+| Tool or         | **         | B          | **Version  | Release /  |
+| Algorithm Name  | Implements | enchmarked | Used**     | Update     |
+|                 | MAGE**     | Against?   |            | Date       |
++:===============:+:==========:+:==========:+:==========:+:==========:+
+| iglu::mage_ma   | Yes        | Yes        | iglu v4.1  | Present    |
+| (Proposed)      |            |            |            |            |
++-----------------+------------+------------+------------+------------+
+| i               | Yes        | Yes        | iglu v2.0  | Feb 27,    |
+| glu::mage_naive |            |            |            | 2020       |
+| (Deprecated)    |            |            |            |            |
++-----------------+------------+------------+------------+------------+
+| [Ea             | Yes        | Yes        | EasyGV     | Oct 6,     |
+| syGV](https://w |            |            | v9.0       | 2020       |
+| ww.ncbi.nlm.nih |            |            |            |            |
+| .gov/pmc/articl |            |            | (The       |            |
+| es/PMC7591379/) |            |            | [download  |            |
+|                 |            |            | link](h    |            |
+|                 |            |            | ttps://www |            |
+|                 |            |            | .phc.ox.ac |            |
+|                 |            |            | .uk/resear |            |
+|                 |            |            | ch/resourc |            |
+|                 |            |            | es/easygv) |            |
+|                 |            |            | for        |            |
+|                 |            |            | Version 10 |            |
+|                 |            |            | is broken  |            |
+|                 |            |            | & only     |            |
+|                 |            |            | downloads  |            |
+|                 |            |            | Version    |            |
+|                 |            |            | 9.0)       |            |
++-----------------+------------+------------+------------+------------+
+| [cgmanal        | Yes        | Yes        | c          | Nov 20,    |
+| ysis](https://w |            |            | gmanalysis | 2023       |
+| ww.ncbi.nlm.nih |            |            | v2.7.7     |            |
+| .gov/pmc/articl |            |            |            |            |
+| es/PMC6788735/) |            |            |            |            |
++-----------------+------------+------------+------------+------------+
+| [               | Yes        | Yes        | rGV v0.0.4 | Jan 17,    |
+| rGV](https://cr |            |            |            | 2023       |
+| an.r-project.or |            |            |            |            |
+| g/web/packages/ |            |            |            |            |
+| rGV/index.html) |            |            |            |            |
++-----------------+------------+------------+------------+------------+
+| [cgmquantify    | Yes        | Yes        | Commit:    | Feb 8,     |
+| ](https://githu |            |            | [          | 2021       |
+| b.com/brinnaebe |            |            | d4a788c](h |            |
+| nt/cgmquantify) |            |            | ttps://git |            |
+|                 |            |            | hub.com/br |            |
+|                 |            |            | innaebent/ |            |
+|                 |            |            | cgmquantif |            |
+|                 |            |            | y/commit/d |            |
+|                 |            |            | 4a788cd334 |            |
+|                 |            |            | ceeceb348d |            |
+|                 |            |            | ec8e4afd3a |            |
+|                 |            |            | 745fdab4f) |            |
++-----------------+------------+------------+------------+------------+
+| [AGATA](ht      | Yes        | Yes        | agata      | Jan 27,    |
+| tps://gcappon.g |            |            | -2.1.1.zip | 2023       |
+| ithub.io/agata) |            |            |            |            |
++-----------------+------------+------------+------------+------------+
+| [CGDA](http     | Yes        | In         | N/A        | N/A        |
+| s://github.com/ |            | Progress:  |            |            |
+| EvdVossen/CGDA) |            | Randomly   |            |            |
+|                 |            | skips      |            |            |
+|                 |            | computing  |            |            |
+|                 |            | metrics    |            |            |
+|                 |            | for        |            |            |
+|                 |            | certain    |            |            |
+|                 |            | CGM traces |            |            |
+|                 |            | without    |            |            |
+|                 |            | fl         |            |            |
+|                 |            | ag/warning |            |            |
++-----------------+------------+------------+------------+------------+
+| [CGM            | Yes        | In         | N/A        | N/A        |
+| Shi             |            | Progress:  |            |            |
+| ny](https://git |            | Unable to  |            |            |
+| hub.com/rolandh |            | load CSV   |            |            |
+| angelbroek/cgms |            | files with |            |            |
+| hiny/tree/main) |            | sensor     |            |            |
+|                 |            | data       |            |            |
++-----------------+------------+------------+------------+------------+
+| ["Group of      | Yes        | No: no     | N/A        | N/A        |
+| Signs"          |            | o          |            |            |
+| Method](http    |            | pen-source |            |            |
+| s://journals.sa |            | impl       |            |            |
+| gepub.com/doi/a |            | ementation |            |            |
+| bs/10.1177/1932 |            | provided.  |            |            |
+| 29680800200614) |            |            |            |            |
++-----------------+------------+------------+------------+------------+
+| ["Spline        | Yes        | No: no     | N/A        | N/A        |
+| Interpolation"  |            | o          |            |            |
+| Met             |            | pen-source |            |            |
+| hod](https://ww |            | impl       |            |            |
+| w.ijeei.org/doc |            | ementation |            |            |
+| s-11671079585b6 |            | provided.  |            |            |
+| 939d30eb25.pdf) |            | Coding     |            |            |
+|                 |            | from       |            |            |
+|                 |            | scratch as |            |            |
+|                 |            | per paper  |            |            |
+|                 |            | speci      |            |            |
+|                 |            | fications. |            |            |
++-----------------+------------+------------+------------+------------+
+| ["Linear        | Yes        | No: no     | N/A        | N/A        |
+| Interpolation"  |            | o          |            |            |
+| Method](https:  |            | pen-source |            |            |
+| //d1wqtxts1xzle |            | impl       |            |            |
+| 7.cloudfront.ne |            | ementation |            |            |
+| t/97165680/1111 |            | provided.  |            |            |
+| -libre.pdf?1673 |            | Coding     |            |            |
+| 493701=&respons |            | from       |            |            |
+| e-content-dispo |            | scratch as |            |            |
+| sition=inline%3 |            | per paper  |            |            |
+| B+filename%3DMe |            | speci      |            |            |
+| asurement_of_MA |            | fications. |            |            |
+| GE_Mean_Amplitu |            |            |            |            |
+| de_of_Gl.pdf&Ex |            |            |            |            |
+| pires=171569478 |            |            |            |            |
+| 4&Signature=L83 |            |            |            |            |
+| vsE7uLy9wiVjqnn |            |            |            |            |
+| LfLCFQuisXMxX-s |            |            |            |            |
+| Dtuc~b-8yIV0Bsf |            |            |            |            |
+| xSI7S1NTvytr-00 |            |            |            |            |
+| bLPvPx7yy9PZwK3 |            |            |            |            |
+| B9o2L6IVKS723kk |            |            |            |            |
+| jT2vVDPo7lQFB96 |            |            |            |            |
+| z4y30iclITG9rT- |            |            |            |            |
+| NZROEumDffb9hb~ |            |            |            |            |
+| 0tPov6GEQJUfRvE |            |            |            |            |
+| bnN0htcXM1832E9 |            |            |            |            |
+| n0GhM7LrsYq1~si |            |            |            |            |
+| MmfSpKfkj8fdSUV |            |            |            |            |
+| FjQ2H8U-e-x0Twm |            |            |            |            |
+| UmerEwtbmVhsjmq |            |            |            |            |
+| SGCQ21slLhZdp18 |            |            |            |            |
+| bK0XokncafAP5sJ |            |            |            |            |
+| AiRpuwcz63ssaNf |            |            |            |            |
+| bk4GcUh0AJC7SXC |            |            |            |            |
+| wz6Y2kN5TSGjbaL |            |            |            |            |
+| Mz5pUcafM7vRqA- |            |            |            |            |
+| GaEc3Rcl0DrI8l4 |            |            |            |            |
+| u6X3Zdzbw__&Key |            |            |            |            |
+| -Pair-Id=APKAJL |            |            |            |            |
+| OHF5GGSLRBV4ZA) |            |            |            |            |
++-----------------+------------+------------+------------+------------+
+| [GVAP           | Yes        | No:        | N/A        | N/A        |
+| Tool](          |            | Requires   |            |            |
+| https://link.sp |            | CGM traces |            |            |
+| ringer.com/arti |            | to have    |            |            |
+| cle/10.1186/s12 |            | \>100      |            |            |
+| 938-015-0035-3) |            | points,    |            |            |
+|                 |            | which      |            |            |
+|                 |            | fails to   |            |            |
+|                 |            | work with  |            |            |
+|                 |            | some       |            |            |
+|                 |            | manual     |            |            |
+|                 |            | traces     |            |            |
+|                 |            | with large |            |            |
+|                 |            | gaps       |            |            |
++-----------------+------------+------------+------------+------------+
+| [               | Yes        | No: Cannot | N/A        | N/A        |
+| CGMTSA](https:/ |            | process    |            |            |
+| /github.com/Rya |            | some CGM   |            |            |
+| nJ-Shao/CGMTSA) |            | traces     |            |            |
+|                 |            | when less  |            |            |
+|                 |            | than 24    |            |            |
+|                 |            | hours      |            |            |
+|                 |            | worth of   |            |            |
+|                 |            | data       |            |            |
++-----------------+------------+------------+------------+------------+
+| [CGMStatsAnal   | Yes        | No: Unable | N/A        | N/A        |
+| yser](https://b |            | to load    |            |            |
+| aker-biostats.s |            | CSV files  |            |            |
+| hinyapps.io/CGM |            | with       |            |            |
+| StatsAnalyser/) |            | sensor     |            |            |
+|                 |            | data       |            |            |
++-----------------+------------+------------+------------+------------+
+| [Fritzch        | Yes        | No:        | N/A        | N/A        |
+| e](https://pubm |            | Software   |            |            |
+| ed.ncbi.nlm.nih |            | in         |            |            |
+| .gov/21291337/) |            | compatible |            |            |
+|                 |            | with       |            |            |
+|                 |            | modern     |            |            |
+|                 |            | operating  |            |            |
+|                 |            | systems    |            |            |
+|                 |            | (Windows   |            |            |
+|                 |            | 10 /       |            |            |
+|                 |            | MacOS)     |            |            |
++-----------------+------------+------------+------------+------------+
+| [Gly            | Yes        | No:        | N/A        | N/A        |
+| Culator2](https |            | program    |            |            |
+| ://docs.google. |            | requires   |            |            |
+| com/spreadsheet |            | spe        |            |            |
+| s/d/11FA_kZiYe1 |            | cification |            |            |
+| CGuzI7J7daHi289 |            | of exact   |            |            |
+| qyEAAtMZ-ylcwg4 |            | \# of      |            |            |
+| CYM/edit#gid=0) |            | glucose    |            |            |
+| &               |            | values     |            |            |
+| [Gl             |            | which      |            |            |
+| yCulator3](http |            | fails to   |            |            |
+| s://doi.org/10. |            | work with  |            |            |
+| 2337/dc22-0534) |            | varia      |            |            |
+|                 |            | ble-length |            |            |
+|                 |            | MAGE       |            |            |
+|                 |            | c          |            |            |
+|                 |            | omputation |            |            |
+|                 |            | or CGM     |            |            |
+|                 |            | traces     |            |            |
+|                 |            | with gaps  |            |            |
++-----------------+------------+------------+------------+------------+
+| [MAGECAA        | Yes        | No:        | N/A        | N/A        |
+| v1.0](ht        |            | Close      |            |            |
+| tps://www.ncbi. |            | d-source - |            |            |
+| nlm.nih.gov/pmc |            | copy       |            |            |
+| /articles/PMC5) |            | requested  |            |            |
+|                 |            | from the   |            |            |
+|                 |            | author     |            |            |
++-----------------+------------+------------+------------+------------+
+| [Baghurs        | Yes        | No:        | N/A        | N/A        |
+| t](https://pubm |            | Close      |            |            |
+| ed.ncbi.nlm.nih |            | d-source - |            |            |
+| .gov/21291334/) |            | un         |            |            |
+|                 |            | successful |            |            |
+|                 |            | attempt to |            |            |
+|                 |            | contact    |            |            |
+|                 |            | author.    |            |            |
++-----------------+------------+------------+------------+------------+
+| CGM-Guide       | Yes        | No:        | N/A        | N/A        |
+|                 |            | clos       |            |            |
+|                 |            | ed-source. |            |            |
+|                 |            | Unable to  |            |            |
+|                 |            | acquire a  |            |            |
+|                 |            | copy.      |            |            |
++-----------------+------------+------------+------------+------------+
+| KAMOGAWA        | Yes        | No:        | N/A        | N/A        |
+|                 |            | clos       |            |            |
+|                 |            | ed-source. |            |            |
+|                 |            | Unable to  |            |            |
+|                 |            | acquire a  |            |            |
+|                 |            | copy.      |            |            |
++-----------------+------------+------------+------------+------------+
+| Tidepool        | No         | N/A        | N/A        | N/A        |
++-----------------+------------+------------+------------+------------+
+| [CGM            | No         | N/A        | N/A        | N/A        |
+| Viewer](h       |            |            |            |            |
+| ttps://adaychen |            |            |            |            |
+| .shinyapps.io/s |            |            |            |            |
+| hinyspecclust/) |            |            |            |            |
++-----------------+------------+------------+------------+------------+
+| [GLU](          | No         | N/A        | N/A        | N/A        |
+| https://github. |            |            |            |            |
+| com/MRCIEU/GLU) |            |            |            |            |
++-----------------+------------+------------+------------+------------+
+| [C              | No         | N/A        | N/A        | N/A        |
+| GMAnalyzer](htt |            |            |            |            |
+| ps://cran.r-pro |            |            |            |            |
+| ject.org/web/pa |            |            |            |            |
+| ckages/CGManaly |            |            |            |            |
+| zer/index.html) |            |            |            |            |
++-----------------+------------+------------+------------+------------+
 
 *The Algorithm*
 
@@ -373,35 +650,52 @@ The best combination was defined as the one that gave the lowest percent
 error compared to manual calculations. This out-of-sample evaluation was
 performed on all five groups.
 
-The accuracy of EasyGV [5], cgmanalysis [7], cgmquantify [9], and the
-MAGE algorithm implemented in the earlier version of iglu [8] was also
-determined against the manual reference derivation. The latter is a
-naive simplification of original MAGE definition, as it calculates MAGE
-as the mean of absolute differences between glucose values and the
-glucose mean that are larger than one standard deviations (and thus does
-not attempt to explicitly identify peaks and nadirs). We use iglu_ma to
-denote the proposed algorithm based on moving averages, and iglu_naive
-to denote the naive algorithm used in earlier versions of the software.
-We were unable to evaluate GlyCulator2 [6] because the software requires
-CGM trace to have at least 576 time points, and thus returns NA when
-applied to 24-hour CGM data. We were also unable to evaluate Fritzsche
-[10] as importing the CGM data into the provided user interface on
-Windows 10 lead to errors.
+The accuracy of EasyGV [5], cgmanalysis [7], cgmquantify [9], rGV,
+AGATA, and the MAGE algorithm implemented in the earlier version of iglu
+[8] was also determined against the manual reference derivation. The
+latter is a naive simplification of original MAGE definition, as it
+calculates MAGE as the mean of absolute differences between glucose
+values and the glucose mean that are larger than one standard deviations
+(and thus does not attempt to explicitly identify peaks and nadirs). We
+use iglu_ma to denote the proposed algorithm based on moving averages,
+and iglu_naive to denote the naive algorithm used in earlier versions of
+the software. We were unable to evaluate GlyCulator2 [6] because the
+software requires CGM trace to have at least 576 time points, and thus
+returns NA when applied to 24-hour CGM data. We were also unable to
+evaluate Fritzsche [10] as importing the CGM data into the provided user
+interface on Windows 10 lead to errors.
+
+*Assessment of Parameter Frequency Invariance*
+
+We also test if the optimal long and short window parameters  - i.e.,
+($\alpha_{best}, \beta_{best}$) - are invariant to the frequency of the
+meter / CGM data (e.g., 1-, 5-, 10-, and 15-minute). To do this, we use
+the `iglu::CGMS2DayByDay` function to change the frequency to 1-, 10-,
+and 15-minute intervals, and automatically imputes glucose values for
+gaps less than 45 minutes. We then rerun the hyperparameter tuning code
+to discover the best ($\alpha, \beta$) selected on the new data and
+report the mean, median, and IQR of errors. Note that this is not a
+perfect comparison: information is lost when downsampling the 5-minute
+CGM trace to 10- and 15-minutes but the manual calculations compared
+against are performed on 5-minute data. Thus, we expect to see degraded
+performance on the 10- and 15-minute data simply due to this design
+limitation and not necessarily an algorithm limitation.
 
 # Results
 
 The optimal choice of window sizes ($\alpha, \beta$) for the proposed
-algorithm was determined to be (5, 32) as this combination minimized the
-average error relative to 45 manual calculations. Figure 3 shows a
-heatmap of the percent average error (across 45 traces) as a function of
-$\alpha$ and $\beta$, where the darkest regions represent the most
-favorable combinations of $\alpha$ and $\beta$. (Note: while there was a
-tie, we chose hyperparameters in the middle of the dark region.) The
-minimum corresponds to a mean average error of 8.9% with a much smaller
-median percent error of 1.4% and [Q1, Q3] = [0.5%, 7.1%]. As expected,
-the unbiased out-of-sample cross-validated errors are slightly larger,
-but still relatively low: 9.1% mean with the median of 10.0% and
-inter-quartile range of [9.4%, 11.8%].
+algorithm on the 5-minute CGM data was determined to be (5, 32) as this
+combination minimized the average error relative to 45 manual
+calculations. Figure 3 shows a heatmap of the percent average error
+(across 45 traces) as a function of $\alpha$ and $\beta$, where the
+darkest regions represent the most favorable combinations of $\alpha$
+and $\beta$. (Note: while there was a tie, we chose hyperparameters in
+the middle of the dark region.) The minimum corresponds to a mean
+average error of 8.9% with a much smaller median percent error of 1.4%
+and [Q1, Q3] = [0.5%, 7.1%]. As expected, the unbiased out-of-sample
+cross-validated errors are slightly larger, but still relatively low:
+9.1% mean with the median of 10.0% and inter-quartile range of [9.4%,
+11.8%].
 
 ```{r, echo=FALSE, fig.width=10, fig.height=7, out.width="700px", out.height ="400px"}
 knitr::include_graphics("mage_figures/hyper-param-tuning.png")
@@ -426,7 +720,7 @@ Figure 4 shows boxplots of relative errors of all algorithms on 45 CGM
 traces.
 
 ```{r, echo=FALSE, fig.width=10, fig.height=7, out.width="700px", out.height ="400px"}
-knitr::include_graphics("mage_figures/boxplot-of-errors.png")
+knitr::include_graphics("mage_figures/boxplot-of-errors2.png")
 ```
 
 **Figure 4.** Comparison of relative errors of different automatic
@@ -451,8 +745,10 @@ summarized in Table 2.
 |     EasyGV      | 23.4% | 11.3%  |  [6.0%, 22.3%]  |
 |   cgmanalysis   | 23.9% | 20.3%  |  [8.6%, 32.1%]  |
 |   cgmquantify   | 91.9% | 78.4%  | [30.8%, 131.9%] |
+|       rGV       | 74.7% | 78.1%  | [64.9%, 86.7%]  |
+|      AGATA      | 16.7% |  9.8%  |  [4.4%, 26.3%]  |
 
-**Table 2:** Numerical summaries of relative errors of automatic MAGE
+**Table 3:** Numerical summaries of relative errors of automatic MAGE
 calculators on 45 CGM traces compared to manual calculations. The
 proposed method is implemented as ma (moving average) algorithm in R
 package iglu [17]; best corresponds to the errors with $\alpha$ = 5,
@@ -460,6 +756,18 @@ $\beta$ = 32; cv corresponds to the out-of-sample errors based on
 5-fold-cross-validation for $\alpha$, $\beta$.
 
    
+
+```{r, echo=FALSE, fig.width=10, fig.height=7, out.width="700px", out.height ="400px"}
+knitr::include_graphics("mage_figures/hyper-param-tuning-1min.png")
+```
+
+```{r, echo=FALSE, fig.width=10, fig.height=7, out.width="700px", out.height ="400px"}
+knitr::include_graphics("mage_figures/hyper-param-tuning-10min.png")
+```
+
+```{r, echo=FALSE, fig.width=10, fig.height=7, out.width="700px", out.height ="400px"}
+knitr::include_graphics("mage_figures/hyper-param-tuning-15min.png")
+```
 
 # Discussion
 
@@ -521,6 +829,21 @@ $MAGE_{avg} = \frac{1}{2}(MAGE_{plus}+MAGE_{minus})$. Our implementation
 allows the user to change the default settings, and explicitly calculate
 MAGE+, MAGE--, MAGEavg, or MAGEmax, which makes our algorithm's
 implementation more flexible compared to existing MAGE software.
+
+### Important Notes on Other Packages
+
+1.  We used AGATA's built-in "retimeGlucose(data, timestep)" to make the
+    raw glucose data into a homogenous grid of 5-minute intervals. This
+    is similar to the iglu::CGMS2DayByDay.
+2.  rGV outputs all 20's regardless of the input data - this behavior is
+    reproducible even with the example given in the rGV function. This
+    is a major bug that requires immediate attention. The authors have
+    raised a GitHub issue & emailed the authors.
+3.  cgmquantify may have a bug in the mage computation which might
+    explain why the errors are comparatively so high
+    (<https://github.com/brinnaebent/cgmquantify/issues/10>). This is a
+    major bug that requires immediate attention. The author has been
+    contacted.
 
 # Conclusion
 
