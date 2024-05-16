@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">iglu</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.1.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -115,46 +115,10 @@ one to zoom into specific areas of the plot.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_data_hall</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_meals_hall</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="meal_metrics.html">meal_metrics</a></span><span class="op">(</span><span class="va">example_data_hall</span>, <span class="va">example_meals_hall</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-001</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-026</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-032</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-090</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-091</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-69-114</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-70-1005</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 1636-70-1010</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-015</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-017</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-019</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-021</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-024</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-027</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-035</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> No mealtimes found for subject: 2133-036</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There was 1 warning in `dplyr::reframe()`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In argument: `meal_metrics_single(...)`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 9: `id = "2133-004"`.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Caused by warning in `meal_metrics_single()`:</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Some meals don't match with CGM readings. Mealtimes returned with NA for metric values</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 25 × 11</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    id           time                meal  deltag deltat basereco basegl peakgl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 1636-69-001  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 1636-69-026  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 1636-69-032  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 1636-69-090  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 1636-69-091  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 1636-69-114  <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 1636-70-1005 <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 1636-70-1010 <span style="color: #BB0000;">NA</span>                  <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2133-004     2016-09-23 <span style="color: #949494;">10:10:00</span> CF 1    87.8     80    0.362   135.   223.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2133-004     2016-09-27 <span style="color: #949494;">09:40:00</span> PB 1    <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>     <span style="color: #BB0000;">NA</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 15 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: recovergl &lt;dbl&gt;, peaktime &lt;dttm&gt;, recovertime &lt;dttm&gt;</span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">select_subject</span> <span class="op">=</span> <span class="va">example_data_hall</span><span class="op">[</span><span class="va">example_data_hall</span><span class="op">$</span><span class="va">id</span> <span class="op">==</span> <span class="st">"2133-018"</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">select_meals</span> <span class="op">=</span> <span class="va">example_meals_hall</span><span class="op">[</span><span class="va">example_meals_hall</span><span class="op">$</span><span class="va">id</span> <span class="op">==</span> <span class="st">"2133-018"</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu">plot_meals</span><span class="op">(</span><span class="va">select_subject</span>, <span class="va">select_meals</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="plot_meals-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
