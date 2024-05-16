@@ -6,7 +6,7 @@
 #'
 #' @inheritParams CGMS2DayByDay
 #' @inheritParams plot_daily
-#' @param daily Logical indicator whether AGP should include separate daily plots. The default value is TRUE
+#' @param daily \strong{Default: TRUE.} Logical indicator whether AGP should include separate daily plots.
 #'
 #' @return A plot displaying glucose measurements range, selected glucose statistics (average glucose, Glucose Management Indicator, %CV), percentage spent in target ranges and quantiles of 24 hour profile.
 #'

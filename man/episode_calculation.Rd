@@ -64,9 +64,9 @@ Mostly for use with epicalc_profile function. Format of the second list entry is
 \item{id}{Subject id}
 \item{time}{Interpolated timestamps}
 \item{gl}{glucose in mg/dL}
-\item{[episode_label]}{One column per episode label - i.e. lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper, ext_hypo.
+\item{\link{episode_label}}{One column per episode label - i.e. lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper, ext_hypo.
 0 means not this type of episode, a positive integer label is assigned to each episode.
-Note the labels are *not* unique by subject only unique by segment}
+Note the labels are \emph{not} unique by subject only unique by segment}
 }
 \description{
 The function determines episodes or events, calculates summary statistics,

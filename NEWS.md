@@ -1,3 +1,9 @@
+# iglu 4.0.3
+* Breaking change: changed parameter `plot_type` in iglu::mage, iglu::mage_ma_single to `static_or_cgm`
+* Added plotly functionality to `plot_glu()` and the lasagna plots
+* Updated author ids
+* Fixed formatting issues in the documentation
+
 # iglu 4.0.2
 * Fixed broken whiplash plot in MAGE documentation
 * Added MAGEmax plotting functionality

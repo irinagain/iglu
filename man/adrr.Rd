@@ -14,11 +14,11 @@ A tibble object with two columns: subject id and corresponding
 ADRR value.
 }
 \description{
-The function adrr produces ADRR values in a tibble object.
+The function \code{adrr} produces ADRR values in a tibble object.
 }
 \details{
 A tibble object with 1 row for each subject, a column for subject id and
-a column for ADRR values is returned. NA glucose values are
+a column for ADRR values is returned. \code{NA} glucose values are
 omitted from the calculation of the ADRR values.
 
 ADRR is the average sum of HBGI corresponding to the highest glucose

@@ -9,8 +9,8 @@ agp_metrics(data, shinyformat = FALSE)
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
 
-\item{shinyformat}{Logical indicating whether the output should be formatted for the single subject
-AGP page in shiny. Defaults to FALSE.}
+\item{shinyformat}{\strong{Default: FALSE.} Boolean indicating whether the output should be formatted for the single subject
+AGP page in shiny.}
 }
 \value{
 By default, a tibble object with 1 row for each subject, and 13 columns is returned:
@@ -29,28 +29,29 @@ a column for above_180 value,
 a column for above_250 value,
 }
 \description{
-The function agp_metrics runs the following functions
-and combines them into a tibble object: active_percent, mean_glu, gmi,
-cv_glu, below_percent, in_range_percent, above_percent.
+The function \code{agp_metrics} runs the following functions
+and combines them into a tibble object: \code{active_percent}, \code{mean_glu}, \code{gmi},
+\code{cv_glu}, \code{below_percent}, \code{in_range_percent}, \code{above_percent}.
 }
 \details{
 The function uses recommended cutoffs of 54, 70, 180, and 250 mg/dL for calculation.
 
-If shinyformat = FALSE (default), returns a tibble object with 1 row for each subject, and 12 columns:
-a column for subject id,
-a column for start date,
-a column for end date,
-a column for number of days,
-a column for active_percent,
-a column for Mean value,
-a column for gmi value,
-a column for cv value,
-a column for below_54 value,
-a column for below_70 value,
-a column for in_range_70_180 value,
-a column for above_180 value,
-a column for above_250 value.
-If shinyformat = TRUE, a tibble with 2 columns: metric and value, is returned.
+If \code{shinyformat == FALSE} (default), returns a tibble object with 1 row for each subject, and 12 columns:
+a column for subject id (\code{id}),
+a column for start date (\code{start_date}),
+a column for end date (\code{end_date}),
+a column for number of days (\code{ndays}),
+a column for active percent (\code{active_percent}),
+a column for mean value (\code{mean}),
+a column for GMI value (\code{GMI}),
+a column for CV value (\code{CV}),
+a column for \% below 54 mg/dL (\code{below_54}),
+a column for \% below 70 mg/dL (\code{below_70}),
+a column for \% in range \link{70, 180} mg/dL (\code{in_range_70_180}),
+a column for \% above 180 mg/dL (\code{above_180}),
+a column for \% above 250 mg/dL (\code{above_250}).
+
+If \code{shinyformat == TRUE}, a tibble with 2 columns: metric and value, is returned.
 This output is used when generating the single subject AGP shiny page.
 }
 \examples{

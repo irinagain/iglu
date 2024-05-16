@@ -45,7 +45,7 @@ cgm_manual_calc <- cgm_manual_calc[-idx_to_remove]
 #     for (i in 1:length(cgm_manual_calc)) {
 #       manual = cgm_manual_calc[i]
 #       val = round(iglu::mage(cgm_dataset_df[[i]], short_ma = short_ma, long_ma = long_ma, inter_gap = inter_gap, max_gap = max_gap, return_type = "num", direction = direction)$MAGE, 2)
-#       p = iglu::mage(cgm_dataset_df[[i]], short_ma = short_ma, long_ma = long_ma, inter_gap = inter_gap, max_gap = max_gap, direction = direction, plot = TRUE, plot_type = "ggplot", title=paste0("[i=", i, "] MAGE", direction, " = ", val, " (% diff from manual calc: ", round((val - manual)/manual*100, 2), "%)"))
+#       p = iglu::mage(cgm_dataset_df[[i]], short_ma = short_ma, long_ma = long_ma, inter_gap = inter_gap, max_gap = max_gap, direction = direction, plot = TRUE, static_or_gui = "ggplot", title=paste0("[i=", i, "] MAGE", direction, " = ", val, " (% diff from manual calc: ", round((val - manual)/manual*100, 2), "%)"))
 #       print(p)
 #     }
 #     dev.off()

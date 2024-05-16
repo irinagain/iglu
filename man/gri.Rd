@@ -27,7 +27,7 @@ column for GRI is returned. The formula for GRI is as follows:
 
 where VLow, Low, VHigh, and High correspond to the percent of glucose values
 in the ranges <54 mg/dL, 54-70 mg/dL, >250 mg/dL, and 180-250 mg/dL respectively.
-The maximum allowed value for GRI is 100\%, any calculated values higher than
+The maximum allowed value for GRI is 100\\%, any calculated values higher than
 100 are capped.
 }
 \examples{

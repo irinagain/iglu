@@ -1,7 +1,7 @@
 Package: iglu
 Type: Package
 Title: Interpreting Glucose Data from Continuous Glucose Monitors
-Version: 4.0.1
+Version: 4.0.4
 Authors@R: c(person("Elizabeth", "Chun",
             role = c("aut")),
             person("Steve", "Broll",
@@ -13,8 +13,8 @@ Authors@R: c(person("Elizabeth", "Chun",
             email = "muschellij2@gmail.com",
             comment = c(ORCID = "0000-0001-6469-1750")),
             person("Nathaniel", "Fernandes",
-            email = "njfernandes24@tamu.edu",
-            comment = c(ORCID = "0000-0003-0485-0726")
+            email = "njferns020@gmail.com",
+            comment = c(ORCID = "0000-0003-0485-0726"),
             role = c("aut")),
             person("Jung Hoon", "Seo",
             role = c("ctb")),
@@ -41,6 +41,7 @@ Description: Implements a wide range of metrics for measuring glucose control an
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends: R (>= 3.1.0)
 Imports:

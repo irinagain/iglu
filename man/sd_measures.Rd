@@ -76,7 +76,6 @@ That is, for t time points take \eqn{SD_1 ... SD_t} standard deviations, and the
 1st time point, where each value is the dth measurement for the ith time point subtracted by
 the mean of all glucose values for day d.
 
-
 }
 }
 \examples{

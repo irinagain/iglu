@@ -40,7 +40,7 @@ days we compute cv_1 ... cv_x daily coefficient of variations and calculate
 
 Calculated by first taking the coefficient of variation of each day's glucose measurements,
 then taking the standard deviation of all the coefficient of variations. That is, for d
-days we compute cv_1 ... cv_d daily coefficient of variations and calculate SD([cv_1, cv_2, ... cv_d])
+days we compute cv_1 ... cv_d daily coefficient of variations and calculate SD(\link{cv_1, cv_2, ... cv_d})
 }
 }
 \examples{

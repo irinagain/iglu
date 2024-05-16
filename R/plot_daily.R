@@ -1,14 +1,13 @@
 #' Plot daily glucose profiles
 #'
 #' @description
-#' The function plot_daily plots daily glucose time series profiles for a single subject.
+#' The function `plot_daily` plots daily glucose time series profiles for a single subject.
 #'
 #' @usage
 #' plot_daily(data, maxd = 14, LLTR = 70, ULTR = 180, inter_gap = 45, tz = "")
 #'
 #' @inheritParams plot_glu
-#' @param maxd Number of days to plot, default is the last 14 days, or if
-#' less than 14 days of data are available, all days are plotted.
+#' @param maxd \strong{Default: 14.} Number of days to plot. If less than `maxd` days of data are available, all days are plotted.
 #'
 #' @return Daily glucose time series plots for a single subject
 #'

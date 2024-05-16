@@ -16,8 +16,8 @@
 #' If a vector of glucose values is passed, then a tibble object with just the MAGE value
 #' is returned.
 #'
-#' In \code{version = "ma"}, if \code{plot = TRUE}, a list of ggplots will
-#' be returned with one plot per subject. To return an interactive plot, use iglu::mage_ma_single with \code{plot_type='plotly'} on each subject individually.
+#' In \code{version = "ma"}, if \code{plot = TRUE}, a list of ggplots will be returned with one plot per subject.
+#' To return an interactive plot, use iglu::mage_ma_single with \code{static_or_gui='plotly'} on each subject individually.
 #'
 #' @export
 #'
@@ -31,6 +31,9 @@
 #' Service et al. (1970) Mean amplitude of glycemic excursions, a measure of diabetic instability
 #' \emph{Diabetes}  \strong{19} .644-655,
 #' \doi{10.2337/diab.19.9.644}.
+#'
+#' Fernandes, Nathaniel J., et al. "Open-source algorithm to calculate mean amplitude of glycemic excursions using short and long moving averages."
+#' Journal of diabetes science and technology 16.2 (2022): 576-577. \doi{10.1177/19322968211061165}
 #'
 #' @examples
 #' data(example_data_5_subject)
@@ -47,7 +50,7 @@ mage <- function(data,
                  plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions = TRUE) {
 
   # Match version
-  version = match.arg(version)
+  version = match.arg(version, c('ma', 'naive'))
 
   if(version == 'naive') {
     warning("You are using the naive version of the iglu mage algorithm. It is included for backward compatibility with earlier versions of iglu and is less accurate than the ma algorithm.")
@@ -80,7 +83,7 @@ mage_ma <- function(data,
     dplyr::group_by(id) %>%
     dplyr::do(MAGE = mage_ma_single(., short_ma = short_ma, long_ma = long_ma, return_type=return_type, direction=direction,
                                     plot = plot, dt0 = dt0, inter_gap = inter_gap, max_gap = max_gap, tz = tz,
-                                    title = title, xlab = xlab, ylab = ylab, show_ma = show_ma, show_excursions = show_excursions))
+                                    title = title, xlab = xlab, ylab = ylab, show_ma = show_ma, show_excursions = show_excursions, static_or_gui='ggplot'))
 
   # Check if a ggplot or number in list is returned - convert the latter to a number
   if(class(out$MAGE[[1]])[1] == "numeric" | is.na(out$MAGE[[1]][1])) {

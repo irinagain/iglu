@@ -10,9 +10,9 @@ inter_gap = 45, tz = "", title = FALSE)
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, a warning is produced and only 1st subject is used.}
 
-\item{LLTR}{Lower Limit of Target Range, default value is 70 mg/dL.}
+\item{LLTR}{\strong{Default: 70.} Lower Limit of Target Range in mg/dL.}
 
-\item{ULTR}{Upper Limit of Target Range, default value is 180 mg/dL.}
+\item{ULTR}{\strong{Default: 180.} Upper Limit of Target Range in mg/dL.}
 
 \item{smooth}{Boolean indicating whether quantiles should be smoothed before plotting, default is TRUE}
 
@@ -37,10 +37,10 @@ The function plot_agp produces an AGP plot that collapses all data into a single
 Only a single subject's data may be plotted. If smooth = TRUE, then the quantiles are
 loess smoothed with the specified span before plotting. The horizontal green lines represent the target range,
 default is 70-180 mg/dL. The black line is the median glucose value for each time of day. The dark blue shaded area
-represents 50\% of glucose values - those between the 25th and 75 quantiles. The light
-blue shaded area shows 90\% of the glucose values - those between the 5th and 95th quantiles.
+represents 50\\% of glucose values - those between the 25th and 75 quantiles. The light
+blue shaded area shows 90\\% of the glucose values - those between the 5th and 95th quantiles.
 Additionally, the percents shown on the right hand side of the plot show which quantiles each line refers to -
-e.g. the line ending at 95\% is the line corresponding to the 95th quantiles of glucose values.
+e.g. the line ending at 95\\% is the line corresponding to the 95th quantiles of glucose values.
 }
 \examples{
 
