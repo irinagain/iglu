@@ -27,8 +27,35 @@ The function mad produces PGS values in a tibble object.
 }
 \details{
 A tibble object with 1 row for each subject, a column for subject id and
-a column for GVP values is returned. NA glucose values are
-omitted from the calculation. Note that the duration thresholds for episodes
+a column for PGS values is returned. NA glucose values are
+omitted from the calculation. The formula for PGS is as follows,
+where GVP = glucose variability percentage, MG = mean glucose,
+PTIR = percent time in range, and N54, N70 are the number of hypoglycemic episodes
+per week in the ranges <54 mg/dL and 54 to <70 mg/dL level respectively.
+
+\deqn{
+PGS = f(GVP) + g(MG) + h(PTIR) + j(N54, N70)
+}
+
+The component functions are listed below.
+
+\deqn{
+\newline
+f(GVP) = 1 + \frac{9}{1+\exp(-0.049(GVP - 65.47))}
+\newline
+g(MG) = 1 + 9(\frac{1}{1+\exp(0.1139(MG - 72.08))} + \frac{1}{1+\exp(-0.09195(MG - 157.57))})
+\newline
+h(PTIR) = 1+\frac{9}{1+\exp(0.0833(PTIR - 55.04))}
+\newline
+j(N54, N70) = a(N54) + b(N70)
+\newline
+a(N54) = 0.5+4.5(1-\exp(-0.91093N54)
+}
+
+and b(N70) is defined such that b(N70) = \eqn{0.5714N70 + 0.625} if N70 <= 7.65, and b(N70) = 5 otherwise.
+
+
+Note that the duration thresholds for episodes
 are NOT the same as the episode_calculation defaults. The defaults chosen for
 PGS are those that match the original PGS paper definition, while the
 episode_calculation defaults match the consensus.
