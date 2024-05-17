@@ -90,13 +90,19 @@ Gaynanova</h4>
     
     
 <p>Mean Amplitude of Glycemic Excursions (MAGE) is a glucose variability
-metric that can be applied to CGM data. From iglu version 3 onward, the
-package includes two algorithms for MAGE calculation: (i) version = ‘ma’
-uses short and long moving averages to computationally emulate the
-original definition, (ii) version = ‘naive’ is a naive approximation
-<strong>solely included</strong> for backwards compatibility with
-earlier versions of iglu. The moving average algorithm was published in
-the Journal of Diabetes Science and Technology: <a href="https://doi.org/10.1177/19322968211061165" class="external-link">Open-source Algorithm
+metric that can be applied to continuous glucose monitoring (CGM) data.
+From iglu version 3 onward, the package includes two algorithms for MAGE
+calculation:</p>
+<ol style="list-style-type: lower-roman">
+<li><p><code>iglu::mage(., version = 'ma')</code> uses short and long
+moving averages to computationally emulate the original
+definition,</p></li>
+<li><p><code>iglu::mage(., version = 'naive')</code> is a naive
+approximation <strong>solely included</strong> for backwards
+compatibility with earlier versions of iglu.</p></li>
+</ol>
+<p>The moving average algorithm was published in the Journal of Diabetes
+Science and Technology: <a href="https://doi.org/10.1177/19322968211061165" class="external-link">Open-source Algorithm
 to Calculate Mean Amplitude of Glycemic Excursions Using Short and Long
 Moving Averages</a>, and the code to reproduce all tests can be found at
 the accompanying repository: <a href="https://github.com/Nathaniel-Fernandes/mage_algorithm_data" class="external-link">Nathaniel-Fernandes/mage_algorithm_data</a>.
@@ -113,22 +119,23 @@ variability. While its original definition requires manual calculations,
 there exist several software programs for automated calculations which
 have shown varying degrees of agreement. The objective of this study was
 to develop an automated algorithm for MAGE that would achieve high
-accuracy against the reference standard of manual calculations.</p>
+accuracy against the reference standard of manual calculations and
+benchmark it against existing alternatives.</p>
 <p><strong>Methods</strong>: Manual calculations of MAGE were performed
 on 45 publicly available CGM profiles from a diverse set of patients
 (i.e., Type 1 diabetes, Type 2 diabetes, and those without diabetes)
 following the definition described in Service et al. [3]. An automated
 algorithm for MAGE calculation was developed to identify peaks and
 nadirs of glycemic excursions based on the crosses of a short and long
-moving average of the glucose profile, and implemented in version 3 of R
-package iglu. The accuracy of the algorithm was evaluated relative to
+moving average of the glucose profile, and implemented in version 3+ of
+R package iglu. The accuracy of the algorithm was evaluated relative to
 manual calculations using a five-fold cross-validation and compared to
-four other publicly available MAGE calculators.</p>
+other publicly available MAGE calculators, as listed in Table 2.</p>
 <p><strong>Results</strong>: The newly developed algorithm had the
-median error of 1.4% relative to manual calculations (iglu v3.5.1+). The
-median errors of the four other approaches including cgmanalysis,
-cgmquantify, EasyGV and the naive algorithm in the earlier versions of
-iglu were 20.3%, 78.4%, 11.3%, and 42.0%, respectively.</p>
+median error of 1.4% relative to manual calculations (iglu v4.1+). The
+median errors of the six other approaches including AGATA, EasyGV,
+cgmanalysis, naive iglu algorithm, rGV, and cgmquantify are 9.8%, 11.3%,
+20.3%, 42.0%, 78.4%, and 78.1%, respectively.</p>
 <p><strong>Conclusions</strong>: The newly developed algorithm
 eliminates the need for tedious manual MAGE calculations and
 approximates the manual derivation better than existing approaches.</p>
@@ -159,10 +166,12 @@ calculations, the user has no means to inspect the calculations and
 confirm accuracy. Examples in the second category include programs
 developed by Fritzsche [10] and Baghurst [11]. However, we found the
 software developed by Fritzsche are not compatible with newer operating
-systems (e.g., Windows 10) to allow importing of CGM data. According to
-documentation for cgmanalysis [7] and cgmquantify [9], these packages
-provide free implementations of Baghurst’s algorithm, albeit they may
-not fully reflect the original implementation.</p>
+systems (e.g., Windows 10) to allow importing of CGM data. Additionally,
+Baghurst does not provide a downloadable implementation of his
+algorithm. However, according to documentation for cgmanalysis [7] and
+cgmquantify [9], these packages provide free implementations of
+Baghurst’s algorithm, albeit they may not fully reflect the original
+implementation.</p>
 <p>The comparison of GlyCulator, EasyGV, Fritzsche, and Baghurst
 algorithms demonstrates varying degrees of agreement across MAGE
 algorithms [12]. While the aforementioned algorithms were compared to
@@ -195,13 +204,17 @@ MAGE daily. Manual MAGE calculations were performed on each of the 45
 CGM traces following the original description of MAGE calculations by
 Service et al. [3] by two of the authors, who were unaware of the
 outcome of the proposed algorithm’s outputs.</p>
-<table class="table">
+<p><strong>Table 1:</strong> Summary of the 45 CGM traces used for
+manual calculations. The first three datasets have been obtained as
+described in [13]. The last dataset is available within R package iglu
+[8].</p>
+<table style="width:83%;" class="table">
 <colgroup>
-<col width="27%">
-<col width="18%">
-<col width="18%">
-<col width="18%">
-<col width="18%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
+<col width="16%">
 </colgroup>
 <thead><tr class="header">
 <th align="center">Dataset</th>
@@ -212,23 +225,21 @@ outcome of the proposed algorithm’s outputs.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="center"><a href="https://doi.org/10.1371/journal.pbio.2005143" class="external-link">Hall et
-al. (2018)</a></td>
+<td align="center">Hall et al. (2018)</td>
 <td align="center">None</td>
-<td align="center">Adults (&gt; 18)</td>
-<td align="center">1636-69-001</td>
+<td align="center">Adults (&gt;18)</td>
+<td align="center">16 36-69-001</td>
 <td align="center">5</td>
 </tr>
 <tr class="even">
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="center">1636-69-026</td>
+<td align="center">16 36-69-026</td>
 <td align="center">6</td>
 </tr>
 <tr class="odd">
-<td align="center"><a href="https://doi.org/10.1016/j.jpeds.2005.04.065" class="external-link">Tsalikian et
-al. (2005)</a></td>
+<td align="center">Tsalikian et al. (2005)</td>
 <td align="center">Type 1</td>
 <td align="center">Children (10 - 18)</td>
 <td align="center">2</td>
@@ -277,10 +288,9 @@ al. (2005)</a></td>
 <td align="center">1</td>
 </tr>
 <tr class="even">
-<td align="center"><a href="https://doi.org/10.1016/j.imu.2018.09.003" class="external-link">Dubosson et
-al. (2005)</a></td>
+<td align="center">Dubosson et al. (2005)</td>
 <td align="center">Type 1</td>
-<td align="center">Adults (&gt; 18)</td>
+<td align="center">Adults (&gt;18)</td>
 <td align="center">1</td>
 <td align="center">5</td>
 </tr>
@@ -292,10 +302,9 @@ al. (2005)</a></td>
 <td align="center">2</td>
 </tr>
 <tr class="even">
-<td align="center"><a href="https://doi.org/10.1371/journal.pone.0248560" class="external-link">Broll et
-al. (2021)</a></td>
+<td align="center">Broll et al. (2021)</td>
 <td align="center">Type 2</td>
-<td align="center">Adults (&gt; 18)</td>
+<td align="center">Adults (&gt;18)</td>
 <td align="center">Subject 1</td>
 <td align="center">1</td>
 </tr>
@@ -329,11 +338,211 @@ al. (2021)</a></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Table 1:</strong> Summary of the 45 CGM traces used for
-manual calculations. The first three datasets have been obtained as
-described in [13]. The last dataset is available within R package iglu
-[8].</p>
-<p>   </p>
+<p><em>Existing MAGE Calculators</em></p>
+<p>We benchmarked the proposed algorithm against a variety of open and
+closed-source tools. To the best of our knowledge, the list in Table 2
+comprises a relatively exhaustive list of existing packages to compute
+MAGE on CGM data as of May 15, 2024.</p>
+<p><strong>Table 2:</strong> An exhaustive list (to the best of our
+knowledge) of existing packages and algorithms to compute MAGE as of May
+15, 2024. We also specify the version and release date if we benchmark
+the proposed MAGE algorithm against it, or the reason we were unable
+to.</p>
+<table style="width:96%;" class="table">
+<colgroup>
+<col width="26%">
+<col width="17%">
+<col width="18%">
+<col width="17%">
+<col width="17%">
+</colgroup>
+<thead><tr class="header">
+<th align="center">Tool or Algorithm Name</th>
+<th align="center">Has MAGE</th>
+<th align="center">Benchmarked?</th>
+<th align="center">Version Used</th>
+<th align="center">Release Date</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">iglu::mage_ma (Proposed)</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">iglu v4.1</td>
+<td align="center">Present</td>
+</tr>
+<tr class="even">
+<td align="center">iglu::mage_naive</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">iglu v2.0</td>
+<td align="center">Feb 27, 2020</td>
+</tr>
+<tr class="odd">
+<td align="center">EasyGV [5]</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">
+<p>EasyGV v9.0</p>
+<p>(The download link for Version 10 is broken &amp; only downloads
+Version 9.0)</p>
+</td>
+<td align="center">Oct 6, 2020</td>
+</tr>
+<tr class="even">
+<td align="center">cgmanalysis [7]</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">cgmanalysis v2.7.7</td>
+<td align="center">Nov 20, 2023</td>
+</tr>
+<tr class="odd">
+<td align="center">rGV [18]</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">rGV v0.0.4</td>
+<td align="center">Jan 17, 2023</td>
+</tr>
+<tr class="even">
+<td align="center">cgmquantify [9]</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">Commit: d4a788c</td>
+<td align="center">Feb 8, 2021</td>
+</tr>
+<tr class="odd">
+<td align="center">AGATA [19]</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
+<td align="center">agata -2.1.1.zip</td>
+<td align="center">Jan 27, 2023</td>
+</tr>
+<tr class="even">
+<td align="center">CGDA [20]</td>
+<td align="center">Yes</td>
+<td align="center">No: skips computing MAGE for some CGM traces without
+warning</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="odd">
+<td align="center">CGM Shiny [21]</td>
+<td align="center">Yes</td>
+<td align="center">No: Unable to load CSV files with sensor data</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="even">
+<td align="center">“Group of Signs” Method [22]</td>
+<td align="center">Yes</td>
+<td align="center">No: no open-source code provided.</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="odd">
+<td align="center">“Spline Interpolation” Method [23]</td>
+<td align="center">Yes</td>
+<td align="center">No: no open-source code provided. Coded from scratch
+as per paper</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="even">
+<td align="center">“Linear Interpolation” Method [24]</td>
+<td align="center">Yes</td>
+<td align="center">No: no open-source code provided. Coded from scratch
+as per paper</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="odd">
+<td align="center">GVAP Tool [25]</td>
+<td align="center">Yes</td>
+<td align="center">No: Requires CGM traces to have &gt;100 points, which
+fails to work with some manual traces with large gaps</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="even">
+<td align="center">CGMTSA [26]</td>
+<td align="center">Yes</td>
+<td align="center">No: Cannot process some CGM traces when less than 24
+hours worth of data</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="odd">
+<td align="center">CGMStatsAnalyser [27]</td>
+<td align="center">Yes</td>
+<td align="center">No: Unable to load CSV files with sensor data</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="even">
+<td align="center">Fritzche [10]</td>
+<td align="center">Yes</td>
+<td align="center">No: Software not compatible with modern operating
+systems (Windows 10 / MacOS)</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="odd">
+<td align="center">
+<p>GlyCulator2 [6]</p>
+<p>GlyCulator3 [28]</p>
+</td>
+<td align="center">Yes</td>
+<td align="center">No: program requires input of exact # of glucose
+values which fails to work with variable- length MAGE computation or CGM
+traces with gaps</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="even">
+<td align="center">MAGECAA v1.0 [4]</td>
+<td align="center">Yes</td>
+<td align="center">No: Closed -source - copy requested from the
+author</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="odd">
+<td align="center">Baghurst [11]</td>
+<td align="center">Yes</td>
+<td align="center">No: Closed source. Unable to acquire a copy.</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="even">
+<td align="center">CGM-Guide [29]</td>
+<td align="center">Yes</td>
+<td align="center">No: Closed source. Unable to acquire a copy.</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="odd">
+<td align="center">Tidepool [30]</td>
+<td align="center">No</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="even">
+<td align="center">GLU [31]</td>
+<td align="center">No</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+<tr class="odd">
+<td align="center">CGMAnalyzer [32]</td>
+<td align="center">No</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+<td align="center">N/A</td>
+</tr>
+</tbody>
+</table>
 <p><em>The Algorithm</em></p>
 <p>The original MAGE description in Service et al. [3] requires (i)
 identification of turning points (e.g., peaks and nadirs) for
@@ -519,28 +728,45 @@ chosen using four out of the five groups, and used to evaluate the
 accuracy on the remaining group. The best combination was defined as the
 one that gave the lowest percent error compared to manual calculations.
 This out-of-sample evaluation was performed on all five groups.</p>
-<p>The accuracy of EasyGV [5], cgmanalysis [7], cgmquantify [9], and the
-MAGE algorithm implemented in the earlier version of iglu [8] was also
-determined against the manual reference derivation. The latter is a
-naive simplification of original MAGE definition, as it calculates MAGE
-as the mean of absolute differences between glucose values and the
-glucose mean that are larger than one standard deviations (and thus does
-not attempt to explicitly identify peaks and nadirs). We use iglu_ma to
-denote the proposed algorithm based on moving averages, and iglu_naive
-to denote the naive algorithm used in earlier versions of the software.
-We were unable to evaluate GlyCulator2 [6] because the software requires
-CGM trace to have at least 576 time points, and thus returns NA when
-applied to 24-hour CGM data. We were also unable to evaluate Fritzsche
-[10] as importing the CGM data into the provided user interface on
-Windows 10 lead to errors.</p>
+<p>The accuracy of EasyGV [5], cgmanalysis [7], cgmquantify [9], rGV,
+AGATA, and the MAGE algorithm implemented in the earlier version of iglu
+[8] was also determined against the manual reference derivation. The
+latter is a naive simplification of original MAGE definition, as it
+calculates MAGE as the mean of absolute differences between glucose
+values and the glucose mean that are larger than one standard deviations
+(and thus does not attempt to explicitly identify peaks and nadirs). We
+use iglu_ma to denote the proposed algorithm based on moving averages,
+and iglu_naive to denote the naive algorithm used in earlier versions of
+the software. We were unable to evaluate GlyCulator2 [6] because the
+software requires CGM trace to have at least 576 time points, and thus
+returns NA when applied to 24-hour CGM data. We were also unable to
+evaluate Fritzsche [10] as importing the CGM data into the provided user
+interface on Windows 10 lead to errors.</p>
+<p><em>Assessment of Parameter Frequency Robustness</em></p>
+<p>We also test if the optimal long and short window parameters chosen
+on the 5-minute CGM data - i.e., (<span class="math inline">\(\alpha_{best}, \beta_{best}\)</span>) - are robust
+to the frequency of the meter / CGM data (e.g., 1-, 5-, 10-, and
+15-minute). To do this, we use the <code><a href="../reference/CGMS2DayByDay.html">iglu::CGMS2DayByDay</a></code>
+function to change the raw data’s frequency to 1-, 10-, and 15-minute
+intervals, and automatically imputes glucose values for gaps less than
+45 minutes. We then rerun the hyperparameter tuning code to discover the
+best (<span class="math inline">\(\alpha, \beta\)</span>) selected on
+the new data and report the mean, median, and IQR of errors. Note that
+this is not a perfect comparison: information is lost when downsampling
+the 5-minute CGM trace to 10- and 15-minutes but the manual calculations
+compared against are performed on 5-minute data. Thus, we expect to see
+a slightly degraded performance on the 10- and 15-minute data simply due
+to this design limitation and not necessarily an algorithm
+limitation.</p>
 </div>
 <div class="section level2">
 <h2 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
 </h2>
 <p>The optimal choice of window sizes (<span class="math inline">\(\alpha, \beta\)</span>) for the proposed algorithm
-was determined to be (5, 32) as this combination minimized the average
-error relative to 45 manual calculations. Figure 3 shows a heatmap of
-the percent average error (across 45 traces) as a function of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, where the darkest regions
+on the 5-minute CGM data was determined to be (5, 32) as this
+combination minimized the average error relative to 45 manual
+calculations. Figure 3 shows a heatmap of the percent average error
+(across 45 traces) as a function of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, where the darkest regions
 represent the most favorable combinations of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>. (Note: while there was a tie, we
 chose hyperparameters in the middle of the dark region.) The minimum
 corresponds to a mean average error of 8.9% with a much smaller median
@@ -566,7 +792,7 @@ errors, with median errors (and interquartile range) of 20.3% [8.6%,
 32.1%], 42.0% [32.6%, 48.3%], and 78.4% [30.8%, 131.9%], respectively.
 Figure 4 shows boxplots of relative errors of all algorithms on 45 CGM
 traces.</p>
-<p><img src="mage_figures/boxplot-of-errors.png" width="700px" height="400px"></p>
+<p><img src="mage_figures/boxplot-of-errors2.png" width="700px" height="400px"></p>
 <p><strong>Figure 4.</strong> Comparison of relative errors of different
 automatic algorithms for MAGE calculation relative to manual MAGE values
 on 45 CGM traces. The proposed method is implemented as ma (moving
@@ -578,6 +804,12 @@ out-of-sample errors based on 5- fold-cross-validation for <span class="math inl
 choice of window sizes (<span class="math inline">\(\alpha,
 \beta\)</span>) and out-of-sample cross-validated errors are displayed.
 The corresponding numerical summaries are summarized in Table 2.</p>
+<p><strong>Table 3:</strong> Numerical summaries of relative errors of
+automatic MAGE calculators on 45 CGM traces compared to manual
+calculations. The proposed method is implemented as ma (moving average)
+algorithm in R package iglu [17]; best corresponds to the errors with
+<span class="math inline">\(\alpha\)</span> = 5, <span class="math inline">\(\beta\)</span> = 32; cv corresponds to the
+out-of-sample errors based on 5-fold-cross-validation for <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="center">Algorithm</th>
@@ -622,14 +854,61 @@ The corresponding numerical summaries are summarized in Table 2.</p>
 <td align="center">78.4%</td>
 <td align="center">[30.8%, 131.9%]</td>
 </tr>
+<tr class="odd">
+<td align="center">rGV</td>
+<td align="center">74.7%</td>
+<td align="center">78.1%</td>
+<td align="center">[64.9%, 86.7%]</td>
+</tr>
+<tr class="even">
+<td align="center">AGATA</td>
+<td align="center">16.7%</td>
+<td align="center">9.8%</td>
+<td align="center">[4.4%, 26.3%]</td>
+</tr>
 </tbody>
 </table>
-<p><strong>Table 2:</strong> Numerical summaries of relative errors of
-automatic MAGE calculators on 45 CGM traces compared to manual
-calculations. The proposed method is implemented as ma (moving average)
-algorithm in R package iglu [17]; best corresponds to the errors with
-<span class="math inline">\(\alpha\)</span> = 5, <span class="math inline">\(\beta\)</span> = 32; cv corresponds to the
-out-of-sample errors based on 5-fold-cross-validation for <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>.</p>
+<p><strong>Table 4:</strong> Numerical summaries of relative errors of
+the proposed MAGE algorithm on 45 CGM traces compared to manual
+calculations at varying frequencies of the underlying data. The
+relatively constant mean error rate demonstrates the proposed method and
+selected hyperparameters (<span class="math inline">\(\alpha\)</span> =
+5, <span class="math inline">\(\beta\)</span> = 32) are robust to the
+frequency of the meter.</p>
+<table class="table">
+<thead><tr class="header">
+<th align="center">CGM Frequency</th>
+<th align="center">Mean</th>
+<th align="center">Median</th>
+<th align="center">IQR</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">1-min</td>
+<td align="center">6.5%</td>
+<td align="center">0.6%</td>
+<td align="center">[0.3%, 3.6%]</td>
+</tr>
+<tr class="even">
+<td align="center">5-min</td>
+<td align="center">8.9%</td>
+<td align="center">1.4%</td>
+<td align="center">[0.5%, 7.1%]</td>
+</tr>
+<tr class="odd">
+<td align="center">10-min</td>
+<td align="center">9.7%</td>
+<td align="center">2.5%</td>
+<td align="center">[1.2%, 8.4%]</td>
+</tr>
+<tr class="even">
+<td align="center">15-min</td>
+<td align="center">10.7%</td>
+<td align="center">5.3%</td>
+<td align="center">[2.1%, 9.0%]</td>
+</tr>
+</tbody>
+</table>
 <p>   </p>
 </div>
 <div class="section level2">
@@ -659,7 +938,10 @@ use of moving averages which inherently smooth out local fluctuations
 within a larger trend. The amount of smoothing can be tuned by varying
 the window sizes of the short and long moving averages, and we found
 that the algorithm is quite robust to the choice of window sizes, with
-high accuracy in a large range (Figure 3). One disadvantage is that the
+high accuracy in a large range (Figure 3). Additionally, the proposed
+optimal short and long moving averages are robust to the frequency of
+the CGM meter, as shown by the similar mean errors of the MAGE algorithm
+despite the meter frequency in Table 4. One disadvantage is that the
 moving average is a lagging indicator, and thus is undefined in the
 beginning of the time period (e.g., a moving average of window size 20
 is undefined for the first 19 time points). This could skew the
@@ -691,6 +973,21 @@ is more appropriate to use <span class="math inline">\(MAGE_{avg} =
 allows the user to change the default settings, and explicitly calculate
 MAGE+, MAGE–, MAGEavg, or MAGEmax, which makes our algorithm’s
 implementation more flexible compared to existing MAGE software.</p>
+<div class="section level4">
+<h4 id="important-notes-on-rgv-and-cgmquantify">Important Notes on rGV and cgmquantify<a class="anchor" aria-label="anchor" href="#important-notes-on-rgv-and-cgmquantify"></a>
+</h4>
+<p>As seen in Figure 4 and Table 3 above, the errors for rGV and
+cgmquantify are quite high and much different than the other
+calculators. After further analysis, we believe the following reasons
+explain the high errors.</p>
+<ol style="list-style-type: decimal">
+<li>The MAGE function in rGV outputs 20 regardless of the input data -
+this behavior is reproducible even with the example given in the rGV
+function.</li>
+<li>cgmquantify may incorrectly index a dataframe during the mage
+computation, as identified in <a href="https://github.com/brinnaebent/cgmquantify/issues/10" class="external-link uri">https://github.com/brinnaebent/cgmquantify/issues/10</a>.</li>
+</ol>
+</div>
 </div>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
@@ -843,6 +1140,54 @@ Shih J, Urbanek J, Schwenck J, Gaynanova I. iglu: Interpreting Glucose
 Data from Continuous Glucose Monitors. R package version 3.0.0. 2021
 July 23. <a href="https://cran.r-project.org/package=iglu" class="external-link uri">https://cran.r-project.org/package=iglu</a>. Date Accessed:
 July 23, 2021.</p>
+<p>[18] Olawsky, Evan, et al. “A new analysis tool for continuous
+glucose monitor data.” <em>Journal of diabetes science and
+technology</em> 16.6 (2022): 1496-1504.</p>
+<p>[19] Cappon, Giacomo, Giovanni Sparacino, and Andrea Facchinetti.
+“AGATA: a toolbox for automated glucose data analysis.” <em>Journal of
+Diabetes Science and Technology</em> (2023): 19322968221147570.</p>
+<p>[20] Attaye, Ilias, et al. “Introducing the Continuous Glucose Data
+Analysis (CGDA) R Package: an intuitive package to analyze continuous
+glucose monitoring data.” <em>Journal of diabetes science and
+technology</em> 16.3 (2022): 783-785.</p>
+<p>[21] <a href="https://github.com/rolandhangelbroek" class="external-link">rolandhangelbroek</a>. “CGM
+Shiny”. GitHub: <a href="https://github.com/rolandhangelbroek/cgmshiny" class="external-link uri">https://github.com/rolandhangelbroek/cgmshiny</a>.</p>
+<p>[22] Zaccardi, Francesco, et al. “Group of signs: a new method to
+evaluate glycemic variability.” <em>Journal of diabetes science and
+technology</em> 2.6 (2008): 1061-1065.</p>
+<p>[23] Syafa’ah, Lailis, Mauridhi Hery Purnomo, and Setio Basuki.
+“Discrete mean amplitude of glycemic excursion (MAGE) measurement on
+diabetics with spline interpolation method.” <em>International Journal
+on Electrical Engineering and Informatics</em> 10.2 (2018): 259-270.</p>
+<p>[24] Hendaryati, Heni, Askandar Tjokroprawir, and Lailis Syafa’ah.
+“Measurement of MAGE (Mean Amplitude of Glycemic Excursion) at Diabetics
+with Interpolation Method.” <em>Research Report</em> (2017): 79-87.</p>
+<p>[25] Marics, Gábor, et al. “Evaluation of an open access software for
+calculating glucose variability parameters of a continuous glucose
+monitoring system applied at pediatric intensive care unit.”
+<em>Biomedical engineering online</em> 14 (2015): 1-13.</p>
+<p>[26] Shao, Jian, Tao Xu, and Kaixin Zhou. “CGMTSA: An R package for
+continuous glucose monitoring time series data analysis.”
+<em>bioRxiv</em> (2020).</p>
+<p>[27] Piersanti, Agnese, et al. “Software packages and tools for the
+analysis of continuous glucose monitoring data.” <em>Diabetes Technology
+&amp; Therapeutics</em> 25.1 (2023): 69-85.</p>
+<p>[28] Chrzanowski, Jędrzej, et al. “Glyculator 3.0: A fast,
+easy-to-use Analytical tool for CGM data analysis, aggregation, center
+Benchmarking, and data sharing.” <em>Diabetes Care</em> 46.1 (2023):
+e3.</p>
+<p>[29] Rawlings, Renata A., et al. “Translating Glucose Variability
+Metrics into the Clinic via C ontinuous G lucose M onitoring: AG
+raphical U ser I nterface for D iabetes E valuation (CGM-GUIDE©).”
+<em>Diabetes technology &amp; therapeutics</em> 13.12 (2011):
+1241-1248.</p>
+<p>[30] “Tidepool,” <em>www.tidepool.org</em>. <a href="https://www.tidepool.org/" class="external-link uri">https://www.tidepool.org/</a>.</p>
+<p>[31] Millard, Louise AC, et al. “GLU: a software package for
+analysing continuously measured glucose levels in epidemiology.”
+<em>International Journal of Epidemiology</em> 49.3 (2020): 744-757.</p>
+<p>[32] Zhang, Xiaohua Douglas, Zhaozhi Zhang, and Dandan Wang.
+“CGManalyzer: an R package for analyzing continuous glucose monitoring
+studies.” <em>Bioinformatics</em> 34.9 (2018): 1609-1611.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
