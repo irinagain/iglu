@@ -1,3 +1,6 @@
+# iglu 4.1.0
+* Add meal plotting functionality
+
 # iglu 4.0.2
 * Fixed broken whiplash plot in MAGE documentation
 * Added MAGEmax plotting functionality

@@ -30,9 +30,9 @@ adj_mtimes <- function(data, mealtime, dt0) {
     # remap x time as minimum time difference cgm time
     x <- data$time[which.min(timediffs)]
   }
-  # if not within one measurement then return NA
+  # if not within one measurement then return original (won't map to the data later)
   else {
-    x = as.POSIXct(NA)
+    x = mealtime
   }
 
   # return adjusted mealtime
@@ -43,18 +43,20 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
                                  recovery_win, interpolate, adjust_mealtimes,
                                  dt0, inter_gap, tz) {
 
-  id = meal = mealtime = idx = period = peak = base = recover = deltag = basereco = NULL
+   id = meal = mealtime = idx = period = peak = base = recover = deltag = basereco =
+    basegl = peakgl = recovergl = peaktime = recovertime = mealid = NULL
   rm(list = c("id", "meal", "mealtime", "idx", "period", "peak", "base", "recover",
-              "deltag", "basereco"))
+              "deltag", "basereco", "basegl", "peakgl", "recovergl", "peaktime", "recovertime", "mealid"))
 
   # if id is not in mealtimes data
   if (!(unique(data$id) %in% unique(mealtimes$id))) {
     # message no mealtimes found for specific subject
     message(paste0("No mealtimes found for subject: ", unique(data$id)))
     # return compatible tibble with NA for all missing values
-    out <- tibble::tibble(id = unique(data$id), time = as.POSIXct(NA),
-                          meal = NA_character_, deltag = NA_real_,
-                          deltat = NA_real_, basereco = NA_real_)
+    out <- tibble::tibble(id = unique(data$id), time = as.POSIXct(NA, tz = tz), meal = NA_character_,
+                          deltag = NA_real_, deltat = NA_real_, basereco = NA_real_,
+                          basegl = NA_real_, peakgl = NA_real_, recovergl = NA_real_,
+                          peaktime = as.POSIXct(NA, tz = tz), recovertime = as.POSIXct(NA, tz = tz))
     return(out)
   }
 
@@ -112,13 +114,40 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
   ## if no mealtimes match with cgm times (likely due to not interpolating or adjusting)
   # then exit out and warn
   if (!any(meals_single$mealtime %in% data$time)) {
-    out = meals_single[, 1:3] %>%
-      dplyr::mutate(deltag = NA, deltat = NA, basereco = NA)
+    out = meals_single %>%
+      dplyr::mutate(deltag = NA_real_, deltat = NA_real_, basereco = NA_real_,
+                    basegl = NA_real_, peakgl = NA_real_, recovergl = NA_real_,
+                    peaktime = as.POSIXct(NA, tz = tz), recovertime = as.POSIXct(NA, tz = tz)) %>%
+      dplyr::select(id, time = mealtime, meal, deltag, deltat, basereco)
 
-    warning("No meals match with recorded CGM timestamps. Please try running with interpolate = TRUE and/or adjust_mealtimes = TRUE")
+    warning("No meals match with recorded CGM timestamps.
+            Please try running with interpolate = TRUE and/or adjust_mealtimes = TRUE")
 
     return(out)
   }
+
+  if (any(!(meals_single$mealtime %in% data$time))) {
+    non_match = meals_single %>%
+      dplyr::filter(!(mealtime %in% data$time)) %>%
+      dplyr::mutate(
+        deltag = NA_real_, deltat = NA_real_, basereco = NA_real_,
+        basegl = NA_real_, peakgl = NA_real_, recovergl = NA_real_,
+        peaktime = as.POSIXct(NA, tz = tz), recovertime = as.POSIXct(NA, tz = tz)
+      ) %>%
+      dplyr::select(id, time = mealtime, meal, deltag, deltat, basereco, basegl, peakgl, recovergl, peaktime, recovertime)
+
+    warning("Some meals don't match with CGM readings. Mealtimes returned with NA for metric values")
+
+    # Filter to only matching ones
+    meals_single = meals_single[meals_single$mealtime %in% data$time, ]
+    NAflag = TRUE
+  }else{
+    NAflag = FALSE
+  }
+
+  # Assign each meal a unique id
+  meals_single = meals_single %>%
+    dplyr::mutate(mealid = 1:dplyr::n())
 
   # find total window time
   total_win <- before_win + after_win + recovery_win
@@ -127,7 +156,8 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
     dplyr::mutate(start = mealtime - before_win*60*60) %>%
     dplyr::rowwise() %>%
     # for each meal window, create 4 periods
-    dplyr::reframe(meal = meal,
+    dplyr::reframe(mealid = mealid,
+                   meal = meal,
                    # time is total window (secondly)
                    time = start + lubridate::seconds(0:(total_win*60*60)),
                    # each window now has 4 periods: before, meal, after, recovery
@@ -145,17 +175,18 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 
   list_all <- list()
   # list types of meals present for this subject
-  mealtypes <- unique(out$meal[!is.na(out$meal)])
+  # mealtypes <- unique(out$meal[!is.na(out$meal)])
+  mealids <- unique(out$mealid[!is.na(out$mealid)])
 
-  for (i in 1:length(mealtypes)) {
+  for (i in 1:length(mealids)) {
     list_all[[i]] <- out %>%
       # filter down to NAs and specified meals
       # removes overlap from other meal windows
-      dplyr::filter(is.na(meal) | meal == mealtypes[i]) %>%
+      dplyr::filter(is.na(mealid) | mealid == mealids[i]) %>%
       # index by each individual meal + intervening - NA, meal, NA, etc.
-      dplyr::mutate(idx = rep(1:length(rle(meal)[[1]]), rle(meal)[[1]])) %>%
+      dplyr::mutate(idx = rep(1:length(rle(mealid)[[1]]), rle(mealid)[[1]])) %>%
       # filter down to only meals, will have unique idx for each meal
-      dplyr::filter(!is.na(meal)) %>%
+      dplyr::filter(!is.na(mealid)) %>%
       dplyr::group_by(idx) %>%
       # calculate numbers necessary for adj_metrics calculation
       # base is average of gl values before
@@ -165,8 +196,11 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
                     # recovery is time one hour after peak
                     recover = time[period == "after"][which.max(gl[period == "after"])] +
                       1*60*60) %>%
-      dplyr::reframe(id = id[1], meal = meal[1],
+      dplyr::reframe(id = id[1], meal = meal[1], mealid = mealid[1],
                      mealtime = time[period == "meal"],
+                     basegl = base[1], peakgl = peak[1],
+                     recovergl = ifelse(recover[1] %in% time, gl[time == recover[1]], NA),
+                     peaktime = recover[1] - 1*60*60, recovertime = recover[1],
                      # deltag is change in gl from baseline to peak
                      deltag = peak[1] - base[1],
                      # deltat is time to peak (peak time is 1 hr before recovery)
@@ -177,11 +211,21 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
                      # only calculate basereco if recovery time is within 4 hr window
                      basereco = ifelse(recover[1] %in% time,
                                        (peak[1] - gl[time == recover[1]])/deltag[1], NA)) %>%
-      dplyr::select(id, time = mealtime, meal, deltag, deltat, basereco)
+      dplyr::select(id, time = mealtime, meal, deltag, deltat, basereco, basegl, peakgl, recovergl, peaktime, recovertime)
   }
 
-  # may need to check
+  # for meals found in data
   out <- do.call(rbind, list_all)
+
+  # if any of the meals didn't match, save them as NAs
+  if (NAflag){
+    out = rbind(out, non_match)
+  }
+
+
+  # Resort to match original order
+  out <- out[order(out$time), ]
+
 
   return(out)
 }
@@ -193,7 +237,7 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 #'
 #' @usage meal_metrics(data, mealtimes, before_win = 1, after_win = 3,
 #' recovery_win = 1, interpolate = TRUE, adjust_mealtimes = TRUE, dt0 = NULL,
-#' inter_gap = 45, tz = "")
+#' inter_gap = 45, tz = "", glucose_times = FALSE)
 #'
 #' @inheritParams CGMS2DayByDay
 #'
@@ -211,9 +255,13 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 #' mealtimes with CGM data times. This is important if mealtimes and CGM data times
 #' are not exactly aligned, because the function will return NA's for mealtimes
 #' that don't match with a corresponding CGM time stamp.
+#' @param glucose_times Boolean to indicate if underlying glucose and times should be returned
+#' - e.g. baseline glucose value used to calculate \eqn{Delta G}. Intended for use in plotting function
 #'
-#' @return A tibble object with 6 columns will be returned: id, time, meal, deltag,
-#' deltat, and basereco.
+#' @return By default tibble object with 6 columns will be returned: id, time, meal, deltag,
+#' deltat, and basereco. If glucose_times = TRUE then 5 more columns are returned
+#' for baseline glucose (basegl), peak glucose (peakgl), recover glucose (recovergl),
+#' peak timestamp (peaktime), and recovery timestamp (recovertime)
 #'
 #' @export
 #'
@@ -223,6 +271,8 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 #' If no meal column is given in the original data, one will be automatically generated
 #' with a unique number for each meal.
 #'
+#' @seealso plot_meals()
+#'
 #' @references
 #' Service, F. John. (2013) Glucose Variability, \emph{Diabetes}
 #' \strong{62(5)}: 1398-1404, \doi{10.2337/db12-1396}
@@ -231,21 +281,21 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
 #' data(example_data_hall)
 #' data(example_meals_hall)
 #' meal_metrics(example_data_hall, example_meals_hall)
-#' meal_metrics(example_data_hall, example_meals_hall)
 #'
 
 
 meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
                           recovery_win = 1, interpolate = TRUE,
                           adjust_mealtimes = TRUE, dt0 = NULL, inter_gap = 45,
-                          tz = "") {
+                          tz = "", glucose_times = FALSE) {
 
-  id = meal = mealtime = idx = period = peak = base = recover = deltag = basereco = NULL
+  . = id = meal = mealtime = idx = period = peak = base = recover = deltag = basereco = NULL
   rm(list = c("id", "meal", "mealtime", "idx", "period", "peak", "base", "recover",
-              "deltag", "basereco"))
+              "deltag", "basereco", "."))
 
   # check with iglu internal function
   data = check_data_columns(data, time_check = TRUE, tz = tz)
+  tz = lubridate::tz(data$time) #reset timezone based on what is in the data
 
   ## need time format check for mealtimes
 
@@ -254,6 +304,12 @@ meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
     warning("Vector of mealtimes entered. Mealtimes assumed to apply to all subject(s) in the data.")
     # check if posixct and force if not
     mealtimes <- time_check(mealtimes, name = "mealtimes", tz = tz)
+
+    # Check for missing mealtime
+    if (any(is.na(mealtimes))){
+      message(paste0("Some meal times are NA. Those records are removed."))
+      mealtimes <- mealtimes[!is.na(mealtimes)]
+    }
 
     # create tibble of id and mealtime to be used in meal_metrics_single
     # repeat id a mealtime # of times for each id
@@ -274,6 +330,13 @@ meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
     }
     # check time format
     mealtimes$mealtime <- time_check(mealtimes$mealtime, "mealtimes", tz = tz)
+
+    # Check for missing mealtime
+    if (any(is.na(mealtimes$mealtime))){
+      message(paste0("Some meal times are NA. Those records are removed."))
+      mealtimes <- mealtimes %>% dplyr::filter(!is.na(mealtime))
+    }
+
     # if lacking meal type in mealtimes, message
     if (!("meal" %in% names(mealtimes))) {
       message(paste0("Meal types unspecified. Each mealtime will be assigned a ",
@@ -284,6 +347,7 @@ meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
     }
   }
   # at this point, mealtimes should be a df with at least id, time, meal cols
+
   out <- data %>%
     dplyr::group_by(id) %>%
     # calculate meal metrics for each subject
@@ -292,7 +356,8 @@ meal_metrics <- function (data, mealtimes, before_win = 1, after_win = 3,
                                        recovery_win = recovery_win, interpolate = interpolate,
                                        adjust_mealtimes = adjust_mealtimes, dt0 = dt0,
                                        inter_gap = inter_gap, tz = tz)) %>%
-    dplyr::ungroup()
+    dplyr::ungroup() %>%
+    { if (glucose_times) . else dplyr::select(., 1:6) }
 
   return(out)
 }
