@@ -44,7 +44,7 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
   if (length(sensor) > 1) {
     warning("Sensor type not specified, using dexcom as default")
   }
-  sensor = match.arg(sensor)
+  sensor = match.arg(sensor, c("dexcom", "libre", "librepro", "asc", "ipro"))
 
   if (is.null(sensor)) {
     stop("You must enter the sensor type to be read from. Current supported sensors are 'dexcom', 'libre', 'librepro', 'asc', 'ipro'")

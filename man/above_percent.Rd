@@ -10,20 +10,19 @@ above_percent(data, targets_above = c(140, 180, 250))
 \item{data}{DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values.}
 
-\item{targets_above}{Numeric vector of glucose thresholds. Glucose values from
-data argument will be compared to each value in the targets_above vector.
-Default list is (140, 180, 250).}
+\item{targets_above}{\strong{Default: (140, 180, 250).} Numeric vector of glucose thresholds. Glucose values from
+data argument will be compared to each value in the targets_above vector.}
 }
 \value{
-If a data.frame object is passed, then a tibble object with
+If a DataFrame object is passed, then a tibble object with
 a column for subject id and then a column for each target value is returned. If a vector of glucose
-values is passed, then a tibble object without the subject id is returned.
-as.numeric() can be wrapped around the latter to output a numeric vector.
+values is passed, then a tibble object without the subject id is returned. Wrap
+`as.numeric()` around the latter to output a numeric vector.
 }
 \description{
-The function above_percent produces a tibble object with values equal to
+The function \code{above_percent} produces a tibble object with values equal to
 the percentage of glucose measurements above target values. The output columns
-correspond to the subject id followed by the target values and the
+correspond to the subject id followed by the target values, and the
 output rows correspond to the subjects. The values will be between 0
 (no measurements) and 100 (all measurements).
 }

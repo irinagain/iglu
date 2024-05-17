@@ -40,39 +40,38 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
       p = p + scale_y_continuous(name = 'Glucose (mg/dL)')
 
     }
-       p
+
+    p
 }
 
 
 #' Plot time series and lasagna plots of glucose measurements
 #'
 #' @description
-#' The function plot_glu supports several plotting methods for both single and multiple
+#' The function `plot_glu` supports several plotting methods for both single and multiple
 #' subject data.
 #'
 #' @param data DataFrame with column names ("id", "time", and "gl").
 #' @inheritParams plot_lasagna
-#' @param plottype String corresponding to the desired plot type. Options are
-#' 'tsplot' for a time series plot and 'lasagna' for a lasagna plot. See the
-#' `lasagnatype` parameter for further options corresponding to the 'lasagna' `plottype`.
-#' Default is 'tsplot'.
+#' @param plottype \strong{Default: "tsplot".} One of ('tsplot', 'lasagna'). String corresponding to the desired plot type. Options are
+#' 'tsplot' for a time series plot and 'lasagna' for a lasagna plot. See the `lasagnatype` parameter for further options corresponding to the 'lasagna' `plottype`.
 #'
-#' @param LLTR Lower Limit of Target Range, default value is 70 mg/dL.
-#' @param ULTR Upper Limit of Target Range, default value is 180 mg/dL.
-#' @param log Logical value indicating whether log10 of glucose values should be taken, default value is FALSE.
-#' When log = TRUE, the glucose values, LLTR, and ULTR will all be log transformed, and time series plots will
+#' @param LLTR \strong{Default: 70.} Lower Limit of Target Range in mg/dL.
+#' @param ULTR \strong{Default: 180.} Upper Limit of Target Range in mg/dL.
+#' @param log \strong{Default: FALSE.} Boolean indicating whether `log10` of glucose values should be taken.
+#' When `log = TRUE`, the glucose values, LLTR, and ULTR will all be log transformed, and time series plots will
 #' be on a semilogarithmic scale.
 #'
-#' @param subjects String or list of strings corresponding to subject names
-#' in 'id' column of data. Default is all subjects.
+#' @param subjects String or list of strings corresponding to subject names in 'id' column of data. Default is all subjects.
 #'
-#' @param inter_gap The maximum allowable gap (in minutes). Gaps larger than
-#' this will not be connected in the time series plot. The default value is 45 minutes.
+#' @param inter_gap \strong{Default: 45}. The maximum allowable gap (in minutes). Gaps larger than this will not be connected in the time series plot.
 #'
-#' @param color_scheme String corresponding to the chosen color scheme when the `plottype` is 'lasagna'. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.
+#' @param color_scheme \strong{Default: "blue-red".} String corresponding to the chosen color scheme when the `plottype` is 'lasagna'. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.
+#'
+#' @param static_or_gui \strong{Default: "plotly".} One of ("ggplot", "plotly"). Returns either a ggplot (static image) or Plotly chart (interactive GUI).
 #'
 #' @details
-#' For the default option 'tsplot', a time series graph for each subject is
+#' For the default option `plottype = tsplot`, a time series graph for each subject is
 #' produced with hypo- and hyperglycemia cutoffs shown as horizontal red lines.
 #' The time series plots for all subjects chosen (all by default) are displayed
 #' on a grid.
@@ -95,11 +94,12 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
 #'
 
 
-plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 70, ULTR = 180, subjects = NULL, inter_gap = 45, tz = "",  color_scheme = c("blue-red", "red-orange"), log = F){
+plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 70, ULTR = 180, subjects = NULL, inter_gap = 45, tz = "",  color_scheme = c("blue-red", "red-orange"), log = F, static_or_gui = c('plotly', 'ggplot')){
 
-  plottype = match.arg(plottype)
-  datatype = match.arg(datatype)
-  lasagnatype = match.arg(lasagnatype)
+  plottype = match.arg(plottype, c('tsplot', 'lasagna'))
+  datatype = match.arg(datatype, c("all", "average", "single"))
+  lasagnatype = match.arg(lasagnatype, c('unsorted', 'timesorted'))
+  static_or_gui = match.arg(static_or_gui, c('plotly', 'ggplot'))
 
   id = NULL
   rm(list = c("id"))
@@ -110,8 +110,8 @@ plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all"
   }
 
   if (plottype == 'tsplot'){
-    tsplot(data, LLTR = LLTR, ULTR = ULTR, tz = tz, inter_gap = inter_gap, log = log)
-  }else if (datatype == "single"){
+    .p <- tsplot(data, LLTR = LLTR, ULTR = ULTR, tz = tz, inter_gap = inter_gap, log = log)
+  } else if (datatype == "single"){
       subject = unique(data$id)
       ns = length(subject)
       if (ns > 1){
@@ -120,18 +120,23 @@ plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all"
         data = data[which(data$id == subject)]
       }
       if(log){
-        plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme, log = T, limits = log(c(50,500)), inter_gap = inter_gap, midpoint = log(105))
-      }
-      else{
-        plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme, log = F, inter_gap = inter_gap)
+        .p <- plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme, log = T, limits = log(c(50,500)), inter_gap = inter_gap, midpoint = log(105), static_or_gui = static_or_gui)
+      } else{
+        .p <- plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme, log = F, inter_gap = inter_gap, static_or_gui = static_or_gui)
       }
   }
   else{
       if(log){
-        plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme, log = T, limits = log(c(50,500)), midpoint = log(105), inter_gap = inter_gap)
+        .p <- plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme, log = T, limits = log(c(50,500)), midpoint = log(105), inter_gap = inter_gap, static_or_gui = static_or_gui)
     }
       else{
-        plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme, log = F, inter_gap = inter_gap)
+        .p <- plot_lasagna(data, datatype = datatype, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme, log = F, inter_gap = inter_gap, static_or_gui = static_or_gui)
     }
   }
+
+  if (static_or_gui == "plotly") {
+    return(plotly::ggplotly(.p))
+  }
+
+  return(.p)
 }
