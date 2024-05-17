@@ -41,7 +41,7 @@ Description: Implements a wide range of metrics for measuring glucose control an
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.2.3
 Depends: R (>= 3.1.0)
 Imports:
     caTools,
@@ -67,6 +67,7 @@ Imports:
     plotly
 Suggests:
     knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 URL: https://irinagain.github.io/iglu/
