@@ -61,7 +61,7 @@ gri <- function(data){
 
   id = NULL
   rm(list = c("id"))
-  data = check_data_columns(data)
+  data = check_data_columns(data, time_check = TRUE)
 
   out = data %>%
     dplyr::group_by(id) %>%
