@@ -1,3 +1,11 @@
+check_POSIXct <- function(x) {
+  if (inherits(x, "POSIXct") && length(x) == 0) {
+    return(NA)
+  } else {
+    return(x)
+    }
+  }
+
 # helper function for checking time format
 time_check <- function(time, name, tz){
   if (!lubridate::is.POSIXct(time)){
@@ -194,8 +202,7 @@ meal_metrics_single <- function (data, mealtimes, before_win, after_win,
                     # peak is max gl after meal
                     peak = max(gl[period == "after"], na.rm = TRUE),
                     # recovery is time one hour after peak
-                    recover = time[period == "after"][which.max(gl[period == "after"])] +
-                      1*60*60) %>%
+                    recover = check_POSIXct(time[period == "after"][which.max(gl[period == "after"])] + 1*60*60)) %>%
       dplyr::reframe(id = id[1], meal = meal[1], mealid = mealid[1],
                      mealtime = time[period == "meal"],
                      basegl = base[1], peakgl = peak[1],
