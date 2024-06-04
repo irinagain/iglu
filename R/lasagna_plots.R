@@ -1,8 +1,7 @@
 #' Lasagna plot of glucose values for 1 subject aligned across times of day
 #'
 #' @inheritParams conga
-#' @param lasagnatype String corresponding to plot type, currently supported
-#' options are 'unsorted' for an unsorted single-subject lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across days, and 'daysorted' for a lasagna plot with glucose values sorted within each day across time points.
+#' @param lasagnatype \strong{Default: "unsorted".} String corresponding to plot type, currently supported options are 'unsorted' for an unsorted single-subject lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across days, and 'daysorted' for a lasagna plot with glucose values sorted within each day across time points.
 #' @param limits The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link{scale_fill_gradient2}})
 #' @param midpoint The glucose value serving as midpoint of the diverging gradient scale (see \code{\link{scale_fill_gradient2}}). The default value is 105 mg/dL. The values above are colored in red, and below in blue in the default color_scheme, which can be adjusted.
 #' @param dt0 The time frequency for interpolated aligned grid in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).
@@ -14,6 +13,7 @@
 #' @param ULTR Upper Limit of Target Range, default value is 180 mg/dL.
 #' @param log Logical value indicating whether log of glucose values should be taken, default values is FALSE.
 #' When log = TRUE the glucose values, limits, midpoint, LLTR, and ULTR will all be log transformed.
+#' @param static_or_gui One of "ggplot" or "plotly". \strong{Default: "plotly".} Returns either a ggplot (static image) or Plotly chart (interactive GUI).
 #'
 #' @param color_scheme String corresponding to the chosen color scheme. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.
 #'
@@ -31,7 +31,7 @@
 #' plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted')
 #' plot_lasagna_1subject(example_data_1_subject, log = TRUE)
 #'
-plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted', 'daysorted'), limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", color_scheme = c("blue-red", "red-orange"), log = F){
+plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted', 'daysorted'), limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", color_scheme = c("blue-red", "red-orange"), log = F, static_or_gui = c('plotly', 'ggplot')){
 
   id = glucose = day = NULL
   rm(list = c("id", "glucose", "day"))
@@ -46,7 +46,7 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
   }
 
   # Select the color scheme
-  color_scheme = match.arg(color_scheme)
+  color_scheme = match.arg(color_scheme, c("blue-red", "red-orange"))
   if (color_scheme == "blue-red"){
     # Default blue and red
     colors = c("#3182bd", "#deebf7", "white", "#fee0d2", "#de2d26")
@@ -75,12 +75,12 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
   ytitle = "Day"
   xtitle = "Hour"
 
-  lasagnatype = match.arg(lasagnatype)
+  lasagnatype = match.arg(lasagnatype, c('unsorted', 'timesorted', 'daysorted'))
   if (lasagnatype == 'timesorted'){
     gl_by_id_ip = apply(gl_by_id_ip, 2, sort, decreasing = TRUE, na.last = TRUE)
     title = ", sorted within each time point."
     ytitle = "Day (sorted)"
-  }else if (lasagnatype == 'daysorted'){
+  } else if (lasagnatype == 'daysorted'){
     gl_by_id_ip = t(apply(gl_by_id_ip, 1, sort, decreasing = TRUE, na.last = TRUE))
     title = ", sorted within each day."
     xtitle = "Hour (sorted)"
@@ -90,8 +90,8 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
   data_l = data.frame(day = rep(data_ip$actual_dates, each = ntimes), hour = rep(time_grid_hours, ndays), glucose = as.vector(t(gl_by_id_ip)))
 
   # Make a plot
-  p = data_l%>%
-    ggplot(aes(x = hour, y = as.character(day), fill = glucose)) + geom_tile()  + ylab(ytitle) + ggtitle(paste0(subject, title, "")) + xlab(xtitle) + xlim(c(0, 24)) + scale_fill_gradientn(colors = colors, na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits)
+  p = data_l %>%
+    ggplot(aes(x = hour, y = as.character(day), fill = glucose)) + scale_fill_gradientn(colors = colors, na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits) + geom_tile() + ylab(ytitle) + ggtitle(paste0(subject, title, "")) + xlab(xtitle) + xlim(c(0, 24))
 
   if(log){
     p = p + ggplot2::labs(fill = 'log(glucose)')
@@ -99,7 +99,17 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 
   # Take out days if sorted within time since each subject changes
   if (lasagnatype == 'timesorted'){
-    p = p + scale_y_discrete(labels = NULL)
+    p = p + theme(axis.text.y=element_blank())
+  }
+
+  p <- p + theme(panel.background = element_rect(fill = "grey50"),
+                panel.grid.major = element_line(linewidth=0, linetype = 'solid', colour = "grey50"),
+                panel.grid.minor = element_line(linewidth=0, linetype = 'solid', colour = "grey50")
+                )
+
+  static_or_gui = match.arg(static_or_gui, c("plotly", "ggplot"))
+  if (static_or_gui == "plotly") {
+    return(plotly::ggplotly(p))
   }
 
   return(p)
@@ -116,6 +126,7 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 #' @param ULTR Upper Limit of Target Range, default value is 180 mg/dL.
 #' @param log Logical value indicating whether log10 of glucose values should be taken, default value is FALSE.
 #' When log = TRUE the glucose values, limits, midpoint, LLTR, and ULTR will all be log transformed.
+#' @param static_or_gui One of "ggplot" or "plotly". \strong{Default: "plotly".} Returns either a ggplot (static image) or Plotly chart (interactive GUI).
 #'
 #' @return A ggplot object corresponding to lasagna plot
 #' @export
@@ -128,10 +139,10 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 #' plot_lasagna(example_data_5_subject, datatype = "average", lasagnatype = 'timesorted', tz = "EST")
 #' plot_lasagna(example_data_5_subject, lasagnatype = "subjectsorted", LLTR = 100, tz = "EST")
 #'
-plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('unsorted', 'timesorted', 'subjectsorted'), maxd = 14, limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", color_scheme = c("blue-red", "red-orange"), log = F){
+plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('unsorted', 'timesorted', 'subjectsorted'), maxd = 14, limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", color_scheme = c("blue-red", "red-orange"), log = F, static_or_gui = c('plotly', 'ggplot')){
 
-  lasagnatype = match.arg(lasagnatype)
-  datatype = match.arg(datatype)
+  lasagnatype = match.arg(lasagnatype, c('unsorted', 'timesorted', 'subjectsorted'))
+  datatype = match.arg(datatype, c("all", "average"))
 
   id = glucose = day = NULL
   rm(list = c("id", "glucose", "day"))
@@ -149,7 +160,7 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
   ns = length(subject)
 
   # Select the color scheme
-  color_scheme = match.arg(color_scheme)
+  color_scheme = match.arg(color_scheme, c("blue-red", "red-orange"))
   if (color_scheme == "blue-red"){
     # Default blue and red
     colors = c("#3182bd", "#deebf7", "white", "#fee0d2", "#de2d26")
@@ -203,7 +214,12 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
 
     # Take out subject names if sorted within time since each subject changes
     if (lasagnatype == 'timesorted'){
-      p = p + scale_y_discrete(labels = NULL)
+      p = p + theme(axis.text.y=element_blank())
+    }
+
+    static_or_gui = match.arg(static_or_gui, c("plotly", "ggplot"))
+    if (static_or_gui == "plotly") {
+      return(plotly::ggplotly(p))
     }
 
     return(p)
@@ -239,7 +255,6 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
       xtitle = "Day (sorted)"
     }
 
-
     data_l = data.frame(subject = rep(subject, each = nt * max_days), day = rep(time_grid_days, ns), glucose = as.vector(t(out)))
 
     p = data_l%>%
@@ -251,7 +266,12 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
 
     # Take out subject names if sorted within time since each subject changes
     if (lasagnatype == 'timesorted'){
-      p = p + scale_y_discrete(labels = NULL)
+      p = p + theme(axis.text.y=element_blank())
+    }
+
+    static_or_gui = match.arg(static_or_gui, c("plotly", "ggplot"))
+    if (static_or_gui == "plotly") {
+      return(plotly::ggplotly(p))
     }
 
     return(p)

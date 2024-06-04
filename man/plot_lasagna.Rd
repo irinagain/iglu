@@ -17,7 +17,8 @@ plot_lasagna(
   inter_gap = 45,
   tz = "",
   color_scheme = c("blue-red", "red-orange"),
-  log = F
+  log = F,
+  static_or_gui = c("plotly", "ggplot")
 )
 }
 \arguments{
@@ -50,6 +51,8 @@ The default value is 45 min.}
 
 \item{log}{Logical value indicating whether log10 of glucose values should be taken, default value is FALSE.
 When log = TRUE the glucose values, limits, midpoint, LLTR, and ULTR will all be log transformed.}
+
+\item{static_or_gui}{One of "ggplot" or "plotly". \strong{Default: "plotly".} Returns either a ggplot (static image) or Plotly chart (interactive GUI).}
 }
 \value{
 A ggplot object corresponding to lasagna plot

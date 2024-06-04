@@ -16,21 +16,25 @@
 #' If a vector of glucose values is passed, then a tibble object with just the MAGE value
 #' is returned.
 #'
-#' In \code{version = "ma"}, if \code{plot = TRUE}, a list of ggplots will
-#' be returned with one plot per subject. To return an interactive plot, use iglu::mage_ma_single with \code{plot_type='plotly'} on each subject individually.
+#' In \code{version = "ma"}, if \code{plot = TRUE}, a list of ggplots will be returned with one plot per subject.
+#' To return an interactive plot, use iglu::mage_ma_single with \code{static_or_gui='plotly'} on each subject individually.
 #'
 #' @export
 #'
 #' @details If version \code{'ma'} is selected, the function computationally emulates the manual method for calculating the mean amplitude of glycemic excursions (MAGE) first suggested in "Mean Amplitude of Glycemic Excursions, a Measure of Diabetic Instability", (Service, 1970). For this version, glucose values will be interpolated over a uniform time grid prior to calculation.
 #'
-#' \code{'ma'} is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the _original_ (not moving average) glucose values.
+#' \code{'ma'} is a more accurate algorithm that uses the crosses of a short and long moving average to identify intervals where a peak/nadir might exist. Then, the height from one peak/nadir to the next nadir/peak is calculated from the _original_ (not moving average) glucose values. (Note: this function internally uses CGMS2DayByDay with dt0 = 5. Thus, all CGM data is linearly interpolated to 5 minute intervals. See the MAGE vignette for more details.)
 #'
 #' \code{'naive'} algorithm calculates MAGE by taking the mean of absolute glucose differences (between each value and the mean) that are greater than the standard deviation. A multiplier can be added to the standard deviation using the \code{sd_multiplier} argument.
+#'
 #'
 #' @references
 #' Service et al. (1970) Mean amplitude of glycemic excursions, a measure of diabetic instability
 #' \emph{Diabetes}  \strong{19} .644-655,
 #' \doi{10.2337/diab.19.9.644}.
+#'
+#' Fernandes, Nathaniel J., et al. "Open-source algorithm to calculate mean amplitude of glycemic excursions using short and long moving averages."
+#' Journal of diabetes science and technology 16.2 (2022): 576-577. \doi{10.1177/19322968211061165}
 #'
 #' @examples
 #' data(example_data_5_subject)
@@ -42,12 +46,12 @@ mage <- function(data,
                  short_ma = 5, long_ma = 32,
                  return_type = c('num', 'df'),
                  direction = c('avg', 'service', 'max', 'plus', 'minus'),
-                 dt0 = NULL,  tz = "", inter_gap = 45,
+                tz = "", inter_gap = 45,
                  max_gap=180,
                  plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions = TRUE) {
 
   # Match version
-  version = match.arg(version)
+  version = match.arg(version, c('ma', 'naive'))
 
   if(version == 'naive') {
     warning("You are using the naive version of the iglu mage algorithm. It is included for backward compatibility with earlier versions of iglu and is less accurate than the ma algorithm.")
@@ -57,7 +61,7 @@ mage <- function(data,
   direction = match.arg(direction, c('avg', 'service', 'max', 'plus', 'minus'))
 
   return(mage_ma(data, short_ma = short_ma, long_ma = long_ma, return_type=return_type, direction=direction,
-                 plot = plot, dt0 = dt0, inter_gap = inter_gap, max_gap = max_gap, tz = tz,
+                 plot = plot, inter_gap = inter_gap, max_gap = max_gap, tz = tz,
                  title = title, xlab = xlab, ylab = ylab, show_ma = show_ma, show_excursions=show_excursions))
 }
 
@@ -65,7 +69,7 @@ mage_ma <- function(data,
                     short_ma = 5, long_ma = 32,
                     return_type = c('num', 'df'),
                     direction = c('avg', 'service', 'max', 'plus', 'minus'),
-                    dt0 = NULL, inter_gap = 45, tz = "",
+                    inter_gap = 45, tz = "",
                     max_gap = 180,
                     plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions=TRUE) {
   id = . = MAGE = NULL
@@ -79,8 +83,8 @@ mage_ma <- function(data,
     dplyr::filter(!is.na(gl)) %>%
     dplyr::group_by(id) %>%
     dplyr::do(MAGE = mage_ma_single(., short_ma = short_ma, long_ma = long_ma, return_type=return_type, direction=direction,
-                                    plot = plot, dt0 = dt0, inter_gap = inter_gap, max_gap = max_gap, tz = tz,
-                                    title = title, xlab = xlab, ylab = ylab, show_ma = show_ma, show_excursions = show_excursions))
+                                    plot = plot, inter_gap = inter_gap, max_gap = max_gap, tz = tz,
+                                    title = title, xlab = xlab, ylab = ylab, show_ma = show_ma, show_excursions = show_excursions, static_or_gui='ggplot'))
 
   # Check if a ggplot or number in list is returned - convert the latter to a number
   if(class(out$MAGE[[1]])[1] == "numeric" | is.na(out$MAGE[[1]][1])) {

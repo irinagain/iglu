@@ -15,14 +15,14 @@ plot_lasagna_1subject(
   inter_gap = 45,
   tz = "",
   color_scheme = c("blue-red", "red-orange"),
-  log = F
+  log = F,
+  static_or_gui = c("plotly", "ggplot")
 )
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
 
-\item{lasagnatype}{String corresponding to plot type, currently supported
-options are 'unsorted' for an unsorted single-subject lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across days, and 'daysorted' for a lasagna plot with glucose values sorted within each day across time points.}
+\item{lasagnatype}{\strong{Default: "unsorted".} String corresponding to plot type, currently supported options are 'unsorted' for an unsorted single-subject lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across days, and 'daysorted' for a lasagna plot with glucose values sorted within each day across time points.}
 
 \item{limits}{The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link{scale_fill_gradient2}})}
 
@@ -45,6 +45,8 @@ The default value is 45 min.}
 
 \item{log}{Logical value indicating whether log of glucose values should be taken, default values is FALSE.
 When log = TRUE the glucose values, limits, midpoint, LLTR, and ULTR will all be log transformed.}
+
+\item{static_or_gui}{One of "ggplot" or "plotly". \strong{Default: "plotly".} Returns either a ggplot (static image) or Plotly chart (interactive GUI).}
 }
 \value{
 A ggplot object corresponding to lasagna plot
