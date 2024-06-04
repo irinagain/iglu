@@ -19,7 +19,7 @@ sd_measures(data,dt0 = NULL, inter_gap = 45, tz = "")
 A tibble object with a column for id and a column for each of the six SD subtypes.
 }
 \description{
-The function sd_measures produces SD subtype values in a tibble object
+The function \code{sd_measures} produces SD subtype values in a tibble object
 with a row for each subject and columns corresponding to id followed by
 each SD subtype.
 }

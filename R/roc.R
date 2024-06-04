@@ -1,7 +1,7 @@
 #' Calculate the Rate of Change at each time point (ROC)
 #'
 #' @description
-#' The function roc produces rate of change values in a tibble object.
+#' The function \code{roc} produces rate of change values in a tibble object.
 #'
 #' @usage
 #' roc(data, timelag = 15, dt0 = NULL, inter_gap = 45, tz = "")
@@ -21,12 +21,12 @@
 #' A tibble object with a column for subject id and a column for ROC values is
 #' returned. A ROC value is returned for each time point for all the subjects. Thus
 #' multiple rows are returned for each subject. If the rate of change cannot be
-#' calculated, the function will return NA for that point.
+#' calculated, the function will return \code{NA} for that point.
 #'
 #' The glucose values are linearly interpolated over a time grid starting at the
 #' beginning of the first day of data and ending on the last day of data. Because
-#' of this, there may be many NAs at the beginning and the end of the roc values
-#' for each subject. These NAs are a result of interpolated time points that do
+#' of this, there may be many \code{NA}s at the beginning and the end of the roc values
+#' for each subject. These \code{NA}s are a result of interpolated time points that do
 #' not have recorded glucose values near them because recording had either not
 #' yet begun for the day or had already ended.
 #'

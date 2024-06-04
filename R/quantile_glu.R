@@ -1,7 +1,7 @@
 #' Calculate glucose level quantiles
 #'
 #' @description
-#' The function quantile_glu is a wrapper for the base function quantile(). Output
+#' The function \code{quantile_glu} is a wrapper for the base function \code{quantile()}. Output
 #' is a tibble object with columns for subject id and each of the quantiles.
 #'
 #' @usage
@@ -14,19 +14,19 @@
 #'
 #' @details
 #' A tibble object with 1 row for each subject, a column for subject id and
-#' a column for each quantile is returned. NA glucose values are
+#' a column for each quantile is returned. \code{NA} glucose values are
 #' omitted from the calculation of the quantiles.
 #'
 #' The values are scaled from 0-1 to 0-100 to be consistent in output with
 #' above_percent, below_percent, and in_range_percent.
 #'
-#' The command quantile_glu(...) / 100 will scale each element down from 0-100
+#' The command \code{quantile_glu(...) / 100} will scale each element down from 0-100
 #' to 0-1.
 #'
-#' @return If a data.frame object is passed, then a tibble object with
+#' @return If a DataFrame object is passed, then a tibble object with
 #' a column for subject id and then a column for each quantile value is returned. If a vector of glucose
 #' values is passed, then a tibble object without the subject id is returned.
-#' as.numeric() can be wrapped around the latter to output a numeric vector.
+#' \code{as.numeric()} can be wrapped around the latter to output a numeric vector.
 #'
 #' @export
 #'

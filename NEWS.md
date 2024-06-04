@@ -1,3 +1,7 @@
+# iglu 4.1.6
+* Updates to the MAGE vignette
+* Minor documentation updates
+
 # iglu 4.1.5
 * Updates to the MAGE vignette
 * In MAGE function, linearly interpolate data to 5 min intervals using CGMS2DayByDay
