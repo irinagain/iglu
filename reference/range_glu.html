@@ -12,7 +12,7 @@ and maximum glucose values per subject in a tibble object."><!-- mathjax --><scr
     
     <a class="navbar-brand me-2" href="../index.html">iglu</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.1.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +60,7 @@ and maximum glucose values per subject in a tibble object."><!-- mathjax --><scr
     </div>
 
     <div class="ref-description section level2">
-    <p>The function range_glu outputs the distance between minimum
+    <p>The function <code>range_glu</code> outputs the distance between minimum
 and maximum glucose values per subject in a tibble object.</p>
     </div>
 
@@ -80,15 +80,15 @@ or numeric vector of glucose values.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>If a data.frame object is passed, then a tibble object with
+<p>If a DataFrame object is passed, then a tibble object with
 two columns: subject id and corresponding range value is returned. If a vector of glucose
 values is passed, then a tibble object with just the range value is returned.
-as.numeric() can be wrapped around the latter to output just a numeric value.</p>
+<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric()</a></code> can be wrapped around the latter to output just a numeric value.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>A tibble object with 1 row for each subject, a column for subject id and
-a column for the range values is returned. NA glucose values are
+a column for the range values is returned. <code>NA</code> glucose values are
 omitted from the calculation of the range.</p>
     </div>
 

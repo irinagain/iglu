@@ -12,7 +12,7 @@ sd(). Output is a tibble object with subject id and sd values."><!-- mathjax -->
     
     <a class="navbar-brand me-2" href="../index.html">iglu</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.1.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,8 +60,8 @@ sd(). Output is a tibble object with subject id and sd values."><!-- mathjax -->
     </div>
 
     <div class="ref-description section level2">
-    <p>The function sd_glu is a wrapper for the base function
-sd(). Output is a tibble object with subject id and sd values.</p>
+    <p>The function <code>sd_glu</code> is a wrapper for the base function
+<code><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd()</a></code>. Output is a tibble object with subject id and sd values.</p>
     </div>
 
     <div class="section level2">
@@ -83,12 +83,12 @@ or numeric vector of glucose values.</p></dd>
 <p>If a data.frame object is passed, then a tibble object with
 two columns: subject id and corresponding sd value is returned. If a vector of glucose
 values is passed, then a tibble object with just the sd value is returned.
-as.numeric() can be wrapped around the latter to output just a numeric value.</p>
+<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric()</a></code> can be wrapped around the latter to output just a numeric value.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>A tibble object with 1 row for each subject, a column for subject id and
-a column for the sd values is returned. NA glucose values are
+a column for the sd values is returned. <code>NA</code> glucose values are
 omitted from the calculation of the sd.</p>
     </div>
 

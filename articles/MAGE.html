@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">iglu</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.1.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.1.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -791,20 +791,207 @@ cgmanalysis, iglu_naive, and cgmquantify all had significantly higher
 errors, with median errors (and interquartile range) of 20.3% [8.6%,
 32.1%], 42.0% [32.6%, 48.3%], and 78.4% [30.8%, 131.9%], respectively.
 Figure 4 shows boxplots of relative errors of all algorithms on 45 CGM
-traces.</p>
+traces. Figure 5 and Table 3 show a correlation matrix of all algorithms
+on the 45 CGM traces. (Note: see the “Important Notes on rGV” in the
+Discussion below.)</p>
 <p><img src="mage_figures/boxplot-of-errors2.png" width="700px" height="400px"></p>
+<p>   </p>
+<p><strong>Table 3.</strong> Correlation matrix of various MAGE
+calculators’ outputs on the 45 CGM traces.</p>
+<table class="table">
+<colgroup>
+<col width="14%">
+<col width="13%">
+<col width="8%">
+<col width="11%">
+<col width="14%">
+<col width="8%">
+<col width="10%">
+<col width="4%">
+<col width="14%">
+</colgroup>
+<thead><tr class="header">
+<th align="left"></th>
+<th align="right">Manual Calc</th>
+<th align="right">Iglu_ma</th>
+<th align="right">Iglu_naive</th>
+<th align="right">CGM_Analysis</th>
+<th align="right">Easy_GV</th>
+<th align="right">agata_err</th>
+<th align="right">rGV</th>
+<th align="right">CGM_Quantify</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Manual Calc</td>
+<td align="right">1.00</td>
+<td align="right">0.93</td>
+<td align="right">0.90</td>
+<td align="right">0.82</td>
+<td align="right">0.91</td>
+<td align="right">0.92</td>
+<td align="right">0</td>
+<td align="right">0.66</td>
+</tr>
+<tr class="even">
+<td align="left">Iglu_ma</td>
+<td align="right">0.93</td>
+<td align="right">1.00</td>
+<td align="right">0.96</td>
+<td align="right">0.85</td>
+<td align="right">0.98</td>
+<td align="right">0.92</td>
+<td align="right">0</td>
+<td align="right">0.70</td>
+</tr>
+<tr class="odd">
+<td align="left">Iglu_naive</td>
+<td align="right">0.90</td>
+<td align="right">0.96</td>
+<td align="right">1.00</td>
+<td align="right">0.92</td>
+<td align="right">0.98</td>
+<td align="right">0.88</td>
+<td align="right">0</td>
+<td align="right">0.69</td>
+</tr>
+<tr class="even">
+<td align="left">CGM_Analysis</td>
+<td align="right">0.82</td>
+<td align="right">0.85</td>
+<td align="right">0.92</td>
+<td align="right">1.00</td>
+<td align="right">0.87</td>
+<td align="right">0.80</td>
+<td align="right">0</td>
+<td align="right">0.66</td>
+</tr>
+<tr class="odd">
+<td align="left">Easy_GV</td>
+<td align="right">0.91</td>
+<td align="right">0.98</td>
+<td align="right">0.98</td>
+<td align="right">0.87</td>
+<td align="right">1.00</td>
+<td align="right">0.89</td>
+<td align="right">0</td>
+<td align="right">0.66</td>
+</tr>
+<tr class="even">
+<td align="left">agata_err</td>
+<td align="right">0.92</td>
+<td align="right">0.92</td>
+<td align="right">0.88</td>
+<td align="right">0.80</td>
+<td align="right">0.89</td>
+<td align="right">1.00</td>
+<td align="right">0</td>
+<td align="right">0.66</td>
+</tr>
+<tr class="odd">
+<td align="left">rGV</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">1</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">CGM_Quantify</td>
+<td align="right">0.66</td>
+<td align="right">0.70</td>
+<td align="right">0.69</td>
+<td align="right">0.66</td>
+<td align="right">0.66</td>
+<td align="right">0.66</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+</tr>
+</tbody>
+</table>
+<p>   </p>
 <p><strong>Figure 4.</strong> Comparison of relative errors of different
 automatic algorithms for MAGE calculation relative to manual MAGE values
 on 45 CGM traces. The proposed method is implemented as ma (moving
 average) algorithm in R package iglu [17]; best corresponds to the
 errors with <span class="math inline">\(\alpha = 5\)</span>, <span class="math inline">\(\beta = 32\)</span>; cv corresponds to the
 out-of-sample errors based on 5- fold-cross-validation for <span class="math inline">\(\alpha, \beta\)</span>.</p>
+<p><img src="mage_figures/correlation_matrix.png" width="700px" height="400px"></p>
+<p><strong>Figure 5.</strong> Heatmap of correlation matrix of various
+MAGE calculators’ outputs on the 45 CGM traces.</p>
+<p>   </p>
+<p><strong>Table 4.</strong> Correlation matrix of various MAGE
+calculators’ outputs on the 45 CGM traces and the mean and standard
+deviations of the 45 CGM traces.</p>
+<table class="table">
+<thead><tr class="header">
+<th align="left"></th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Manual Calc</td>
+<td align="right">0.68</td>
+<td align="right">0.88</td>
+</tr>
+<tr class="even">
+<td align="left">Iglu_ma</td>
+<td align="right">0.70</td>
+<td align="right">0.93</td>
+</tr>
+<tr class="odd">
+<td align="left">Iglu_naive</td>
+<td align="right">0.67</td>
+<td align="right">0.98</td>
+</tr>
+<tr class="even">
+<td align="left">CGM_Analysis</td>
+<td align="right">0.61</td>
+<td align="right">0.94</td>
+</tr>
+<tr class="odd">
+<td align="left">Easy_GV</td>
+<td align="right">0.66</td>
+<td align="right">0.95</td>
+</tr>
+<tr class="even">
+<td align="left">agata_err</td>
+<td align="right">0.72</td>
+<td align="right">0.86</td>
+</tr>
+<tr class="odd">
+<td align="left">rGV</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">CGM_Quantify</td>
+<td align="right">0.90</td>
+<td align="right">0.64</td>
+</tr>
+<tr class="odd">
+<td align="left">mean</td>
+<td align="right">1.00</td>
+<td align="right">0.66</td>
+</tr>
+<tr class="even">
+<td align="left">sd</td>
+<td align="right">0.66</td>
+<td align="right">1.00</td>
+</tr>
+</tbody>
+</table>
 <p>   </p>
 <p>For the proposed algorithm, both in-sample errors with the best
 choice of window sizes (<span class="math inline">\(\alpha,
 \beta\)</span>) and out-of-sample cross-validated errors are displayed.
 The corresponding numerical summaries are summarized in Table 2.</p>
-<p><strong>Table 3:</strong> Numerical summaries of relative errors of
+<p>   </p>
+<p><strong>Table 5:</strong> Numerical summaries of relative errors of
 automatic MAGE calculators on 45 CGM traces compared to manual
 calculations. The proposed method is implemented as ma (moving average)
 algorithm in R package iglu [17]; best corresponds to the errors with
@@ -868,7 +1055,7 @@ out-of-sample errors based on 5-fold-cross-validation for <span class="math inli
 </tr>
 </tbody>
 </table>
-<p><strong>Table 4:</strong> Numerical summaries of relative errors of
+<p><strong>Table 6:</strong> Numerical summaries of relative errors of
 the proposed MAGE algorithm on 45 CGM traces compared to manual
 calculations at varying frequencies of the underlying data. The
 relatively constant mean error rate demonstrates the proposed method and
@@ -931,6 +1118,23 @@ While such visual display is implemented for the proposed MAGE algorithm
 in version 3 of R package iglu [17], this functionality is absent from
 EasyGV, cgmanalysis, and cgmquantify, making it more difficult for the
 user to verify the accuracy.</p>
+<p>The correlation between our proposed algorithm (with Service
+definition) and manual calculations per Service is 0.93 when compared
+across the same 45 CGM traces. This is the largest correlation value
+across the implementations we have compared (0.92 for AGATA, 0.91 for
+EasyGV, 0.90 for older iglu MAGE algorithm, 0.82 for CGManalysis and
+0.66 for CGMQuantify), which is consistent with our proposed approach
+showing the lowest error rate relative to manual calculations. When
+comparing correlations between our approach and existing methods, we
+find correlation of 0.98 with EasyGV, 0.96 with older iglu MAGE
+algorithm, 0.92 with AGATA, 0.85 with CGManalysis and 0.7 with
+CGMquantify.</p>
+<p>As can be seen in Table 4, there is a relatively high correlation
+between MAGE and standard deviation of the CGM trace. This has been
+noted before [33] and has led some to question the importance of using
+MAGE over the simpler standard deviation. Nevertheless, further research
+is needed to see if MAGE is better correlated with clinical outcomes
+(e.g., morbidity or mortality) than the simple standard deviation.</p>
 <p>A major challenge for any automated MAGE algorithm is separation of
 true peaks and nadirs in a larger trend from the smaller glucose
 fluctuations. A particular advantage of the proposed algorithm is the
@@ -992,7 +1196,7 @@ computation, as identified in <a href="https://github.com/brinnaebent/cgmquantif
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p>We pressent a new algorithm for MAGE calculation that significantly
+<p>We present a new algorithm for MAGE calculation that significantly
 outperforms existing algorithms. The implementation of this algorithm is
 free and open-source, it is available in the R package iglu version 3
 [17] as well as in the accompanying GUI via Shiny App at <a href="https://irinagain.shinyapps.io/shiny_iglu/" class="external-link uri">https://irinagain.shinyapps.io/shiny_iglu/</a>. Furthermore,
@@ -1188,6 +1392,9 @@ analysing continuously measured glucose levels in epidemiology.”
 <p>[32] Zhang, Xiaohua Douglas, Zhaozhi Zhang, and Dandan Wang.
 “CGManalyzer: an R package for analyzing continuous glucose monitoring
 studies.” <em>Bioinformatics</em> 34.9 (2018): 1609-1611.</p>
+<p>[33] Rodbard, David. “New and improved methods to characterize
+glycemic variability using continuous glucose monitoring.” Diabetes
+technology &amp; therapeutics 11.9 (2009): 551-565.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
