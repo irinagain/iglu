@@ -14,10 +14,10 @@ read_raw_data(
 \arguments{
 \item{filename}{String matching the name of the data to be read. Assumed to be .csv}
 
-\item{sensor}{String naming the type of sensor the data was exported from.
+\item{sensor}{\strong{Default: "dexcom".} String naming the type of sensor the data was exported from.
 Must be one of "dexcom", "libre", "librepro", "asc", or "ipro".}
 
-\item{id}{String indicating subject id. Defaults to "filename".
+\item{id}{\strong{Default: "filename".} String indicating subject id.
 A value of "read" will cause the program to attempt to read the subject id from the file. A value of "filename" will cause the
 program to use the basename of the filename (i.e. filename without any directory information) with .csv removed, as subject id.
 A value of "default" will cause the program to use whichever of "read" or "filename" that is default for that specific sensor.
@@ -32,16 +32,19 @@ A dataframe containing the data read from the named file.
 }
 \description{
 Helper function to assist in reading data directly from sensor outputs. Should return a dataframe in correct format
-for use with the rest of the \code{iglu} package. Assumes all data will be readable with base R read.csv function.
+for use with the rest of the \code{iglu} package. Assumes all data will be readable with base R \code{read.csv()} function.
 }
 \details{
-A dataframe object with the columns "id", "time" and "gl" and one row per reading will be returned. For the libre reader,
+A DataFrame object with the columns "id", "time" and "gl" and one row per reading will be returned. For the libre reader,
 if the phrase "mmol/l" is found in the column names, the glucose values will be multiplied by 18.
+
 Assumes .csv format for all data.
-Sensor formats change with ongoing development, so these functions may become depreciated.
-If any issues are encountered, contact the package maintainer. This is currently Irina Gaynanova,
-who can be reached at \email{irinag@stat.tamu.edu}
-Heavily derived from the readers avaiable in the cgmanalysis package's cleandata function.
+
+Sensor formats change with ongoing development, so these functions may become deprecated.
+If any issues are encountered, contact the package maintainer: this is currently Irina Gaynanova,
+who can be reached at \email{irinagn@umich.edu}.
+
+Note: this function is heavily derived from the readers avaiable in the cgmanalysis package's \code{cleandata} function.
 }
 \references{
 Vigers et al. (2019) cgmanalysis: An R package for descriptive analysis of continuous glucose monitor data

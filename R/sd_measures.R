@@ -1,7 +1,7 @@
 #' Calculate SD subtypes
 #'
 #' @description
-#' The function sd_measures produces SD subtype values in a tibble object
+#' The function \code{sd_measures} produces SD subtype values in a tibble object
 #' with a row for each subject and columns corresponding to id followed by
 #' each SD subtype.
 #'

@@ -651,8 +651,19 @@ based on 5- fold-cross-validation for $\alpha, \beta$.
 ```{r, echo=FALSE, fig.width=10, fig.height=7, out.width="700px", out.height ="400px"}
 knitr::include_graphics("mage_figures/correlation_matrix.png")
 ```
+
 **Figure 5.** Heatmap of correlation matrix of various MAGE calculators' outputs on the 45 CGM
 traces.
+
+   
+
+**Table 4.** Correlation matrix of various MAGE calculators' outputs on the 45 CGM traces and the mean and standard deviations of the 45 CGM traces.
+
+```{r, echo=FALSE}
+load('./mage_figures/corr_matrix_basic.rda')
+knitr::kable(corr_matrix_basic, digits=2)
+```
+
 
    
 
@@ -663,7 +674,7 @@ summarized in Table 2.
 
    
 
-**Table 4:** Numerical summaries of relative errors of automatic MAGE
+**Table 5:** Numerical summaries of relative errors of automatic MAGE
 calculators on 45 CGM traces compared to manual calculations. The
 proposed method is implemented as ma (moving average) algorithm in R
 package iglu [17]; best corresponds to the errors with $\alpha$ = 5,
@@ -681,7 +692,7 @@ $\beta$ = 32; cv corresponds to the out-of-sample errors based on
 |       rGV       | 74.7% | 78.1%  | [64.9%, 86.7%]  |
 |      AGATA      | 16.7% |  9.8%  |  [4.4%, 26.3%]  |
 
-**Table 5:** Numerical summaries of relative errors of the proposed MAGE
+**Table 6:** Numerical summaries of relative errors of the proposed MAGE
 algorithm on 45 CGM traces compared to manual calculations at varying
 frequencies of the underlying data. The relatively constant mean error
 rate demonstrates the proposed method and selected hyperparameters
@@ -717,6 +728,20 @@ While such visual display is implemented for the proposed MAGE algorithm
 in version 3 of R package iglu [17], this functionality is absent from
 EasyGV, cgmanalysis, and cgmquantify, making it more difficult for the
 user to verify the accuracy.
+
+The correlation between our proposed algorithm (with Service definition) and manual
+calculations per Service is 0.93 when compared across the same 45 CGM traces. This is the
+largest correlation value across the implementations we have compared (0.92 for AGATA, 0.91
+for EasyGV, 0.90 for older iglu MAGE algorithm, 0.82 for CGManalysis and 0.66 for CGMQuantify),
+which is consistent with our proposed approach showing the lowest error rate relative
+to manual calculations. When comparing correlations between our approach and
+existing methods, we find correlation of 0.98 with EasyGV, 0.96 with older iglu MAGE algorithm,
+0.92 with AGATA, 0.85 with CGManalysis and 0.7 with CGMquantify.
+
+As can be seen in Table 4, there is a relatively high correlation between MAGE and standard deviation
+of the CGM trace. This has been noted before [33] and has led some to question the importance
+of using MAGE over the simpler standard deviation. Nevertheless, further research is needed to see
+if MAGE is better correlated with clinical outcomes (e.g., morbidity or mortality) than the simple standard deviation.
 
 A major challenge for any automated MAGE algorithm is separation of true
 peaks and nadirs in a larger trend from the smaller glucose
@@ -1005,3 +1030,5 @@ Journal of Epidemiology* 49.3 (2020): 744-757.
 [32] Zhang, Xiaohua Douglas, Zhaozhi Zhang, and Dandan Wang.
 "CGManalyzer: an R package for analyzing continuous glucose monitoring
 studies." *Bioinformatics* 34.9 (2018): 1609-1611.
+
+[33] Rodbard, David. "New and improved methods to characterize glycemic variability using continuous glucose monitoring." Diabetes technology & therapeutics 11.9 (2009): 551-565.

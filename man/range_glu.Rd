@@ -11,18 +11,18 @@ range_glu(data)
 or numeric vector of glucose values.}
 }
 \value{
-If a data.frame object is passed, then a tibble object with
+If a DataFrame object is passed, then a tibble object with
 two columns: subject id and corresponding range value is returned. If a vector of glucose
 values is passed, then a tibble object with just the range value is returned.
-as.numeric() can be wrapped around the latter to output just a numeric value.
+\code{as.numeric()} can be wrapped around the latter to output just a numeric value.
 }
 \description{
-The function range_glu outputs the distance between minimum
+The function \code{range_glu} outputs the distance between minimum
 and maximum glucose values per subject in a tibble object.
 }
 \details{
 A tibble object with 1 row for each subject, a column for subject id and
-a column for the range values is returned. NA glucose values are
+a column for the range values is returned. \code{NA} glucose values are
 omitted from the calculation of the range.
 }
 \examples{

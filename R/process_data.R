@@ -2,9 +2,9 @@
 #'
 #' @description A helper function to assist in pre-processing the user-supplied
 #' input data for use with other functions.
-#' Typically, this function will process the data and return another dataframe.
-#' This function ensures that the returned data will be compitable with every
-#' function within the \code{iglu} package. All NAs will be removed. See Vignette for further details.
+#' Typically, this function will process the data and return another DataFrame.
+#' This function ensures that the returned data will be compatible with every
+#' function within the \code{iglu} package. All \code{NA}s will be removed. See Vignette for further details.
 #'
 #' @usage process_data(data, id, timestamp, glu, time_parser = as.POSIXct)
 #'
@@ -24,13 +24,14 @@
 #' If your times are in a format not parsable by as.POSIXct, you can parse a custom format by passing
 #' function(time_string) \{strptime(time_string, format = <format string>)\} as the time_parser parameter.
 #'
-#' @details A dataframe with the columns "id", "time", and "gl" will be returned. All NAs will be removed.
-#' If there is a mention of "mmol/l" in the glucose column name, the glucose values will be multipled by 18 to convert to mg/dL
-#' Based on John Schwenck's data_process for his bp package
-#' https://github.com/johnschwenck/bp
+#' @details A dataframe with the columns "id", "time", and "gl" will be returned. All \code{NA}s will be removed.
 #'
-#' @return A processed dataframe object that cooperates with every other
-#' function within the iglu package - all column names and formats comply.
+#' If "mmol/l" in the glucose column name, the glucose values will be multipled by 18 to convert to mg/dL.
+#'
+#' Based on John Schwenck's \code{data_process} for his bp package "https://github.com/johnschwenck/bp".
+#'
+#' @return A processed DataFrame object that cooperates with every other
+#' function within the \code{iglu} package - all column names and formats comply.
 #'
 #' @export
 #'
