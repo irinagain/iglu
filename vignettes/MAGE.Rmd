@@ -622,11 +622,24 @@ cgmanalysis, iglu_naive, and cgmquantify all had significantly higher
 errors, with median errors (and interquartile range) of 20.3% [8.6%,
 32.1%], 42.0% [32.6%, 48.3%], and 78.4% [30.8%, 131.9%], respectively.
 Figure 4 shows boxplots of relative errors of all algorithms on 45 CGM
-traces.
+traces. Figure 5 and Table 3 show a correlation matrix of all algorithms on the 45 CGM traces. (Note: see the "Important Notes on rGV" in the Discussion below.)
 
 ```{r, echo=FALSE, fig.width=10, fig.height=7, out.width="700px", out.height ="400px"}
 knitr::include_graphics("mage_figures/boxplot-of-errors2.png")
 ```
+
+
+   
+
+**Table 3.** Correlation matrix of various MAGE calculators' outputs on the 45 CGM traces.
+
+```{r, echo=FALSE}
+load('./mage_figures/correlation_matrix.rda')
+knitr::kable(corr_matrix, digits=2)
+```
+
+
+   
 
 **Figure 4.** Comparison of relative errors of different automatic
 algorithms for MAGE calculation relative to manual MAGE values on 45 CGM
@@ -635,6 +648,12 @@ algorithm in R package iglu [17]; best corresponds to the errors with
 $\alpha = 5$, $\beta = 32$; cv corresponds to the out-of-sample errors
 based on 5- fold-cross-validation for $\alpha, \beta$.
 
+```{r, echo=FALSE, fig.width=10, fig.height=7, out.width="700px", out.height ="400px"}
+knitr::include_graphics("mage_figures/correlation_matrix.png")
+```
+**Figure 5.** Heatmap of correlation matrix of various MAGE calculators' outputs on the 45 CGM
+traces.
+
    
 
 For the proposed algorithm, both in-sample errors with the best choice
@@ -642,7 +661,9 @@ of window sizes ($\alpha, \beta$) and out-of-sample cross-validated
 errors are displayed. The corresponding numerical summaries are
 summarized in Table 2.
 
-**Table 3:** Numerical summaries of relative errors of automatic MAGE
+   
+
+**Table 4:** Numerical summaries of relative errors of automatic MAGE
 calculators on 45 CGM traces compared to manual calculations. The
 proposed method is implemented as ma (moving average) algorithm in R
 package iglu [17]; best corresponds to the errors with $\alpha$ = 5,
@@ -660,7 +681,7 @@ $\beta$ = 32; cv corresponds to the out-of-sample errors based on
 |       rGV       | 74.7% | 78.1%  | [64.9%, 86.7%]  |
 |      AGATA      | 16.7% |  9.8%  |  [4.4%, 26.3%]  |
 
-**Table 4:** Numerical summaries of relative errors of the proposed MAGE
+**Table 5:** Numerical summaries of relative errors of the proposed MAGE
 algorithm on 45 CGM traces compared to manual calculations at varying
 frequencies of the underlying data. The relatively constant mean error
 rate demonstrates the proposed method and selected hyperparameters
@@ -672,6 +693,7 @@ rate demonstrates the proposed method and selected hyperparameters
 |     5-min     | 8.9%  |  1.4%  | [0.5%, 7.1%] |
 |    10-min     | 9.7%  |  2.5%  | [1.2%, 8.4%] |
 |    15-min     | 10.7% |  5.3%  | [2.1%, 9.0%] |
+
 
    
 
@@ -755,7 +777,7 @@ explain the high errors.
 
 # Conclusion
 
-We pressent a new algorithm for MAGE calculation that significantly
+We present a new algorithm for MAGE calculation that significantly
 outperforms existing algorithms. The implementation of this algorithm is
 free and open-source, it is available in the R package iglu version 3
 [17] as well as in the accompanying GUI via Shiny App at
