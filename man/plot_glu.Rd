@@ -16,7 +16,7 @@ plot_glu(
   tz = "",
   color_scheme = c("blue-red", "red-orange"),
   log = F,
-  static_or_gui = c("plotly", "ggplot")
+  static_or_gui = c("ggplot", "plotly")
 )
 }
 \arguments{
@@ -45,7 +45,7 @@ plot_glu(
 When `log = TRUE`, the glucose values, LLTR, and ULTR will all be log transformed, and time series plots will
 be on a semilogarithmic scale.}
 
-\item{static_or_gui}{\strong{Default: "plotly".} One of ("ggplot", "plotly"). Returns either a ggplot (static image) or Plotly chart (interactive GUI).}
+\item{static_or_gui}{\strong{Default: "ggplot".} One of ("ggplot", "plotly"). Returns either a ggplot (static image) or Plotly chart (interactive GUI).}
 }
 \value{
 Any output from the plot object

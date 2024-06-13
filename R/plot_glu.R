@@ -68,7 +68,7 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
 #'
 #' @param color_scheme \strong{Default: "blue-red".} String corresponding to the chosen color scheme when the `plottype` is 'lasagna'. By default, 'blue-red' scheme is used, with the values below `LLTR` colored in shades of blue, and values above `ULTR` colored in shades of red. The alternative 'red-orange' scheme mimics AGP output from \code{\link{agp}} with low values colored in red, in-range values colored in green, and high values colored in yellow and orange.
 #'
-#' @param static_or_gui \strong{Default: "plotly".} One of ("ggplot", "plotly"). Returns either a ggplot (static image) or Plotly chart (interactive GUI).
+#' @param static_or_gui \strong{Default: "ggplot".} One of ("ggplot", "plotly"). Returns either a ggplot (static image) or Plotly chart (interactive GUI).
 #'
 #' @details
 #' For the default option `plottype = tsplot`, a time series graph for each subject is
@@ -94,12 +94,13 @@ tsplot = function(data, LLTR, ULTR, inter_gap, tz = "", log = F){
 #'
 
 
-plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'), LLTR = 70, ULTR = 180, subjects = NULL, inter_gap = 45, tz = "",  color_scheme = c("blue-red", "red-orange"), log = F, static_or_gui = c('plotly', 'ggplot')){
+plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all", "average", "single"), lasagnatype = c('unsorted', 'timesorted'),
+                     LLTR = 70, ULTR = 180, subjects = NULL, inter_gap = 45, tz = "",  color_scheme = c("blue-red", "red-orange"), log = F, static_or_gui = c('ggplot', 'plotly')){
 
   plottype = match.arg(plottype, c('tsplot', 'lasagna'))
   datatype = match.arg(datatype, c("all", "average", "single"))
   lasagnatype = match.arg(lasagnatype, c('unsorted', 'timesorted'))
-  static_or_gui = match.arg(static_or_gui, c('plotly', 'ggplot'))
+  static_or_gui = match.arg(static_or_gui, c('ggplot', 'plotly'))
 
   id = NULL
   rm(list = c("id"))
