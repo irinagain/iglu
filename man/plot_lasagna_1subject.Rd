@@ -16,7 +16,7 @@ plot_lasagna_1subject(
   tz = "",
   color_scheme = c("blue-red", "red-orange"),
   log = F,
-  static_or_gui = c("plotly", "ggplot")
+  static_or_gui = c("ggplot", "plotly")
 )
 }
 \arguments{

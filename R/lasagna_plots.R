@@ -31,10 +31,13 @@
 #' plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted')
 #' plot_lasagna_1subject(example_data_1_subject, log = TRUE)
 #'
-plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted', 'daysorted'), limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", color_scheme = c("blue-red", "red-orange"), log = F, static_or_gui = c('plotly', 'ggplot')){
+plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted', 'daysorted'), limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", color_scheme = c("blue-red", "red-orange"), log = F,
+                                  static_or_gui = c('ggplot', 'plotly')){
 
   id = glucose = day = NULL
   rm(list = c("id", "glucose", "day"))
+
+  static_or_gui = match.arg(static_or_gui)
 
   # Optionally convert data to log scale
   if (log){
@@ -139,10 +142,13 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 #' plot_lasagna(example_data_5_subject, datatype = "average", lasagnatype = 'timesorted', tz = "EST")
 #' plot_lasagna(example_data_5_subject, lasagnatype = "subjectsorted", LLTR = 100, tz = "EST")
 #'
-plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('unsorted', 'timesorted', 'subjectsorted'), maxd = 14, limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "", color_scheme = c("blue-red", "red-orange"), log = F, static_or_gui = c('plotly', 'ggplot')){
+plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('unsorted', 'timesorted', 'subjectsorted'),
+                         maxd = 14, limits = c(50, 500), midpoint = 105, LLTR = 70, ULTR = 180, dt0 = NULL, inter_gap = 45, tz = "",
+                         color_scheme = c("blue-red", "red-orange"), log = F, static_or_gui = c('ggplot', 'plotly')){
 
   lasagnatype = match.arg(lasagnatype, c('unsorted', 'timesorted', 'subjectsorted'))
   datatype = match.arg(datatype, c("all", "average"))
+  static_or_gui = match.arg(static_or_gui)
 
   id = glucose = day = NULL
   rm(list = c("id", "glucose", "day"))
