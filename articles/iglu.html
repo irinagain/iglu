@@ -5,70 +5,52 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="iglu">
 <title>Getting Started in iglu • iglu</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting Started in iglu">
-<meta property="og:description" content="iglu">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Getting Started in iglu">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">iglu</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.1.6</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="active nav-item">
-  <a class="nav-link" href="../articles/iglu.html">Get started</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="active nav-item"><a class="nav-link" href="../articles/iglu.html">Get started</a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/AGP_and_Episodes.html">AGP and Episodes</a>
-    <a class="dropdown-item" href="../articles/lasagna_plots.html">Lasagna Plots in iglu</a>
-    <a class="dropdown-item" href="../articles/MAGE.html">MAGE Algorithm</a>
-    <a class="dropdown-item" href="../articles/metrics_list.html">List of metrics implemented in iglu</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/AGP_and_Episodes.html">AGP and Episodes</a></li>
+    <li><a class="dropdown-item" href="../articles/lasagna_plots.html">Lasagna Plots in iglu</a></li>
+    <li><a class="dropdown-item" href="../articles/MAGE.html">MAGE Algorithm</a></li>
+    <li><a class="dropdown-item" href="../articles/metrics_list.html">List of metrics implemented in iglu</a></li>
+  </ul>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/irinagain/iglu/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/irinagain/iglu/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -77,12 +59,13 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Getting Started in iglu</h1>
+
+      <h1>Getting Started in iglu</h1>
                         <h4 data-toc-skip class="author">Steve Broll,
 Elizabeth Chun, Irina Gaynanova, David Buchanan</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/irinagain/iglu/blob/HEAD/vignettes/iglu.Rmd" class="external-link"><code>vignettes/iglu.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/irinagain/iglu/blob/master/vignettes/iglu.Rmd" class="external-link"><code>vignettes/iglu.Rmd</code></a></small>
       <div class="d-none name"><code>iglu.Rmd</code></div>
     </div>
 
@@ -154,15 +137,13 @@ identification</li>
 columns for id, time and glucose values must be named as above.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 2915    3</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2915    3</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 'data.frame':    2915 obs. of  3 variables:</span></span>
 <span><span class="co">#&gt;  $ id  : Factor w/ 1 level "Subject 1": 1 1 1 1 1 1 1 1 1 1 ...</span></span>
 <span><span class="co">#&gt;  $ time: POSIXct, format: "2015-06-06 16:50:27" "2015-06-06 17:05:27" ...</span></span>
-<span><span class="co">#&gt;  $ gl  : int  153 137 128 121 120 138 155 159 154 152 ...</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  $ gl  : int  153 137 128 121 120 138 155 159 154 152 ...</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></span>
 <span><span class="co">#&gt;          id                time  gl</span></span>
 <span><span class="co">#&gt; 1 Subject 1 2015-06-06 16:50:27 153</span></span>
 <span><span class="co">#&gt; 2 Subject 1 2015-06-06 17:05:27 137</span></span>
@@ -175,17 +156,16 @@ columns for id, time and glucose values must be named as above.</p>
 <h3 id="example-data-for-5-subjects">Example data for 5 subjects<a class="anchor" aria-label="anchor" href="#example-data-for-5-subjects"></a>
 </h3>
 <p>Example data with multiple subjects can be loaded with:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"example_data_5_subject"</span><span class="op">)</span></span></code></pre></div>
 <p>This dataset contains the same 3 columns as the dataset in the single
 subject case, but now with 13866 observations from 5 subjects. The first
 subject in this multiple subject dataset is the same as the single
 subject from the previous examples.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">example_data_5_subject</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 13866     3</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">example_data_5_subject</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 13866     3</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">example_data_5_subject</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 'data.frame':    13866 obs. of  3 variables:</span></span>
 <span><span class="co">#&gt;  $ id  : Factor w/ 5 levels "Subject 1","Subject 2",..: 1 1 1 1 1 1 1 1 1 1 ...</span></span>
 <span><span class="co">#&gt;  $ time: POSIXct, format: "2015-06-06 16:50:27" "2015-06-06 17:05:27" ...</span></span>
@@ -223,7 +203,7 @@ ongoing development, so these functions may become depreciated. If any
 issues are encountered, contact the package maintainer. This is
 currently Irina Gaynanova, who can be reached at <a href="mailto:irinag@stat.tamu.edu" class="email">irinag@stat.tamu.edu</a></p>
 <p>Ex.:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/read_raw_data.html">read_raw_data</a></span><span class="op">(</span><span class="st">"mydexcomdata.csv"</span>, sensor <span class="op">=</span> <span class="st">"dexcom"</span>, id <span class="op">=</span> <span class="st">"read"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -244,7 +224,7 @@ in the data. If “mmol/l” is found in the column name for glucose
 readings, the readings will be multipled by 18 in the returned
 dataframe.</p>
 <p>Ex.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/process_data.html">process_data</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, id <span class="op">=</span> <span class="st">"id"</span>, timestamp <span class="op">=</span> <span class="st">"time"</span>, glu <span class="op">=</span> <span class="st">"gl"</span><span class="op">)</span></span></code></pre></div>
 <p>If your times are in a format not parsable by as.POSIXct, you can
 parse a custom format by passing function(time_string)
@@ -252,7 +232,7 @@ parse a custom format by passing function(time_string)
 parameter.</p>
 <p>For example, the following call parses datetimes in mm/dd/yyyy hh:mm
 format.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/process_data.html">process_data</a></span><span class="op">(</span><span class="va">data</span>, id <span class="op">=</span> <span class="st">"id"</span>, timestamp <span class="op">=</span> <span class="st">"time"</span>, glu <span class="op">=</span> <span class="st">"gl"</span>, time_parser <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">time_string</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/strptime.html" class="external-link">strptime</a></span><span class="op">(</span><span class="va">time_string</span>, format <span class="op">=</span> <span class="st">"%d/%m/%Y %H:%M"</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -276,7 +256,7 @@ form. See documentation on tibbles with vignette(‘tibble’) or
 ?<code>tbl_df-class</code>.</p>
 <p>Some metric functions, like <code><a href="../reference/above_percent.html">above_percent()</a></code>, will return
 multiple values for a single subject.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/above_percent.html">above_percent</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 4</span></span></span>
 <span><span class="co">#&gt;   id        above_140 above_180 above_250</span></span>
@@ -286,7 +266,7 @@ multiple values for a single subject.</p>
 id column, and metrics will be printed in the following columns.</p>
 <p>As discussed above, just the glucose vector can be supplied for the
 single subject case.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/above_percent.html">above_percent</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">$</span><span class="va">gl</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span></span></span>
 <span><span class="co">#&gt;   above_140 above_180 above_250</span></span>
@@ -297,7 +277,7 @@ the time and subject are also available, because this output will not
 contain the subject ID.</p>
 <p>The list of target values for the above_percent metric is a parameter
 that can be changed:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/above_percent.html">above_percent</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, targets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">200</span>, <span class="fl">300</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 4</span></span></span>
 <span><span class="co">#&gt;   id        above_100 above_200 above_300</span></span>
@@ -311,7 +291,7 @@ Hyperglycemia index metric (function call: <code><a href="../reference/hyper_ind
 will return just a single value for each subject, producing a column for
 value and a column for subject id (if a dataframe is passed), with one
 row for each subject.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/hyper_index.html">hyper_index</a></span><span class="op">(</span><span class="va">example_data_5_subject</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt;   id        hyper_index</span></span>
@@ -350,7 +330,7 @@ changed by the user). This function is automatically called by all
 metrics that require such interpolation, however it is also available to
 the user directly. The function is designed to work with one subject
 data at a time, the structure of function output is shown below.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/CGMS2DayByDay.html">CGMS2DayByDay</a></span><span class="op">(</span><span class="va">example_data_1_subject</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 3</span></span>
 <span><span class="co">#&gt;  $ gd2d        : num [1:14, 1:288] NA 112.2 92 90.1 143.1 ...</span></span>
@@ -360,14 +340,15 @@ data at a time, the structure of function output is shown below.</p>
 grid of values. Each row corresponds to one day of measurements, and the
 columns correspond to an equi-distant time grid covering a 24 hour time
 span. The grid is chosen to match the frequency of the sensor (5 minutes
-in this example leading to <span class="math inline">\((24 * 60)/ 5 =
-288\)</span> columns), which is returned as <code>dt0</code>. The
-returned <code>actual_dates</code> allows one to map the rows in
+in this example leading to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>24</mn><mo>*</mo><mn>60</mn><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mn>5</mn><mo>=</mo><mn>288</mn></mrow><annotation encoding="application/x-tex">(24 * 60)/ 5 = 288</annotation></semantics></math>
+columns), which is returned as <code>dt0</code>. The returned
+<code>actual_dates</code> allows one to map the rows in
 <code>gd2d</code> back to the original dates. The achieved alignment of
 glucose measurement times across the days enables both the calculation
 of corresponding metrics, and the creation time-dependent visuals such
 as lasagna plots. The default frequency can be adjusted as follows.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="../reference/CGMS2DayByDay.html">CGMS2DayByDay</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, dt0 <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; List of 3</span></span>
 <span><span class="co">#&gt;  $ gd2d        : num [1:14, 1:144] NA 111.1 92.9 89.1 138.2 ...</span></span>
@@ -394,7 +375,7 @@ data’s measurements were recorded</li>
 <code>tz</code> = ‘EST’, because a Daylight Savings Time shift can cause
 miscalculations if the wrong timezone is used. A proper call for this
 dataset, being recorded in EST, would be:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/CGMS2DayByDay.html">CGMS2DayByDay</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span></code></pre></div>
 <p>Examples of proper metric function calls will be shown in the next
 section.</p>
@@ -406,7 +387,7 @@ section.</p>
 Overlapping Net Glycemic Action), will return just a single value for
 each subject, resulting in a 2 column tibble (1 column for id and 1 for
 the single value).</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/conga.html">conga</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, tz <span class="op">=</span> <span class="st">'EST'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 2</span></span></span>
 <span><span class="co">#&gt;   id        CONGA</span></span>
@@ -416,7 +397,7 @@ the single value).</p>
 example, <code><a href="../reference/sd_measures.html">sd_measures()</a></code>, which requires linear
 interpolation, computes 6 unique standard deviation subtypes per
 subject.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/sd_measures.html">sd_measures</a></span><span class="op">(</span><span class="va">example_data_5_subject</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 7</span></span></span>
 <span><span class="co">#&gt;   id          SDw SDhhmm SDwsh  SDdm   SDb SDbdm</span></span>
@@ -448,7 +429,7 @@ time range, or both separately.</p>
 name of the function you want to apply. For example, to calculate the
 standard deviation of glucose readings from 12-6am, the function’s
 default time period, the following call will work.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_sleep_wake.html">calculate_sleep_wake</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, <span class="va">sd_glu</span>, calculate <span class="op">=</span> <span class="st">"sleep"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 2</span></span></span>
 <span><span class="co">#&gt;   id           SD</span></span>
@@ -460,7 +441,7 @@ numbers between 0-24. If an integer is passed to sleep_start, the whole
 hour will be included. If an integer is passed to sleep_end, everything
 up to but not including that hour will be included. The following call
 will calculate the metrics for readings between 2:00-7:59am.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_sleep_wake.html">calculate_sleep_wake</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, <span class="va">sd_measures</span>, sleep_start <span class="op">=</span> <span class="fl">2</span>, sleep_end <span class="op">=</span> <span class="fl">8</span>, calculate <span class="op">=</span> <span class="st">"sleep"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 7</span></span></span>
 <span><span class="co">#&gt;   id          SDw SDhhmm SDwsh  SDdm   SDb SDbdm</span></span>
@@ -475,7 +456,7 @@ periods. By default, the metric will be calculated for the sleep period.
 To calculate for the wake period, set the “calculate” parameter to
 “wake”. The following call will calculate the metric for all readings
 outside of 11pm-6:59am</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_sleep_wake.html">calculate_sleep_wake</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, <span class="va">grade</span>, sleep_start <span class="op">=</span> <span class="fl">23</span>, sleep_end <span class="op">=</span> <span class="fl">7</span>, calculate <span class="op">=</span> <span class="st">"wake"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt;   id        GRADE</span></span>
@@ -488,7 +469,7 @@ outside of 11pm-6:59am</p>
 <p>To calculate for sleep and wake periods separately and return both of
 those values, labeled accordingly, set the ‘calculate’ parameter to
 ‘both’.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_sleep_wake.html">calculate_sleep_wake</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, <span class="va">gmi</span>, calculate <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 3</span></span></span>
 <span><span class="co">#&gt;   id        `GMI sleep` `GMI wake`</span></span>
@@ -502,7 +483,7 @@ those values, labeled accordingly, set the ‘calculate’ parameter to
 parameters with different names from calculate_sleep_wake’s parameters
 will be passed on to the function. The following call applies COGI with
 the custom defined targets and weights.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_sleep_wake.html">calculate_sleep_wake</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, <span class="va">cogi</span>, calculate <span class="op">=</span> <span class="st">"sleep"</span>, targets <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">150</span><span class="op">)</span>, weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.3</span>,<span class="fl">.2</span>,<span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 2</span></span></span>
 <span><span class="co">#&gt;   id         COGI</span></span>
@@ -513,7 +494,7 @@ the custom defined targets and weights.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Subject 4  89.4</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Subject 5  63.9</span></span></code></pre></div>
 <p>All of these options can be combined</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/calculate_sleep_wake.html">calculate_sleep_wake</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, <span class="va">grade_eugly</span>, sleep_start <span class="op">=</span> <span class="fl">1</span>, sleep_end <span class="op">=</span> <span class="fl">9</span>, calculate <span class="op">=</span> <span class="st">"both"</span>, lower <span class="op">=</span> <span class="fl">80</span>, upper <span class="op">=</span> <span class="fl">150</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 3</span></span></span>
 <span><span class="co">#&gt;   id        `GRADE_eugly sleep` `GRADE_eugly wake`</span></span>
@@ -610,10 +591,10 @@ corresponding to the visualization.</p>
 <p>The simplest visual is the time series plot generated using the
 function <code>plot_glu</code>. This plot type can support both single
 and multiple subjects.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_1_subject</span>, plottype <span class="op">=</span> <span class="st">'tsplot'</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iglu_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'tsplot'</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iglu_files/figure-html/unnamed-chunk-23-2.png" width="672"></p>
 <p>We set the ‘tz’ (timezone) parameter to be EST because the data was
@@ -623,12 +604,12 @@ issue in cases where daylight savings time might make it appear as
 though there were duplicate values at some time points.</p>
 <p>To just plot a single subject of interest from the grid of time
 series plots, set the ‘subjects’ parameter to be that subject’s ID.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'tsplot'</span>, subjects <span class="op">=</span> <span class="st">'Subject 3'</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iglu_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
 <p>The red lines can be shifted to any Lower and Upper Target Range
 Limits with the ‘LLTR’ and ‘ULTR’ arguments.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_glu.html">plot_glu</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, plottype <span class="op">=</span> <span class="st">'tsplot'</span>, subjects <span class="op">=</span> <span class="st">'Subject 3'</span>, LLTR <span class="op">=</span> <span class="fl">80</span>, ULTR <span class="op">=</span> <span class="fl">150</span>, tz <span class="op">=</span> <span class="st">"EST"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iglu_files/figure-html/unnamed-chunk-25-1.png" width="672"></p>
 </div>
@@ -655,7 +636,7 @@ variability, while white points represent glucose stability. The below
 figure shows a side by side comparison of rate of change time-series
 plots for two subjects. Subject 1 shows significantly less glucose
 variability than Subject 5.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_roc.html">plot_roc</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, subjects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Subject 1"</span>, <span class="st">"Subject 5"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iglu_files/figure-html/unnamed-chunk-26-1.png" width="672"></p>
 <p>The next figure shows a side by side comparison of rate of change
@@ -668,12 +649,12 @@ or drops in glucose - a high degree of local variability. Here, Subject
 histogram with most values falling between -2 mg/dl/min and 2 mg/dl/min.
 Subject 5 has a shorter, more widely distributed histogram indicating
 greater glucose variability.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/hist_roc.html">hist_roc</a></span><span class="op">(</span><span class="va">example_data_5_subject</span>, subjects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Subject 1"</span>, <span class="st">"Subject 5"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="iglu_files/figure-html/unnamed-chunk-27-1.png" width="672"></p>
 </div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
@@ -684,15 +665,15 @@ greater glucose variability.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>

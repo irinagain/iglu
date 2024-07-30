@@ -1,240 +1,82 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://irinagain.github.io/iglu/404.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/articles/AGP_and_Episodes.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/articles/MAGE.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/articles/iglu.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/articles/lasagna_plots.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/articles/metrics_list.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/index.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/CGMS2DayByDay.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/above_percent.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/active_percent.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/adrr.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/agp.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/agp_metrics.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/all_metrics.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/auc.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/below_percent.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/calculate_sleep_wake.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/cogi.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/conga.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/cv_glu.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/cv_measures.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/ea1c.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/epicalc_profile.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/episode_calculation.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/example_data_1_subject.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/example_data_5_subject.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/example_data_hall.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/example_meals_hall.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/gmi.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/grade.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/grade_eugly.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/grade_hyper.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/grade_hypo.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/gri.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/gvp.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/hbgi.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/hist_roc.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/hyper_index.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/hypo_index.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/igc.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/iglu_shiny.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/in_range_percent.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/iqr_glu.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/j_index.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/lbgi.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/m_value.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/mad_glu.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/mag.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/mage.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/mage_ma_single.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/meal_metrics.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/mean_glu.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/median_glu.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/metrics_heatmap.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/modd.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/optimized_iglu_functions.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/pgs.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/plot_agp.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/plot_daily.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/plot_glu.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/plot_lasagna.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/plot_lasagna_1subject.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/plot_meals.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/plot_ranges.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/plot_roc.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/process_data.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/quantile_glu.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/range_glu.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/read_raw_data.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/roc.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/sd_glu.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/sd_measures.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/sd_roc.html</loc>
-  </url>
-  <url>
-    <loc>https://irinagain.github.io/iglu/reference/summary_glu.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://irinagain.github.io/iglu/404.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/articles/AGP_and_Episodes.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/articles/MAGE.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/articles/iglu.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/articles/index.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/articles/lasagna_plots.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/articles/metrics_list.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/authors.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/index.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/news/index.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/CGMS2DayByDay.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/above_percent.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/active_percent.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/adrr.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/agp.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/agp_metrics.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/all_metrics.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/auc.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/below_percent.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/calculate_sleep_wake.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/cogi.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/conga.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/cv_glu.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/cv_measures.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/ea1c.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/epicalc_profile.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/episode_calculation.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/example_data_1_subject.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/example_data_5_subject.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/example_data_hall.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/example_meals_hall.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/gmi.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/grade.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/grade_eugly.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/grade_hyper.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/grade_hypo.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/gri.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/gvp.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/hbgi.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/hist_roc.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/hyper_index.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/hypo_index.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/igc.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/iglu_shiny.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/in_range_percent.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/index.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/iqr_glu.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/j_index.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/lbgi.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/m_value.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/mad_glu.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/mag.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/mage.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/mage_ma_single.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/meal_metrics.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/mean_glu.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/median_glu.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/metrics_heatmap.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/modd.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/optimized_iglu_functions.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/pgs.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/pipe.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/plot_agp.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/plot_daily.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/plot_glu.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/plot_lasagna.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/plot_lasagna_1subject.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/plot_meals.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/plot_ranges.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/plot_roc.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/process_data.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/quantile_glu.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/range_glu.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/read_raw_data.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/roc.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/sd_glu.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/sd_measures.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/sd_roc.html</loc></url>
+<url><loc>https://irinagain.github.io/iglu/reference/summary_glu.html</loc></url>
 </urlset>
+
