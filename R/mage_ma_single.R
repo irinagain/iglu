@@ -74,6 +74,9 @@ mage_ma_single <- function(data,
     } else if (nmeasurements < long_ma){
       # The total number of measurements is smaller than the long moving average window
       return(data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
+    } else if (sd(.data$gl, na.rm = TRUE) < 1){
+      # There is no glucose variation in the block
+      return(data.frame(start=utils::head(.data$time, 1), end=utils::tail(.data$time, 1), mage=NA, plus_or_minus=NA, first_excursion=NA))
     }
 
     # 2c. Calculate the moving average values
