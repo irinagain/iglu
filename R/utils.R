@@ -25,17 +25,13 @@ check_data_columns =  function(data, id = 'id', time = 'time', gl = 'gl', time_c
 
 # checks for time format and any repeated/duplicate timestamps
 check_data_time <- function(data, tz = ""){
-  
+
   id = NULL
   rm(list = c("id"))
 
   check_reps_single <- function(data) {
 
     check_reps = diff(data$time) == 0
-
-    if (is.na(any(check_reps))) {
-      stop('Automatic identification of timezone unsuccessful. Please manually set `tz` parameter.')
-    }
 
     # no duplicates for this subject, return data and exit
     if (!any(check_reps)) {
@@ -66,6 +62,10 @@ check_data_time <- function(data, tz = ""){
   if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
     tr = as.character(data$time)
     data$time = as.POSIXct(tr, format='%Y-%m-%d %H:%M:%S', tz = tz)
+
+    if (any(is.na(data$time))) {
+      stop('Automatic identification of timezone unsuccessful. Please manually set `tz` parameter or double check if the timezone is correct.')
+    }
   }
 
   out = data %>%
