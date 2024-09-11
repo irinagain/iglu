@@ -4,7 +4,7 @@
 #' The function plot_meals produces a visual for meals data
 #'
 #' @usage
-#' plot_meals(data, mealtimes, plot_type=c('ggplot','plotly'))
+#' plot_meals(data, mealtimes, plot_type=c('ggplot','plotly'), tz = "")
 #'
 #' @inheritParams meal_metrics
 #' @inheritParams mage_ma_single

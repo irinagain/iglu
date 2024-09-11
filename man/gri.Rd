@@ -4,7 +4,7 @@
 \alias{gri}
 \title{Calculate Glycemia Risk Index (GRI)}
 \usage{
-gri(data)
+gri(data, tz = "")
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
@@ -38,7 +38,7 @@ data(example_data_1_subject)
 gri(example_data_1_subject)
 
 data(example_data_5_subject)
-gri(example_data_5_subject)
+gri(example_data_5_subject, tz = 'GMT')
 
 }
 \references{

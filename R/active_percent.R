@@ -4,7 +4,7 @@
 #' The function `active_percent` produces the % of time CGM is active together with the length of the measurement period
 #'
 #' @usage
-#' active_percent(data, dt0 = NULL, tz = tz)
+#' active_percent(data, dt0 = NULL, tz = "")
 #'
 #' @inheritParams plot_lasagna
 #'

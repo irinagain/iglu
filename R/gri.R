@@ -6,7 +6,7 @@
 #' GRI value. ' The output rows correspond to subjects.
 #'
 #' @usage
-#' gri(data)
+#' gri(data, tz = "")
 #'
 #' @inheritParams mean_glu
 #'

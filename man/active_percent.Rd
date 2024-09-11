@@ -4,7 +4,7 @@
 \alias{active_percent}
 \title{Calculate percentage of time CGM was active}
 \usage{
-active_percent(data, dt0 = NULL, tz = tz)
+active_percent(data, dt0 = NULL, tz = "")
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}

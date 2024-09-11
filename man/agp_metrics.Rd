@@ -4,7 +4,7 @@
 \alias{agp_metrics}
 \title{Calculate metrics for the Ambulatory Glucose Profile (AGP)}
 \usage{
-agp_metrics(data, shinyformat = FALSE, tz = 'GMT')
+agp_metrics(data, shinyformat = FALSE, tz = '')
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}

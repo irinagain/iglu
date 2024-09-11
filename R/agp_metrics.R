@@ -6,7 +6,7 @@
 #' `cv_glu`, `below_percent`, `in_range_percent`, `above_percent`.
 #'
 #' @usage
-#' agp_metrics(data, shinyformat = FALSE, tz = 'GMT')
+#' agp_metrics(data, shinyformat = FALSE, tz = '')
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl".
 #'
