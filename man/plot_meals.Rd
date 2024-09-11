@@ -14,7 +14,9 @@ to data being from a single subject, OR a dataframe with at least 2 columns labe
 id and mealtime. Optionally the mealtimes dataframe can include a column labeled meal,
 giving the meal type (helps to compensate for overlapping meals)}
 
-\item{plot_type}{Default: "ggplot". One of 'ggplot', 'plotly'. Determines whether the function returns a static publication-ready image or an interactive GUI.}
+\item{plot_type}{\strong{Default: "ggplot".} One of 'ggplot', 'plotly'. Determines whether the function returns a static publication-ready image or an interactive GUI.}
+
+\item{tz}{\strong{Default: "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 Plot to visualize meals data.

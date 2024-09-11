@@ -10,6 +10,8 @@
 #'
 #' @inheritParams mean_glu
 #'
+#' @param tz \strong{Default: "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
+#'
 #' @details
 #' A tibble object with 1 row for each subject, a column for subject id and
 #' column for GRI is returned. The formula for GRI is as follows:
@@ -43,7 +45,7 @@
 #' gri(example_data_5_subject)
 #'
 
-gri <- function(data){
+gri <- function(data, tz = ""){
 
   gri_single <- function(data) {
     # get percent in each range from agp aggregated metrics
@@ -61,7 +63,7 @@ gri <- function(data){
 
   id = NULL
   rm(list = c("id"))
-  data = check_data_columns(data, time_check = TRUE)
+  data = check_data_columns(data, time_check = TRUE, tz = tz)
 
   out = data %>%
     dplyr::group_by(id) %>%

@@ -4,13 +4,15 @@
 \alias{agp_metrics}
 \title{Calculate metrics for the Ambulatory Glucose Profile (AGP)}
 \usage{
-agp_metrics(data, shinyformat = FALSE)
+agp_metrics(data, shinyformat = FALSE, tz = 'GMT')
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
 
 \item{shinyformat}{\strong{Default: FALSE.} Boolean indicating whether the output should be formatted for the single subject
 AGP page in shiny.}
+
+\item{tz}{\strong{Default: "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 By default, a tibble object with 1 row for each subject, and 13 columns is returned:

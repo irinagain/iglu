@@ -88,7 +88,7 @@ sd_measures <- function(data, dt0 = NULL, inter_gap = 45, tz = ""){
 
   id = NULL
   rm(list = c("id"))
-  data = check_data_columns(data, time_check=TRUE)
+  data = check_data_columns(data, time_check=TRUE, tz = tz)
   subject = unique(data$id)
   ns = length(subject)
 

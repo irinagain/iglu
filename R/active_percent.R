@@ -4,9 +4,11 @@
 #' The function `active_percent` produces the % of time CGM is active together with the length of the measurement period
 #'
 #' @usage
-#' active_percent(data, dt0 = NULL)
+#' active_percent(data, dt0 = NULL, tz = tz)
 #'
 #' @inheritParams plot_lasagna
+#'
+#' @param tz \strong{tz = "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
 #'
 #' @details
 #'The function `active_percent` produces a tibble object with values equal to the
@@ -38,14 +40,14 @@
 #' data(example_data_5_subject)
 #'
 #' active_percent(example_data_5_subject)
-#' active_percent(example_data_5_subject, dt0 = 5)
+#' active_percent(example_data_5_subject, dt0 = 5, tz = 'GMT')
 #'
 
 
-active_percent <- function(data, dt0 = NULL) {
+active_percent <- function(data, dt0 = NULL, tz = "") {
   active_percent = gl = id = NULL
   rm(list = c("gl", "id", "active_percent"))
-  data = check_data_columns(data, time_check = TRUE)
+  data = check_data_columns(data, time_check = TRUE, tz = tz)
   is_vector = attr(data, "is_vector")
 
   subject = unique(data$id)

@@ -8,7 +8,9 @@
 #'
 #' @inheritParams meal_metrics
 #' @inheritParams mage_ma_single
-#' @param plot_type Default: "ggplot". One of 'ggplot', 'plotly'. Determines whether the function returns a static publication-ready image or an interactive GUI.
+#' @param plot_type \strong{Default: "ggplot".} One of 'ggplot', 'plotly'. Determines whether the function returns a static publication-ready image or an interactive GUI.
+#' @param tz \strong{Default: "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
+#'
 #' @return Plot to visualize meals data.
 #'
 #' @export
@@ -37,7 +39,7 @@
 #' plot_meals(select_subject, select_meals)
 
 
-plot_meals = function(data, mealtimes, plot_type=c('ggplot','plotly')) {
+plot_meals = function(data, mealtimes, plot_type=c('ggplot','plotly'), tz = '') {
 
   id = meal = mealtime = peaktime = recovertime = basegl = peakgl = recovergl =
     time_window = x = y = NULL
@@ -53,7 +55,7 @@ plot_meals = function(data, mealtimes, plot_type=c('ggplot','plotly')) {
     data = data[data$id == subject, ]
   }
 
-  metrics = meal_metrics(data, mealtimes, glucose_times = TRUE)
+  metrics = meal_metrics(data, mealtimes, glucose_times = TRUE, tz = tz)
 
   metrics_expanded = metrics %>%
     dplyr::rowwise() %>%

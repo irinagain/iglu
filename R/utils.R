@@ -25,13 +25,17 @@ check_data_columns =  function(data, id = 'id', time = 'time', gl = 'gl', time_c
 
 # checks for time format and any repeated/duplicate timestamps
 check_data_time <- function(data, tz = ""){
-
+  
   id = NULL
   rm(list = c("id"))
 
   check_reps_single <- function(data) {
 
     check_reps = diff(data$time) == 0
+
+    if (is.na(any(check_reps))) {
+      stop('Automatic identification of timezone unsuccessful. Please manually set `tz` parameter.')
+    }
 
     # no duplicates for this subject, return data and exit
     if (!any(check_reps)) {
