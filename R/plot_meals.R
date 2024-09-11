@@ -36,7 +36,7 @@
 #'
 #' select_subject = example_data_hall[example_data_hall$id == "2133-018", ]
 #' select_meals = example_meals_hall[example_meals_hall$id == "2133-018", ]
-#' plot_meals(select_subject, select_meals)
+#' plot_meals(select_subject, select_meals, tz = 'GMT')
 
 
 plot_meals = function(data, mealtimes, plot_type=c('ggplot','plotly'), tz = '') {

@@ -42,7 +42,7 @@
 #' gri(example_data_1_subject)
 #'
 #' data(example_data_5_subject)
-#' gri(example_data_5_subject)
+#' gri(example_data_5_subject, tz = 'GMT')
 #'
 
 gri <- function(data, tz = ""){
