@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">iglu</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.1.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.1.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">active_percent</span><span class="op">(</span><span class="va">data</span>, dt0 <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">active_percent</span><span class="op">(</span><span class="va">data</span>, dt0 <span class="op">=</span> <span class="cn">NULL</span>, tz <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -60,6 +60,10 @@
 
 <dt id="arg-dt-">dt0<a class="anchor" aria-label="anchor" href="#arg-dt-"></a></dt>
 <dd><p>The time frequency for interpolated aligned grid in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).</p></dd>
+
+
+<dt id="arg-tz">tz<a class="anchor" aria-label="anchor" href="#arg-tz"></a></dt>
+<dd><p><strong>tz = "".</strong> A character string specifying the time zone to be used. System-specific (see <code><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></code>), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -111,7 +115,7 @@ Continuous Glucose Monitoring
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Subject 3           92.1  5.8 days 2015-03-10 <span style="color: #949494;">15:36:26</span> 2015-03-16 <span style="color: #949494;">10:11:05</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Subject 4           98.7 12.9 days 2015-03-13 <span style="color: #949494;">12:44:09</span> 2015-03-26 <span style="color: #949494;">10:01:58</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Subject 5           95.8 10.6 days 2015-02-28 <span style="color: #949494;">17:40:06</span> 2015-03-11 <span style="color: #949494;">08:04:28</span></span>
-<span class="r-in"><span><span class="fu">active_percent</span><span class="op">(</span><span class="va">example_data_5_subject</span>, dt0 <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">active_percent</span><span class="op">(</span><span class="va">example_data_5_subject</span>, dt0 <span class="op">=</span> <span class="fl">5</span>, tz <span class="op">=</span> <span class="st">'GMT'</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   id        active_percent ndays     start_date          end_date           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;drtn&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>             </span>
