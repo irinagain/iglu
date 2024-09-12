@@ -35,7 +35,7 @@ agp <- function(data, maxd = 14, inter_gap = 45, dt0 = NULL, tz = "", daily = TR
   }
 
   # Calculate range of measurements
-  out_range = active_percent(data)
+  out_range = active_percent(data, tz = tz)
 
   # Calculate metrics
   tableStat = data.frame("Glucose statistics", "Value")
