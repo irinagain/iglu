@@ -582,10 +582,11 @@ shinyServer(function(input, output) {
       }
     }
     else if(parameter_type == "all_metrics") {
-      string = paste0("iglu::", input$metric, "(data, metrics_to_include='", input$parameter , "')")
+      string = paste0("iglu::", input$metric, "(data, , , , , , '", input$parameter , "')")
+      print(string)
     }
     else if(parameter_type == 'pgs'){
-      string = paste0('iglu::', input$metric, '(data, dur_length=', input$parameter, ', end_length=', input$parameter2, ')')
+      string = paste0('iglu::', input$metric, '(data, ', input$parameter, ', ', input$parameter2, ')')
     }
     else if(parameter_type == "nested"){
       strlist = strsplit(input$parameter, ")")[[1]]
