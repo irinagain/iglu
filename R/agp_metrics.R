@@ -6,12 +6,14 @@
 #' `cv_glu`, `below_percent`, `in_range_percent`, `above_percent`.
 #'
 #' @usage
-#' agp_metrics(data, shinyformat = FALSE)
+#' agp_metrics(data, shinyformat = FALSE, tz = '')
 #'
 #' @param data DataFrame object with column names "id", "time", and "gl".
 #'
 #' @param shinyformat \strong{Default: FALSE.} Boolean indicating whether the output should be formatted for the single subject
 #' AGP page in shiny.
+#'
+#' @param tz \strong{Default: "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
 #'
 #' @return
 #' By default, a tibble object with 1 row for each subject, and 13 columns is returned:
@@ -66,12 +68,12 @@
 #'
 
 
-agp_metrics <- function (data, shinyformat = FALSE) {
+agp_metrics <- function (data, shinyformat = FALSE, tz = "") {
 
   id = . = start_date = end_date = ndays = CV = GMI = NULL
   rm(list = c("id", ".", "start_date", "end_date", "ndays", "CV", "GMI"))
 
-  activity <- active_percent(data)
+  activity <- active_percent(data, tz = tz)
 
   out = list("Start Date" = activity[, c(1,4)],
              "End Date" = activity[, c(1,5)],

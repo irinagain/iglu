@@ -4,11 +4,13 @@
 \alias{gri}
 \title{Calculate Glycemia Risk Index (GRI)}
 \usage{
-gri(data)
+gri(data, tz = "")
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl",
 or numeric vector of glucose values.}
+
+\item{tz}{\strong{Default: "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 A tibble object with columns for subject id and GRI value. Rows
@@ -36,7 +38,7 @@ data(example_data_1_subject)
 gri(example_data_1_subject)
 
 data(example_data_5_subject)
-gri(example_data_5_subject)
+gri(example_data_5_subject, tz = 'GMT')
 
 }
 \references{

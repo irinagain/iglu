@@ -1,3 +1,6 @@
+# iglu 4.1.7
+* added tz parameter to functions that require it
+
 # iglu 4.1.6
 * Updates to the MAGE vignette
 * Minor documentation updates
