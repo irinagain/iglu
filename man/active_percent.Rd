@@ -4,12 +4,14 @@
 \alias{active_percent}
 \title{Calculate percentage of time CGM was active}
 \usage{
-active_percent(data, dt0 = NULL)
+active_percent(data, dt0 = NULL, tz = "")
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
 
 \item{dt0}{The time frequency for interpolated aligned grid in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
+
+\item{tz}{\strong{tz = "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 A tibble object with five columns: subject id,
@@ -35,7 +37,7 @@ active_percent(example_data_1_subject)
 data(example_data_5_subject)
 
 active_percent(example_data_5_subject)
-active_percent(example_data_5_subject, dt0 = 5)
+active_percent(example_data_5_subject, dt0 = 5, tz = 'GMT')
 
 }
 \references{

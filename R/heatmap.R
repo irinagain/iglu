@@ -6,6 +6,7 @@
 #' @param clustering_method the agglomeration method for hierarchical clustering, accepts same values as \code{\link{hclust}}, default value is 'complete'
 #' @param clustering_distance_metrics the distance measure for metrics clustering, accepts same values as \code{\link{dist}}, default value is 'correlation' distance
 #' @param clustering_distance_subjects the distance measure for subjects clustering, accepts same values as \code{\link{dist}}, default value is 'correlation' distance
+#' @param tz \strong{Default: "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
 #'
 #' @return A heatmap of metrics by subjects generated via \code{\link{pheatmap}}
 #' @export
@@ -16,14 +17,14 @@
 #' metrics_heatmap(metrics = mecs)
 metrics_heatmap <- function(data = NULL, metrics = NULL, metric_cluster = 6, clustering_method = "complete",
                             clustering_distance_metrics = "correlation",
-                            clustering_distance_subjects = "correlation"){
+                            clustering_distance_subjects = "correlation", tz = ""){
   # Check whether pre-calculated metrics are provided
   mecs = metrics
   if(is.null(mecs)){
     if(is.null(data)){
       stop("Either CGM data or precalculated metrics must be provided")
     }else{
-      data = check_data_columns(data, time_check=TRUE)
+      data = check_data_columns(data, time_check=TRUE, tz = tz)
       # No metrics are provided, calculate all by default
       mecs = all_metrics(data)
     }

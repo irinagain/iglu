@@ -12,7 +12,7 @@ test1 = iglu::example_data_1_subject
 test2 = iglu::example_data_1_subject[1:300, ]
 test3 = iglu::example_data_5_subject
 
-test_out = data.frame(GRADE_hyper = mean(grade_hypo_formula_tester(test_df$gl)))
+test_out = data.frame(GRADE_hyper = grade_hypo_formula_tester(test_df$gl))
 
 out = iglu::grade_hypo(test3)$GRADE_hypo
 
