@@ -20,6 +20,7 @@ extract_agp_stats <- function(data) {
 
 expected_stats_test_df <- extract_agp_stats(test_df)
 expected_stats_test3_subject1 <- extract_agp_stats(test3[test3$id == "Subject 1", ])
+expected_stats_test3_subject2 <- extract_agp_stats(test3[test3$id == "Subject 2", ])
 
 # Test Function
 testthat::test_that("iglu::agp", {
@@ -30,6 +31,13 @@ testthat::test_that("iglu::agp", {
   expect_equal(extract_agp_stats(test_df)$avg_glucose, expected_stats_test_df$avg_glucose, tolerance = 0.0001)
   expect_equal(extract_agp_stats(test_df)$gmi_value, expected_stats_test_df$gmi_value, tolerance = 0.0001)
   expect_equal(extract_agp_stats(test_df)$cv_value, expected_stats_test_df$cv_value, tolerance = 0.0001)
+
+  agp_output_test2 <- agp(test3[test3$id == "Subject 2", ], daily = FALSE)
+  expect_equal(extract_agp_stats(test3[test3$id == "Subject 2", ])$subject, expected_stats_test3_subject2$subject)
+  expect_equal(extract_agp_stats(test3[test3$id == "Subject 2", ])$active_percent, expected_stats_test3_subject2$active_percent, tolerance = 0.0001)
+  expect_equal(extract_agp_stats(test3[test3$id == "Subject 2", ])$avg_glucose, expected_stats_test3_subject2$avg_glucose, tolerance = 0.0001)
+  expect_equal(extract_agp_stats(test3[test3$id == "Subject 2", ])$gmi_value, expected_stats_test3_subject2$gmi_value, tolerance = 0.0001)
+  expect_equal(extract_agp_stats(test3[test3$id == "Subject 2", ])$cv_value, expected_stats_test3_subject2$cv_value, tolerance = 0.0001)
 
   agp_output_test3 <- agp(test3[test3$id == "Subject 1", ], daily = FALSE)
   expect_equal(extract_agp_stats(test3[test3$id == "Subject 1", ])$subject, expected_stats_test3_subject1$subject)

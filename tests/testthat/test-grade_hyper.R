@@ -1,4 +1,10 @@
 # Helper Function
+grade_formula_tester <- function(x){
+  grade = (425 * (log10(log10(x/18)) + 0.16)^2)
+  grade <- pmin(grade, 50)
+  return(grade)
+}
+
 grade_hyper_formula_tester <- function(gl, upper = 140){
   grade = grade_formula_tester(gl)
   GRADE_hyper = sum(grade[gl > upper], na.rm = TRUE) /

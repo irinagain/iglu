@@ -1,3 +1,9 @@
+grade_formula_tester <- function(x){
+  grade = (425 * (log10(log10(x/18)) + 0.16)^2)
+  grade <- pmin(grade, 50)
+  return(grade)
+}
+
 # Helper Function
 grade_eugly_formula_tester <- function(gl, lower = 70, upper = 140){
   grade = grade_formula_tester(gl)
