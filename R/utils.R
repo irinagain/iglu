@@ -62,6 +62,10 @@ check_data_time <- function(data, tz = ""){
   if (!lubridate::is.POSIXct(data$time)){ # Check if already in date format
     tr = as.character(data$time)
     data$time = as.POSIXct(tr, format='%Y-%m-%d %H:%M:%S', tz = tz)
+
+    if (any(is.na(data$time))) {
+      stop('Automatic identification of timezone unsuccessful. Please manually set `tz` parameter or double check if the timezone is correct.')
+    }
   }
 
   out = data %>%

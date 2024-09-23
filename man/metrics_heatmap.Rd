@@ -10,7 +10,8 @@ metrics_heatmap(
   metric_cluster = 6,
   clustering_method = "complete",
   clustering_distance_metrics = "correlation",
-  clustering_distance_subjects = "correlation"
+  clustering_distance_subjects = "correlation",
+  tz = ""
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ metrics_heatmap(
 \item{clustering_distance_metrics}{the distance measure for metrics clustering, accepts same values as \code{\link{dist}}, default value is 'correlation' distance}
 
 \item{clustering_distance_subjects}{the distance measure for subjects clustering, accepts same values as \code{\link{dist}}, default value is 'correlation' distance}
+
+\item{tz}{\strong{Default: "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 A heatmap of metrics by subjects generated via \code{\link{pheatmap}}

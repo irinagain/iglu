@@ -4,7 +4,7 @@
 \alias{plot_meals}
 \title{Plot meal metrics visualization}
 \usage{
-plot_meals(data, mealtimes, plot_type=c('ggplot','plotly'))
+plot_meals(data, mealtimes, plot_type=c('ggplot','plotly'), tz = "")
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, a warning is produced and only 1st subject is used.}
@@ -14,7 +14,9 @@ to data being from a single subject, OR a dataframe with at least 2 columns labe
 id and mealtime. Optionally the mealtimes dataframe can include a column labeled meal,
 giving the meal type (helps to compensate for overlapping meals)}
 
-\item{plot_type}{Default: "ggplot". One of 'ggplot', 'plotly'. Determines whether the function returns a static publication-ready image or an interactive GUI.}
+\item{plot_type}{\strong{Default: "ggplot".} One of 'ggplot', 'plotly'. Determines whether the function returns a static publication-ready image or an interactive GUI.}
+
+\item{tz}{\strong{Default: "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
 Plot to visualize meals data.
@@ -34,7 +36,7 @@ one to zoom into specific areas of the plot.
 
 select_subject = example_data_hall[example_data_hall$id == "2133-018", ]
 select_meals = example_meals_hall[example_meals_hall$id == "2133-018", ]
-plot_meals(select_subject, select_meals)
+plot_meals(select_subject, select_meals, tz = 'GMT')
 }
 \references{
 Service, F. John. (2013) Glucose Variability, \emph{Diabetes}
