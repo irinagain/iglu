@@ -52,8 +52,8 @@ gri <- function(data, tz = ""){
     range_percents <- agp_metrics(data)
     range_percents <- range_percents[c("below_54", "below_70", "above_180", "above_250")]
 
-    out = 3*range_percents$below_54 + 2.4*range_percents$below_70 +
-      1.6*range_percents$above_250 + 0.8*range_percents$above_180
+    out = 3*range_percents$below_54 + 2.4*(range_percents$below_70 - range_percents$below_54) +
+      1.6*range_percents$above_250 + 0.8*(range_percents$above_180 - range_percents$above_250)
 
     # threshold at 100%
     out = ifelse(out > 100, 100, out)
