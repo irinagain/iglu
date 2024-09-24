@@ -1,3 +1,6 @@
+# iglu 4.2.0
+* Fixed bug in GRI calculation
+
 # iglu 4.1.7
 * added tz parameter to functions that require it
 
