@@ -44,7 +44,7 @@
 #'
 
 
-active_percent <- function(data, dt0 = NULL, tz = "") {
+active_percent <- function(data, dt0 = NULL, tz = "", range_type = "automatic", ndays = 14, end_date = NULL) {
   active_percent = gl = id = NULL
   rm(list = c("gl", "id", "active_percent"))
   data = check_data_columns(data, time_check = TRUE, tz = tz)
@@ -75,7 +75,15 @@ active_percent <- function(data, dt0 = NULL, tz = "") {
       dt0 = as.double(round(median(timediff, na.rm = TRUE)))
     }
 
-    # Determine range of observed data
+    #Determine range of observed data under range_type = "manual"
+    if(is.null(end_date)){
+      end_date = as.POSIXct(tail(subData$time, n = 1))
+    } else{
+      end_date = as.POSIXct(end_date)
+    }
+    start_date = end_date - days(ndays)
+
+    # Determine range of observed data under range_type = "automatic"
     mintime = min(subData$time)
     maxtime = max(subData$time)
     ndays = difftime(maxtime, mintime, units = "days")
@@ -89,10 +97,21 @@ active_percent <- function(data, dt0 = NULL, tz = "") {
     # Determine proportion observed
     active_perc_data[[i]] <- list()
     active_perc_data[[i]]$id <- subject[i]
-    active_perc_data[[i]]$percent <- (theoretical_gl_vals - missing_gl_vals)/theoretical_gl_vals
-    active_perc_data[[i]]$ndays <- ndays
-    active_perc_data[[i]]$mintime <- mintime
-    active_perc_data[[i]]$maxtime <- maxtime
+    if(range_type == "automatic"){
+      ndays = difftime(maxtime, mintime, units = "days")
+      active_perc_data[[i]]$percent <- (theoretical_gl_vals - missing_gl_vals)/theoretical_gl_vals
+      active_perc_data[[i]]$mintime <- mintime
+      active_perc_data[[i]]$maxtime <- maxtime
+      active_perc_data[[i]]$ndays <- ndays
+    } else if(range_type == "manual"){
+      ndays = ndays
+      date_range <- interval(start = start_date, end = end_date)
+      subData <- subData %>% filter(time %within% date_range)
+      active_perc_data[[i]]$percent <- (nrow(subData)/(as.numeric(ndays)*(24*(60/dt0))))
+      active_perc_data[[i]]$mintime <- start_date
+      active_perc_data[[i]]$maxtime <- end_date
+      active_perc_data[[i]]$ndays <- difftime(end_date, start_date, units = "days")
+    }
   }
 
   results = lapply(
@@ -110,3 +129,4 @@ active_percent <- function(data, dt0 = NULL, tz = "") {
   }
   return(results)
 }
+
