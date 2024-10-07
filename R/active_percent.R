@@ -49,12 +49,12 @@ active_percent <- function(data, dt0 = NULL, tz = "", range_type = "automatic", 
   rm(list = c("gl", "id", "active_percent"))
   data = check_data_columns(data, time_check = TRUE, tz = tz)
   is_vector = attr(data, "is_vector")
-
   subject = unique(data$id)
   ns = length(subject)
 
   # Calculating present and theoretical number of gl values for each id
   active_perc_data = list()
+
   # Loop over the subjects
   for(i in 1:ns) {
     subData <- data %>%
@@ -63,10 +63,6 @@ active_percent <- function(data, dt0 = NULL, tz = "", range_type = "automatic", 
       dplyr::filter(id == subject[i]) %>%
       dplyr::arrange(time)
 
-    #present_gl_vals = nrow(subData)
-    #theoretical_gl_vals = 0
-    #start_time = subData$time[1]
-
     timeindex = 2:nrow(subData)
     timediff = difftime(subData$time[timeindex], subData$time[timeindex - 1], units = "mins")
 
@@ -74,6 +70,10 @@ active_percent <- function(data, dt0 = NULL, tz = "", range_type = "automatic", 
     if (is.null(dt0)){
       dt0 = as.double(round(median(timediff, na.rm = TRUE)))
     }
+
+    # Determine proportion observed
+    active_perc_data[[i]] <- list()
+    active_perc_data[[i]]$id <- subject[i]
 
     if(range_type == "automatic"){
       # Determine range of observed data
@@ -107,14 +107,11 @@ active_percent <- function(data, dt0 = NULL, tz = "", range_type = "automatic", 
     }
   }
 
-  results = lapply(
-    active_perc_data,
-    function(d){
+  results = lapply(active_perc_data,function(d){
       out = tibble::tibble(id = d$id, active_percent = d$percent*100, ndays = round(d$ndays, 1), start_date = d$mintime, end_date = d$maxtime)
       out
     }
   )
-
   results = dplyr::bind_rows(results)
 
   if (is_vector) {
