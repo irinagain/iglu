@@ -75,36 +75,29 @@ active_percent <- function(data, dt0 = NULL, tz = "", range_type = "automatic", 
       dt0 = as.double(round(median(timediff, na.rm = TRUE)))
     }
 
-    #Determine range of observed data under range_type = "manual"
-    if(is.null(end_date)){
-      end_date = as.POSIXct(tail(subData$time, n = 1))
-    } else{
-      end_date = as.POSIXct(end_date)
-    }
-    start_date = end_date - days(ndays)
-
-    # Determine range of observed data under range_type = "automatic"
-    mintime = min(subData$time)
-    maxtime = max(subData$time)
-    ndays = difftime(maxtime, mintime, units = "days")
-
-    # Determine the overall length in minutes of the observed period
-    theoretical_gl_vals = round(as.numeric(round(difftime(maxtime, mintime, units = "mins")))/dt0) + 1
-    # Determine the overall length in minutes of all the gaps longer than dt0 min apart
-    gap_minutes = sum(as.numeric(timediff[round(timediff) > dt0]))
-    ngaps = sum(round(timediff) > dt0)
-    missing_gl_vals = round((gap_minutes - ngaps * dt0)/dt0)
-    # Determine proportion observed
-    active_perc_data[[i]] <- list()
-    active_perc_data[[i]]$id <- subject[i]
     if(range_type == "automatic"){
+      # Determine range of observed data
+      mintime = min(subData$time)
+      maxtime = max(subData$time)
+      # Determine the overall length in minutes of the observed period
+      theoretical_gl_vals = round(as.numeric(round(difftime(maxtime, mintime, units = "mins")))/dt0) + 1
+      # Determine the overall length in minutes of all the gaps longer than dt0 min apart
+      gap_minutes = sum(as.numeric(timediff[round(timediff) > dt0]))
+      ngaps = sum(round(timediff) > dt0)
+      missing_gl_vals = round((gap_minutes - ngaps * dt0)/dt0)
       ndays = difftime(maxtime, mintime, units = "days")
       active_perc_data[[i]]$percent <- (theoretical_gl_vals - missing_gl_vals)/theoretical_gl_vals
       active_perc_data[[i]]$mintime <- mintime
       active_perc_data[[i]]$maxtime <- maxtime
       active_perc_data[[i]]$ndays <- ndays
     } else if(range_type == "manual"){
-      ndays = ndays
+      #Determine range of observed data under range_type = "exact"
+      if(!is.null(end_date)){
+        end_date = as.POSIXct(end_date)
+      } else{
+        end_date = as.POSIXct(tail(subData$time, n = 1))
+      }
+      start_date = end_date - days(as.integer(ndays))
       date_range <- interval(start = start_date, end = end_date)
       subData <- subData %>% filter(time %within% date_range)
       active_perc_data[[i]]$percent <- (nrow(subData)/(as.numeric(ndays)*(24*(60/dt0))))
