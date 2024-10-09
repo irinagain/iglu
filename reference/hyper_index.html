@@ -83,7 +83,7 @@ as.numeric() can be wrapped around the latter to output just a numeric value.</p
     <p>A tibble object with 1 row for each subject, a column for subject id and
 a column for the Hyperglycemia Index values is returned. NA glucose values are
 omitted from the calculation of the Hyperglycemia Index values.</p>
-<p>Hyperglycemia Index is calculated by \(n/c * \sum [(hyperBG_j-ULTR) ^{a}]\)
+<p>Hyperglycemia Index is calculated by \(\frac{1}{n \cdot c} \sum \left( \text{hyperBG}_j - \text{ULTR} \right)^a\).
 Here n is the total number of Glucose measurements (excluding NA values), \(hyperBG_j\)
 is the jth Glucose measurement above the ULTR cutoff, a is an exponent, and c is a scaling factor.</p>
     </div>
