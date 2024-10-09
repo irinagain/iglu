@@ -20,7 +20,7 @@
 #' a column for the Hypoglycemia Index values is returned. NA glucose values are
 #' omitted from the calculation of the Hypoglycemia Index values.
 #'
-#' Hypoglycemia Index is calculated by \eqn{\frac{1}{n \cdot d} \sum \left( \text{ULTR} - \text{hyperBG}_j \right)^b}.
+#' Hypoglycemia Index is calculated by \eqn{\frac{1}{n \cdot d} \sum \left(ULTR - hyperBG_j \right)^b}.
 #' Here n is the total number of Glucose measurements (excluding NA values),
 #' and \eqn{hypoBG_j} is the jth Glucose measurement below the LLTR cutoff, b is an exponent, and d is a scaling factor.
 #'
