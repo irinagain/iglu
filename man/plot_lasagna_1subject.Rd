@@ -24,7 +24,7 @@ plot_lasagna_1subject(
 
 \item{lasagnatype}{\strong{Default: "unsorted".} String corresponding to plot type, currently supported options are 'unsorted' for an unsorted single-subject lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across days, and 'daysorted' for a lasagna plot with glucose values sorted within each day across time points.}
 
-\item{limits}{The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link{scale_fill_gradient2}})}
+\item{limits}{The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link[ggplot2]{scale_fill_gradient2}})}
 
 \item{midpoint}{The glucose value serving as midpoint of the diverging gradient scale (see \code{\link{scale_fill_gradient2}}). The default value is 105 mg/dL. The values above are colored in red, and below in blue in the default color_scheme, which can be adjusted.}
 
