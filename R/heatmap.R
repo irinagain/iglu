@@ -8,7 +8,7 @@
 #' @param clustering_distance_subjects the distance measure for subjects clustering, accepts same values as \code{\link{dist}}, default value is 'correlation' distance
 #' @param tz \strong{Default: "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
 #'
-#' @return A heatmap of metrics by subjects generated via \code{\link{pheatmap}}
+#' @return A heatmap of metrics by subjects generated via \code{\link[pheatmap]{pheatmap}}
 #' @export
 #'
 #' @examples
