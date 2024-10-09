@@ -12,6 +12,12 @@ active_percent(data, dt0 = NULL, tz = "")
 \item{dt0}{The time frequency for interpolated aligned grid in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
 \item{tz}{\strong{tz = "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
+
+\item{range_type}{"manual" or "automatic" depending on the desired time interval to be used}
+
+\item{ndays}{For "manual" calculation, the length of the time interval in days}
+
+\item{end_date}{For "manual" calculation, the end date of the desired time interval}
 }
 \value{
 A tibble object with five columns: subject id,

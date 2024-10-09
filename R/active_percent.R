@@ -9,6 +9,9 @@
 #' @inheritParams plot_lasagna
 #'
 #' @param tz \strong{tz = "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
+#' @param range_type "manual" or "automatic" depending on the desired time interval to be used
+#' @param ndays For "manual" calculation, the length of the time interval in days
+#' @param end_date For "manual" calculation, the end date of the desired time interval
 #'
 #' @details
 #'The function `active_percent` produces a tibble object with values equal to the
@@ -20,6 +23,9 @@
 #'
 #' @return A tibble object with five columns: subject id,
 #' corresponding active_percent value, duration of measurement period in days, start date, and end date.
+#'
+#' @importFrom lubridate days %within% interval
+#' @importFrom utils tail
 #'
 #' @export
 #'
