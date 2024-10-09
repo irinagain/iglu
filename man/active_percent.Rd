@@ -4,7 +4,8 @@
 \alias{active_percent}
 \title{Calculate percentage of time CGM was active}
 \usage{
-active_percent(data, dt0 = NULL, tz = "")
+active_percent(data, dt0 = NULL, tz = "",
+range_type = "automatic", ndays = 14, end_date = NULL)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
@@ -13,11 +14,11 @@ active_percent(data, dt0 = NULL, tz = "")
 
 \item{tz}{\strong{tz = "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 
-\item{range_type}{"manual" or "automatic" depending on the desired time interval to be used}
+\item{range_type}{\strong{range_type = "automatic".} A character string indicating the type of range ('automatic' or 'manual').}
 
-\item{ndays}{For "manual" calculation, the length of the time interval in days}
+\item{ndays}{\strong{ndays = 14.} An integer specifying the number of days to consider in the calculation.}
 
-\item{end_date}{For "manual" calculation, the end date of the desired time interval}
+\item{end_date}{\strong{end_date = NULL.} A Date object or NULL indicating the end date for the calculation.}
 }
 \value{
 A tibble object with five columns: subject id,

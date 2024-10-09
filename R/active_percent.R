@@ -4,14 +4,15 @@
 #' The function `active_percent` produces the % of time CGM is active together with the length of the measurement period
 #'
 #' @usage
-#' active_percent(data, dt0 = NULL, tz = "")
+#' active_percent(data, dt0 = NULL, tz = "",
+#' range_type = "automatic", ndays = 14, end_date = NULL)
 #'
 #' @inheritParams plot_lasagna
 #'
 #' @param tz \strong{tz = "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
-#' @param range_type "manual" or "automatic" depending on the desired time interval to be used
-#' @param ndays For "manual" calculation, the length of the time interval in days
-#' @param end_date For "manual" calculation, the end date of the desired time interval
+#' @param range_type \strong{range_type = "automatic".} A character string indicating the type of range ('automatic' or 'manual').
+#' @param ndays \strong{ndays = 14.} An integer specifying the number of days to consider in the calculation.
+#' @param end_date \strong{end_date = NULL.} A Date object or NULL indicating the end date for the calculation.
 #'
 #' @details
 #'The function `active_percent` produces a tibble object with values equal to the
@@ -50,7 +51,8 @@
 #'
 
 
-active_percent <- function(data, dt0 = NULL, tz = "", range_type = "automatic", ndays = 14, end_date = NULL) {
+active_percent <- function(data, dt0 = NULL, tz = "",
+                           range_type = "automatic", ndays = 14, end_date = NULL) {
   active_percent = gl = id = NULL
   rm(list = c("gl", "id", "active_percent"))
   data = check_data_columns(data, time_check = TRUE, tz = tz)
