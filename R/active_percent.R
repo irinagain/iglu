@@ -105,6 +105,7 @@ active_percent <- function(data, dt0 = NULL, tz = "",
       } else{
         end_date = as.POSIXct(tail(subData$time, n = 1))
       }
+      subData$time <- as.POSIXct(subData$time, tz = tz)
       start_date = end_date - days(as.integer(ndays))
       date_range <- interval(start = start_date, end = end_date)
       subData <- subData %>% filter(time %within% date_range)
