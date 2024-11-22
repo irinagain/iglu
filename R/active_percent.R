@@ -56,9 +56,11 @@ active_percent <- function(data, dt0 = NULL, tz = "",
   active_percent = gl = id = NULL
   rm(list = c("gl", "id", "active_percent"))
   data = check_data_columns(data, time_check = TRUE, tz = tz)
+  data$time <- as.POSIXct(data$time, tz = tz)
   is_vector = attr(data, "is_vector")
   subject = unique(data$id)
   ns = length(subject)
+
 
   # Calculating present and theoretical number of gl values for each id
   active_perc_data = list()
