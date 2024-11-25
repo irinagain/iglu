@@ -79,6 +79,7 @@ If version \code{'ma'} is selected, the function computationally emulates the ma
 \examples{
 data(example_data_5_subject)
 mage(example_data_5_subject, version = 'ma')
+mage(example_data_5_subject, return_type='df')
 }
 \references{
 Service et al. (1970) Mean amplitude of glycemic excursions, a measure of diabetic instability

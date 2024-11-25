@@ -39,6 +39,7 @@
 #' @examples
 #' data(example_data_5_subject)
 #' mage(example_data_5_subject, version = 'ma')
+#' mage(example_data_5_subject, return_type='df')
 
 mage <- function(data,
                  version = c('ma', 'naive'),
@@ -87,7 +88,11 @@ mage_ma <- function(data,
                                     title = title, xlab = xlab, ylab = ylab, show_ma = show_ma, show_excursions = show_excursions, static_or_gui='ggplot'))
 
   # Check if a ggplot or number in list is returned - convert the latter to a number
-  if(class(out$MAGE[[1]])[1] == "numeric" | is.na(out$MAGE[[1]][1])) {
+  if(class(out$MAGE[[1]])[1] == "data.frame") {
+    # No processing on DataFrames is needed
+    out <- out
+  }
+  else if(class(out$MAGE[[1]])[1] == "numeric" | is.na(out$MAGE[[1]][1])) {
     out <- out %>% dplyr::mutate(MAGE = as.numeric(MAGE))
   }
   # else must be ggplot output
