@@ -1,3 +1,6 @@
+# iglu 4.2.1
+* Fixed bug in MAGE
+
 # iglu 4.2.0
 * Fixed bug in GRI calculation
 
