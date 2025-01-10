@@ -52,7 +52,7 @@
 
 
 active_percent <- function(data, dt0 = NULL, tz = "",
-                           range_type = "automatic", ndays = 14, end_date = NULL) {
+                           range_type = "automatic", ndays = 14, consistent_end_date = NULL) {
   active_percent = gl = id = NULL
   rm(list = c("gl", "id", "active_percent"))
   data = check_data_columns(data, time_check = TRUE, tz = tz)
@@ -102,8 +102,8 @@ active_percent <- function(data, dt0 = NULL, tz = "",
       active_perc_data[[i]]$ndays <- ndays
     } else if(range_type == "manual"){
       #Determine range of observed data under range_type = "exact"
-      if(!is.null(end_date)){
-        end_date = as.POSIXct(end_date)
+      if(!is.null(consistent_end_date)){
+        end_date = as.POSIXct(consistent_end_date)
       } else{
         end_date = as.POSIXct(tail(subData$time, n = 1))
       }
