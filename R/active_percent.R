@@ -109,7 +109,7 @@ active_percent <- function(data, dt0 = NULL, tz = "",
       }
       start_date = end_date - days(as.integer(ndays))
       date_range <- interval(start = start_date, end = end_date)
-      subData <- subData %>% filter(time %within% date_range)
+      subData <- subData[subData$time %within% date_range, ]
       active_perc_data[[i]]$percent <- (nrow(subData)/(as.numeric(ndays)*(24*(60/dt0))))
       active_perc_data[[i]]$mintime <- start_date
       active_perc_data[[i]]$maxtime <- end_date
