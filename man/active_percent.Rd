@@ -5,7 +5,7 @@
 \title{Calculate percentage of time CGM was active}
 \usage{
 active_percent(data, dt0 = NULL, tz = "",
-range_type = "automatic", ndays = 14, end_date = NULL)
+range_type = "automatic", ndays = 14, consistent_end_date = NULL)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
@@ -18,7 +18,7 @@ range_type = "automatic", ndays = 14, end_date = NULL)
 
 \item{ndays}{\strong{ndays = 14.} An integer specifying the number of days to consider in the calculation.}
 
-\item{end_date}{\strong{end_date = NULL.} A Date object or NULL indicating the end date for the calculation.}
+\item{consistent_end_date}{\strong{consistent_end_date = NULL.} A Date object or NULL indicating a period end date to be used for every subject. Leaving this value NULL will result in the end date being unique to each subject.}
 }
 \value{
 A tibble object with five columns: subject id,

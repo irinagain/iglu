@@ -5,14 +5,14 @@
 #'
 #' @usage
 #' active_percent(data, dt0 = NULL, tz = "",
-#' range_type = "automatic", ndays = 14, end_date = NULL)
+#' range_type = "automatic", ndays = 14, consistent_end_date = NULL)
 #'
 #' @inheritParams plot_lasagna
 #'
 #' @param tz \strong{tz = "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
 #' @param range_type \strong{range_type = "automatic".} A character string indicating the type of range ('automatic' or 'manual').
 #' @param ndays \strong{ndays = 14.} An integer specifying the number of days to consider in the calculation.
-#' @param consistent_end_date \strong{end_date = NULL.} A Date object or NULL indicating a period end date to be used for every subject. Leaving this value NULL will result in the end date being unique to each subject.
+#' @param consistent_end_date \strong{consistent_end_date = NULL.} A Date object or NULL indicating a period end date to be used for every subject. Leaving this value NULL will result in the end date being unique to each subject.
 #'
 #' @details
 #'The function `active_percent` produces a tibble object with values equal to the
