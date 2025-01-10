@@ -5,14 +5,14 @@
 #'
 #' @usage
 #' active_percent(data, dt0 = NULL, tz = "",
-#' range_type = "automatic", ndays = 14, end_date = NULL)
+#' range_type = "automatic", ndays = 14, consistent_end_date = NULL)
 #'
 #' @inheritParams plot_lasagna
 #'
 #' @param tz \strong{tz = "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.
 #' @param range_type \strong{range_type = "automatic".} A character string indicating the type of range ('automatic' or 'manual').
 #' @param ndays \strong{ndays = 14.} An integer specifying the number of days to consider in the calculation.
-#' @param end_date \strong{end_date = NULL.} A Date object or NULL indicating the end date for the calculation.
+#' @param consistent_end_date \strong{consistent_end_date = NULL.} A Date object or NULL indicating a period end date to be used for every subject. Leaving this value NULL will result in the end date being unique to each subject.
 #'
 #' @details
 #'The function `active_percent` produces a tibble object with values equal to the
@@ -52,7 +52,7 @@
 
 
 active_percent <- function(data, dt0 = NULL, tz = "",
-                           range_type = "automatic", ndays = 14, end_date = NULL) {
+                           range_type = "automatic", ndays = 14, consistent_end_date = NULL) {
   active_percent = gl = id = NULL
   rm(list = c("gl", "id", "active_percent"))
   data = check_data_columns(data, time_check = TRUE, tz = tz)
@@ -102,14 +102,14 @@ active_percent <- function(data, dt0 = NULL, tz = "",
       active_perc_data[[i]]$ndays <- ndays
     } else if(range_type == "manual"){
       #Determine range of observed data under range_type = "exact"
-      if(!is.null(end_date)){
-        end_date = as.POSIXct(end_date)
+      if(!is.null(consistent_end_date)){
+        end_date = as.POSIXct(consistent_end_date)
       } else{
         end_date = as.POSIXct(tail(subData$time, n = 1))
       }
       start_date = end_date - days(as.integer(ndays))
       date_range <- interval(start = start_date, end = end_date)
-      subData <- subData %>% filter(time %within% date_range)
+      subData <- subData[subData$time %within% date_range, ]
       active_perc_data[[i]]$percent <- (nrow(subData)/(as.numeric(ndays)*(24*(60/dt0))))
       active_perc_data[[i]]$mintime <- start_date
       active_perc_data[[i]]$maxtime <- end_date
