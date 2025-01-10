@@ -48,7 +48,7 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">active_percent</span><span class="op">(</span><span class="va">data</span>, dt0 <span class="op">=</span> <span class="cn">NULL</span>, tz <span class="op">=</span> <span class="st">""</span>,</span>
-<span>range_type <span class="op">=</span> <span class="st">"automatic"</span>, ndays <span class="op">=</span> <span class="fl">14</span>, end_date <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span>range_type <span class="op">=</span> <span class="st">"automatic"</span>, ndays <span class="op">=</span> <span class="fl">14</span>, consistent_end_date <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -75,8 +75,8 @@
 <dd><p><strong>ndays = 14.</strong> An integer specifying the number of days to consider in the calculation.</p></dd>
 
 
-<dt id="arg-end-date">end_date<a class="anchor" aria-label="anchor" href="#arg-end-date"></a></dt>
-<dd><p><strong>end_date = NULL.</strong> A Date object or NULL indicating the end date for the calculation.</p></dd>
+<dt id="arg-consistent-end-date">consistent_end_date<a class="anchor" aria-label="anchor" href="#arg-consistent-end-date"></a></dt>
+<dd><p><strong>consistent_end_date = NULL.</strong> A Date object or NULL indicating a period end date to be used for every subject. Leaving this value NULL will result in the end date being unique to each subject.</p></dd>
 
 </dl></div>
     <div class="section level2">
