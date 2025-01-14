@@ -32,7 +32,7 @@ plot_lasagna(
 
 \item{limits}{The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link[ggplot2]{scale_fill_gradient2}})}
 
-\item{midpoint}{The glucose value serving as midpoint of the diverging gradient scale (see \code{\link{scale_fill_gradient2}}). The default value is 105 mg/dL. The values above are colored in red, and below in blue in the default color_scheme, which can be adjusted.}
+\item{midpoint}{The glucose value serving as midpoint of the diverging gradient scale (see \code{\link[ggplot2]{scale_fill_gradient2}}). The default value is 105 mg/dL. The values above are colored in red, and below in blue in the default color_scheme, which can be adjusted.}
 
 \item{LLTR}{Lower Limit of Target Range, default value is 70 mg/dL.}
 

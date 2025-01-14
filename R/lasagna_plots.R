@@ -3,7 +3,7 @@
 #' @inheritParams conga
 #' @param lasagnatype \strong{Default: "unsorted".} String corresponding to plot type, currently supported options are 'unsorted' for an unsorted single-subject lasagna plot, 'timesorted' for a lasagna plot with glucose values sorted within each time point across days, and 'daysorted' for a lasagna plot with glucose values sorted within each day across time points.
 #' @param limits The minimal and maximal glucose values for coloring grid which is gradient from blue (minimal) to red (maximal), see \code{\link[ggplot2]{scale_fill_gradient2}})
-#' @param midpoint The glucose value serving as midpoint of the diverging gradient scale (see \code{\link{scale_fill_gradient2}}). The default value is 105 mg/dL. The values above are colored in red, and below in blue in the default color_scheme, which can be adjusted.
+#' @param midpoint The glucose value serving as midpoint of the diverging gradient scale (see \code{\link[ggplot2]{scale_fill_gradient2}}). The default value is 105 mg/dL. The values above are colored in red, and below in blue in the default color_scheme, which can be adjusted.
 #' @param dt0 The time frequency for interpolated aligned grid in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).
 #' @param inter_gap The maximum allowable gap (in minutes) for interpolation of
 #' NA glucose values. The values will not be interpolated between
