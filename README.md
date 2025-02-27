@@ -34,9 +34,10 @@ To cite:
   iglu.](https://doi.org/10.1371/journal.pone.0248560) *PLoS One*, Vol.
   16, No. 4, e0248560.
 
-- Broll S, Buchanan D, Chun E, Muschelli J, Fernandes N, Seo J, Shih J,
-  Urbanek J, Schwenck J, Gaynanova I (2021). iglu: Interpreting Glucose
-  Data from Continuous Glucose Monitors. R package version 3.0.0.
+- Chun E\*, Fernandes JN\* and **Gaynanova I** (2024) [An Update on the
+  iglu Software for Interpreting Continuous Glucose Monitoring
+  Data.](https://doi.org/10.1089/dia.2024.0154) *Diabetes Technology and
+  Therapeutics,* Vol. 26, No. 12, 939-950.
 
 iglu comes with two example datasets: example_data_1_subject and
 example_data_5_subject. These data are collected using Dexcom G4 CGM on
