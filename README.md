@@ -21,6 +21,12 @@ glycemic variability and quality of glycemic control.” Rodbard
 (2009)](https://doi.org/10.1089/dia.2008.0132). For more information on
 the package, see [package website](https://irinagain.github.io/iglu/).
 
+For short **tutorial on how to use the package**, see [Video tutorial on
+working with CGM data in
+iglu](https://www.birs.ca/events/2025/5-day-workshops/25w5474/videos/watch/202502260906-Gaynanova.html)
+and corresponding
+[slides](https://irinagain.github.io/Resources/SlidesWorkshop.pdf).
+
 To cite:
 
 - Broll S, Urbanek J, Buchanan D, Chun E, Muschelli J, Punjabi N and
@@ -103,7 +109,8 @@ conga(example_data_1_subject)
 data(example_data_5_subject)
 
 plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average')
-#> Warning: Removed 5 rows containing missing values (`geom_tile()`).
+#> Warning: Removed 5 rows containing missing values or values outside the scale range
+#> (`geom_tile()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
@@ -126,11 +133,11 @@ mage(example_data_5_subject)
 #> # Rowwise: 
 #>   id         MAGE
 #>   <fct>     <dbl>
-#> 1 Subject 1  87.2
-#> 2 Subject 2 111. 
-#> 3 Subject 3 115. 
-#> 4 Subject 4  70.1
-#> 5 Subject 5 146.
+#> 1 Subject 1  72.4
+#> 2 Subject 2 118. 
+#> 3 Subject 3 116. 
+#> 4 Subject 4  70.9
+#> 5 Subject 5 142.
 ```
 
 ## Shiny App
