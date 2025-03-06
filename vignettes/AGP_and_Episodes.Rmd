@@ -40,8 +40,8 @@ In this example, example_data_1_subject contains multiple days, and episode_calc
 #### data 
 DataFrame object with column names "id", "time", and "gl". 
 
-#### lv1_hypo, lv2_hypo, hy1_hyper, lv2_hpyer
-Users can set certain thresholds for the hypo and hyperglycemia by passing parameters, lv1_hypo, lv2_hypo, hy1_hyper, lv2_hpyer. Level 2 indicates more severe states than level 1 so the threshold value for the lv2_hypo value should be lower than hy1_hypo value, and the threshold for the lv2_hyper value should higher than lv1_hyper value.
+#### lv1_hypo, lv2_hypo, hy1_hyper, lv2_hyper
+Users can set certain thresholds for the hypo and hyperglycemia by passing parameters, lv1_hypo, lv2_hypo, lv1_hyper, lv2_hyper. Level 2 indicates more severe states than level 1 so the threshold value for the lv2_hypo value should be lower than lv1_hypo value, and the threshold for the lv2_hyper value should higher than lv1_hyper value.
 
 #### dur_length
 By setting a duration length to 15 minutes (the last parameter), the function will count the number of episodes that glucose values go below or above the thresholds more than 15 minutes. 
