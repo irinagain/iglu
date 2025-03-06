@@ -377,7 +377,7 @@ mage_ma_single <- function(data,
   if(plot) {
     # 6.1 Label 'Peaks' and 'Nadirs'
     direction = match.arg(direction, c('avg', 'service', 'max', 'plus', 'minus'))
-    static_or_gui = match.arg(static_or_gui, c('ggplot', 'plotly'))
+    static_or_gui = match.arg(static_or_gui, c('plotly', 'ggplot'))
 
     if (direction == 'avg') {
       tp_indexes <- dplyr::select(all_tp_indexes, idx, peak_or_nadir, plus_or_minus)
