@@ -947,8 +947,8 @@ computerized calculators for mean amplitude of glycemic excursions.
 Diabetes technology & therapeutics. 2014 Feb 1;16(2):72-5.
 
 [13] Martin M, Chun E, Buchanan D, Bhat R, Cass S, Wang E, Senthil S,
-Gaynanova I. irinagain/Awesome-CGM: List of public CGM datasets (Version
-v1.1.0). 2021, April 27. <https://github.com/irinagain/Awesome-CGM> Date
+Gaynanova I. IrinaStatsLab/Awesome-CGM: List of public CGM datasets (Version
+v1.1.0). 2021, April 27. <https://github.com/IrinaStatsLab/Awesome-CGM> Date
 Accessed: May 1, 2021.
 
 [14] Hall H, Perelman D, Breschi A, Limcaoco P, Kellogg R, McLaughlin T,

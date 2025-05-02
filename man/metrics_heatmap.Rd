@@ -30,7 +30,7 @@ metrics_heatmap(
 \item{tz}{\strong{Default: "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
 }
 \value{
-A heatmap of metrics by subjects generated via \code{\link{pheatmap}}
+A heatmap of metrics by subjects generated via \code{\link[pheatmap]{pheatmap}}
 }
 \description{
 Create a heatmap of metric values by subject based on hierarchical clustering order

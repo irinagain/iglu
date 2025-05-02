@@ -4,7 +4,8 @@
 \alias{active_percent}
 \title{Calculate percentage of time CGM was active}
 \usage{
-active_percent(data, dt0 = NULL, tz = "")
+active_percent(data, dt0 = NULL, tz = "",
+range_type = "automatic", ndays = 14, consistent_end_date = NULL)
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
@@ -12,6 +13,12 @@ active_percent(data, dt0 = NULL, tz = "")
 \item{dt0}{The time frequency for interpolated aligned grid in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
 \item{tz}{\strong{tz = "".} A character string specifying the time zone to be used. System-specific (see \code{\link{as.POSIXct}}), but " " is the current time zone, and "GMT" is UTC (Universal Time, Coordinated). Invalid values are most commonly treated as UTC, on some platforms with a warning.}
+
+\item{range_type}{\strong{range_type = "automatic".} A character string indicating the type of range ('automatic' or 'manual').}
+
+\item{ndays}{\strong{ndays = 14.} An integer specifying the number of days to consider in the calculation.}
+
+\item{consistent_end_date}{\strong{consistent_end_date = NULL.} A Date object or NULL indicating a period end date to be used for every subject. Leaving this value NULL will result in the end date being unique to each subject.}
 }
 \value{
 A tibble object with five columns: subject id,
