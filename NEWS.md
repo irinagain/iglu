@@ -1,3 +1,9 @@
+# iglu 4.2.3
+* Fixed GVP output for iglu::all_metrics
+
+# iglu 4.2.2
+* Fixed bug in Shiny app where MAGE plot was not rendering
+
 # iglu 4.2.1
 * Fixed bug in MAGE
 
