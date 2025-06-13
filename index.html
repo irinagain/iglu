@@ -65,14 +65,38 @@
 <div class="section level1">
 <h1 id="iglu-interpreting-data-from-continuous-glucose-monitors-cgms">iglu: Interpreting data from Continuous Glucose Monitors (CGMs)<a class="anchor" aria-label="anchor" href="#iglu-interpreting-data-from-continuous-glucose-monitors-cgms"></a>
 </h1>
-<p>The R package ‘iglu’ provides functions for outputting relevant metrics for data collected from Continuous Glucose Monitors (CGM). For reference, see <a href="https://doi.org/10.1089/dia.2008.0132" class="external-link">“Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control.” Rodbard (2009)</a>. For more information on the package, see <a href="https://irinagain.github.io/iglu/">package website</a>.</p>
+<p>The R package ‘iglu’ provides functions for outputting relevant metrics for data collected from Continuous Glucose Monitors (CGM). For reference, see <a href="https://doi.org/10.1089/dia.2008.0132" class="external-link">“Interpretation of continuous glucose monitoring data: glycemic variability and quality of glycemic control.” Rodbard (2009)</a>. For more information on the package, see <a href="https://irinagain.github.io/iglu/">package website</a>. We also have a <a href="https://irinagain.shinyapps.io/shiny_iglu/" class="external-link">GUI that requires no programming experience</a> and mirrored <a href="https://github.com/IrinaStatsLab/iglu-py" class="external-link">Python version of iglu</a>.</p>
 <p>For short <strong>tutorial on how to use the package</strong>, see <a href="https://www.birs.ca/events/2025/5-day-workshops/25w5474/videos/watch/202502260906-Gaynanova.html" class="external-link">Video tutorial on working with CGM data in iglu</a> and corresponding <a href="https://irinagain.github.io/Resources/SlidesWorkshop.pdf" class="external-link">slides</a>.</p>
-<p>To cite:</p>
-<ul>
-<li><p>Broll S, Urbanek J, Buchanan D, Chun E, Muschelli J, Punjabi N and Gaynanova I (2021). <a href="https://doi.org/10.1371/journal.pone.0248560" class="external-link">Interpreting blood glucose data with R package iglu.</a> <em>PLoS One</em>, Vol. 16, No. 4, e0248560.</p></li>
-<li><p>Chun E*, Fernandes JN* and <strong>Gaynanova I</strong> (2024) <a href="https://doi.org/10.1089/dia.2024.0154" class="external-link">An Update on the iglu Software for Interpreting Continuous Glucose Monitoring Data.</a> <em>Diabetes Technology and Therapeutics,</em> Vol. 26, No. 12, 939-950.</p></li>
-</ul>
 <p>iglu comes with two example datasets: example_data_1_subject and example_data_5_subject. These data are collected using Dexcom G4 CGM on subjects with Type II diabetes. Each dataset follows the structure iglu’s functions are designed around. Note that the 1 subject data is a subset of the 5 subject data. See the examples below for loading and using the data.</p>
+<div class="section level2">
+<h2 id="attribution">Attribution<a class="anchor" aria-label="anchor" href="#attribution"></a>
+</h2>
+<p>We are glad you found iglu useful. If you use it for computing CGM metrics or visualizing CGM data, please cite the package appropriately, depending on the features used.</p>
+<p><strong>Original package paper</strong>: most of the CGM metrics, time series and lasagna plots, AGP</p>
+<ul>
+<li>Broll S, Urbanek J, Buchanan D, Chun E, Muschelli J, Punjabi N and Gaynanova I (2021). <a href="https://doi.org/10.1371/journal.pone.0248560" class="external-link">Interpreting blood glucose data with R package iglu.</a> <em>PLoS One</em>, Vol. 16, No. 4, e0248560.</li>
+</ul>
+<p><strong>Updated package paper</strong>: for episode (event) detection, postprandial metrics, built-in clustering and heatmap tools, new MAGE, and Python version</p>
+<ul>
+<li>Chun E, Fernandes JN and Gaynanova I (2024) <a href="https://doi.org/10.1089/dia.2024.0154" class="external-link">An Update on the iglu Software for Interpreting Continuous Glucose Monitoring Data.</a> <em>Diabetes Technology and Therapeutics,</em> Vol. 26, No. 12, 939-950.</li>
+</ul>
+<p><strong>MAGE algorithm</strong>: if you use MAGE, which is uniquely implemented and validated against manual computation, we ask that you additionally cite</p>
+<ul>
+<li>Fernandes N, Nguyen N, Chun E, Punjabi N and Gaynanova I (2022) <a href="https://doi.org/10.1177/19322968211061165" class="external-link">Open-Source Algorithm to Calculate Mean Amplitude of Glycemic Excursions Using Short and Long Moving Averages.</a> <em>Journal of Diabetes Science and Technology</em>, Vol. 16, No. 2, 576-577.</li>
+</ul>
+<p><strong>Reuse or modification in another software:</strong></p>
+<p>iglu is free and released under the GNU General Public License v2 (GPL-2). This permits use, modification, and distribution (including translations), under the following conditions:</p>
+<ul>
+<li><p>Any redistributed or modified version must also be licensed under GPL-2, even if iglu is used in only parts of the work.</p></li>
+<li><p>You must provide clear attribution to iglu for the appropriate parts of the code, describe your changes (if applicable), and identify yourself as the source of modifications.</p></li>
+</ul>
+<p>We recommend referencing the specific version of iglu that was used/modified to help track divergence from future updates.</p>
+<p><strong>Copyright and warranty:</strong></p>
+<p>© 2020 Texas A&amp;M University</p>
+<p>© 2023 The Regents of the University of Michigan</p>
+<p>Gaynanova Lab - <a href="https://irinagain.github.io/" class="external-link uri">https://irinagain.github.io/</a></p>
+<p>iglu is free software released under GPL 2.0. Use and modification are subject to the same license terms. It is distributed in the hope that it will be useful, but without any warranty. See the <strong>LICENSE</strong> file for full terms.</p>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
