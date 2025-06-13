@@ -1,4 +1,4 @@
-citHeader("To cite/acknowledge iglu, please use:")
+citHeader("To cite iglu in publications, please use the appropriate references based on the features used and include version number:")
 
 bibentry(bibtype = "Article",
          title       = "Interpreting blood glucose data with {R} package {iglu}",
@@ -23,27 +23,38 @@ bibentry(bibtype = "Article",
          textVersion = paste("Broll S, Urbanek J, Buchanan D, Chun E, Muschelli J, Punjabi N and Gaynanova I (2021).", "Interpreting blood glucose data with R package iglu.", "PLoS One, 16(4), e0248560.", "URL https://doi.org/10.1371/journal.pone.0248560")
 )
 
-bibentry(bibtype = "Manual",
-         title       = "{iglu:} Interpreting Glucose Data from Continuous Glucose Monitors",
+bibentry(bibtype = "Article",
+         title       = "An Update on the {iglu} Software Package for Interpreting Continuous Glucose Monitoring Data",
          author      = c(person("Elizabeth", "Chun"),
-                        person(given = "Steven", family = "Broll"),
-                        person("David", "Buchanan"),
-                        person("John", "Muschelli",
-                        email = "muschellij2@gmail.com",
-                        comment = c(ORCID = "0000-0001-6469-1750")),
-                        person("Nathaniel", "Fernandes",
-                        email = "njfernandes24@tamu.edu",
-                        comment = c(ORCID = "0000-0003-0485-0726")),
-                        person("Jung Hoon", "Seo"),
-                        person("Johnathan", "Shih"),
-                        person("Jacek", "Urbanek"),
-                        person("John", "Schwenck"),
+                        person("Nathaniel", "Fernandes"),
 		                    person(given = "Irina", family = "Gaynanova",
                           email = "irinagn@umich.edu",
                           comment = c(ORCID = "0000-0002-4116-0268"))),
-         year        = "2023",
-      	 note = "R package version 3.5.0",
+         journal     = "Diabetes Technology & Therapeutics",
+         year        = "2024",
+	       volume      = "26",
+	       number      = "12",
+	       pages       = "939-950",
+         doi         = "10.1089/dia.2024.0152",
 
-      	 textVersion = paste("Chun E, Broll S, Buchanan D, Muschelli J, Fernandes N, Seo J, Shih J, Urbanek J, Schwenck J, Gaynanova I (2023).","iglu: Interpreting
-Glucose Data from Continuous Glucose Monitors.","R package version 3.5.0.")
+         textVersion = paste("Chun E, Fernandes JN, Gaynanova I. An Update on the iglu Software Package for Interpreting Continuous Glucose Monitoring Data. Diabetes Technology & Therapeutics. 2024;26(12):939-950.", "URL https://doi.org/10.1089/dia.2024.0152")
+)
+
+bibentry(
+  bibtype = "Article",
+  author = c(person("Nathanuel", "Fernandes"),
+             person("Nathan", "Nguyen"),
+             person("Elizabeth", "Chun"),
+             person("Naresh M.", "Punjabi"),
+             person(given = "Irina", family = "Gaynanova",
+                          email = "irinagn@umich.edu",
+                          comment = c(ORCID = "0000-0002-4116-0268"))),
+  title = "Open-source algorithm to calculate mean amplitude of glycemic excursions using short and long moving averages",
+  journal = "Journal of Diabetes Science and Technology",
+  year = 2022,
+  volume = "16",
+  number = "2",
+  pages = "576-577",
+  doi = "10.1177/19322968211061165",
+  textVersion = paste("Fernandes NJ, Nguyen N, Chun E, Punjabi NM, Gaynanova I. Open-source algorithm to calculate mean amplitude of glycemic excursions using short and long moving averages. Journal of Diabetes Science and Technology. 2022;16(2):576-7.", "URL https://doi.org/10.1177/19322968211061165")
 )
