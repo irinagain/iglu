@@ -22,9 +22,8 @@
 #' The glucose values are linearly interpolated over a time grid starting at the
 #' beginning of the first day of data and ending on the last day of data. Then, MAG
 #' is calculated as \eqn{\frac{|\Delta G|}{\Delta t}} where \eqn{|\Delta G|} is
-#' the sum of the absolute change in glucose calculated for each interval as specified
-#' by n, default n = 60 for hourly change in glucose. The sum is then divided by
-#' \eqn{\Delta t} which is the total time in hours.
+#' the sum of the absolute change in glucose. The sum is then divided by \eqn{\Delta t},
+#' the total number of n-minute intervals (default n = 60 for hourly change).
 #'
 #' @author Elizabeth Chun
 #'
@@ -54,10 +53,10 @@ mag <- function (data, n = 60L, dt0 = NULL, inter_gap = 45, tz = "") {
       n <- dt0
     }
 
-    idx = seq(1, ncol(data_ip[[1]]), by = round(n/data_ip[[3]]))
-    idx_gl = as.vector(t(data_ip[[1]][, idx]))
-    mag = sum(abs(diff(idx_gl)), na.rm = TRUE)/
-      (length(na.omit(idx_gl))*n/60)
+    diffs = diff(as.vector(t(data_ip[[1]])))
+    total_time = (length(na.omit(diffs))*dt0)/n
+    mag = sum(abs(diffs), na.rm = TRUE)/total_time
+
     return(mag)
   }
 
