@@ -1,3 +1,6 @@
+# iglu 4.3.0
+* Updated MAG computation in the presence of large missing data
+
 # iglu 4.2.3
 * Fixed GVP output for iglu::all_metrics
 
