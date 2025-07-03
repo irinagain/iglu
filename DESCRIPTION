@@ -34,6 +34,8 @@ Authors@R: c(person("Elizabeth", "Chun",
             role = c("ctb")),
             person("Nhan", "Nguyen",
             role = c("ctb")),
+            person("Neo", "Kok",
+            role = c("ctb")),
             person("Irina", "Gaynanova",
             email = "irinagn@umich.edu",role = c("aut", "cre"),
             comment = c(ORCID = "0000-0002-4116-0268")))
