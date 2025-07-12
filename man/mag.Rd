@@ -4,13 +4,14 @@
 \alias{mag}
 \title{Calculate the Mean Absolute Glucose (MAG)}
 \usage{
-mag(data, n = 60, dt0 = NULL, inter_gap = 45, tz = "")
+mag(data, n = NULL, dt0 = NULL, inter_gap = 45, tz = "")
 }
 \arguments{
 \item{data}{DataFrame object with column names "id", "time", and "gl".}
 
 \item{n}{Integer giving the desired interval in minutes over which to calculate
-the change in glucose. Default is 60 to have hourly (60 minutes) intervals.}
+the change in glucose. Default is the CGM meter's frequency (dt0)
+to measure change in every reading.}
 
 \item{dt0}{The time frequency for interpolation in minutes, the default will match the CGM meter's frequency (e.g. 5 min for Dexcom).}
 
@@ -31,9 +32,9 @@ returned.
 The glucose values are linearly interpolated over a time grid starting at the
 beginning of the first day of data and ending on the last day of data. Then, MAG
 is calculated as \eqn{\frac{|\Delta G|}{\Delta t}} where \eqn{|\Delta G|} is
-the sum of the absolute change in glucose calculated for each interval as specified
-by n, default n = 60 for hourly change in glucose. The sum is then divided by
-\eqn{\Delta t} which is the total time in hours.
+the sum of the absolute change in glucose per n-minute interval (default n = dt0).
+The sum is then divided by \eqn{\Delta t}, the total elapsed time (in hours),
+yieldng the Mean Absolute change in Glucose (mg/dL per hour).
 }
 \examples{
 
@@ -46,10 +47,15 @@ mag(example_data_5_subject)
 }
 \references{
 Hermanides et al. (2010) Glucose Variability is Associated with Intensive Care Unit
-Mortaility,
+Mortality,
 \emph{Critical Care Medicine} \strong{38(3)} 838-842,
 \doi{10.1097/CCM.0b013e3181cc4be9}
+
+Kohnert et al. (2013) Evaluation of the Mean Absolute Glucose Change as a Measure
+of Glycemic Variability Using  Continuous Glucose Monitoring Data,
+\emph{Diabetes Technol Ther.} \strong{15(6)} 448-454,
+\doi{10.1089/dia.2012.0303}
 }
 \author{
-Elizabeth Chun
+Elizabeth Chun, Neo Kok
 }

@@ -1,3 +1,7 @@
+# iglu 4.3.0
+* Updated MAG computation in the presence of large missing data
+* Default MAG now calculates differences at the CGM frequency rather than hourly
+
 # iglu 4.2.3
 * Fixed GVP output for iglu::all_metrics
 
