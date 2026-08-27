@@ -1,0 +1,109 @@
+# Calculate metrics for values inside and/or outside a specified time range.
+
+This function applies a given function to a subset of data filtered by
+time of day.
+
+## Usage
+
+``` r
+calculate_sleep_wake(
+  data,
+  FUN,
+  sleep_start = 0,
+  sleep_end = 6,
+  calculate = c("sleep", "wake", "both"),
+  ...
+)
+```
+
+## Arguments
+
+- data:
+
+  DataFrame object with column names "id", "time", and "gl".
+
+- FUN:
+
+  Function to be applied to the filtered data.
+
+- sleep_start:
+
+  Numeric between 0-24 signifying the hour at which the time range
+  should start.
+
+- sleep_end:
+
+  Numeric between 0-24 signifying the hour at which the time range
+  should end.
+
+- calculate:
+
+  String determining whether FUN should be applied to values inside or
+  outside the time range. Both separately is an option
+
+- ...:
+
+  Optional arguments which will be passed to FUN
+
+## Value
+
+An object of the same return type as FUN, with columns corresponding to
+the values returned by FUN. Separated for values inside or outside the
+time range, if calculate = both.
+
+## Details
+
+An object of the same return type as FUN, with the same column names as
+FUN will be returned. If calculate = "both", there will be columns for
+FUN applied to both inside and outside values, with either "in range" or
+"out of range" append to signify whether the statistic was calculated on
+values which were inside the time range or outside the range.
+
+FUN is found by a call to match.fun and typically is either a function
+or a character string specifying a function to be searched for from the
+environment of the call to apply. Arguments in ... cannot have the same
+name as any of the other arguments, and care may be needed to avoid
+partial matching to FUN. FUN is applied to the data after the data is
+filtered based on whether its hour falls within the given range. If
+sleep_start is an integer, all times within that hour will be included
+in the range, but if sleep_end is an integer only times up to that hour
+will be included in the range. If sleep_start is after sleep_end, the
+data will be filtered to include all hours after sleep_start and all
+times before sleep_end.
+
+## Examples
+
+``` r
+
+data(example_data_1_subject)
+calculate_sleep_wake(example_data_1_subject, sd_glu, calculate = "sleep")
+#> # A tibble: 1 × 2
+#>   id           SD
+#>   <fct>     <dbl>
+#> 1 Subject 1  25.4
+
+data(example_data_5_subject)
+calculate_sleep_wake(example_data_5_subject, cogi, targets = c(80, 150),
+weights = c(.3,.2,.5), calculate = "wake")
+#> # A tibble: 5 × 2
+#>   id         COGI
+#>   <fct>     <dbl>
+#> 1 Subject 1  82.4
+#> 2 Subject 2  52.5
+#> 3 Subject 3  69.6
+#> 4 Subject 4  82.9
+#> 5 Subject 5  56.0
+calculate_sleep_wake(example_data_5_subject, sd_measures, sleep_start = 2,
+sleep_end = 8, calculate = "both")
+#> # A tibble: 5 × 13
+#>   id        `SDw sleep` `SDhhmm sleep` `SDwsh sleep` `SDdm sleep` `SDb sleep`
+#>   <fct>           <dbl>          <dbl>         <dbl>        <dbl>       <dbl>
+#> 1 Subject 1        10.2           3.04          3.15         21.3        23.9
+#> 2 Subject 2        18.9          12.8           6.22         41.9        43.6
+#> 3 Subject 3        17.6           9.99          4.86         20.1        32.7
+#> 4 Subject 4        10.8           3.98          3.43         12.2        17.3
+#> 5 Subject 5        28.1          13.3           5.88         29.4        38.4
+#> # ℹ 7 more variables: `SDbdm sleep` <dbl>, `SDw wake` <dbl>,
+#> #   `SDhhmm wake` <dbl>, `SDwsh wake` <dbl>, `SDdm wake` <dbl>,
+#> #   `SDb wake` <dbl>, `SDbdm wake` <dbl>
+```

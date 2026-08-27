@@ -1,0 +1,92 @@
+# Calculate Personal Glycemic State (PGS)
+
+The function mad produces PGS values in a tibble object.
+
+## Usage
+
+``` r
+pgs(data, dur_length = 20, end_length = 30)
+```
+
+## Arguments
+
+- data:
+
+  DataFrame object with column names "id", "time", and "gl". Should only
+  be data for 1 subject. In case multiple subject ids are detected, a
+  warning is produced and only 1st subject is used.
+
+- dur_length:
+
+  Numeric value specifying the minimum duration in minutes to be
+  considered an episode. Note dur_length should be a multiple of the
+  data recording interval otherwise the function will round up to the
+  nearest multiple. Default is 20 minutes to match the original PGS
+  definition.
+
+- end_length:
+
+  Numeric value specifying the minimum duration in minutes of improved
+  glycemia for an episode to end. Default is 30 minutes to match
+  original PGS definition.
+
+## Value
+
+A tibble object with two columns: subject id and corresponding PGS
+value.
+
+## Details
+
+A tibble object with 1 row for each subject, a column for subject id and
+a column for PGS values is returned. NA glucose values are omitted from
+the calculation. The formula for PGS is as follows, where GVP = glucose
+variability percentage, MG = mean glucose, PTIR = percent time in range,
+and N54, N70 are the number of hypoglycemic episodes per week in the
+ranges \<54 mg/dL and 54 to \<70 mg/dL level respectively.
+
+\$\$ PGS = f(GVP) + g(MG) + h(PTIR) + j(N54, N70) \$\$
+
+The component functions are listed below.
+
+\$\$ \newline f(GVP) = 1 + \frac{9}{1+\exp(-0.049(GVP - 65.47))}
+\newline g(MG) = 1 + 9(\frac{1}{1+\exp(0.1139(MG - 72.08))} +
+\frac{1}{1+\exp(-0.09195(MG - 157.57))}) \newline h(PTIR) =
+1+\frac{9}{1+\exp(0.0833(PTIR - 55.04))} \newline j(N54, N70) = a(N54) +
+b(N70) \newline a(N54) = 0.5+4.5(1-\exp(-0.91093N54) \$\$
+
+and b(N70) is defined such that b(N70) = \\0.5714N70 + 0.625\\ if N70
+\<= 7.65, and b(N70) = 5 otherwise.
+
+Note that the duration thresholds for episodes are NOT the same as the
+episode_calculation defaults. The defaults chosen for PGS are those that
+match the original PGS paper definition, while the episode_calculation
+defaults match the consensus.
+
+## References
+
+Hirsch et al. (2017): A Simple Composite Metric for the Assessment of
+Glycemic Status from Continuous Glucose Monitoring Data: Implications
+for Clinical Practice and the Artificial Pancreas *Diabetes Technol
+Ther* **19(S3)** .S38-S48,
+[doi:10.1089/dia.2017.0080](https://doi.org/10.1089/dia.2017.0080) .
+
+## See also
+
+episode_calculation()
+
+## Author
+
+Elizabeth Chun
+
+## Examples
+
+``` r
+
+data(example_data_1_subject)
+pgs(example_data_1_subject)
+#> # A tibble: 1 × 2
+#>   id          PGS
+#>   <fct>     <dbl>
+#> 1 Subject 1  6.06
+
+```

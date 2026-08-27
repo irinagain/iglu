@@ -1,0 +1,125 @@
+# Calculate SD subtypes
+
+The function `sd_measures` produces SD subtype values in a tibble object
+with a row for each subject and columns corresponding to id followed by
+each SD subtype.
+
+## Usage
+
+``` r
+sd_measures(data,dt0 = NULL, inter_gap = 45, tz = "")
+```
+
+## Arguments
+
+- data:
+
+  DataFrame object with column names "id", "time", and "gl".
+
+- dt0:
+
+  The time frequency for interpolation in minutes, the default will
+  match the CGM meter's frequency (e.g. 5 min for Dexcom).
+
+- inter_gap:
+
+  The maximum allowable gap (in minutes) for interpolation. The values
+  will not be interpolated between the glucose measurements that are
+  more than inter_gap minutes apart. The default value is 45 min.
+
+- tz:
+
+  A character string specifying the time zone to be used.
+  System-specific (see
+  [`as.POSIXct`](https://rdrr.io/r/base/as.POSIXlt.html)), but " " is
+  the current time zone, and "GMT" is UTC (Universal Time, Coordinated).
+  Invalid values are most commonly treated as UTC, on some platforms
+  with a warning.
+
+## Value
+
+A tibble object with a column for id and a column for each of the six SD
+subtypes.
+
+## Details
+
+A tibble object with 1 row for each subject, a column for subject id and
+a column for each SD subtype values is returned.
+
+Missing values will be linearly interpolated when close enough to
+non-missing values.
+
+1.  SDw - vertical within days:
+
+    Calculated by first taking the standard deviation of each day's
+    glucose measurements, then taking the mean of all the standard
+    deviations. That is, for d days we compute \\SD_1 ... SD_d\\ daily
+    standard deviations and calculate \\1/d \* \sum \[(SD_i)\]\\
+
+2.  SDhhmm - between time points:
+
+    Also known as SDhh:mm. Calculated by taking the mean glucose values
+    at each time point in the grid across days, and taking the standard
+    deviation of those mans. That is, for t time points we compute
+    \\X_t\\ means for each time point and then compute \\SD(\[X_1, X_2,
+    ... X_t\])\\.
+
+3.  SDwsh - within series:
+
+    Also known as SDws h. Calculated by taking the hour-long intervals
+    starting at every point in the interpolated grid, computing the
+    standard deviation of the points in each hour-long interval, and
+    then finding the mean of those standard deviations. That is, for n
+    time points compute \\SD_1 ... SD_n\\, where \\SD_i\\ is the
+    standard deviation of the glucose values \\\[X_i, X\_{i+1}, ...
+    X\_{i+k}\]\\ corresponding to hour-long window starting at
+    observation \\X_i\\, the number of observations in the window k
+    depends on CGM meter frequency. Then, take \\1/n \* \sum
+    \[(SD_i)\]\\.
+
+4.  SDdm - horizontal sd:
+
+    Calculated by taking the daily mean glucose values, and then taking
+    the standard deviation of those daily means. That is, for d days we
+    take \\X_1 ... X_d\\ daily means, and then compute \\SD(\[X_1, X_2,
+    ... X_d\])\\.
+
+5.  SDb - between days, within timepoints:
+
+    Calculated by taking the standard deviation of the glucose values
+    across days for each time point, and then taking the mean of those
+    standard deviations. That is, for t time points take \\SD_1 ...
+    SD_t\\ standard deviations, and then compute \\1/t \*
+    \sum\[(SD_i)\]\\
+
+6.  SDbdm - between days, within timepoints, corrected for changes in
+    daily means:
+
+    Also known as SDb // dm. Calculated by subtracting the daily mean
+    from each glucose value, then taking the standard deviation of the
+    corrected glucose values across days for each time point, and then
+    taking the mean of those standard deviations. That is, for t time
+    points take \\SD_1 ... SD_t\\ standard deviations, and then compute
+    \\1/t \* \sum\[(SD_i)\]\\. where \\SD_i\\ is the standard deviation
+    of d daily values at the 1st time point, where each value is the dth
+    measurement for the ith time point subtracted by the mean of all
+    glucose values for day d.
+
+## References
+
+Rodbard (2009) New and Improved Methods to Characterize Glycemic
+Variability Using Continuous Glucose Monitoring *Diabetes Technology and
+Therapeutics* **11** .551-565,
+[doi:10.1089/dia.2009.0015](https://doi.org/10.1089/dia.2009.0015) .
+
+## Examples
+
+``` r
+
+data(example_data_1_subject)
+sd_measures(example_data_1_subject)
+#> # A tibble: 1 × 7
+#>   id          SDw SDhhmm SDwsh  SDdm   SDb SDbdm
+#>   <fct>     <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1 Subject 1  26.4   19.6  6.54  16.7  27.9  24.0
+```
