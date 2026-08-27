@@ -77,8 +77,9 @@ active_percent <- function(data, dt0 = NULL, tz = "",
     timediff = difftime(subData$time[timeindex], subData$time[timeindex - 1], units = "mins")
 
     ### Automatically identify grid width dt0
-    if (is.null(dt0)){
-      dt0 = as.double(round(median(timediff, na.rm = TRUE)))
+    subject_dt0 = dt0
+    if (is.null(subject_dt0)){
+      subject_dt0 = as.double(round(median(timediff, na.rm = TRUE)))
     }
 
     # Determine proportion observed
@@ -90,11 +91,11 @@ active_percent <- function(data, dt0 = NULL, tz = "",
       mintime = min(subData$time)
       maxtime = max(subData$time)
       # Determine the overall length in minutes of the observed period
-      theoretical_gl_vals = round(as.numeric(round(difftime(maxtime, mintime, units = "mins")))/dt0) + 1
+      theoretical_gl_vals = round(as.numeric(round(difftime(maxtime, mintime, units = "mins")))/subject_dt0) + 1
       # Determine the overall length in minutes of all the gaps longer than dt0 min apart
-      gap_minutes = sum(as.numeric(timediff[round(timediff) > dt0]))
-      ngaps = sum(round(timediff) > dt0)
-      missing_gl_vals = round((gap_minutes - ngaps * dt0)/dt0)
+      gap_minutes = sum(as.numeric(timediff[round(timediff) > subject_dt0]))
+      ngaps = sum(round(timediff) > subject_dt0)
+      missing_gl_vals = round((gap_minutes - ngaps * subject_dt0)/subject_dt0)
       ndays = difftime(maxtime, mintime, units = "days")
       active_perc_data[[i]]$percent <- (theoretical_gl_vals - missing_gl_vals)/theoretical_gl_vals
       active_perc_data[[i]]$mintime <- mintime
@@ -110,7 +111,7 @@ active_percent <- function(data, dt0 = NULL, tz = "",
       start_date = end_date - days(as.integer(ndays))
       date_range <- interval(start = start_date, end = end_date)
       subData <- subData[subData$time %within% date_range, ]
-      active_perc_data[[i]]$percent <- (nrow(subData)/(as.numeric(ndays)*(24*(60/dt0))))
+      active_perc_data[[i]]$percent <- (nrow(subData)/(as.numeric(ndays)*(24*(60/subject_dt0))))
       active_perc_data[[i]]$mintime <- start_date
       active_perc_data[[i]]$maxtime <- end_date
       active_perc_data[[i]]$ndays <- difftime(end_date, start_date, units = "days")
