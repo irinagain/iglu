@@ -1,0 +1,5 @@
+metadata_a,metadata_b,metadata_c
+fake-device,,
+Record Type,Time,Historic Glucose (mg/dL)
+0,01/02/2024 03:04,111
+0,01/02/2024 03:19,121

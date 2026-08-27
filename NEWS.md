@@ -1,3 +1,6 @@
+# iglu 4.4.0
+* Fixed raw data imports for Libre, Libre Pro, ASC, and iPro sensors
+
 # iglu 4.3.0
 * Updated MAG computation in the presence of large missing data
 * Default MAG now calculates differences at the CGM frequency rather than hourly
