@@ -118,7 +118,7 @@ plot_glu <- function(data, plottype = c('tsplot', 'lasagna'), datatype = c("all"
       if (ns > 1){
         subject = subject[1]
         warning(paste("The provided data have", ns, "subjects. The plot will only be created for subject", subject))
-        data = data[which(data$id == subject)]
+        data = data[which(data$id == subject), ]
       }
       if(log){
         .p <- plot_lasagna_1subject(data, lasagnatype = lasagnatype, LLTR = LLTR, ULTR = ULTR, tz = tz, color_scheme = color_scheme, log = T, limits = log(c(50,500)), inter_gap = inter_gap, midpoint = log(105), static_or_gui = static_or_gui)
