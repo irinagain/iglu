@@ -109,15 +109,15 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     colnames(data) <- c('time','gl')
 
     # check number of high/low censored readings
-    n_high = sum(grepl("High", out$gl, ignore.case = TRUE))
-    n_low = sum(grepl("Low", out$gl, ignore.case = TRUE))
+    n_high = sum(grepl("High", data$gl, ignore.case = TRUE))
+    n_low = sum(grepl("Low", data$gl, ignore.case = TRUE))
 
     if ((n_high + n_low) > 0) {
       warning(paste0("Out of range glucose values detected:\n", n_high,
-                     " High readings (", round(n_high/length(out$gl)*100, 2), "%)\n",
-                     n_low, " Low readings (", round(n_low/length(out$gl)*100, 2),
+                     " High readings (", round(n_high/length(data$gl)*100, 2), "%)\n",
+                     n_low, " Low readings (", round(n_low/length(data$gl)*100, 2),
                      "%).\nThese will be set to NA, total out of range = ", n_high + n_low,
-                     " readings (", round((n_high + n_low)/length(out$gl)*100, 2), "%)"))
+                     " readings (", round((n_high + n_low)/length(data$gl)*100, 2), "%)"))
     } else {
       print("All glucose values in range")
     }
@@ -146,15 +146,15 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     data$id = id
 
     # check number of high/low censored readings
-    n_high = sum(grepl("High", out$gl, ignore.case = TRUE))
-    n_low = sum(grepl("Low", out$gl, ignore.case = TRUE))
+    n_high = sum(grepl("High", data$gl, ignore.case = TRUE))
+    n_low = sum(grepl("Low", data$gl, ignore.case = TRUE))
 
     if ((n_high + n_low) > 0) {
       warning(paste0("Out of range glucose values detected:\n", n_high,
-                     " High readings (", round(n_high/length(out$gl)*100, 2), "%)\n",
-                     n_low, " Low readings (", round(n_low/length(out$gl)*100, 2),
+                     " High readings (", round(n_high/length(data$gl)*100, 2), "%)\n",
+                     n_low, " Low readings (", round(n_low/length(data$gl)*100, 2),
                      "%).\nThese will be set to NA, total out of range = ", n_high + n_low,
-                     " readings (", round((n_high + n_low)/length(out$gl)*100, 2), "%)"))
+                     " readings (", round((n_high + n_low)/length(data$gl)*100, 2), "%)"))
     } else {
       print("All glucose values in range")
     }
@@ -175,21 +175,21 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     if (tolower(id) == "read") {
       stop("ASC sensor reader does not support reading id from file. Call again with id='filename' or id=<subject name>")
     }
-    data$timestamp = paste(data$Date,data$Time)
-    data$sensorglucose = data$Value
+    data$time = paste(data$Date, data$Time, sep = "T")
+    data$gl = data$Value
     data = data[,c('time','gl')]
     data$id = id
 
     # check number of high/low censored readings
-    n_high = sum(grepl("High", out$gl, ignore.case = TRUE))
-    n_low = sum(grepl("Low", out$gl, ignore.case = TRUE))
+    n_high = sum(grepl("High", data$gl, ignore.case = TRUE))
+    n_low = sum(grepl("Low", data$gl, ignore.case = TRUE))
 
     if ((n_high + n_low) > 0) {
       warning(paste0("Out of range glucose values detected:\n", n_high,
-                     " High readings (", round(n_high/length(out$gl)*100, 2), "%)\n",
-                     n_low, " Low readings (", round(n_low/length(out$gl)*100, 2),
+                     " High readings (", round(n_high/length(data$gl)*100, 2), "%)\n",
+                     n_low, " Low readings (", round(n_low/length(data$gl)*100, 2),
                      "%).\nThese will be set to NA, total out of range = ", n_high + n_low,
-                     " readings (", round((n_high + n_low)/length(out$gl)*100, 2), "%)"))
+                     " readings (", round((n_high + n_low)/length(data$gl)*100, 2), "%)"))
     } else {
       print("All glucose values in range")
     }
@@ -218,15 +218,15 @@ read_raw_data = function(filename, sensor = c("dexcom", "libre", "librepro", "as
     data$id = id
 
     # check number of high/low censored readings
-    n_high = sum(grepl("High", out$gl, ignore.case = TRUE))
-    n_low = sum(grepl("Low", out$gl, ignore.case = TRUE))
+    n_high = sum(grepl("High", data$gl, ignore.case = TRUE))
+    n_low = sum(grepl("Low", data$gl, ignore.case = TRUE))
 
     if ((n_high + n_low) > 0) {
       warning(paste0("Out of range glucose values detected:\n", n_high,
-                     " High readings (", round(n_high/length(out$gl)*100, 2), "%)\n",
-                     n_low, " Low readings (", round(n_low/length(out$gl)*100, 2),
+                     " High readings (", round(n_high/length(data$gl)*100, 2), "%)\n",
+                     n_low, " Low readings (", round(n_low/length(data$gl)*100, 2),
                      "%).\nThese will be set to NA, total out of range = ", n_high + n_low,
-                     " readings (", round((n_high + n_low)/length(out$gl)*100, 2), "%)"))
+                     " readings (", round((n_high + n_low)/length(data$gl)*100, 2), "%)"))
     } else {
       print("All glucose values in range")
     }
