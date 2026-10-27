@@ -1,3 +1,6 @@
+# iglu 4.5.1
+* Fixed bug in subject selection for single-subject lasagna plots
+
 # iglu 4.5.0
 * Added option to compute MAG using raw or interpolated data 
 * Default is now using raw data instead of interpolated
