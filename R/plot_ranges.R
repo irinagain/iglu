@@ -48,8 +48,8 @@ plot_ranges <- function (data) {
          target = in_range_70_180,
          high = above_180 - above_250,
          very_high = above_250) %>%
-  select(id, .data$very_low:.data$very_high) %>%
-  pivot_longer(c(.data$very_low:.data$very_high),
+  select(id, "very_low":"very_high") %>%
+  pivot_longer(c("very_low":"very_high"),
                names_to = "range",
                values_to = "percent")
 
