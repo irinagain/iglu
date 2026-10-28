@@ -10,13 +10,13 @@ plot_ranges(data)
 \item{data}{DataFrame object with column names "id", "time", and "gl". Should only be data for 1 subject. In case multiple subject ids are detected, a warning is produced and only 1st subject is used.}
 }
 \value{
-Single subject bar chart showing percent in different glucose ranges.
+Single or multiple-subject bar chart showing percent in different glucose ranges.
 }
 \description{
 The function plot_ranges produces a barplot showing the percent of time in glucose ranges.
 }
 \details{
-Only a single subject's data may be used. There are four ranges: very low (below 54 mg/dL),
+There are four ranges: very low (below 54 mg/dL),
 low (54-69 mg/dL), target range (70-180 mg/dL), high (181-250 mg/dL), and very high (above 250 mg/dL).
 This plot is meant to be used as part of the Ambulatory Glucose Profile (AGP)
 }

@@ -1,3 +1,6 @@
+# iglu 4.5.4
+* Add facet_wrap functionality to plot_ranges, minor improvements to lasagna plots
+
 # iglu 4.5.3
 * Fixed bug in all_metrics not passing arguments to episode_calculation and active_percent
 
