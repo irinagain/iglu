@@ -47,7 +47,7 @@ all_metrics <- function(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15,
   metrics_to_include = match.arg(metrics_to_include, c('all', 'consensus_only'))
 
   # reformat episodes to give one row per subject and one column per category for avg_ep_per_day
-  episodes = episode_calculation(data)
+  episodes = episode_calculation(data, dt0 = dt0, inter_gap = inter_gap, tz = tz)
   ep_out = episodes %>%
     dplyr::select(id, type, level, avg_ep_per_day) %>%
     dplyr::mutate(
@@ -62,11 +62,11 @@ all_metrics <- function(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15,
 
   # Mean, Median, and Quantile Metrics not included. Summary covers all
   if (metrics_to_include == "consensus_only") {
-    extended_hypo <- episode_calculation(data) %>% dplyr::filter(type == 'hypo' & level == 'extended') %>% dplyr::select(id = id, total_extended_hypo_episodes = total_episodes)
+    extended_hypo <- episode_calculation(data, dt0 = dt0, inter_gap = inter_gap, tz = tz) %>% dplyr::filter(type == 'hypo' & level == 'extended') %>% dplyr::select(id = id, total_extended_hypo_episodes = total_episodes)
 
     # Episode calculation warns that dur_length = 120 > inter_gap = 45, thus some true extended hyperglycemic episodes may be lost when the trace is split by gaps longer than 45 minutes
     extended_hyper <- suppressWarnings({
-      episode_calculation(data, dur_length = 120) %>% dplyr::filter(type == 'hyper' & level == 'lv2') %>% dplyr::select(id = id, total_extended_hyper_episodes = total_episodes)
+      episode_calculation(data, dur_length = 120, dt0 = dt0, inter_gap = inter_gap, tz = tz) %>% dplyr::filter(type == 'hyper' & level == 'lv2') %>% dplyr::select(id = id, total_extended_hyper_episodes = total_episodes)
     })
 
     out = list(
@@ -76,7 +76,7 @@ all_metrics <- function(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15,
       "SD_GLU" = sd_glu(data),
       "Mean_GLU" = mean_glu(data),
       "CV_GLU" = cv_glu(data),
-      "Active_Percent" = active_percent(data, tz = tz), # TODO: potentially only keep the 'active_percent' column
+      "Active_Percent" = active_percent(data, dt0 = dt0, tz = tz), # TODO: potentially only keep the 'active_percent' column
       "Percent_In_Tight_Range" = in_range_percent(data, target_ranges = list(c(70,140))),
       "GMI" = gmi(data),
       "GRI" = gri(data, tz = tz),
@@ -107,7 +107,7 @@ all_metrics <- function(data, dt0 = NULL, inter_gap = 45, tz = "", timelag = 15,
                "M_Value" = m_value(data),
                "Mad_GLU" = mad_glu(data),
                "MAGE" = mage(data),
-               "Percent_Active" = active_percent(data, tz = tz),
+               "Percent_Active" = active_percent(data, dt0 = dt0, tz = tz),
                "Percent_Above" = above_percent(data),
                "Percent_Below" = below_percent(data),
                "Percent_In_Range" = in_range_percent(data),

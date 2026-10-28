@@ -583,7 +583,6 @@ shinyServer(function(input, output) {
     }
     else if(parameter_type == "all_metrics") {
       string = paste0("iglu::", input$metric, "(data, , , , , , '", input$parameter , "')")
-      print(string)
     }
     else if(parameter_type == 'pgs'){
       string = paste0('iglu::', input$metric, '(data, ', input$parameter, ', ', input$parameter2, ')')
@@ -877,8 +876,7 @@ shinyServer(function(input, output) {
 
       string = paste0("iglu::mage_ma_single(data=data,plot=TRUE,short_ma=",input$mage_short_ma,",long_ma=",
                       input$mage_long_ma,", direction='", input$direction, "', max_gap='", input$max_gap,
-                      "', show_ma=", input$mage_show_ma,", show_excursions=", input$show_excursions, ",title=",mage_title,",xlab=", mage_xlab,",ylab=",mage_ylab,")")
-
+                      "', show_ma=", input$mage_show_ma,", show_excursions=", input$show_excursions, ",title=",mage_title,",xlab=", mage_xlab,",ylab=",mage_ylab,",static_or_gui='ggplot')")
       eval(parse(text=string))
     }
   })

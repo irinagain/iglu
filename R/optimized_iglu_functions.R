@@ -113,7 +113,7 @@ optimized_iglu_functions <- function(data, dt0 = NULL, inter_gap = 45, tz = "", 
       added_length = sqrt(reading_gap^2+diffvec^2)
       base_length = length(na.omit(diffvec))*reading_gap
 
-      return(sum(added_length, na.rm = T)/sum(base_length, na.rm = T))
+      return((sum(added_length, na.rm = T)/sum(base_length, na.rm = T) - 1) * 100)
     }
 
     mag_single_O <- function(.data_ip) {

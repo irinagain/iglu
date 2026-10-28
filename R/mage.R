@@ -47,7 +47,7 @@ mage <- function(data,
                  short_ma = 5, long_ma = 32,
                  return_type = c('num', 'df'),
                  direction = c('avg', 'service', 'max', 'plus', 'minus'),
-                tz = "", inter_gap = 45,
+                 tz = "", inter_gap = 45,
                  max_gap=180,
                  plot = FALSE, title = NA, xlab = NA, ylab = NA, show_ma = FALSE, show_excursions = TRUE) {
 

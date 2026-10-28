@@ -20,17 +20,15 @@ reference, see [“Interpretation of continuous glucose monitoring data:
 glycemic variability and quality of glycemic control.” Rodbard
 (2009)](https://doi.org/10.1089/dia.2008.0132). For more information on
 the package, see [package website](https://irinagain.github.io/iglu/).
+We also have a [GUI that requires no programming
+experience](https://irinagain.shinyapps.io/shiny_iglu/) and mirrored
+[Python version of iglu](https://github.com/IrinaStatsLab/iglu-py).
 
-To cite:
-
-- Broll S, Urbanek J, Buchanan D, Chun E, Muschelli J, Punjabi N and
-  Gaynanova I (2021). [Interpreting blood glucose data with R package
-  iglu.](https://doi.org/10.1371/journal.pone.0248560) *PLoS One*, Vol.
-  16, No. 4, e0248560.
-
-- Broll S, Buchanan D, Chun E, Muschelli J, Fernandes N, Seo J, Shih J,
-  Urbanek J, Schwenck J, Gaynanova I (2021). iglu: Interpreting Glucose
-  Data from Continuous Glucose Monitors. R package version 3.0.0.
+For short **tutorial on how to use the package**, see [Video tutorial on
+working with CGM data in
+iglu](https://www.birs.ca/events/2025/5-day-workshops/25w5474/videos/watch/202502260906-Gaynanova.html)
+and corresponding
+[slides](https://irinagain.github.io/Resources/SlidesWorkshop.pdf).
 
 iglu comes with two example datasets: example_data_1_subject and
 example_data_5_subject. These data are collected using Dexcom G4 CGM on
@@ -38,6 +36,67 @@ subjects with Type II diabetes. Each dataset follows the structure
 iglu’s functions are designed around. Note that the 1 subject data is a
 subset of the 5 subject data. See the examples below for loading and
 using the data.
+
+## Attribution
+
+We are glad you found iglu useful. If you use it for computing CGM
+metrics or visualizing CGM data, please cite the package appropriately,
+depending on the features used.
+
+**Original package paper**: most of the CGM metrics, time series and
+lasagna plots, AGP
+
+- Broll S, Urbanek J, Buchanan D, Chun E, Muschelli J, Punjabi N and
+  Gaynanova I (2021). [Interpreting blood glucose data with R package
+  iglu.](https://doi.org/10.1371/journal.pone.0248560) *PLoS One*, Vol.
+  16, No. 4, e0248560.
+
+**Updated package paper**: for episode (event) detection, postprandial
+metrics, built-in clustering and heatmap tools, new MAGE, and Python
+version
+
+- Chun E, Fernandes JN and Gaynanova I (2024) [An Update on the iglu
+  Software for Interpreting Continuous Glucose Monitoring
+  Data.](https://doi.org/10.1089/dia.2024.0154) *Diabetes Technology and
+  Therapeutics,* Vol. 26, No. 12, 939-950.
+
+**MAGE algorithm**: if you use MAGE, which is uniquely implemented and
+validated against manual computation, we ask that you additionally cite
+
+- Fernandes N, Nguyen N, Chun E, Punjabi N and Gaynanova I (2022)
+  [Open-Source Algorithm to Calculate Mean Amplitude of Glycemic
+  Excursions Using Short and Long Moving
+  Averages.](https://doi.org/10.1177/19322968211061165) *Journal of
+  Diabetes Science and Technology*, Vol. 16, No. 2, 576-577.
+
+**Reuse or modification in another software:**
+
+iglu is free and released under the GNU General Public License v2
+(GPL-2). This permits use, modification, and distribution (including
+translations), under the following conditions:
+
+- Any redistributed or modified version must also be licensed under
+  GPL-2, even if iglu is used in only parts of the work.
+
+- You must provide clear attribution to iglu for the appropriate parts
+  of the code, describe your changes (if applicable), and identify
+  yourself as the source of modifications.
+
+We recommend referencing the specific version of iglu that was
+used/modified to help track divergence from future updates.
+
+**Copyright and warranty:**
+
+© 2020 Texas A&M University
+
+© 2023 The Regents of the University of Michigan
+
+Gaynanova Lab - <https://irinagain.github.io/>
+
+iglu is free software released under GPL 2.0. Use and modification are
+subject to the same license terms. It is distributed in the hope that it
+will be useful, but without any warranty. See the **LICENSE** file for
+full terms.
 
 ## Installation
 
@@ -103,7 +162,8 @@ conga(example_data_1_subject)
 data(example_data_5_subject)
 
 plot_glu(example_data_5_subject, plottype = 'lasagna', datatype = 'average')
-#> Warning: Removed 5 rows containing missing values (`geom_tile()`).
+#> Warning: Removed 5 rows containing missing values or values outside the scale range
+#> (`geom_tile()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
@@ -126,11 +186,11 @@ mage(example_data_5_subject)
 #> # Rowwise: 
 #>   id         MAGE
 #>   <fct>     <dbl>
-#> 1 Subject 1  87.2
-#> 2 Subject 2 111. 
-#> 3 Subject 3 115. 
-#> 4 Subject 4  70.1
-#> 5 Subject 5 146.
+#> 1 Subject 1  72.4
+#> 2 Subject 2 118. 
+#> 3 Subject 3 116. 
+#> 4 Subject 4  70.9
+#> 5 Subject 5 142.
 ```
 
 ## Shiny App
