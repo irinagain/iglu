@@ -1,5 +1,10 @@
 # Changelog
 
+## iglu 4.5.2
+
+- Fixed bug in assigning time frequency at the subject level for active
+  percent
+
 ## iglu 4.5.1
 
 - Fixed bug in subject selection for single-subject lasagna plots
