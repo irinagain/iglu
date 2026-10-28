@@ -19,14 +19,15 @@ plot_ranges(data)
 
 ## Value
 
-Single subject bar chart showing percent in different glucose ranges.
+Single or multiple-subject bar chart showing percent in different
+glucose ranges.
 
 ## Details
 
-Only a single subject's data may be used. There are four ranges: very
-low (below 54 mg/dL), low (54-69 mg/dL), target range (70-180 mg/dL),
-high (181-250 mg/dL), and very high (above 250 mg/dL). This plot is
-meant to be used as part of the Ambulatory Glucose Profile (AGP)
+There are four ranges: very low (below 54 mg/dL), low (54-69 mg/dL),
+target range (70-180 mg/dL), high (181-250 mg/dL), and very high (above
+250 mg/dL). This plot is meant to be used as part of the Ambulatory
+Glucose Profile (AGP)
 
 ## References
 

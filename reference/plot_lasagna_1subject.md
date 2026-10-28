@@ -115,23 +115,13 @@ Plots, *Epidemiology* **21**(5), 621-625,
 ``` r
 
 plot_lasagna_1subject(example_data_1_subject)
-#> Warning: Removed 14 rows containing missing values or values outside the scale range
-#> (`geom_tile()`).
 
 plot_lasagna_1subject(example_data_1_subject, color_scheme = 'red-orange')
-#> Warning: Removed 14 rows containing missing values or values outside the scale range
-#> (`geom_tile()`).
 
 plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'timesorted')
-#> Warning: Removed 14 rows containing missing values or values outside the scale range
-#> (`geom_tile()`).
 
 plot_lasagna_1subject(example_data_1_subject, lasagnatype = 'daysorted')
-#> Warning: Removed 14 rows containing missing values or values outside the scale range
-#> (`geom_tile()`).
 
 plot_lasagna_1subject(example_data_1_subject, log = TRUE)
-#> Warning: Removed 14 rows containing missing values or values outside the scale range
-#> (`geom_tile()`).
 
 ```

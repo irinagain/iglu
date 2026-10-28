@@ -129,8 +129,6 @@ Plots, *Epidemiology* **21**(5), 621-625,
 ``` r
 
 plot_lasagna(example_data_5_subject, datatype = "average", lasagnatype = 'timesorted', tz = "EST")
-#> Warning: Removed 5 rows containing missing values or values outside the scale range
-#> (`geom_tile()`).
 
 plot_lasagna(example_data_5_subject, lasagnatype = "subjectsorted", LLTR = 100, tz = "EST")
 
