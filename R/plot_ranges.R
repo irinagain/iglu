@@ -12,6 +12,9 @@
 #'
 #' @export
 #'
+#' @importFrom tidyr pivot_longer
+#' @importFrom dplyr select
+#'
 #' @author Elizabeth Chun
 #'
 #' @details
@@ -38,32 +41,32 @@ plot_ranges <- function (data) {
 
   subject = unique(data$id)
   ns = length(subject)
-  
+
  ranges <- agp_metrics(data, shinyformat = FALSE) %>%
   mutate(very_low = below_54,
          low = below_70 - below_54,
          target = in_range_70_180,
          high = above_180 - above_250,
-         very_high = above_250) %>% 
-  select(id, very_low:very_high) %>% 
-  pivot_longer(c(very_low:very_high),
+         very_high = above_250) %>%
+  select(id, .data$very_low:.data$very_high) %>%
+  pivot_longer(c(.data$very_low:.data$very_high),
                names_to = "range",
                values_to = "percent")
 
 colors <- c("#F9B500", "#F9F000", "#48BA3C", "#F92D00", "#8E1B1B")
 
-g <- ggplot(data = ranges, 
-            mapping = aes(x = 1, fill = range, y = percent)) + 
-  geom_bar(stat = "identity") + 
-  scale_fill_manual(values = colors, 
-                    drop = FALSE, 
-                    labels = c("Very High (>250 mg/dL)", "High (181-250 mg/dL)", "Target Range (70-180 mg/dL)", "Low (54-69 mg/dL)", "Very Low (<54 mg/dL)")) + 
+g <- ggplot(data = ranges,
+            mapping = aes(x = 1, fill = range, y = percent)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = colors,
+                    drop = FALSE,
+                    labels = c("Very High (>250 mg/dL)", "High (181-250 mg/dL)", "Target Range (70-180 mg/dL)", "Low (54-69 mg/dL)", "Very Low (<54 mg/dL)")) +
   scale_y_continuous(breaks = seq(0, 100, 10), expand = c(0,0)) +
   scale_x_continuous(expand = c(0,0)) +
-  labs(y = "Percentage") + 
-  theme(axis.ticks.x = element_blank(), 
-        axis.text.x = element_blank(), 
-        axis.title.x = element_blank(), 
+  labs(y = "Percentage") +
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
         panel.background = element_blank())
 
 if(ns > 1) g <- g + facet_wrap(~id)

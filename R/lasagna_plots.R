@@ -20,6 +20,8 @@
 #' @return A ggplot object corresponding to lasagna plot
 #' @export
 #'
+#' @importFrom dplyr mutate
+#'
 #' @references
 #' Swihart et al. (2010) Lasagna Plots: A Saucy Alternative to Spaghetti Plots, \emph{Epidemiology} \strong{21}(5), 621-625, \doi{10.1097/EDE.0b013e3181e5b06a}
 #'
@@ -36,9 +38,9 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
 
   id = glucose = day = NULL
   rm(list = c("id", "glucose", "day"))
-  
+
   static_or_gui = match.arg(static_or_gui)
-  
+
   # Optionally convert data to log scale
   if (log){
     data$gl = log10(data$gl)
@@ -47,7 +49,7 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
     LLTR = log10(LLTR)
     ULTR = log10(ULTR)
   }
-  
+
   # Select the color scheme
   color_scheme = match.arg(color_scheme, c("blue-red", "red-orange"))
   if (color_scheme == "blue-red"){
@@ -57,7 +59,7 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
     # Alternative red and orange as in commercial software
     colors = c("#8E1B1B", "#F92D00", "#48BA3C", "#F9F000", "#F9B500")
   }
-  
+
   subject = unique(data$id)
   ns = length(subject)
   if (ns > 1){
@@ -65,7 +67,7 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
     warning(paste("The provided data have", ns, "subjects. The plot will only be created for subject", subject))
     data = data %>% dplyr::filter(id == subject)
   }
-  
+
   # Get measurements on uniform grid from day to day
   data_ip = CGMS2DayByDay(data, tz = tz, dt0 = dt0, inter_gap = inter_gap)
   gl_by_id_ip = data_ip[[1]]
@@ -73,11 +75,11 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
   ndays = nrow(gl_by_id_ip)
   ntimes = ncol(gl_by_id_ip)
   time_grid_hours = cumsum(rep(dt0, 24 * 60 /dt0)) / 60
-  
+
   title = ""
   ytitle = "Day"
   xtitle = "Hour"
-  
+
   lasagnatype = match.arg(lasagnatype, c('unsorted', 'timesorted', 'daysorted'))
   if (lasagnatype == 'timesorted'){
     gl_by_id_ip = apply(gl_by_id_ip, 2, sort, decreasing = TRUE, na.last = TRUE)
@@ -88,10 +90,10 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
     title = ", sorted within each day."
     xtitle = "Hour (sorted)"
   }
-  
+
   # Melt the measurements for lasagna plot
-  data_l = data.frame(day = rep(data_ip$actual_dates, each = ntimes), 
-                      hour = rep(time_grid_hours, ndays), 
+  data_l = data.frame(day = rep(data_ip$actual_dates, each = ntimes),
+                      hour = rep(time_grid_hours, ndays),
                       glucose = as.vector(t(gl_by_id_ip))) %>%
     mutate(tooltip_text = paste0(
       "Day: ", day,
@@ -102,18 +104,18 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
         paste0("<br>Log10 Glucose: ", round(glucose, 2))
       }
     ))
-  
+
   # Base ggplot
   p <- ggplot(data_l, aes(
-    x    = hour, 
-    y    = as.character(day), 
-    fill = glucose, 
-    text = tooltip_text  # <- Important for Plotly
+    x    = hour,
+    y    = as.character(day),
+    fill = glucose,
+    text = .data$tooltip_text  # <- Important for Plotly
   )) +
     geom_tile() +
     scale_fill_gradientn(
-      colors   = colors, 
-      na.value = "grey50", 
+      colors   = colors,
+      na.value = "grey50",
       values   = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])),
       limits   = limits,
       name     = if (!log) "Glucose (mg/dL)" else "log10(Glucose)"
@@ -129,24 +131,24 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
       panel.grid.major = element_line(linewidth = 0, linetype = 'solid', colour = "grey50"),
       panel.grid.minor = element_line(linewidth = 0, linetype = 'solid', colour = "grey50")
     )
-  
+
   # If sorted within time, no meaningful day order
   if (lasagnatype == 'timesorted') {
     p <- p + theme(axis.text.y = element_blank())
   }
-  
+
   # Return either static ggplot or interactive plotly
   static_or_gui = match.arg(static_or_gui, c("plotly", "ggplot"))
   if (static_or_gui == "plotly") {
     # Only show the text in the tooltip
     return(
       plotly::ggplotly(
-        p, 
+        p,
         tooltip = "text"
       )
     )
   }
-  
+
   return(p)
 }
 
@@ -181,10 +183,10 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
    lasagnatype = match.arg(lasagnatype, c('unsorted', 'timesorted', 'subjectsorted'))
   datatype = match.arg(datatype, c("all", "average"))
   static_or_gui = match.arg(static_or_gui)
-  
+
   id = glucose = day = NULL
   rm(list = c("id", "glucose", "day"))
-  
+
   # Optionally convert data to log scale
   if (log){
     data$gl = log10(data$gl)
@@ -193,10 +195,10 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
     LLTR = log10(LLTR)
     ULTR = log10(ULTR)
   }
-  
+
   subject = unique(data$id)
   ns = length(subject)
-  
+
   # Select the color scheme
   color_scheme = match.arg(color_scheme, c("blue-red", "red-orange"))
   if (color_scheme == "blue-red"){
@@ -206,7 +208,7 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
     # Alternative red and orange as in commercial software
     colors = c("#8E1B1B", "#F92D00", "#48BA3C", "#F9F000", "#F9B500")
   }
-  
+
   # Calculate uniform grid for all subjects
   gdall = list()
   for (i in 1:ns){
@@ -219,13 +221,13 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
     gdall[[i]] <- out$gd2d
   }
   dt0 = out$dt0
-  
+
   if (datatype == "average"){
     # Combine the list of averages into the matrix form
     average24 = t(sapply(gdall, colMeans, na.rm = TRUE))
     # Time grid for 24 hour period
     time_grid_hours = cumsum(rep(dt0, 24 * 60 /dt0)) / 60
-    
+
     # Adjust the title and sort if needed
     title = ""
     ytitle = "Subject"
@@ -239,11 +241,11 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
       title = ", sorted within each subject."
       xtitle = "Hour (sorted)"
     }
-    
+
     # Melt the measurements for lasagna plot
-    data_l = data.frame(subject = rep(subject, 
-                                      each = length(time_grid_hours)), 
-                        hour = rep(time_grid_hours, ns), 
+    data_l = data.frame(subject = rep(subject,
+                                      each = length(time_grid_hours)),
+                        hour = rep(time_grid_hours, ns),
                         glucose = as.vector(t(average24))) %>%
       mutate(tooltip_text = paste0(
         "<br>Hour: ", round(hour, 2),
@@ -253,14 +255,14 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
           paste0("<br>Log10 Glucose: ", round(glucose, 2))
         }
       ))
-    
-    
+
+
     p = data_l%>%
-      ggplot(aes(x = hour, y = subject, fill = glucose, text = tooltip_text)) + 
-      geom_tile() + 
-      ylab(ytitle) + 
-      ggtitle(paste0("Average glucose values for all subjects across days", title, "")) + 
-      xlab(xtitle) + 
+      ggplot(aes(x = hour, y = subject, fill = glucose, text = .data$tooltip_text)) +
+      geom_tile() +
+      ylab(ytitle) +
+      ggtitle(paste0("Average glucose values for all subjects across days", title, "")) +
+      xlab(xtitle) +
       scale_x_continuous(limits = c(0, 24) + c(0, 0.05), expand = c(0, 0)) +
       scale_y_discrete(expand = c(0, 0)) +
       scale_fill_gradientn(colors = colors, na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits)
@@ -270,27 +272,27 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
         panel.background = element_rect(fill = "grey50"),
         panel.grid.major = element_line(linewidth = 0, linetype = 'solid', colour = "grey50"),
         panel.grid.minor = element_line(linewidth = 0, linetype = 'solid', colour = "grey50"))
-        
-    
+
+
     if(log){
       p = p + ggplot2::labs(fill = 'log(glucose)')
     }
-    
+
     # Take out subject names if sorted within time since each subject changes
     if (lasagnatype == 'timesorted'){
       p = p + theme(axis.text.y=element_blank())
     }
-    
+
     static_or_gui = match.arg(static_or_gui, c("plotly", "ggplot"))
     if (static_or_gui == "plotly") {
       return(
         plotly::ggplotly(
-          p, 
+          p,
           tooltip = "text"
         )
       )
     }
-    
+
     return(p)
   }else{
     max_days = max(sapply(gdall, function(x) nrow(x)))
@@ -307,9 +309,9 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
         as.vector(t(x[1:max_days, ]))
       }
     }
-    
+
     out = t(sapply(gdall, stretch_select))
-    
+
     # Adjust the title and sort if needed
     title = ""
     ytitle = "Subject"
@@ -323,9 +325,9 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
       title = ", sorted within each subject."
       xtitle = "Day (sorted)"
     }
-    
-    data_l = data.frame(subject = rep(subject, each = nt * max_days), 
-                        day = rep(time_grid_days, ns), 
+
+    data_l = data.frame(subject = rep(subject, each = nt * max_days),
+                        day = rep(time_grid_days, ns),
                         glucose = as.vector(t(out))) %>%
       mutate(tooltip_text = paste0(
         "Day: ", round(day, 2),
@@ -335,15 +337,15 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
           paste0("<br>Log10 Glucose: ", round(glucose, 2))
         }
       ))
-    
+
     p = data_l%>%
-      ggplot(aes(x = day + 1, y = subject, fill = glucose, text = tooltip_text)) + 
+      ggplot(aes(x = day + 1, y = subject, fill = glucose, text = .data$tooltip_text)) +
       geom_tile() +
-      ylab(ytitle) + 
-      ggtitle(paste0("All subjects", title)) + 
-      xlab(xtitle) + 
-      geom_vline(xintercept = c(1:max_days)) + 
-      scale_x_continuous(breaks = seq(1, max_days, by = 2), expand = c(0,0)) + 
+      ylab(ytitle) +
+      ggtitle(paste0("All subjects", title)) +
+      xlab(xtitle) +
+      geom_vline(xintercept = c(1:max_days)) +
+      scale_x_continuous(breaks = seq(1, max_days, by = 2), expand = c(0,0)) +
       scale_y_discrete(expand = c(0,0)) +
       scale_fill_gradientn(colors = colors, na.value = "grey50", values = scales::rescale(c(limits[1], LLTR, midpoint, ULTR, limits[2])), limits = limits) +
       theme_bw() +
@@ -352,27 +354,27 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
         panel.grid.major = element_line(linewidth = 0, linetype = 'solid', colour = "grey50"),
         panel.grid.minor = element_line(linewidth = 0, linetype = 'solid', colour = "grey50")
       )
-    
-      
+
+
     if(log){
       p = p + ggplot2::labs(fill = 'log(glucose)')
     }
-    
+
     # Take out subject names if sorted within time since each subject changes
     if (lasagnatype == 'timesorted'){
       p = p + theme(axis.text.y=element_blank())
     }
-    
+
     static_or_gui = match.arg(static_or_gui, c("plotly", "ggplot"))
     if (static_or_gui == "plotly") {
       return(
         plotly::ggplotly(
-          p, 
+          p,
           tooltip = "text"
         )
       )
     }
-    
+
     return(p)
   }
 }

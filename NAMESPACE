@@ -68,10 +68,17 @@ import(ggplot2)
 import(patchwork)
 import(stats)
 importFrom(DT,renderDataTable)
-importFrom(lubridate,"%within%")
-importFrom(lubridate,days)
-importFrom(lubridate,hour)
-importFrom(lubridate,interval)
-importFrom(lubridate,minute)
+importFrom(dplyr,
+  mutate,
+  select
+)
+importFrom(lubridate,
+  "%within%",
+  days,
+  hour,
+  interval,
+  minute
+)
 importFrom(magrittr,"%>%")
+importFrom(tidyr,pivot_longer)
 importFrom(utils,tail)
