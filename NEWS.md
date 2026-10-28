@@ -1,3 +1,16 @@
+# iglu 4.5.2
+* Fixed bug in assigning time frequency at the subject level for active percent
+
+# iglu 4.5.1
+* Fixed bug in subject selection for single-subject lasagna plots
+
+# iglu 4.5.0
+* Added option to compute MAG using raw or interpolated data 
+* Default is now using raw data instead of interpolated
+
+# iglu 4.4.0
+* Fixed raw data imports for Libre, Libre Pro, ASC, and iPro sensors
+
 # iglu 4.3.0
 * Updated MAG computation in the presence of large missing data
 * Default MAG now calculates differences at the CGM frequency rather than hourly
