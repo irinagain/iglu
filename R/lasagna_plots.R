@@ -96,7 +96,7 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
                       hour = rep(time_grid_hours, ndays),
                       glucose = as.vector(t(gl_by_id_ip))) %>%
     mutate(tooltip_text = paste0(
-      "Day: ", day,
+      "Day: ", round(day, 2),
       "<br>Hour: ", round(hour, 2),
       if (!log) {
         paste0("<br>Glucose (mg/dL): ", round(glucose, 1))
@@ -125,7 +125,6 @@ plot_lasagna_1subject <- function(data, lasagnatype = c('unsorted', 'timesorted'
     scale_x_continuous(limits = c(0, 24) + c(0, 0.05), expand = c(0, 0)) +
     scale_y_discrete(expand = c(0, 0)) +
     ggtitle(paste0(subject, title)) +
-    theme_bw() +
     theme(
       panel.background = element_rect(fill = "grey50"),
       panel.grid.major = element_line(linewidth = 0, linetype = 'solid', colour = "grey50"),
@@ -248,7 +247,8 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
                         hour = rep(time_grid_hours, ns),
                         glucose = as.vector(t(average24))) %>%
       mutate(tooltip_text = paste0(
-        "<br>Hour: ", round(hour, 2),
+        "Hour: ", round(hour, 2),
+        "<br>Subject:", subject,
         if (!log) {
           paste0("<br>Glucose (mg/dL): ", round(glucose, 1))
         } else {
@@ -331,6 +331,7 @@ plot_lasagna <- function(data, datatype = c("all", "average"), lasagnatype = c('
                         glucose = as.vector(t(out))) %>%
       mutate(tooltip_text = paste0(
         "Day: ", round(day, 2),
+        "<br>Subject:", subject,
         if (!log) {
           paste0("<br>Glucose (mg/dL): ", round(glucose, 1))
         } else {
