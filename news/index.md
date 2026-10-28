@@ -1,5 +1,10 @@
 # Changelog
 
+## iglu 4.5.3
+
+- Fixed bug in all_metrics not passing arguments to episode_calculation
+  and active_percent
+
 ## iglu 4.5.2
 
 - Fixed bug in assigning time frequency at the subject level for active
